@@ -64,27 +64,27 @@ class PembelianBanController extends Controller
                 // 'nama_person' => 'required',
                 // 'jabatan' => 'required',
                 // 'fax' => 'required',
-                'telp' => 'required',
-                'hp' => 'required',
+                // 'telp' => 'required',
+                // 'hp' => 'required',
                 // 'email' => 'required',
                 // 'npwp' => 'required',
-                'nama_bank' => 'required',
-                'atas_nama' => 'required',
-                'norek' => 'required',
+                // 'nama_bank' => 'required',
+                // 'atas_nama' => 'required',
+                // 'norek' => 'required',
             ],
             [
                 'nama_supp.required' => 'Masukkan nama supplier',
                 'alamat.required' => 'Masukkan Alamat',
                 // 'nama_person.required' => 'Masukkan nama',
                 // 'jabatan.required' => 'Masukkan jabatan',
-                'telp.required' => 'Masukkan no telepon',
+                // 'telp.required' => 'Masukkan no telepon',
                 // 'fax.required' => 'Masukkan no fax',
-                'hp.required' => 'Masukkan no hp',
+                // 'hp.required' => 'Masukkan no hp',
                 // 'email.required' => 'Masukkan email',
                 // 'npwp.required' => 'Masukkan no npwp',
-                'nama_bank.required' => 'Masukkan nama bank',
-                'atas_nama.required' => 'Masukkan atas nama',
-                'norek.required' => 'Masukkan no rekening',
+                // 'nama_bank.required' => 'Masukkan nama bank',
+                // 'atas_nama.required' => 'Masukkan atas nama',
+                // 'norek.required' => 'Masukkan no rekening',
             ]
         );
 
@@ -100,9 +100,9 @@ class PembelianBanController extends Controller
             $request->all(),
             [
                 'kode_supplier' => $this->kode_supp(),
-                'qrcode_supplier' => 'https://javaline.id/supplier/' . $kode_supp,
+                'qrcode_supplier' => 'https://batlink.id/supplier/' . $kode_supp,
                 'tanggal_awal' => Carbon::now('Asia/Jakarta'),
-                // 'qrcode_supplier' => 'http://192.168.1.46/javaline/supplier/' . $kode
+                // 'qrcode_supplier' => 'http://192.168.1.46/batlink/supplier/' . $kode
             ]
         ));
 
@@ -204,7 +204,7 @@ class PembelianBanController extends Controller
                 Ban::create([
                     'kode_ban' => $this->kodeban(),
                     'pembelian_ban_id' => $transaksi->id,
-                    'qrcode_ban' => 'https://javaline.id/ban/' . $this->kodeban(),
+                    'qrcode_ban' => 'https://batlink.id/ban/' . $this->kodeban(),
                     'status' => 'stok',
                     'tanggal_awal' => Carbon::now('Asia/Jakarta'),
                     'no_seri' => $data_pesanan['no_seri'],
@@ -256,7 +256,7 @@ class PembelianBanController extends Controller
             $num = sprintf("%06s", $idbr);
         }
 
-        $data = 'JL';
+        $data = 'BT';
         $kode_ban = $data . $num;
         return $kode_ban;
     }

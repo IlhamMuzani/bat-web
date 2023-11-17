@@ -48,7 +48,7 @@ class KaryawanController extends Controller
                 'gender' => 'required',
                 'tanggal_lahir' => 'required',
                 'tanggal_gabung' => 'required',
-                'jabatan' => 'required',
+                // 'jabatan' => 'required',
                 'telp' => 'required',
                 'alamat' => 'required',
                 'gambar' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
@@ -62,7 +62,7 @@ class KaryawanController extends Controller
                 'gender.required' => 'Pilih gender',
                 'tanggal_lahir.required' => 'Masukkan tanggal lahir',
                 'tanggal_gabung.required' => 'Masukkan tanggal gabung',
-                'jabatan.required' => 'Pilih jabatan',
+                // 'jabatan.required' => 'Pilih jabatan',
                 'telp.required' => 'Masukkan no telepon',
                 'alamat.required' => 'Masukkan alamat',
                 'gambar.image' => 'Gambar yang dimasukan salah!',
@@ -93,8 +93,8 @@ class KaryawanController extends Controller
                 'pembayaran' => '-',
                 'status' => 'null',
                 'kode_karyawan' => $this->kode(),
-                'qrcode_karyawan' => 'https://javaline.id/karyawan/' . $kode,
-                // 'qrcode_karyawan' => 'http://192.168.1.46/javaline/karyawan/' . $kode
+                'qrcode_karyawan' => 'https://batlink.id/karyawan/' . $kode,
+                // 'qrcode_karyawan' => 'http://192.168.1.46/batlink/karyawan/' . $kode
                 'tanggal' => Carbon::now('Asia/Jakarta'),
 
             ]
@@ -168,7 +168,7 @@ class KaryawanController extends Controller
                 'gender' => 'required',
                 'tanggal_lahir' => 'required',
                 'tanggal_gabung' => 'required',
-                'jabatan' => 'required',
+                // 'jabatan' => 'required',
                 'telp' => 'required',
                 'alamat' => 'required',
                 'gambar' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
@@ -182,7 +182,7 @@ class KaryawanController extends Controller
                 'gender.required' => 'Pilih gender',
                 'tanggal_lahir.required' => 'Masukkan tanggal lahir',
                 'tanggal_gabung.required' => 'Masukkan tanggal gabung',
-                'jabatan.required' => 'Pilih jabatan',
+                // 'jabatan.required' => 'Pilih jabatan',
                 'telp.required' => 'Masukkan no telepon',
                 'alamat.required' => 'Masukkan alamat',
                 'gambar.image' => 'Gambar yang dimasukan salah!',
@@ -205,25 +205,23 @@ class KaryawanController extends Controller
             $namaGambar = $karyawan->gambar;
         }
 
-        Karyawan::where('id', $karyawan->id)
-            ->update([
-                'departemen_id' => $request->departemen_id,
-                'no_ktp' => $request->no_ktp,
-                'no_sim' => $request->no_sim,
-                'nama_lengkap' => $request->nama_lengkap,
-                'nama_kecil' => $request->nama_kecil,
-                'gender' => $request->gender,
-                'tanggal_lahir' => $request->tanggal_lahir,
-                'tanggal_gabung' => $request->tanggal_gabung,
-                'jabatan' => $request->jabatan,
-                'telp' => $request->telp,
-                'alamat' => $request->alamat,
-                'gambar' => $namaGambar,
-            'tanggal_awal' => Carbon::now('Asia/Jakarta'),
-            ]);
+        $karyawan->departemen_id = $request->departemen_id;
+        $karyawan->no_ktp = $request->no_ktp;
+        $karyawan->no_sim = $request->no_sim;
+        $karyawan->nama_lengkap = $request->nama_lengkap;
+        $karyawan->nama_kecil = $request->nama_kecil;
+        $karyawan->gender = $request->gender;
+        $karyawan->tanggal_lahir = $request->tanggal_lahir;
+        $karyawan->tanggal_gabung = $request->tanggal_gabung;
+        $karyawan->telp = $request->telp;
+        $karyawan->alamat = $request->alamat;
+        $karyawan->gambar = $namaGambar;
+        $karyawan->tanggal_awal = Carbon::now('Asia/Jakarta');
+        $karyawan->save();
 
         return redirect('admin/karyawan')->with('success', 'Berhasil mengubah karyawan');
     }
+
     public function destroy($id)
     {
         $karyawan = Karyawan::find($id);

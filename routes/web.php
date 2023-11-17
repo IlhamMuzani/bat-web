@@ -145,13 +145,14 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('print_ban', [\App\Http\Controllers\Admin\LaporanPembelianBan::class, 'print_ban']);
     Route::get('laporan_pemasanganban', [\App\Http\Controllers\Admin\LaporanpemasanganbanController::class, 'index']);
     Route::get('print_pemasanganban', [\App\Http\Controllers\Admin\LaporanpemasanganbanController::class, 'print_pemasanganban']);
+    Route::get('cetak_pdffilter', [\App\Http\Controllers\Admin\BanController::class, 'cetak_pdffilter']);
 
 
     Route::get('laporan_pelepasanban', [\App\Http\Controllers\Admin\LaporanpelepasanbanController::class, 'index']);
     Route::get('print_pelepasanban', [\App\Http\Controllers\Admin\LaporanpelepasanbanController::class, 'print_pelepasanban']);
 
 
-    Route::get('pemasangan_ban/ban/{id}', [\App\Http\Controllers\Admin\PemasanganbanController::class,'ban']);
+    Route::get('pemasangan_ban/ban/{id}', [\App\Http\Controllers\Admin\PemasanganbanController::class, 'ban']);
 
     Route::delete('pemasangan_ban/delete_ban/{id}', [\App\Http\Controllers\Admin\PemasanganbanController::class, 'delete_ban']);
     Route::delete('hapus_part/{id}', [\App\Http\Controllers\Admin\PemasanganpartController::class, 'hapus_part']);
@@ -167,7 +168,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('laporan_pembelianpart', [\App\Http\Controllers\Admin\LaporanPembelianPart::class, 'index']);
     Route::get('print_part', [\App\Http\Controllers\Admin\LaporanPembelianPart::class, 'print_part']);
 
-    
+
     Route::get('inquery_km', [\App\Http\Controllers\Admin\InqueryUpdateKMController::class, 'index']);
     Route::get('unpostkm/{id}', [\App\Http\Controllers\Admin\InqueryUpdateKMController::class, 'unpostkm'])->name('unpostkm');
     Route::get('postingkm/{id}', [\App\Http\Controllers\Admin\InqueryUpdateKMController::class, 'postingkm'])->name('postingkm');
@@ -189,8 +190,10 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('postingpelepasan/{id}', [\App\Http\Controllers\Admin\InqueryPelepasanbanController::class, 'postingpelepasan'])->name('postingpelepasan');
     Route::get('lihat_pelepasan/{id}', [\App\Http\Controllers\Admin\InqueryPelepasanbanController::class, 'lihat_pelepasan'])->name('lihat_pelepasan');
     Route::get('edit_pelepasan/{id}', [\App\Http\Controllers\Admin\InqueryPelepasanbanController::class, 'edit_pelepasan'])->name('edit_pelepasan');
-
-    
+    Route::get('inquery_perpanjanganstnk', [\App\Http\Controllers\Admin\InqueryPerpanjanganstnkController::class, 'index']);
+    Route::get('inquery_perpanjanganstnk/cetak-pdf/{id}', [\App\Http\Controllers\Admin\InqueryPerpanjanganstnkController::class, 'cetakpdf']);
+    Route::get('inquery_perpanjangankir', [\App\Http\Controllers\Admin\InqueryPerpanjangankirController::class, 'index']);
+    Route::get('inquery_perpanjangankir/cetak-pdf/{id}', [\App\Http\Controllers\Admin\InqueryPerpanjangankirController::class, 'cetakpdf']);
     Route::get('departemen/cetak-pdf/{id}', [\App\Http\Controllers\Admin\DepartemenController::class, 'cetakpdf']);
     Route::get('golongan/cetak-pdf/{id}', [\App\Http\Controllers\Admin\GolonganController::class, 'cetakpdf']);
     Route::get('karyawan/cetak-pdf/{id}', [\App\Http\Controllers\Admin\KaryawanController::class, 'cetakpdf']);
@@ -219,8 +222,8 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('nokir/cetak-pdfnokir/{id}', [\App\Http\Controllers\Admin\NokirController::class, 'cetakpdfnokir']);
 
     // Route::middleware('admin')->prefix('admin')->group(function () {
-        Route::delete('inquery_pembelianpart/deletepart/{id}', [\App\Http\Controllers\Admin\InqueryPembelianPartController::class, 'deletepart']);
-    
+    Route::delete('inquery_pembelianpart/deletepart/{id}', [\App\Http\Controllers\Admin\InqueryPembelianPartController::class, 'deletepart']);
+
     Route::get('pembelian_part/tabelpart', [\App\Http\Controllers\Admin\PembelianpartController::class, 'tabelpart']);
     Route::get('pembelian_part/tabelpartmesin', [\App\Http\Controllers\Admin\PembelianpartController::class, 'tabelpartmesin']);
 
@@ -238,7 +241,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('edit_pemasanganpart/{id}', [\App\Http\Controllers\Admin\InqueryPemasanganpartController::class, 'edit_pemasanganpart'])->name('edit_pemasanganpart');
     Route::delete('inquery_pemasanganpart/deletepart/{id}', [\App\Http\Controllers\Admin\InqueryPemasanganpartController::class, 'delete']);
     Route::delete('inquery_pemasanganpart/deletepartdetail/{id}', [\App\Http\Controllers\Admin\InqueryPemasanganpartController::class, 'deletepart']);
-    
+
     Route::get('laporan_pemasanganpart', [\App\Http\Controllers\Admin\LaporanpemasanganpartController::class, 'index']);
     Route::get('print_pemasanganpart', [\App\Http\Controllers\Admin\LaporanpemasanganpartController::class, 'print_pemasanganpart']);
     Route::get('print_laporanstatusperjalanan', [\App\Http\Controllers\Admin\LaporanStatusPerjalananController::class, 'print_statusperjalanan']);
@@ -250,12 +253,17 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('edit_penggantianoli/{id}', [\App\Http\Controllers\Admin\InqueryPenggantianoliController::class, 'edit_penggantianoli'])->name('edit_penggantianoli');
     Route::delete('inquery_penggantianoli/deleteoli/{id}', [\App\Http\Controllers\Admin\InqueryPenggantianoliController::class, 'delete']);
     Route::delete('inquery_penggantianoli/deleteolidetail/{id}', [\App\Http\Controllers\Admin\InqueryPenggantianoliController::class, 'deleteoli']);
-    
+    Route::delete('inquery_penggantianoli/deletefilterdetail/{id}', [\App\Http\Controllers\Admin\InqueryPenggantianoliController::class, 'deletefilter']);
+
     Route::get('laporan_penggantianoli', [\App\Http\Controllers\Admin\LaporanPenggantianoliController::class, 'index']);
     Route::get('print_penggantianoli', [\App\Http\Controllers\Admin\LaporanPenggantianoliController::class, 'print_penggantianoli']);
     Route::get('status_perjalanan', [\App\Http\Controllers\Admin\StatusPerjalananController::class, 'index']);
     Route::get('laporan_statusperjalanan', [\App\Http\Controllers\Admin\LaporanStatusPerjalananController::class, 'index']);
 
+    Route::get('unpoststnk/{id}', [\App\Http\Controllers\Admin\InqueryPerpanjanganstnkController::class, 'unpoststnk'])->name('unpoststnk');
+    Route::get('postingstnk/{id}', [\App\Http\Controllers\Admin\InqueryPerpanjanganstnkController::class, 'postingstnk'])->name('postingstnk');
+    Route::get('unpostkir/{id}', [\App\Http\Controllers\Admin\InqueryPerpanjangankirController::class, 'unpostkir'])->name('unpostkir');
+    Route::get('postingkir/{id}', [\App\Http\Controllers\Admin\InqueryPerpanjangankirController::class, 'postingkir'])->name('postingkir');
 
     Route::resource('karyawan', \App\Http\Controllers\Admin\KaryawanController::class);
     Route::resource('user', \App\Http\Controllers\Admin\UserController::class);
@@ -298,5 +306,6 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::resource('status_perjalanan', \App\Http\Controllers\Admin\StatusPerjalananController::class);
     Route::resource('laporan_statusperjalanan', \App\Http\Controllers\Admin\LaporanStatusPerjalananController::class);
     Route::resource('kota', \App\Http\Controllers\Admin\KotaController::class);
-
+    Route::resource('inquery_perpanjanganstnk', \App\Http\Controllers\Admin\InqueryPerpanjanganstnkController::class);
+    Route::resource('inquery_perpanjangankir', \App\Http\Controllers\Admin\InqueryPerpanjangankirController::class);
 });

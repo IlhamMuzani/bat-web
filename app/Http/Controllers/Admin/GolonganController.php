@@ -60,7 +60,7 @@ class GolonganController extends Controller
             $request->all(),
             [
                 'kode_golongan' => $kode,
-                'qrcode_golongan' => 'http://192.168.1.46/javaline/golongan/' . $kode,
+                'qrcode_golongan' => 'http://192.168.1.46/batlink/golongan/' . $kode,
                 'tanggal_awal' => $format_tanggal,
             ],
         ));
@@ -112,10 +112,15 @@ class GolonganController extends Controller
             return back()->withInput()->with('error', $error);
         }
 
-        Golongan::where('id', $id)->update([
-            'nama_golongan' => $request->nama_golongan,
-            'tanggal_awal' => Carbon::now('Asia/Jakarta'),
-        ]);
+        $golongan = Golongan::find($id);
+
+        if (!$golongan) {
+            return back()->with('error', 'Golongan tidak ditemukan');
+        }
+        $tanggal = Carbon::now('Asia/Jakarta');
+        $golongan->nama_golongan = $request->nama_golongan;
+        $golongan->tanggal_awal = $tanggal;
+        $golongan->save();
 
         return redirect('admin/golongan')->with('success', 'Berhasil memperbarui Golongan');
     }

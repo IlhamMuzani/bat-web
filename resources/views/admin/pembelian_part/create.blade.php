@@ -1,4 +1,4 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app')
 
 @section('title', 'Pembelian Part')
 
@@ -570,4 +570,4 @@
             });
         }
     </script>
-@endsection
+@endsection --}}

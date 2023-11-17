@@ -52,16 +52,16 @@ class SparepartController extends Controller
                 'kategori' => 'required',
                 'nama_barang' => 'required',
                 'keterangan' => 'required',
-                'harga' => 'required',
-                'jumlah' => 'required',
+                // 'harga' => 'required',
+                // 'jumlah' => 'required',
                 'satuan' => 'required',
             ],
             [
                 'kategori.required' => 'Pilih kategori',
                 'nama_barang.required' => 'Masukkan nama barang',
                 'keterangan.required' => 'Masukkan keterangan',
-                'harga_jual.required' => 'Masukkan harga jual',
-                'jumlah.required' => 'Masukkan stok',
+                // 'harga_jual.required' => 'Masukkan harga jual',
+                // 'jumlah.required' => 'Masukkan stok',
                 'satuan.required' => 'Masukkan satuan',
             ]
         );
@@ -85,8 +85,9 @@ class SparepartController extends Controller
             $request->all(),
             [
                 'kode_partdetail' => $kode,
-                // 'qrcode_barang' => 'http://192.168.1.46/javaline/barang/' . $kode
-                'qrcode_barang' => 'https:///javaline.id/barang/' . $kode,
+                'jumlah' => '0',
+                // 'qrcode_barang' => 'http://192.168.1.46/batlink/barang/' . $kode
+                'qrcode_barang' => 'https:///batlink.id/barang/' . $kode,
                 'tanggal_awal' => Carbon::now('Asia/Jakarta'),
 
             ],
@@ -183,16 +184,16 @@ class SparepartController extends Controller
                 'kategori' => 'required',
                 'nama_barang' => 'required',
                 'keterangan' => 'required',
-                'harga' => 'required',
-                'jumlah' => 'required',
+                // 'harga' => 'required',
+                // 'jumlah' => 'required',
                 'satuan' => 'required',
             ],
             [
                 'kategori.required' => 'Pilih kategori',
                 'nama_barang.required' => 'Masukkan nama barang',
                 'keterangan.required' => 'Masukkan keterangan',
-                'harga.required' => 'Masukkan harga',
-                'jumlah.required' => 'Masukkan stok',
+                // 'harga.required' => 'Masukkan harga',
+                // 'jumlah.required' => 'Masukkan stok',
                 'satuan.required' => 'Masukkan satuan',
             ]
         );
@@ -204,17 +205,16 @@ class SparepartController extends Controller
 
         $part = Sparepart::findOrFail($id);
 
-        Sparepart::where('id', $part->id)->update(
-            [
-                'kategori' => $request->kategori,
-                'nama_barang' => $request->nama_barang,
-                'keterangan' => $request->keterangan,
-                'harga' => $request->harga,
-                'jumlah' => $request->jumlah,
-                'satuan' => $request->satuan,
-                'tanggal_awal' => Carbon::now('Asia/Jakarta'),
-            ]
-        );
+        $part->kategori = $request->kategori;
+        $part->nama_barang = $request->nama_barang;
+        $part->keterangan = $request->keterangan;
+        // $part->harga = $request->harga;
+        $part->jumlah = $request->jumlah;
+        $part->satuan = $request->satuan;
+        $part->tanggal_awal = Carbon::now('Asia/Jakarta');
+
+        $part->save();
+
         return redirect('admin/sparepart')->with('success', 'Berhasil memperbarui part');
     }
 

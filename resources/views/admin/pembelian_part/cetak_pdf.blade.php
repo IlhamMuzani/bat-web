@@ -187,70 +187,54 @@
 </head>
 
 <body style="margin: 0; padding: 0;">
-    <table width="100%">
+    <table cellpadding="2" cellspacing="0">
         <tr>
-            <!-- First column (Nama PT) -->
-            <td style="width: 50%;">
-                <div class="info-catatan" style="max-width: 230px;">
-                    <table>
-                        <tr>
-                            <td class="info-catatan2" style="font-size: 13px;">PT. BINA ANUGERAH TRANSINDO</td>
-                            {{-- <td class="info-item" style="font-size: 13px;">:</td>
-                            <td class="info-text info-left" style="font-size: 13px;">Company Name</td> --}}
-                        </tr>
-                        <tr>
-                            <td class="info-text info-left" style="font-size: 13px;">JL. HOS COKRO AMINOTO NO. 5</td>
-                            {{-- <td class="info-item" style="font-size: 13px;">:</td>
-                            <td class="info-text info-left" style="font-size: 13px;">Company Address</td> --}}
-                        </tr>
-                        <tr>
-                            <td class="info-text info-left" style="font-size: 13px;">SLAWI TEGAL</td>
-                            {{-- <td class="info-item" style="font-size: 13px;">:</td>
-                            <td class="info-text info-left" style="font-size: 13px;">123-456-7890</td> --}}
-                        </tr>
-                        <tr>
-                            <td class="info-text info-left" style="font-size: 13px;">Telp/ Fax 02836195326 02836195187
-                            </td>
-                            {{-- <td class="info-item" style="font-size: 13px;">:</td>
-                            <td class="info-text info-left" style="font-size: 13px;">123-456-7890</td> --}}
-                        </tr>
-                    </table>
-                </div>
+            <td class="info-catatan2" style="font-size: 13px;">PT. BINA ANUGERAH TRANSINDO</td>
+            <td class="info-catatan2" style="font-size: 13px; margin-left: 40px; display: block;">Nama Supplier</td>
+            <td style="text-align: left; font-size: 13px;">
+                <span class="content2">
+                    {{ $pembelians->supplier->nama_supp }}
+                </span>
+                <br>
             </td>
-            <!-- Second column (Nama Supplier) -->
-            <td style="width: 70%;" style="max-width: 230px;">
-                <div class="info-catatan">
-                    <table>
-                        <tr>
-                            <td class="info-catatan2" style="font-size: 13px;">Nama Supplier</td>
-                            <td class="info-item" style="font-size: 13px;">:</td>
-                            <td class="info-text info-left" style="font-size: 13px;">
-                                {{ $pembelians->supplier->nama_supp }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="info-catatan2" style="font-size: 13px;">Alamat</td>
-                            <td class="info-item" style="font-size: 13px;">:</td>
-                            <td class="info-text info-left" style="font-size: 13px;">
-                                {{ $pembelians->supplier->alamat }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="info-catatan2" style="font-size: 13px;">Telp / HP</td>
-                            <td class="info-item" style="font-size: 13px;">:</td>
-                            <td class="info-text info-left" style="font-size: 13px;">{{ $pembelians->supplier->telp }} /
-                                {{ $pembelians->supplier->hp }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="info-catatan2" style="font-size: 13px;">ID Supplier</td>
-                            <td class="info-item" style="font-size: 13px;">:</td>
-                            <td class="info-text info-left" style="font-size: 13px;">
-                                {{ $pembelians->supplier->kode_supplier }}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
+        </tr>
+        <tr>
+            <td class="info-text info-left" style="font-size: 13px;">JL. HOS COKRO AMINOTO NO. 5
+                {{-- <br>
+                SLAWI TEGAL <br>
+                Telp/ Fax 02836195326 02836195187 --}}
+            </td>
+            </td>
+            <td class="info-catatan2" style="font-size: 13px; margin-left: 40px; display: block;">Alamat</td>
+            <td style="text-align: left; font-size: 13px;">
+                <span class="content2">
+                    {{ $pembelians->supplier->alamat }}
+                </span>
+                <br>
+            </td>
+        </tr>
+        <tr>
+            <td class="info-text info-left" style="font-size: 13px;">SLAWI TEGAL
+            </td>
+            <td class="info-catatan2" style="font-size: 13px; margin-left: 40px; display: block;">Telp / Hp</td>
+            <td style="text-align: left; font-size: 13px;">
+                <span class="content2">
+                    {{ $pembelians->supplier->telp }} /
+                    {{ $pembelians->supplier->hp }}
+                </span>
+                <br>
+            </td>
+        </tr>
+        <tr>
+            <td class="info-text info-left" style="font-size: 13px;">Telp/ Fax 02836195326 02836195187
+            </td>
+            <td class="info-catatan2" style="font-size: 13px; margin-left: 40px; display: block;">ID Supplier</td>
+
+            <td style="text-align: left; font-size: 13px;">
+                <span class="content2">
+                    {{ $pembelians->supplier->kode_supplier }}
+                </span>
+                <br>
             </td>
         </tr>
     </table>
@@ -279,6 +263,7 @@
             <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">No.</td>
             <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">Kode Barang</td>
             <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">Nama Barang</td>
+            <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">Harga Satuan</td>
             <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">Jumlah</td>
             <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">Satuan</td>
             <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">Harga</td>
@@ -299,6 +284,9 @@
                     {{ $item->nama_barang }}
                 </td>
                 <td class="td" style="text-align: center; font-size: 15px;">
+                     {{ number_format($item->hargasatuan, 0, ',', '.') }}
+                </td>
+                <td class="td" style="text-align: center; font-size: 15px;">
                     {{ $item->jumlah }}
                 </td>
                 <td class="td" style="text-align: center;  font-size: 15px;">
@@ -314,10 +302,10 @@
             @endphp
         @endforeach
         <tr style="border-bottom: 1px solid black;">
-            <td colspan="6" style="padding: 0px;"></td>
+            <td colspan="7" style="padding: 0px;"></td>
         </tr>
         <tr>
-            <td colspan="5" style="text-align: right; font-weight: bold; padding: 5px; font-size: 15px;">Sub Total
+            <td colspan="6" style="text-align: right; font-weight: bold; padding: 5px; font-size: 15px;">Sub Total
             </td>
             <td class="td" style="text-align: center; font-weight: bold; padding: 5px; font-size: 15px;">Rp.
                 {{ number_format($totalHarga, 0, ',', '.') }}

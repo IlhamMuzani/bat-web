@@ -155,6 +155,9 @@
                                                 <option value="AFKIR"
                                                     {{ old('kondisi_ban') == 'AFKIR' ? 'selected' : null }}>
                                                     AFKIR</option>
+                                                <option value="PROFIT"
+                                                    {{ old('kondisi_ban') == 'PROFIT' ? 'selected' : null }}>
+                                                    PROFIT</option>
                                             </select>
                                         </div>
                                     </td>
@@ -175,7 +178,8 @@
                                         <div class="form-group">
                                             <select class="select2bs4 select21-hidden-accessible" name="typeban_id[]"
                                                 data-placeholder="Pilih Type.." style="width: 100%;"
-                                                data-select21-id="23" tabindex="-1" aria-hidden="true" id="typeban_id-0">
+                                                data-select21-id="23" tabindex="-1" aria-hidden="true"
+                                                id="typeban_id-0">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($typebans as $typeban_id)
                                                     <option value="{{ $typeban_id->id }}">
@@ -485,6 +489,8 @@
                 '>KANISIR</option>';
             item_pembelian += '<option value="AFKIR"' + (kondisi_ban === 'AFKIR' ? ' selected' : '') +
                 '>AFKIR</option>';
+            item_pembelian += '<option value="PROFIT"' + (kondisi_ban === 'PROFIT' ? ' selected' : '') +
+                '>PROFIT</option>';
             item_pembelian += '</select>';
             item_pembelian += '</div>';
             item_pembelian += '</td>';

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\Jenis_kendaraan;
 use App\Models\LogPerpanjangankir;
 use App\Http\Controllers\Controller;
+use App\Models\Laporankir;
 use Illuminate\Support\Facades\Validator;
 
 class PerpanjanganKirController extends Controller
@@ -65,10 +66,12 @@ class PerpanjanganKirController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
+                'kategori' => 'required',
                 'masa_berlaku' => 'required',
                 'jumlah' => 'required'
             ],
             [
+                'kategori' => 'pilih kategori perpanjangan',
                 'masa_berlaku' => 'masukkan masa berlaku kir',
                 'jumlah' => 'masukkan jumlah',
             ]
@@ -84,10 +87,11 @@ class PerpanjanganKirController extends Controller
         $tanggal1 = Carbon::now('Asia/Jakarta');
         $format_tanggal = $tanggal1->format('d F Y');
         Nokir::where('id', $id)->update([
+            'kategori' => $request->kategori,
             'masa_berlaku' => $request->masa_berlaku,
             'jumlah' => $request->jumlah,
             'tanggal' => $format_tanggal,
-            'status_kir' => 'konfirmasi',
+            'status_kir' => 'sudah perpanjang',
             'tanggal_awal' => Carbon::now('Asia/Jakarta'),
         ]);
 
@@ -101,9 +105,53 @@ class PerpanjanganKirController extends Controller
         ]);
 
 
-        $cetakpdf = Nokir::where('id', $id)->first();
+        $tanggal1 = Carbon::now('Asia/Jakarta');
+        $format_tanggal = $tanggal1->format('d F Y');
 
-        return view('admin.perpanjangan_kir.show', compact('cetakpdf'));
+        $tanggal = Carbon::now()->format('Y-m-d');
+
+        $masa_berlaku = $nokir->masa_berlaku; // Mengambil nilai 'expired_stnk' dari model 'Stnk'
+        $jumlah = $nokir->jumlah; // Mengambil nilai 'jumlah' dari model 'Stnk'
+
+
+        $kode = $this->kode();
+
+        $laporan = Laporankir::create([
+            'kode_perpanjangan' => $this->kode(),
+            'nokir_id' => $nokir->id,
+            'kategori' => $request->kategori,
+            'masa_berlaku' => $request->masa_berlaku,
+            'jumlah' => $request->jumlah,
+            'tanggal' => $format_tanggal,
+            'tanggal_awal' => $tanggal,
+            'status' => 'posting',
+            'status_notif' => false,
+        ]);
+
+
+        $cetakpdf = Nokir::where('id', $id)->first();
+        $laporan = Laporankir::where('nokir_id', $id)->first();
+
+        return view('admin.perpanjangan_kir.show', compact('cetakpdf', 'laporan'));
+    }
+
+
+    public function kode()
+    {
+        $perpanjangan = Laporankir::all();
+        if ($perpanjangan->isEmpty()) {
+            $num = "000001";
+        } else {
+            $id = Laporankir::getId();
+            foreach ($id as $value);
+            $idlm = $value->id;
+            $idbr = $idlm + 1;
+            $num = sprintf("%06s", $idbr);
+        }
+
+        $data = 'AS';
+        $kode_perpanjangan = $data . $num;
+        return $kode_perpanjangan;
     }
 
 
@@ -124,8 +172,8 @@ class PerpanjanganKirController extends Controller
         if (auth()->check() && auth()->user()->menu['perpanjangan kir']) {
 
             $cetakpdf = Nokir::where('id', $id)->first();
-
-            $pdf = PDF::loadView('admin/perpanjangan_kir.cetak_pdf', compact('cetakpdf'));
+            $laporan = Laporankir::where('nokir_id', $id)->first();
+            $pdf = PDF::loadView('admin/perpanjangan_kir.cetak_pdf', compact('cetakpdf', 'laporan'));
             $pdf->setPaper('letter', 'portrait');
 
             return $pdf->stream('Surat_Perpanjangan_Stnk.pdf');

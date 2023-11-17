@@ -434,6 +434,18 @@
                             </select>
                         </div>
                         <div class="form-group">
+                            <label class="form-label" for="kategori">Kategori</label>
+                            <select class="form-control" id="kategori" name="kategori">
+                                <option value="">- Pilih -</option>
+                                <option value="Perpanjangan BINA ANUGERAH TRANSINDO"
+                                    {{ old('kategori', $nokir->kategori) == 'Perpanjangan BINA ANUGERAH TRANSINDO' ? 'selected' : null }}>
+                                    Perpanjangan BINA ANUGERAH TRANSINDO</option>
+                                <option value="Perpanjangan DISHUB"
+                                    {{ old('kategori', $nokir->kategori) == 'Perpanjangan DISHUB' ? 'selected' : null }}>
+                                    Perpanjangan DISHUB</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label>Masa Berlaku Uji Berkala</label>
                             <div class="input-group date" id="reservationdatetime">
                                 <input type="date" id="masa_berlaku" name="masa_berlaku"

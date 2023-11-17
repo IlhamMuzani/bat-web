@@ -180,7 +180,7 @@ class InqueryPembelianBanController extends Controller
                     Ban::create([
                         'kode_ban' => $this->kodeban(),
                         'pembelian_ban_id' => $transaksi->id,
-                        'qrcode_ban' => 'https://javaline.id/ban/' . $this->kodeban(),
+                        'qrcode_ban' => 'https://batlink.id/ban/' . $this->kodeban(),
                         'status' => 'stok',
                         'tanggal_awal' => Carbon::now('Asia/Jakarta'),
                         'no_seri' => $data_pesanan['no_seri'],
@@ -276,7 +276,7 @@ class InqueryPembelianBanController extends Controller
             $num = sprintf("%06s", $idbr);
         }
 
-        $data = 'JL';
+        $data = 'BT';
         $kode_ban = $data . $num;
         return $kode_ban;
     }

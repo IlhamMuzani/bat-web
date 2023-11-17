@@ -51,7 +51,7 @@
     <div class="wrapper">
 
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="" src="{{ asset('storage/uploads/user/logo.png') }}" alt="AdminLTELogo" height="50"
+            <img class="" src="{{ asset('storage/uploads/gambar_logo/Logo.png') }}" alt="AdminLTELogo" height="50"
                 width="100">
         </div>
 
@@ -69,7 +69,7 @@
           </h4>
         </li> --}}
                 <li class="nav-item d-none d-sm-inline-block">
-                    <img class="animation__wobble" src="{{ asset('storage/uploads/gambar_logo/bat.JPEG') }}"
+                    <img class="animation__wobble" src="{{ asset('storage/uploads/gambar_logo/Logo.png') }}"
                         alt="AdminLTELogo" height="40" width="100">
                     {{-- <a href="#" class="nav-link">Sistem - BAT</a> --}}
                 </li>
@@ -87,21 +87,6 @@
 
             <!-- Sidebar -->
             <div class="sidebar">
-                <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    {{-- <div class="image">
-            @if (auth()->user()->foto)
-              <img src="{{ asset('storage/uploads/' . auth()->user()->foto) }}" class="img-circle elevation-2"
-                alt="{{ auth()->user()->nama }}">
-            @else
-              <img src="{{ asset('storage/uploads/image-placeholder.jpg') }}" class="img-circle elevation-2"
-                alt="{{ auth()->user()->nama }}">
-            @endif
-          </div> --}}
-                    <div class="info">
-                        {{-- <span class="text-white">{{ ucfirst(auth()->user()->nama) }}</span> --}}
-                    </div>
-                </div>
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">

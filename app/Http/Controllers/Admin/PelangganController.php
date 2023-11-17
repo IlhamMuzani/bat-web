@@ -77,9 +77,9 @@ class PelangganController extends Controller
             $request->all(),
             [
                 'kode_pelanggan' => $this->kode(),
-                'qrcode_pelanggan' => 'https://javaline.id/pelanggan/' . $kode,
+                'qrcode_pelanggan' => 'https://batlink.id/pelanggan/' . $kode,
                 'tanggal_awal' => Carbon::now('Asia/Jakarta'),
-                // 'qrcode_pelanggan' => 'http://192.168.1.46/javaline/pelanggan/' . $kode
+                // 'qrcode_pelanggan' => 'http://192.168.1.46/batlink/pelanggan/' . $kode
             ]
         ));
 
@@ -181,23 +181,22 @@ class PelangganController extends Controller
 
         $pelanggan = Pelanggan::findOrfail($id);
 
+        $pelanggan->nama_pell = $request->nama_pell;
+        $pelanggan->nama_alias = $request->nama_alias;
+        $pelanggan->npwp = $request->npwp;
+        $pelanggan->alamat = $request->alamat;
+        $pelanggan->nama_person = $request->nama_person;
+        $pelanggan->jabatan = $request->jabatan;
+        $pelanggan->telp = $request->telp;
+        $pelanggan->fax = $request->fax;
+        $pelanggan->hp = $request->hp;
+        $pelanggan->email = $request->email;
+        $pelanggan->tanggal_awal = Carbon::now('Asia/Jakarta');
 
-        Pelanggan::where('id', $pelanggan->id)
-            ->update([
-                'nama_pell' => $request->nama_pell,
-                'nama_alias' => $request->nama_alias,
-                'npwp' => $request->npwp,
-                'alamat' => $request->alamat,
-                'nama_person' => $request->nama_person,
-                'jabatan' => $request->jabatan,
-                'telp' => $request->telp,
-                'fax' => $request->fax,
-                'hp' => $request->hp,
-                'email' => $request->email,
-                'tanggal_awal' => Carbon::now('Asia/Jakarta'),
-            ]);
+        $pelanggan->save();
 
         return redirect('admin/pelanggan')->with('success', 'Berhasil memperbarui pelanggan');
+
     }
 
     public function destroy($id)

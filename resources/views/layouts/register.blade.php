@@ -18,11 +18,11 @@
 </head>
 
 <body class="hold-transition login-page">
-    <img class="mb-2" src="{{ asset('storage/uploads/gambar_logo/bat.JPEG') }}" alt="AdminLTELogo" height="40"
+    <img class="mb-2" src="{{ asset('storage/uploads/gambar_logo/Logo.png') }}" alt="AdminLTELogo" height="40"
         width="100">
     <div class="login-box">
         <div class="login-logo">
-            <a href=""><strong style="font-size: 25px;">PT. BINA ANUGERAH TRANSINDO</strong></a>
+            <a href=""><strong style="font-size: 22px;">PT. BINA ANUGERAH TRANSINDO</strong></a>
         </div>
         @if (session('success'))
             <div class="alert alert-primary alert-dismissible" user="alert">
