@@ -35,8 +35,8 @@
                 </div>
             @endif
 
-            <form action="{{ url('admin/inquery_perpanjanganstnk/' . $inquery->id) }}" method="POST" enctype="multipart/form-data"
-                autocomplete="off">
+            <form action="{{ url('admin/inquery_perpanjanganstnk/' . $inquery->id) }}" method="POST"
+                enctype="multipart/form-data" autocomplete="off">
                 @csrf
                 @method('put')
                 <div class="card">
@@ -44,10 +44,17 @@
                         <h3 class="card-title">Detail No. Stnk</h3>
                     </div>
                     <div class="card-body">
+                        <div class="form-group" hidden>
+                            <label for="kendaraan_id">Kendaraan_id</label>
+                            <input type="text" class="form-control" id="kendaraan_id" name="kendaraan_id" readonly
+                                placeholder="Masukan kendaraan_id"
+                                value="{{ old('kendaraan_id', $inquery->stnk->kendaraan->id) }}">
+                        </div>
                         <div class="form-group">
                             <label for="nopol">No. Kabin</label>
                             <input type="text" class="form-control" id="no_kabin" name="no_kabin" readonly
-                                placeholder="Masukan no kabin" value="{{ old('no_pol', $inquery->stnk->kendaraan->no_kabin) }}">
+                                placeholder="Masukan no kabin"
+                                value="{{ old('no_pol', $inquery->stnk->kendaraan->no_kabin) }}">
                         </div>
                         <div class="form-group">
                             <label for="nopol">No. Registrasi Kendaraan</label>
@@ -58,7 +65,8 @@
                         <div class="form-group">
                             <label for="nama">Nama Pemilik</label>
                             <input type="text" class="form-control" id="nama_pemilik" readonly name="nama_pemilik"
-                                placeholder="Masukan nama pemilik" value="{{ old('nama_pemilik', $inquery->stnk->nama_pemilik) }}">
+                                placeholder="Masukan nama pemilik"
+                                value="{{ old('nama_pemilik', $inquery->stnk->nama_pemilik) }}">
                         </div>
                         <div class="form-group">
                             <label for="no_rangka">Nomor Rangka</label>
@@ -68,7 +76,8 @@
                         <div class="form-group">
                             <label for="nama">Nomor Mesin</label>
                             <input type="text" class="form-control" id="no_mesin" name="no_mesin" readonly
-                                placeholder="Masukan no motor penggerak" value="{{ old('no_mesin', $inquery->stnk->no_mesin) }}">
+                                placeholder="Masukan no motor penggerak"
+                                value="{{ old('no_mesin', $inquery->stnk->no_mesin) }}">
                         </div>
                     </div>
                 </div>

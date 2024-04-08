@@ -68,10 +68,9 @@
         }
     </style>
 </head>
-
 <body style="margin: 0; padding: 0;">
     <div id="logo-container">
-        <img src="{{ asset('storage/uploads/gambar_logo/Logo.png') }}" alt="BAT" width="70" height="35">
+        <img src="{{ public_path('storage/uploads/gambar_logo/Logo.png') }}" alt="BAT" width="70" height="35">
     </div>
     <br>
     <div style="font-weight: bold; text-align: center">
@@ -214,7 +213,9 @@
             </td>
         </tr>
     </table>
-
+    <div style="text-align: right; font-size:12px; margin-top:25px">
+        <span style="font-style: italic;">Printed Date {{ \Carbon\Carbon::now()->format('Y-m-d H:i:s') }}</span>
+    </div>
 </body>
 
 </html>

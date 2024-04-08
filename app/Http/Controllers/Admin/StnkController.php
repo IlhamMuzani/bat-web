@@ -115,22 +115,37 @@ class StnkController extends Controller
         return redirect('admin/stnk')->with('success', 'Berhasil menambahkan no. stnk');
     }
 
+    // public function kode()
+    // {
+
+    //     $stnk = Stnk::all();
+    //     if ($stnk->isEmpty()) {
+    //         $num = "000001";
+    //     } else {
+    //         $id = Stnk::getId();
+    //         foreach ($id as $value);
+    //         $idlm = $value->id;
+    //         $idbr = $idlm + 1;
+    //         $num = sprintf("%06s", $idbr);
+    //     }
+    //     $data = 'AM';
+    //     $kode_stnk = $data . $num;
+    //     return $kode_stnk;
+    // }
+
     public function kode()
     {
-
-        $stnk = Stnk::all();
-        if ($stnk->isEmpty()) {
-            $num = "000001";
+        $lastBarang = Stnk::latest()->first();
+        if (!$lastBarang) {
+            $num = 1;
         } else {
-            $id = Stnk::getId();
-            foreach ($id as $value);
-            $idlm = $value->id;
-            $idbr = $idlm + 1;
-            $num = sprintf("%06s", $idbr);
+            $lastCode = $lastBarang->kode_stnk;
+            $num = (int) substr($lastCode, strlen('AM')) + 1;
         }
-        $data = 'AM';
-        $kode_stnk = $data . $num;
-        return $kode_stnk;
+        $formattedNum = sprintf("%06s", $num);
+        $prefix = 'AM';
+        $newCode = $prefix . $formattedNum;
+        return $newCode;
     }
 
     public function kendaraan($id)
@@ -233,7 +248,6 @@ class StnkController extends Controller
     public function destroy($id)
     {
         $stnk = Stnk::find($id);
-        $stnk->kendaraan()->delete();
         $stnk->delete();
         return redirect('admin/stnk')->with('success', 'Berhasil menghapus No. Stnk');
     }

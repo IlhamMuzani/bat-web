@@ -75,14 +75,14 @@
                             <label for="alamat">Alamat</label>
                             <textarea class="form-control" id="alamat" name="alamat" readonly rows="3" placeholder="Masukan alamat">{{ old('alamat', $user->karyawan->alamat) }}</textarea>
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="foto">Foto</label>
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="gambar" name="gambar"
                                     accept="image/*">
                                 <label class="custom-file-label" for="gambar">Pilih Foto</label>
                             </div>
-                        </div>
+                        </div> --}}
                         <hr>
                         <div class="row">
                             <div class="col-lg-6">

@@ -184,7 +184,7 @@
                                         <td>
                                             <div class="form-group">
                                                 <input type="text" class="form-control" id="harga-0" name="harga[]"
-                                                    value="{{ $detail['harga'] }}">
+                                                    value="{{ $detail['harga'] }}" onkeypress="return /[0-9,]/.test(event.key)">
                                             </div>
                                         </td>
                                         <td>
@@ -198,10 +198,16 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-                <div class="card-footer text-right">
-                    <button type="reset" class="btn btn-secondary">Reset</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <div style="margin-right: 20px; margin-left:20px" class="form-group">
+                        <label style="font-size:14px" class="mt-3" for="nopol">Grand Total</label>
+                        <input style="font-size:14px" type="text" class="form-control text-right" id="grand_total"
+                            name="grand_total" readonly placeholder=""
+                            value="{{ old('grand_total', $inquery->grand_total) }}">
+                    </div>
+                    <div class="card-footer text-right">
+                        <button type="reset" class="btn btn-secondary">Reset</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
                 </div>
             </form>
 
@@ -437,7 +443,7 @@
                     console.error('Failed to delete data:', error);
                 }
             });
-
+            updateGrandTotal()
             updateUrutan();
         }
 
@@ -538,7 +544,7 @@
             // harga
             item_pembelian += '<td>';
             item_pembelian += '<div class="form-group">'
-            item_pembelian += '<input type="text" class="form-control" id="harga-' + key + '" name="harga[]" value="' +
+            item_pembelian += '<input type="text" class="form-control" onkeypress="return /[0-9,]/.test(event.key)" id="harga-' + key + '" name="harga[]" value="' +
                 harga +
                 '" ';
             item_pembelian += '</div>';
@@ -564,5 +570,42 @@
                 $('#harga-' + key).val(value.harga);
             }
         }
+    </script>
+
+    <script>
+        function updateGrandTotal() {
+            var grandTotal = 0;
+
+            // Loop through all elements with name "nominal_tambahan[]"
+            $('input[name^="harga"]').each(function() {
+                var nominalValue = parseFloat($(this).val().replace(/\./g, '').replace(',', '.')) || 0;
+                grandTotal += nominalValue;
+            });
+            // $('#sub_total').val(grandTotal.toLocaleString('id-ID'));
+            // $('#pph2').val(pph2Value.toLocaleString('id-ID'));
+            $('#grand_total').val(formatRupiah(grandTotal));
+            console.log(grandTotal);
+        }
+
+        $('body').on('input', 'input[name^="harga"]', function() {
+            updateGrandTotal();
+        });
+
+        // Panggil fungsi saat halaman dimuat untuk menginisialisasi grand total
+        $(document).ready(function() {
+            updateGrandTotal();
+        });
+
+        function formatRupiah(value) {
+            return value.toLocaleString('id-ID');
+        }
+
+        // function formatRupiahsss(number) {
+        //     var formatted = new Intl.NumberFormat('id-ID', {
+        //         minimumFractionDigits: 1,
+        //         maximumFractionDigits: 1
+        //     }).format(number);
+        //     return '' + formatted;
+        // }
     </script>
 @endsection

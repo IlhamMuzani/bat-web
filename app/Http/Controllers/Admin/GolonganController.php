@@ -68,24 +68,41 @@ class GolonganController extends Controller
         return redirect('admin/golongan')->with('success', 'Berhasil menambahkan golongan');
     }
 
+    // public function kode()
+    // {
+    //     $golongan = Golongan::all();
+    //     if ($golongan->isEmpty()) {
+    //         $num = "000001";
+    //     } else {
+    //         $id = Golongan::getId();
+    //         foreach ($id as $value);
+    //         $idlm = $value->id;
+    //         $idbr = $idlm + 1;
+    //         $num = sprintf("%06s", $idbr);
+    //     }
+
+    //     $data = 'AE';
+    //     $kode_golongan = $data . $num;
+    //     return $kode_golongan;
+    // }
+
+
     public function kode()
     {
-        $golongan = Golongan::all();
-        if ($golongan->isEmpty()) {
-            $num = "000001";
+        $lastBarang = Golongan::latest()->first();
+        if (!$lastBarang) {
+            $num = 1;
         } else {
-            $id = Golongan::getId();
-            foreach ($id as $value);
-            $idlm = $value->id;
-            $idbr = $idlm + 1;
-            $num = sprintf("%06s", $idbr);
+            $lastCode = $lastBarang->kode_golongan;
+            $num = (int) substr($lastCode, strlen('AE')) + 1;
         }
-
-        $data = 'AE';
-        $kode_golongan = $data . $num;
-        return $kode_golongan;
+        $formattedNum = sprintf("%06s", $num);
+        $prefix = 'AE';
+        $newCode = $prefix . $formattedNum;
+        return $newCode;
     }
 
+    
     public function edit($id)
     {
 
@@ -143,7 +160,6 @@ class GolonganController extends Controller
     public function destroy($id)
     {
         $golongan = Golongan::find($id);
-        $golongan->kendaraan()->delete();
         $golongan->delete();
 
         return redirect('admin/golongan')->with('success', 'Berhasil menghapus Golongan');

@@ -19,12 +19,13 @@ class NokirController extends Controller
     public function index()
     {
         if (auth()->check() && auth()->user()->menu['nokir']) {
+            $currentDate = now();
+            $oneMonthLater = $currentDate->copy()->addMonth();
 
-            $currentDate = now(); // Menggunakan Carbon untuk mendapatkan tanggal saat ini
-            $oneMonthLater = $currentDate->copy()->addMonth(); // Menambahkan 1 bulan ke tanggal saat ini
-
+            // Update nokirs that need to be set as 'belum perpanjang'
             $nokirs1 = Nokir::where('status_kir', 'sudah perpanjang')
                 ->whereDate('masa_berlaku', '<', $oneMonthLater)
+                ->orderBy('created_at', 'desc') // Order by the latest creation
                 ->get();
 
             foreach ($nokirs1 as $nokir) {
@@ -34,12 +35,15 @@ class NokirController extends Controller
                 ]);
             }
 
-            $nokirs = Nokir::where(['status_kir' => 'sudah perpanjang'])->get();
+            // Retrieve nokirs ordered by the latest creation
+            $nokirs = Nokir::where('status_kir', 'sudah perpanjang')
+                ->orderBy('created_at', 'desc') // Order by the latest creation
+                ->get();
 
             return view('admin/nokir.index', compact('nokirs'));
         } else {
             // tidak memiliki akses
-            return back()->with('error', array('Anda tidak memiliki akses'));
+            return back()->with('error', ['Anda tidak memiliki akses']);
         }
     }
 
@@ -62,7 +66,7 @@ class NokirController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'kendaraan_id' => 'required|unique:nokirs,kendaraan_id',
+                // 'kendaraan_id' => 'required|unique:nokirs,kendaraan_id',
                 'jenis_kendaraan' => 'required',
                 'ukuran_ban' => 'required',
                 'nama_pemilik' => 'required',
@@ -119,7 +123,7 @@ class NokirController extends Controller
                 'tanggal_sertifikat.required' => 'Masukkan tanggal sertifikat registrasi',
                 'nomor_sertifikat_kendaraan.required' => 'Masukkan no sertifikat kendaraan',
                 'kategori.required' => 'Pilih kategori perpanjangan',
-                // 'nopol.required' => 'Masukkan no registrasi kendaraan',
+                'nopol.required' => 'Masukkan no registrasi kendaraan',
                 // 'no_rangka.required' => 'Masukkan no rangka kendaraan',
                 // 'no_mesin.required' => 'Masukkan no motor penggerak',
                 'gambar_depan.image' => 'Gambar yang dimasukan salah!',
@@ -159,7 +163,7 @@ class NokirController extends Controller
                 'nama_direktur.required' => 'Masukkan nama direktur',
                 'pangkat_direktur.required' => 'Masukkan pangkat direktur',
                 'nip_direktur.required' => 'Masukkan nip direktur',
-                'kendaraan_id.unique' => 'Nomor Registrasi sudah terdaftar.', // Pesan untuk validasi unique
+                // 'kendaraan_id.unique' => 'Nomor Registrasi sudah terdaftar.', // Pesan untuk validasi unique
 
             ]
         );
@@ -215,7 +219,7 @@ class NokirController extends Controller
                 'gambar_belakang' => $namaGambar2,
                 'gambar_kanan' => $namaGambar3,
                 'gambar_kiri' => $namaGambar4,
-                // 'gambar_logo' => 'gambar_logo/dinas_perhubungan.png',
+                'nopol' => $request->no_pol,
                 'kode_kir' => $this->kode(),
                 'qrcode_kir' => 'https://javaline.id/nokir/' . $kode,
                 'tanggal_awal' => Carbon::now('Asia/Jakarta'),
@@ -228,24 +232,40 @@ class NokirController extends Controller
     }
 
 
+    // public function kode()
+    // {
+
+    //     $nokir = Nokir::all();
+    //     if ($nokir->isEmpty()) {
+    //         $num = "000001";
+    //     } else {
+    //         $id = Nokir::getId();
+    //         foreach ($id as $value);
+    //         $idlm = $value->id;
+    //         $idbr = $idlm + 1;
+    //         $num = sprintf("%06s", $idbr);
+    //     }
+
+    //     $data = 'AK';
+    //     $kode_nokir = $data . $num;
+    //     return $kode_nokir;
+    // }
+
     public function kode()
     {
-
-        $nokir = Nokir::all();
-        if ($nokir->isEmpty()) {
-            $num = "000001";
+        $lastBarang = Nokir::latest()->first();
+        if (!$lastBarang) {
+            $num = 1;
         } else {
-            $id = Nokir::getId();
-            foreach ($id as $value);
-            $idlm = $value->id;
-            $idbr = $idlm + 1;
-            $num = sprintf("%06s", $idbr);
+            $lastCode = $lastBarang->kode_kir;
+            $num = (int) substr($lastCode, strlen('AK')) + 1;
         }
-
-        $data = 'AK';
-        $kode_nokir = $data . $num;
-        return $kode_nokir;
+        $formattedNum = sprintf("%06s", $num);
+        $prefix = 'AK';
+        $newCode = $prefix . $formattedNum;
+        return $newCode;
     }
+
 
     public function kendaraan($id)
     {
@@ -499,7 +519,6 @@ class NokirController extends Controller
     public function destroy($id)
     {
         $nokir = Nokir::find($id);
-        $nokir->kendaraan()->delete();
         $nokir->delete();
 
         return redirect('admin/nokir')->with('success', 'Berhasil menghapus No. Kir');

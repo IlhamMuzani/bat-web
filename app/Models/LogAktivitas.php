@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LogAktivitas extends Model
 {
@@ -14,9 +15,15 @@ class LogAktivitas extends Model
         'kendaraan_id',
         'km_update',
         'tanggal',
+        'tanggal_awal',
+        'status',
+        'status_notif',
         'action',
     ];
 
+
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
 
     public function user()
     {

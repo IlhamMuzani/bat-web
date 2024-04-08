@@ -47,13 +47,31 @@
     <script src="{{ asset('js/pusher.js') }}"></script>
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini @if (request()->is('admin/inquery_tagihanekspedisi*') ||
+        // request()->is('admin/ban*') ||
+        request()->is('admin/perhitungan_gaji*') ||
+        request()->is('admin/tagihan_ekspedisi*') ||
+        request()->is('admin/faktur_ekspedisi*') ||
+        request()->is('admin/inquery_fakturekspedisi*') ||
+        request()->is('admin/tablememo*') ||
+        request()->is('admin/tablefaktur*') ||
+        request()->is('admin/inquery_memoekspedisi*') ||
+        request()->is('admin/inquery_memoborong*') ||
+        request()->is('admin/inquery_memotambahan*') ||
+        request()->is('admin/laporan_memoekspedisi*') ||
+        request()->is('admin/laporan_memoborong*') ||
+        request()->is('admin/laporan_fakturekspedisi*') ||
+        request()->is('admin/faktur_pelunasan*') ||
+        request()->is('admin/faktur_penjualanreturn*') ||
+        request()->is('admin/inquery_fakturpenjualanreturn*') ||
+        request()->is('admin/inquery_fakturpelunasan*') ||
+        request()->is('admin/laporan_memotambahan*')) sidebar-open sidebar-collapse @endif">
     <div class="wrapper">
 
-        <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="" src="{{ asset('storage/uploads/gambar_logo/Logo.png') }}" alt="AdminLTELogo" height="50"
-                width="100">
-        </div>
+        {{-- <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="" src="{{ asset('storage/uploads/gambar_logo/Logo.jpg') }}" alt="AdminLTELogo"
+                height="50" width="100">
+        </div> --}}
 
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -69,7 +87,7 @@
           </h4>
         </li> --}}
                 <li class="nav-item d-none d-sm-inline-block">
-                    <img class="animation__wobble" src="{{ asset('storage/uploads/gambar_logo/Logo.png') }}"
+                    <img {{-- class="animation__wobble" --}} src="{{ asset('storage/uploads/gambar_logo/Logo.jpg') }}"
                         alt="AdminLTELogo" height="40" width="100">
                     {{-- <a href="#" class="nav-link">Sistem - BAT</a> --}}
                 </li>
@@ -82,7 +100,8 @@
             <!-- Brand Logo -->
             <a href="" class="brand-link">
                 <img src="{{ asset('storage/uploads/karyawan/user.png') }}" alt="BAT" class="brand-image">
-                <span style="font-size: 18px" class="brand-text font-wight-bold">{{ auth()->user()->karyawan->nama_lengkap }}</span>
+                <span style="font-size: 18px"
+                    class="brand-text font-wight-bold">{{ implode(' ', array_slice(str_word_count(auth()->user()->karyawan->nama_lengkap, 1), 0, 2)) }}</span>
             </a>
 
             <!-- Sidebar -->
@@ -139,11 +158,10 @@
         </div>
 
         <footer class="main-footer">
-            {{-- <strong>Copyright © 2021. All right reserved. <a href="">Sistem
-                    BAT
-                    .</a>.</strong> --}}
+            <strong>Copyright © 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+            All rights reserved.
             <div class="float-right d-none d-sm-inline-block">
-                <b></b>
+                <b>Version</b> 3.2.0
             </div>
         </footer>
 
@@ -207,6 +225,42 @@
 
     <!-- Select2 -->
     <script src="{{ asset('adminlte/plugins/select2/js/select2.full.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#datatables66').DataTable({
+                "lengthMenu": [
+                    [-1],
+                    ["All"]
+                ] // Use -1 to display all rows, and "All" as the label
+            });
+        });
+
+        $(document).ready(function() {
+            $('#datatables').DataTable();
+        });
+        $(document).ready(function() {
+            $('#datatables1').DataTable();
+        });
+        $(document).ready(function() {
+            $('#datatables2').DataTable();
+        });
+        $(document).ready(function() {
+            $('#datatables3').DataTable();
+        });
+        $(document).ready(function() {
+            $('#datatables4').DataTable();
+        });
+        $(document).ready(function() {
+            $('#datatables5').DataTable();
+        });
+        $(document).ready(function() {
+            $('#datatables6').DataTable();
+        });
+        $(document).ready(function() {
+            $('#datatables7').DataTable();
+        });
+    </script>
 
     <script>
         $(function() {

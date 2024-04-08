@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
@@ -29,10 +30,14 @@ class User extends Authenticatable
         'password',
         'cek_hapus',
         'menu',
+        'fitur',
         'level',
         'tanggal_awal',
         'tanggal_akhir',
     ];
+
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
 
     public function getActivitylogOptions(): LogOptions
     {
@@ -66,6 +71,14 @@ class User extends Authenticatable
 
 
     protected function menu(): Attribute{
+        return Attribute::make(
+            get: fn ($value) => json_decode($value, true),
+            set: fn ($value) => json_encode($value),
+        );
+    }
+
+    protected function fitur(): Attribute
+    {
         return Attribute::make(
             get: fn ($value) => json_decode($value, true),
             set: fn ($value) => json_encode($value),

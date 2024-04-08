@@ -140,12 +140,28 @@ class InqueryPembelianPartController extends Controller
         // format tanggal indo
         $tanggal1 = Carbon::now('Asia/Jakarta');
         $format_tanggal = $tanggal1->format('d F Y');
+
+        $tanggal = Carbon::now()->format('Y-m-d');
         $transaksi = Pembelian_part::findOrFail($id);
+
+        $grandTotal = 0;
+
+        // Loop melalui array harga dari permintaan
+        if ($request->has('harga')) {
+            foreach ($request->harga as $harga) {
+                // Ubah format harga (hapus titik sebagai pemisah ribuan)
+                $hargaNumeric = (float) str_replace('.', '', $harga);
+
+                // Tambahkan harga ke grand total
+                $grandTotal += $hargaNumeric;
+            }
+        }
 
         $transaksi->update([
             'supplier_id' => $request->supplier_id,
-            'tanggal' => $format_tanggal,
-            'tanggal_awal' => $tanggal1,
+            // 'tanggal' => $format_tanggal,
+            // 'tanggal_awal' => $tanggal,
+            'grand_total' => $grandTotal,
             'status' => 'posting',
         ]);
 
@@ -502,6 +518,14 @@ class InqueryPembelianPartController extends Controller
         return redirect('admin/inquery_pembelianpart')->with('success', 'Berhasil menghapus Pembelian');
     }
 
+    public function hapuspart($id)
+    {
+        $ban = Pembelian_part::where('id', $id)->first();
+
+        $ban->detail_part()->delete();
+        $ban->delete();
+        return back()->with('success', 'Berhasil');
+    }
 
     public function deletepart($id)
     {

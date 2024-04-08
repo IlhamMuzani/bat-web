@@ -178,7 +178,12 @@ class InqueryPemasanganbanController extends Controller
         $inquerypemasanganban->update([
             'status' => 'posting',
         ]);
-        return redirect('admin/inquery_pemasanganban')->with('success', 'Berhasil memperbarui');
+
+        $pemasangan_ban = Pemasangan_ban::find($inquerypemasanganban->id);
+        $kendaraan = Kendaraan::where('id', $inquerypemasanganban->kendaraan_id)->first();
+        $bans = Ban::where('pemasangan_ban_id', $id)->get();
+
+        return view('admin.inquery_pemasanganban.show', compact('bans', 'kendaraan', 'pemasangan_ban'));
     }
 
     public function inquerypemasangan1(Request $request, $id)
@@ -1346,5 +1351,21 @@ class InqueryPemasanganbanController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Berhasil menambahkan Pemasangan ban pada posisi Axle 6D');
+    }
+
+    public function hapuspemasangan($id)
+    {
+        $ban = Ban::find($id);
+
+        if ($ban) {
+            $ban->update([
+                'pelepasan_ban_id' => null,
+                'kendaraan_id' => null,
+                'pemasangan_ban_id' => null,
+                'status' => 'stok'
+            ]);
+
+            return redirect()->back()->with('success', 'Berhasil menghapus pemasangan ban');
+        }
     }
 }

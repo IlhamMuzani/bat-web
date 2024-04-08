@@ -40,9 +40,9 @@ class PemasanganpartController extends Controller
     public function store(Request $request)
     {
         $validasi_pelanggan = Validator::make($request->all(), [
-            'kendaraan_id' => 'required',
+            // 'kendaraan_id' => 'required',
         ], [
-            'kendaraan_id.required' => 'Pilih no kabin!',
+            // 'kendaraan_id.required' => 'Pilih no kabin!',
         ]);
 
         $error_pelanggans = array();
@@ -102,6 +102,7 @@ class PemasanganpartController extends Controller
 
         $tanggal = Carbon::now()->format('Y-m-d');
         $transaksi = Pemasangan_part::create([
+            'user_id' => auth()->user()->id,
             'kode_pemasanganpart' => $this->kode(),
             'kendaraan_id' => $request->kendaraan_id,
             'tanggal_pemasangan' => $format_tanggal,
@@ -162,22 +163,37 @@ class PemasanganpartController extends Controller
         }
     }
 
+    // public function kode()
+    // {
+    //     $pemasangan = Pemasangan_part::all();
+    //     if ($pemasangan->isEmpty()) {
+    //         $num = "000001";
+    //     } else {
+    //         $id = Pemasangan_part::getId();
+    //         foreach ($id as $value);
+    //         $idlm = $value->id;
+    //         $idbr = $idlm + 1;
+    //         $num = sprintf("%06s", $idbr);
+    //     }
+
+    //     $data = 'AP';
+    //     $kode_pemasangan = $data . $num;
+    //     return $kode_pemasangan;
+    // }
+
     public function kode()
     {
-        $pemasangan = Pemasangan_part::all();
-        if ($pemasangan->isEmpty()) {
-            $num = "000001";
+        $lastBarang = Pemasangan_part::latest()->first();
+        if (!$lastBarang) {
+            $num = 1;
         } else {
-            $id = Pemasangan_part::getId();
-            foreach ($id as $value);
-            $idlm = $value->id;
-            $idbr = $idlm + 1;
-            $num = sprintf("%06s", $idbr);
+            $lastCode = $lastBarang->kode_pemasanganpart;
+            $num = (int) substr($lastCode, strlen('AP')) + 1;
         }
-
-        $data = 'AP';
-        $kode_pemasangan = $data . $num;
-        return $kode_pemasangan;
+        $formattedNum = sprintf("%06s", $num);
+        $prefix = 'AP';
+        $newCode = $prefix . $formattedNum;
+        return $newCode;
     }
 
     public function destroy($id)

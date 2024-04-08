@@ -10,7 +10,9 @@ use Illuminate\Http\Request;
 use App\Models\Jenis_kendaraan;
 use App\Models\LogPerpanjangankir;
 use App\Http\Controllers\Controller;
+use App\Models\Detail_pengeluaran;
 use App\Models\Laporankir;
+use App\Models\Pengeluaran_kaskecil;
 use Illuminate\Support\Facades\Validator;
 
 class PerpanjanganKirController extends Controller
@@ -116,7 +118,15 @@ class PerpanjanganKirController extends Controller
 
         $kode = $this->kode();
 
+        $kategori = $request->kategori;
+
+        if ($kategori == 'Perpanjangan BINA ANUGERAH TRANSINDO') {
+            $status = 'posting';
+        } else {
+            $status = 'unpost';
+        }
         $laporan = Laporankir::create([
+            'user_id' => auth()->user()->id,
             'kode_perpanjangan' => $this->kode(),
             'nokir_id' => $nokir->id,
             'kategori' => $request->kategori,
@@ -124,10 +134,39 @@ class PerpanjanganKirController extends Controller
             'jumlah' => $request->jumlah,
             'tanggal' => $format_tanggal,
             'tanggal_awal' => $tanggal,
-            'status' => 'posting',
+            'status' => $status,
             'status_notif' => false,
         ]);
 
+        $kodepengeluaran = $this->kodepengeluaran();
+
+        if ($kategori == 'Perpanjangan DISHUB') {
+            $pengeluaran_kaskecil = Pengeluaran_kaskecil::create([
+                'laporankir_id' => $laporan->id,
+                'user_id' => auth()->user()->id,
+                'kode_pengeluaran' => $this->kodepengeluaran(),
+                'kendaraan_id' => $nokir->kendaraan_id,
+                'keterangan' => 'PERPANJANGAN KIR',
+                'grand_total' => str_replace('.', '', $request->jumlah),
+                'jam' => $tanggal1->format('H:i:s'),
+                'tanggal' => $format_tanggal,
+                'tanggal_awal' => $tanggal,
+                'qrcode_return' => 'https://batlink.id/pengeluaran_kaskecil/' . $kodepengeluaran,
+                'status' => 'unpost',
+            ]);
+
+            Detail_pengeluaran::create([
+                'laporankir_id' => $laporan->id,
+                'pengeluaran_kaskecil_id' => $pengeluaran_kaskecil->id,
+                'barangakun_id' => 14,
+                'kode_detailakun' => $this->kodeakuns(),
+                'kode_akun' => 'KA000014',
+                'nama_akun' => 'PAJAK KENDARAAN',
+                'keterangan' => 'PERPANJANGAN KIR',
+                'nominal' => str_replace('.', '', $request->jumlah),
+                'status' => 'unpost',
+            ]);
+        }
 
         $cetakpdf = Nokir::where('id', $id)->first();
         $laporan = Laporankir::where('nokir_id', $id)->first();
@@ -135,25 +174,94 @@ class PerpanjanganKirController extends Controller
         return view('admin.perpanjangan_kir.show', compact('cetakpdf', 'laporan'));
     }
 
+    public function kodeakuns()
+    {
+        // Mengambil kode terbaru dari database dengan awalan 'MP'
+        $lastBarang = Detail_pengeluaran::where('kode_detailakun', 'like', 'KKA%')->latest()->first();
+
+        // Mendapatkan bulan dari tanggal kode terakhir
+        $lastMonth = $lastBarang ? date('m', strtotime($lastBarang->created_at)) : null;
+        $currentMonth = date('m');
+
+        // Jika tidak ada kode sebelumnya atau bulan saat ini berbeda dari bulan kode terakhir
+        if (!$lastBarang || $currentMonth != $lastMonth) {
+            $num = 1; // Mulai dari 1 jika bulan berbeda
+        } else {
+            // Jika ada kode sebelumnya, ambil nomor terakhir
+            $lastCode = $lastBarang->kode_detailakun;
+
+            // Pisahkan kode menjadi bagian-bagian terpisah
+            $parts = explode('/', $lastCode);
+            $lastNum = end($parts); // Ambil bagian terakhir sebagai nomor terakhir
+            $num = (int) $lastNum + 1; // Tambahkan 1 ke nomor terakhir
+        }
+
+        // Format nomor dengan leading zeros sebanyak 6 digit
+        $formattedNum = sprintf("%06s", $num);
+
+        // Awalan untuk kode baru
+        $prefix = 'KKA';
+        $tahun = date('y');
+        $tanggal = date('dm');
+
+        // Buat kode baru dengan menggabungkan awalan, tanggal, tahun, dan nomor yang diformat
+        $newCode = $prefix . "/" . $tanggal . $tahun . "/" . $formattedNum;
+
+        // Kembalikan kode
+        return $newCode;
+    }
+
+    public function kodepengeluaran()
+    {
+        // Mengambil kode terbaru dari database dengan awalan 'MP'
+        $lastBarang = Pengeluaran_kaskecil::where('kode_pengeluaran', 'like', 'KK%')->latest()->first();
+
+        // Mendapatkan bulan dari tanggal kode terakhir
+        $lastMonth = $lastBarang ? date('m', strtotime($lastBarang->created_at)) : null;
+        $currentMonth = date('m');
+
+        // Jika tidak ada kode sebelumnya atau bulan saat ini berbeda dari bulan kode terakhir
+        if (!$lastBarang || $currentMonth != $lastMonth) {
+            $num = 1; // Mulai dari 1 jika bulan berbeda
+        } else {
+            // Jika ada kode sebelumnya, ambil nomor terakhir
+            $lastCode = $lastBarang->kode_pengeluaran;
+
+            // Pisahkan kode menjadi bagian-bagian terpisah
+            $parts = explode('/', $lastCode);
+            $lastNum = end($parts); // Ambil bagian terakhir sebagai nomor terakhir
+            $num = (int) $lastNum + 1; // Tambahkan 1 ke nomor terakhir
+        }
+
+        // Format nomor dengan leading zeros sebanyak 6 digit
+        $formattedNum = sprintf("%06s", $num);
+
+        // Awalan untuk kode baru
+        $prefix = 'KK';
+        $tahun = date('y');
+        $tanggal = date('dm');
+
+        // Buat kode baru dengan menggabungkan awalan, tanggal, tahun, dan nomor yang diformat
+        $newCode = $prefix . "/" . $tanggal . $tahun . "/" . $formattedNum;
+
+        // Kembalikan kode
+        return $newCode;
+    }
 
     public function kode()
     {
-        $perpanjangan = Laporankir::all();
-        if ($perpanjangan->isEmpty()) {
-            $num = "000001";
+        $lastBarang = Laporankir::latest()->first();
+        if (!$lastBarang) {
+            $num = 1;
         } else {
-            $id = Laporankir::getId();
-            foreach ($id as $value);
-            $idlm = $value->id;
-            $idbr = $idlm + 1;
-            $num = sprintf("%06s", $idbr);
+            $lastCode = $lastBarang->kode_perpanjangan;
+            $num = (int) substr($lastCode, strlen('AS')) + 1;
         }
-
-        $data = 'AS';
-        $kode_perpanjangan = $data . $num;
-        return $kode_perpanjangan;
+        $formattedNum = sprintf("%06s", $num);
+        $prefix = 'AS';
+        $newCode = $prefix . $formattedNum;
+        return $newCode;
     }
-
 
     public function show($id)
     {

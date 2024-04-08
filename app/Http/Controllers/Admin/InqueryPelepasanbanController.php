@@ -170,7 +170,22 @@ class InqueryPelepasanbanController extends Controller
         }
     }
 
-    public function destroy($id)
+    // public function destroy($id)
+    // {
+    //     $ban = Ban::find($id);
+
+    //     if ($ban) {
+    //         $ban->update([
+    //             'status' => 'aktif'
+    //         ]);
+
+    //         return redirect()->back()->with('success', 'Berhasil menghapus pelepasan ban');
+    //     }
+
+    //     return redirect()->back()->with('error', 'Data ban tidak ditemukan');
+    // }
+
+    public function hapuspelepasan($id)
     {
         $ban = Ban::find($id);
 
@@ -181,8 +196,6 @@ class InqueryPelepasanbanController extends Controller
 
             return redirect()->back()->with('success', 'Berhasil menghapus pelepasan ban');
         }
-
-        return redirect()->back()->with('error', 'Data ban tidak ditemukan');
     }
 
     public function delete($id)
@@ -197,6 +210,17 @@ class InqueryPelepasanbanController extends Controller
     {
 
         $inquerypemasanganban = Pelepasan_ban::findOrFail($id);
+
+        $tanggal_awal = Carbon::parse($inquerypemasanganban->tanggal_awal);
+
+        $today = Carbon::now('Asia/Jakarta')->format('Y-m-d');
+        $lastUpdatedDate = $tanggal_awal->format('Y-m-d');
+
+        if ($lastUpdatedDate < $today) {
+            return back()->with('errormax', 'Anda tidak dapat melakukan update setelah berganti hari.');
+        }
+
+
         $inquerypemasanganban->update([
             'status' => 'posting',
         ]);
@@ -254,6 +278,7 @@ class InqueryPelepasanbanController extends Controller
             'keterangan' => $request->keterangan,
             'km_pelepasan' => $request->km_pelepasan,
             'status' => 'pelepasan',
+            'jumlah_km' => $request->km_pelepasan - $ban->km_pemasangan,
             'pelepasan_ban_id' => $pelepasan->id,
 
         ]);

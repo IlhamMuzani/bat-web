@@ -193,7 +193,7 @@
                                         @foreach ($drivers as $driver)
                                             <option value="{{ $driver->id }}"
                                                 {{ old('user_id', $kendaraan->user_id) == $driver->id ? 'selected' : '' }}>
-                                                {{ $driver->kode_user }}</option>
+                                                {{ $driver->karyawan->nama_lengkap }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -205,6 +205,17 @@
                                         placeholder="Masukan km" value="{{ old('km', $kendaraan->km) }}">
                                     </select>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="gambar_barcodesolar">
+                                Gambar Barcode Solar
+                                <small>(kosongkan saja jika tidak ingin diubah)</small>
+                            </label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="gambar_barcodesolar"
+                                    name="gambar_barcodesolar" accept="image/*">
+                                <label class="custom-file-label" for="gambar_barcodesolar">Pilih Gambar</label>
                             </div>
                         </div>
                     </div>

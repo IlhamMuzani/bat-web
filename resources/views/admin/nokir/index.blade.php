@@ -36,9 +36,11 @@
                 <div class="card-header">
                     <h3 class="card-title">Data No. Kir</h3>
                     <div class="float-right">
-                        <a href="{{ url('admin/nokir/create') }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus"></i> Tambah
-                        </a>
+                        @if (auth()->check() && auth()->user()->fitur['nokir create'])
+                            <a href="{{ url('admin/nokir/create') }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-plus"></i> Tambah
+                            </a>
+                        @endif
                     </div>
                 </div>
                 <!-- /.card-header -->
@@ -49,10 +51,11 @@
                                 <th class="text-center">No</th>
                                 <th>Kode</th>
                                 <th>No Kabin</th>
+                                <th>No Pol</th>
                                 <th>Nama Pemilik</th>
                                 <th>Tanggal Expired</th>
                                 <th class="text-center">Qr Code</th>
-                                <th class="text-center" width="100">Opsi</th>
+                                <th class="text-center" width="130">Opsi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -63,6 +66,13 @@
                                     <td>
                                         @if ($nokir->kendaraan)
                                             {{ $nokir->kendaraan->no_kabin }}
+                                        @else
+                                            kabin tidak ada
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($nokir->kendaraan)
+                                            {{ $nokir->kendaraan->no_pol }}
                                         @else
                                             kabin tidak ada
                                         @endif
@@ -79,17 +89,29 @@
                                         </div>
                                     </td>
                                     <td class="text-center">
-                                        <a href="{{ url('admin/nokir/cetak-pdfnokir/' . $nokir->id) }}"
-                                            class="btn btn-primary btn-sm">
-                                            <i class="fas fa-print"></i>
+                                        @if (auth()->check() && auth()->user()->fitur['nokir print'])
+                                            <a href="{{ url('admin/nokir/cetak-pdfnokir/' . $nokir->id) }}"
+                                                class="btn btn-primary btn-sm">
+                                                <i class="fas fa-print"></i>
+                                        @endif
                                         </a>
-                                        <a href="{{ url('admin/nokir/' . $nokir->id) }}" class="btn btn-info btn-sm">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                        <a href="{{ url('admin/nokir/' . $nokir->id . '/edit') }}"
-                                            class="btn btn-warning btn-sm">
-                                            <i class="fas fa-pen"></i>
-                                        </a>
+                                        @if (auth()->check() && auth()->user()->fitur['nokir show'])
+                                            <a href="{{ url('admin/nokir/' . $nokir->id) }}" class="btn btn-info btn-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        @endif
+                                        @if (auth()->check() && auth()->user()->fitur['nokir update'])
+                                            <a href="{{ url('admin/nokir/' . $nokir->id . '/edit') }}"
+                                                class="btn btn-warning btn-sm">
+                                                <i class="fas fa-pen"></i>
+                                            </a>
+                                        @endif
+                                        @if (auth()->check() && auth()->user()->fitur['nokir delete'])
+                                            <button type="submit" class="btn btn-danger btn-sm" data-toggle="modal"
+                                                data-target="#modal-hapus-{{ $nokir->id }}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        @endif
                                     </td>
                                 </tr>
                                 <div class="modal fade" id="modal-hapus-{{ $nokir->id }}">
@@ -130,10 +152,13 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div style="text-align: center;">
-                                                    <p style="font-size:20px; font-weight: bold;">
-                                                        {{ $nokir->kode_kir }}</p>
-                                                    <div style="display: inline-block;">
+                                                    <p style="font-size:20px; font-weight: bold;">{{ $nokir->kode_kir }}
+                                                    </p>
+                                                    <div class="qr-code-container"
+                                                        style="position: relative; display: inline-block;">
                                                         {!! DNS2D::getBarcodeHTML("$nokir->qrcode_kir", 'QRCODE', 15, 15) !!}
+                                                        <img src="{{ asset('storage/uploads/gambar_logo/dinas_perhubungan.jpg') }}"
+                                                            height="100" width="100" class="logo-overlay" />
                                                     </div>
                                                     <p style="font-size:20px; font-weight: bold;">
                                                         {{ $nokir->masa_berlaku }}</p>
@@ -158,5 +183,15 @@
             </div>
         </div>
     </section>
+
+    <style>
+        .logo-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+    </style>
     <!-- /.card -->
 @endsection

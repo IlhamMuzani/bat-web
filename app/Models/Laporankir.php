@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Laporankir extends Model
 {
@@ -14,6 +15,7 @@ class Laporankir extends Model
     use LogsActivity;
 
     protected $fillable = [
+        'user_id',
         'nokir_id',
         'kode_perpanjangan',
         'kategori',
@@ -27,17 +29,24 @@ class Laporankir extends Model
         'status_notif',
     ];
 
-    
+
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logFillable('*');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public static function getId()
     {
-        return $getId = DB::table('Laporankirs')->orderBy('id', 'DESC')->take(1)->get();
+        return $getId = DB::table('laporankirs')->orderBy('id', 'DESC')->take(1)->get();
     }
 
 

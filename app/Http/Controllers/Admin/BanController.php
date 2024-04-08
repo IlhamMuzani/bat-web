@@ -9,6 +9,7 @@ use App\Models\Merek;
 use App\Models\Ukuran;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Kendaraan;
 use App\Models\Typeban;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,21 +17,75 @@ class BanController extends Controller
 {
     public function index(Request $request)
     {
-        if (auth()->check() && auth()->user()->menu['ban']) {
+        // if (auth()->check() && auth()->user()->menu['ban']) {
 
+        //     $kendaraans = Kendaraan::all();
+
+        //     $status = $request->status;
+        //     $created_at = $request->created_at;
+        //     $tanggal_akhir = $request->tanggal_akhir;
+
+        //     $inquery = Ban::query();
+
+        //     if ($status) {
+        //         $inquery->where('status', $status);
+        //     }
+
+        //     if ($created_at && $tanggal_akhir) {
+        //         $inquery->whereBetween('created_at', [$created_at, $tanggal_akhir]);
+        //     } elseif ($created_at) {
+        //         $inquery->where('created_at', '>=', $created_at);
+        //     } elseif ($tanggal_akhir) {
+        //         $inquery->where('created_at', '<=', $tanggal_akhir);
+        //     } else {
+        //         // Jika tidak ada filter tanggal hari ini
+        //         $inquery->whereDate('created_at', Carbon::today());
+        //     }
+
+        //     $inquery->orderBy('id', 'DESC');
+        //     $bans = $inquery->get();
+
+        //     return view('admin.ban.index', compact('bans', 'kendaraans'));
+        // } else {
+        //     // tidak memiliki akses
+        //     return back()->with('error', array('Anda tidak memiliki akses'));
+        // }
+
+        if (auth()->check() && auth()->user()->menu['ban']) {
+            $kendaraans = Kendaraan::all();
 
             $status = $request->status;
+            $created_at = $request->created_at;
+            $tanggal_akhir = $request->tanggal_akhir;
 
+            $kendaraan = $request->kendaraan_id;
             $inquery = Ban::query();
 
-            if ($status) {
-                $inquery->where('status', $status);
+            if ($kendaraan) {
+                // Apply kendaraan_id filter if it's provided
+                $inquery->where('kendaraan_id', $kendaraan);
+            } else {
+                // Apply both kendaraan_id and date filters
+                if ($status) {
+                    $inquery->where('status', $status);
+                }
+
+                if ($created_at && $tanggal_akhir) {
+                    $inquery->whereBetween('created_at', [$created_at, $tanggal_akhir]);
+                } elseif ($created_at) {
+                    $inquery->where('created_at', '>=', $created_at);
+                } elseif ($tanggal_akhir) {
+                    $inquery->where('created_at', '<=', $tanggal_akhir);
+                } else {
+                    // Jika tidak ada filter tanggal hari ini
+                    $inquery->whereDate('created_at', Carbon::today());
+                }
             }
 
             $inquery->orderBy('id', 'DESC');
             $bans = $inquery->get();
 
-            return view('admin/ban.index', compact('bans'));
+            return view('admin.ban.index', compact('bans', 'kendaraans'));
         } else {
             // tidak memiliki akses
             return back()->with('error', array('Anda tidak memiliki akses'));
@@ -133,7 +188,7 @@ class BanController extends Controller
 
         $pdf = app('dompdf.wrapper');
         $pdf->loadView('admin.ban.cetak_pdffilter', compact('bans'));
-        $pdf->setPaper([0, 0, 612, 48], 'portrait'); // 612x396 piksel setara dengan 8.5x5.5 inci
+        $pdf->setPaper([0, 0, 612, 50], 'portrait'); // 612x396 piksel setara dengan 8.5x5.5 inci
 
         return $pdf->stream('SelectedBans.pdf');
     }

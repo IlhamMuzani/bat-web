@@ -18,12 +18,16 @@
 </head>
 
 <body class="hold-transition login-page">
-    <img class="mb-2" src="{{ asset('storage/uploads/gambar_logo/Logo.png') }}" alt="BAT" height="40"
+    <img class="mb-2" src="{{ asset('storage/uploads/gambar_logo/Logo1.png') }}" alt="BAT" height="40"
         width="100">
     <div class="login-box">
         <div class="login-logo">
             <a href=""><strong style="font-size: 22px;">PT. BINA ANUGERAH TRANSINDO</strong></a>
         </div>
+        {{-- <img src="data:image/png;base64, {!! base64_encode(
+            QrCode::format('png')->merge(asset('storage/uploads/gambar_logo/dinas_perhubungand2.png'), 0.2, true)->size(200)->generate('make me into a QrCode!'),
+        ) !!}" alt=""> --}}
+        {{-- {{ QrCode::size(250)->generate('make me into a QrCode!') }} --}}
         @if (session('success'))
             <div class="alert alert-primary alert-dismissible" user="alert">
                 {{ session('success') }}

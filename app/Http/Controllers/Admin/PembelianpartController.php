@@ -198,13 +198,27 @@ class PembelianpartController extends Controller
         // format tanggal indo
         $tanggal1 = Carbon::now('Asia/Jakarta');
         $format_tanggal = $tanggal1->format('d F Y');
-
         $tanggal = Carbon::now()->format('Y-m-d');
+
+        $grandTotal = 0;
+
+        // Loop melalui array harga dari permintaan
+        if ($request->has('harga')) {
+            foreach ($request->harga as $harga) {
+                // Ubah format harga (hapus titik sebagai pemisah ribuan)
+                $hargaNumeric = (float) str_replace('.', '', $harga);
+
+                // Tambahkan harga ke grand total
+                $grandTotal += $hargaNumeric;
+            }
+        }
         $transaksi = Pembelian_part::create([
+            'user_id' => auth()->user()->id,
             'kode_pembelianpart' => $this->kode(),
             'supplier_id' => $request->supplier_id,
             'tanggal' => $format_tanggal,
             'tanggal_awal' => $tanggal,
+            'grand_total' => $grandTotal,
             'status' => 'posting',
             'status_notif' => false,
         ]);
@@ -272,23 +286,39 @@ class PembelianpartController extends Controller
         return view('admin.pembelian_part.show', compact('parts', 'pembelians'));
     }
 
+    // public function kode()
+    // {
+    //     $pembelian_part = Pembelian_part::all();
+    //     if ($pembelian_part->isEmpty()) {
+    //         $num = "000001";
+    //     } else {
+    //         $id = Pembelian_part::getId();
+    //         foreach ($id as $value);
+    //         $idlm = $value->id;
+    //         $idbr = $idlm + 1;
+    //         $num = sprintf("%06s", $idbr);
+    //     }
+
+    //     $data = 'FS';
+    //     $kode_pembelian_part = $data . $num;
+    //     return $kode_pembelian_part;
+    // }
+
     public function kode()
     {
-        $pembelian_part = Pembelian_part::all();
-        if ($pembelian_part->isEmpty()) {
-            $num = "000001";
+        $lastBarang = Pembelian_part::latest()->first();
+        if (!$lastBarang) {
+            $num = 1;
         } else {
-            $id = Pembelian_part::getId();
-            foreach ($id as $value);
-            $idlm = $value->id;
-            $idbr = $idlm + 1;
-            $num = sprintf("%06s", $idbr);
+            $lastCode = $lastBarang->kode_pembelianpart;
+            $num = (int) substr($lastCode, strlen('FS')) + 1;
         }
-
-        $data = 'FS';
-        $kode_pembelian_part = $data . $num;
-        return $kode_pembelian_part;
+        $formattedNum = sprintf("%06s", $num);
+        $prefix = 'FS';
+        $newCode = $prefix . $formattedNum;
+        return $newCode;
     }
+
 
     public function tambah_sparepart(Request $request)
     {

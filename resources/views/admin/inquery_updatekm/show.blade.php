@@ -13,7 +13,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item">
-                            <a href="{{ url('admin/kendaraan') }}">Kendaraan</a>
+                            <a href="{{ url('admin/->kendaraan') }}">Kendaraan</a>
                         </li>
                         <li class="breadcrumb-item active">Lihat</li>
                     </ol>
@@ -37,7 +37,7 @@
                                 <strong>Kode Kendaraan</strong>
                             </div>
                             <div class="col-md-6">
-                                {{ $kendaraan->kode_kendaraan }}
+                                {{$kendaraan->kendaraan->kode_kendaraan }}
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -45,7 +45,7 @@
                                 <strong>No Kabin</strong>
                             </div>
                             <div class="col-md-6">
-                                {{ $kendaraan->no_kabin }}
+                                {{ $kendaraan->kendaraan->no_kabin }}
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -53,7 +53,7 @@
                                 <strong>No. Pol</strong>
                             </div>
                             <div class="col-md-6">
-                                {{ $kendaraan->no_pol }}
+                                {{ $kendaraan->kendaraan->no_pol }}
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -61,7 +61,7 @@
                                 <strong>No. Rangka</strong>
                             </div>
                             <div class="col-md-6">
-                                {{ $kendaraan->no_rangka }}
+                                {{ $kendaraan->kendaraan->no_rangka }}
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -69,7 +69,7 @@
                                 <strong>No. Mesin</strong>
                             </div>
                             <div class="col-md-6">
-                                {{ $kendaraan->no_mesin }}
+                                {{ $kendaraan->kendaraan->no_mesin }}
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -77,7 +77,7 @@
                                 <strong>Jenis Kendaraan</strong>
                             </div>
                             <div class="col-md-6">
-                                {{ $kendaraan->jenis_kendaraan->nama_jenis_kendaraan }}
+                                {{ $kendaraan->kendaraan->jenis_kendaraan->nama_jenis_kendaraan }}
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -85,7 +85,7 @@
                                 <strong>Warna</strong>
                             </div>
                             <div class="col-md-6">
-                                {{ $kendaraan->warna }}
+                                {{ $kendaraan->kendaraan->warna }}
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -93,7 +93,7 @@
                                 <strong>Expired Kir</strong>
                             </div>
                             <div class="col-md-6">
-                                {{ $kendaraan->expired_kir }}
+                                {{ $kendaraan->kendaraan->expired_kir }}
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -101,7 +101,7 @@
                                 <strong>Expired STNK</strong>
                             </div>
                             <div class="col-md-6">
-                                {{ $kendaraan->expired_stnk }}
+                                {{ $kendaraan->kendaraan->expired_stnk }}
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -109,7 +109,7 @@
                                 <strong>Golongan</strong>
                             </div>
                             <div class="col-md-6">
-                                {{ $kendaraan->golongan->nama_golongan }}
+                                {{ $kendaraan->kendaraan->golongan->nama_golongan }}
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -117,7 +117,7 @@
                                 <strong>Divisi Mobil</strong>
                             </div>
                             <div class="col-md-6">
-                                {{ $kendaraan->divisi->nama_divisi }}
+                                {{ $kendaraan->kendaraan->divisi->nama_divisi }}
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -125,7 +125,7 @@
                                 <strong>Km</strong>
                             </div>
                             <div class="col-md-6">
-                                {{ $kendaraan->km }}
+                                {{ $kendaraan->km_update }}
                             </div>
                         </div>
                     </div>

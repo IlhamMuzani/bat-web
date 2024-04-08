@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Nokir extends Model
 {
@@ -56,7 +57,6 @@ class Nokir extends Model
         'lampu_utama',
         'emisi',
         'keterangan',
-        'kategori',
         'masa_berlaku',
         'nama_petugas_penguji',
         'nrp_petugas_penguji',
@@ -67,6 +67,7 @@ class Nokir extends Model
         'nama_direktur',
         'pangkat_direktur',
         'nip_direktur',
+        'kategori',
         'jumlah',
         'status_kir',
         'status_notif',
@@ -75,6 +76,9 @@ class Nokir extends Model
         'tanggal_akhir',
     ];
 
+
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
 
     public function getActivitylogOptions(): LogOptions
     {

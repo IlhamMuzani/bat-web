@@ -44,6 +44,11 @@
                         <h3 class="card-title">Detail No. Stnk</h3>
                     </div>
                     <div class="card-body">
+                        <div class="form-group" hidden>
+                            <label for="kendaraan_id">Kendaraan_id</label>
+                            <input type="text" class="form-control" id="kendaraan_id" name="kendaraan_id" readonly
+                                placeholder="Masukan kendaraan_id" value="{{ old('kendaraan_id', $stnk->kendaraan->id) }}">
+                        </div>
                         <div class="form-group">
                             <label for="nopol">No. Kabin</label>
                             <input type="text" class="form-control" id="no_kabin" name="no_kabin" readonly

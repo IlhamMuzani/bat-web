@@ -9,7 +9,7 @@
     <style>
         html,
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'DOSVGA', monospace;
             color: black;
         }
 
@@ -70,6 +70,9 @@
 </head>
 
 <body style="margin: 0; padding: 0;">
+    <div id="logo-container">
+        <img src="{{ public_path('storage/uploads/gambar_logo/Logo.png') }}" alt="BAT" width="70" height="35">
+    </div>
     <br>
     <div style="font-weight: bold; text-align: center">
         <span style="font-weight: bold; font-size: 22px;">SURAT PEMASANGAN PART</span>
@@ -81,11 +84,20 @@
     <table style="width: 100%; border-top: 1px solid black;" cellpadding="2" cellspacing="0">
         <tr>
             <td class="td" style="text-align: center; padding: 3px; font-size: 16px;">No.
-                Kabin:{{ $pemasangans->kendaraan->no_kabin }}</td>
+                Kabin: @if ($pemasangans->kendaraan)
+                    {{ $pemasangans->kendaraan->no_kabin }}
+                @else
+                    NON KENDARAAN
+                @endif
+            </td>
             {{-- <td class="td" style="text-align: center; padding: 3px; font-size: 16px;">No.
                 Registrasi:{{ $pemasangans->kendaraan->no_pol }}</td> --}}
             <td class="td" style="text-align: center; padding: 3px; font-size: 16px;">Jenis
-                Kendaraan:{{ $pemasangans->kendaraan->jenis_kendaraan->nama_jenis_kendaraan }}</td>
+                Kendaraan: @if ($pemasangans->kendaraan)
+                    {{ $pemasangans->kendaraan->jenis_kendaraan->nama_jenis_kendaraan }}
+                @else
+                @endif
+            </td>
             <td class="td" style="text-align: center; padding: 3px; font-size: 16px;">
                 Tanggal:{{ $pemasangans->tanggal_pemasangan }}</td>
         </tr>
@@ -133,7 +145,13 @@
             <td style="text-align: center;">
                 <table style="margin: 0 auto;">
                     <tr style="text-align: center;">
-                        <td class="label">{{ auth()->user()->karyawan->nama_lengkap }}</td>
+                        <td class="label">
+                            @if ($pemasangans->user)
+                                {{ $pemasangans->user->karyawan->nama_lengkap }}
+                            @else
+                                user tidak ada
+                            @endif
+                        </td>
                     </tr>
                     <tr>
                         <td class="separator" colspan="2"><span></span></td>
@@ -171,6 +189,11 @@
             </td>
         </tr>
     </table>
+
+
+    <div style="text-align: right; font-size:12px; margin-top:25px">
+        <span style="font-style: italic;">Printed Date {{ \Carbon\Carbon::now()->format('Y-m-d H:i:s') }}</span>
+    </div>
 </body>
 
 </html>

@@ -52,27 +52,19 @@ class DivisiController extends Controller
             return back()->withInput()->with('error', $error);
         }
 
-        $number = mt_rand(1000000000, 9999999999);
-        if ($this->qrcodeDivisiExists($number)) {
-            $number = mt_rand(1000000000, 9999999999);
-        }
-
+        $kode = $this->kode();
+        
         Divisi::create(array_merge(
             $request->all(),
             [
                 'kode_divisi' => $this->kode(),
-                'qrcode_divisi' => $number,
+                'qrcode_divisi' =>'https://batlink.id/ban/' . $kode,
                 'tanggal_awal' => Carbon::now('Asia/Jakarta'), 
 
             ]
         ));
 
         return redirect('admin/divisi')->with('success', 'Berhasil menambahkan divisi');
-    }
-
-    public function qrcodeDivisiExists($number)
-    {
-        return Divisi::whereQrcodeDivisi($number)->exists();
     }
 
     public function cetakpdf($id)
@@ -148,7 +140,6 @@ class DivisiController extends Controller
     public function destroy($id)
     {
         $divisi = Divisi::find($id);
-        $divisi->kendaraan()->delete();
         $divisi->delete();
 
         return redirect('admin/divisi')->with('success', 'Berhasil menghapus divisi');

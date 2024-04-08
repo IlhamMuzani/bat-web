@@ -192,7 +192,7 @@
 
 <body style="margin: 0; padding: 0;">
     <div id="logo-container">
-        <img src="{{ asset('storage/uploads/gambar_logo/Logo.png') }}" alt="BAT" width="70" height="35">
+        <img src="{{ asset('storage/uploads/gambar_logo/Logo.jpg') }}" alt="BAT" width="70" height="35">
     </div>
     <br>
     <div style="font-weight: bold; text-align: center">
@@ -201,7 +201,7 @@
         <br>
     </div>
     <hr style="border-top: 0.5px solid black; margin: 3px 0;">
-     <table style="width: 100%;" cellpadding="2" cellspacing="0">
+    <table style="width: 100%;" cellpadding="2" cellspacing="0">
         <tr>
             <td class="td" style="text-align: center; padding: 0px; font-size: 14px;">
                 Kode Perpanjangan:{{ $laporan->kode_perpanjangan }}</td>
@@ -253,7 +253,13 @@
             <td>
                 <table>
                     <tr>
-                        <td class="label">{{ auth()->user()->karyawan->nama_lengkap }}</td>
+                        <td class="label">
+                            @if ($laporan->user)
+                                {{ $laporan->user->karyawan->nama_lengkap }}
+                            @else
+                                user tidak ada
+                            @endif
+                        </td>
                     </tr>
 
                     <tr>

@@ -186,10 +186,13 @@ class PembelianBanController extends Controller
 
         $tanggal = Carbon::now()->format('Y-m-d');
         $transaksi = Pembelian_ban::create([
+            'user_id' => auth()->user()->id,
             'kode_pembelian_ban' => $this->kode(),
             'supplier_id' => $request->supplier_id,
             'tanggal' => $format_tanggal,
             'tanggal_awal' => $tanggal,
+            // 'grand_total' => str_replace('.', '', $request->grand_total),
+            'grand_total' => str_replace(',', '.', str_replace('.', '', $request->grand_total)),
             'status' => 'posting',
             'status_notif' => false,
         ]);
@@ -206,13 +209,13 @@ class PembelianBanController extends Controller
                     'pembelian_ban_id' => $transaksi->id,
                     'qrcode_ban' => 'https://batlink.id/ban/' . $this->kodeban(),
                     'status' => 'stok',
-                    'tanggal_awal' => Carbon::now('Asia/Jakarta'),
+                    'tanggal_awal' => Carbon::now()->format('Y-m-d'),
                     'no_seri' => $data_pesanan['no_seri'],
                     'ukuran_id' => $data_pesanan['ukuran_id'],
                     'kondisi_ban' => $data_pesanan['kondisi_ban'],
                     'merek_id' => $data_pesanan['merek_id'],
                     'typeban_id' => $data_pesanan['typeban_id'],
-                    'harga' => $data_pesanan['harga'],
+                    'harga' =>  str_replace(',', '.', str_replace('.', '', $data_pesanan['harga'])),
                 ]);
             }
         }
@@ -225,23 +228,39 @@ class PembelianBanController extends Controller
         // return redirect('admin/pembelian_ban/show')->with('success', 'Berhasil menambahkan Pembelian ban');
     }
 
+    // public function kode()
+    // {
+    //     $pembelian_ban = Pembelian_ban::all();
+    //     if ($pembelian_ban->isEmpty()) {
+    //         $num = "000001";
+    //     } else {
+    //         $id = Pembelian_ban::getId();
+    //         foreach ($id as $value);
+    //         $idlm = $value->id;
+    //         $idbr = $idlm + 1;
+    //         $num = sprintf("%06s", $idbr);
+    //     }
+
+    //     $data = 'FB';
+    //     $kode_pembelian_ban = $data . $num;
+    //     return $kode_pembelian_ban;
+    // }
+
     public function kode()
     {
-        $pembelian_ban = Pembelian_ban::all();
-        if ($pembelian_ban->isEmpty()) {
-            $num = "000001";
+        $lastBarang = Pembelian_ban::latest()->first();
+        if (!$lastBarang) {
+            $num = 1;
         } else {
-            $id = Pembelian_ban::getId();
-            foreach ($id as $value);
-            $idlm = $value->id;
-            $idbr = $idlm + 1;
-            $num = sprintf("%06s", $idbr);
+            $lastCode = $lastBarang->kode_pembelian_ban;
+            $num = (int) substr($lastCode, strlen('FB')) + 1;
         }
-
-        $data = 'FB';
-        $kode_pembelian_ban = $data . $num;
-        return $kode_pembelian_ban;
+        $formattedNum = sprintf("%06s", $num);
+        $prefix = 'FB';
+        $newCode = $prefix . $formattedNum;
+        return $newCode;
     }
+
 
     public function kodeban()
     {

@@ -669,7 +669,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_1a">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_1a"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" data-select2-id="23"
+                                                tabindex="-1" aria-hidden="true" id="exel_1b">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -761,7 +763,9 @@
 
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1b">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_1b">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_1b"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_1b">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -855,7 +859,9 @@
 
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_2a">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_2a"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_2a">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -949,7 +955,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_2b">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_2b"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_2b">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -1039,7 +1047,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_2c">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_2c"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_2c">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -1124,8 +1134,9 @@
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Pemasangan Id</label>
-                                            <input type="text" class="form-control" readonly name="pemasangan_ban_id"
-                                                placeholder="" value="{{ $inquerypemasangan->id }}">
+                                            <input type="text" class="form-control" readonly
+                                                name="pemasangan_ban_id" placeholder=""
+                                                value="{{ $inquerypemasangan->id }}">
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Posisi Ban</label>
@@ -1134,7 +1145,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_2d">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_2d"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_2d">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -1219,8 +1232,9 @@
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Pemasangan Id</label>
-                                            <input type="text" class="form-control" readonly name="pemasangan_ban_id"
-                                                placeholder="" value="{{ $inquerypemasangan->id }}">
+                                            <input type="text" class="form-control" readonly
+                                                name="pemasangan_ban_id" placeholder=""
+                                                value="{{ $inquerypemasangan->id }}">
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Posisi Ban</label>
@@ -1229,7 +1243,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_3a">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_3a"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_3a">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -1314,8 +1330,9 @@
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Pemasangan Id</label>
-                                            <input type="text" class="form-control" readonly name="pemasangan_ban_id"
-                                                placeholder="" value="{{ $inquerypemasangan->id }}">
+                                            <input type="text" class="form-control" readonly
+                                                name="pemasangan_ban_id" placeholder=""
+                                                value="{{ $inquerypemasangan->id }}">
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Posisi Ban</label>
@@ -1324,7 +1341,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_3b">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_3b"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_3b">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -1409,8 +1428,9 @@
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Pemasangan Id</label>
-                                            <input type="text" class="form-control" readonly name="pemasangan_ban_id"
-                                                placeholder="" value="{{ $inquerypemasangan->id }}">
+                                            <input type="text" class="form-control" readonly
+                                                name="pemasangan_ban_id" placeholder=""
+                                                value="{{ $inquerypemasangan->id }}">
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Posisi Ban</label>
@@ -1419,7 +1439,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_3c">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_3c"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_3c">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -1504,8 +1526,9 @@
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Pemasangan Id</label>
-                                            <input type="text" class="form-control" readonly name="pemasangan_ban_id"
-                                                placeholder="" value="{{ $inquerypemasangan->id }}">
+                                            <input type="text" class="form-control" readonly
+                                                name="pemasangan_ban_id" placeholder=""
+                                                value="{{ $inquerypemasangan->id }}">
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Posisi Ban</label>
@@ -1514,7 +1537,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_3d">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_3d"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_3d">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -1599,8 +1624,9 @@
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Pemasangan Id</label>
-                                            <input type="text" class="form-control" readonly name="pemasangan_ban_id"
-                                                placeholder="" value="{{ $inquerypemasangan->id }}">
+                                            <input type="text" class="form-control" readonly
+                                                name="pemasangan_ban_id" placeholder=""
+                                                value="{{ $inquerypemasangan->id }}">
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Posisi Ban</label>
@@ -1609,7 +1635,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_4a">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_4a"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_4a">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -1694,8 +1722,9 @@
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Pemasangan Id</label>
-                                            <input type="text" class="form-control" readonly name="pemasangan_ban_id"
-                                                placeholder="" value="{{ $inquerypemasangan->id }}">
+                                            <input type="text" class="form-control" readonly
+                                                name="pemasangan_ban_id" placeholder=""
+                                                value="{{ $inquerypemasangan->id }}">
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Posisi Ban</label>
@@ -1704,7 +1733,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_4b">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_4b"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_4b">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -1789,8 +1820,9 @@
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Pemasangan Id</label>
-                                            <input type="text" class="form-control" readonly name="pemasangan_ban_id"
-                                                placeholder="" value="{{ $inquerypemasangan->id }}">
+                                            <input type="text" class="form-control" readonly
+                                                name="pemasangan_ban_id" placeholder=""
+                                                value="{{ $inquerypemasangan->id }}">
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Posisi Ban</label>
@@ -1799,7 +1831,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_4c">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_4c"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_4c">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -1884,8 +1918,9 @@
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Pemasangan Id</label>
-                                            <input type="text" class="form-control" readonly name="pemasangan_ban_id"
-                                                placeholder="" value="{{ $inquerypemasangan->id }}">
+                                            <input type="text" class="form-control" readonly
+                                                name="pemasangan_ban_id" placeholder=""
+                                                value="{{ $inquerypemasangan->id }}">
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Posisi Ban</label>
@@ -1894,7 +1929,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_4d">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_4d"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_4d">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -1979,8 +2016,9 @@
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Pemasangan Id</label>
-                                            <input type="text" class="form-control" readonly name="pemasangan_ban_id"
-                                                placeholder="" value="{{ $inquerypemasangan->id }}">
+                                            <input type="text" class="form-control" readonly
+                                                name="pemasangan_ban_id" placeholder=""
+                                                value="{{ $inquerypemasangan->id }}">
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Posisi Ban</label>
@@ -1989,7 +2027,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_5a">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_5a"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_5a">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -2074,8 +2114,9 @@
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Pemasangan Id</label>
-                                            <input type="text" class="form-control" readonly name="pemasangan_ban_id"
-                                                placeholder="" value="{{ $inquerypemasangan->id }}">
+                                            <input type="text" class="form-control" readonly
+                                                name="pemasangan_ban_id" placeholder=""
+                                                value="{{ $inquerypemasangan->id }}">
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Posisi Ban</label>
@@ -2084,7 +2125,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_5b">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_5b"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_5b">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -2169,8 +2212,9 @@
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Pemasangan Id</label>
-                                            <input type="text" class="form-control" readonly name="pemasangan_ban_id"
-                                                placeholder="" value="{{ $inquerypemasangan->id }}">
+                                            <input type="text" class="form-control" readonly
+                                                name="pemasangan_ban_id" placeholder=""
+                                                value="{{ $inquerypemasangan->id }}">
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Posisi Ban</label>
@@ -2179,7 +2223,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_5c">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_5c"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_5c">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -2261,8 +2307,9 @@
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Pemasangan Id</label>
-                                            <input type="text" class="form-control" readonly name="pemasangan_ban_id"
-                                                placeholder="" value="{{ $inquerypemasangan->id }}">
+                                            <input type="text" class="form-control" readonly
+                                                name="pemasangan_ban_id" placeholder=""
+                                                value="{{ $inquerypemasangan->id }}">
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Posisi Ban</label>
@@ -2271,7 +2318,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_5d">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_5d"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_5d">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -2353,8 +2402,9 @@
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Pemasangan Id</label>
-                                            <input type="text" class="form-control" readonly name="pemasangan_ban_id"
-                                                placeholder="" value="{{ $inquerypemasangan->id }}">
+                                            <input type="text" class="form-control" readonly
+                                                name="pemasangan_ban_id" placeholder=""
+                                                value="{{ $inquerypemasangan->id }}">
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Posisi Ban</label>
@@ -2363,7 +2413,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_6a">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_6a"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_6a">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -2445,8 +2497,9 @@
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Pemasangan Id</label>
-                                            <input type="text" class="form-control" readonly name="pemasangan_ban_id"
-                                                placeholder="" value="{{ $inquerypemasangan->id }}">
+                                            <input type="text" class="form-control" readonly
+                                                name="pemasangan_ban_id" placeholder=""
+                                                value="{{ $inquerypemasangan->id }}">
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Posisi Ban</label>
@@ -2455,7 +2508,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_6b">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_6b"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_6b">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -2537,8 +2592,9 @@
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Pemasangan Id</label>
-                                            <input type="text" class="form-control" readonly name="pemasangan_ban_id"
-                                                placeholder="" value="{{ $inquerypemasangan->id }}">
+                                            <input type="text" class="form-control" readonly
+                                                name="pemasangan_ban_id" placeholder=""
+                                                value="{{ $inquerypemasangan->id }}">
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Posisi Ban</label>
@@ -2547,7 +2603,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_6c">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_6c"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_6c">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"
@@ -2629,8 +2687,9 @@
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Pemasangan Id</label>
-                                            <input type="text" class="form-control" readonly name="pemasangan_ban_id"
-                                                placeholder="" value="{{ $inquerypemasangan->id }}">
+                                            <input type="text" class="form-control" readonly
+                                                name="pemasangan_ban_id" placeholder=""
+                                                value="{{ $inquerypemasangan->id }}">
                                         </div>
                                         <div class="form-group" hidden>
                                             <label for="posisi_ban">Posisi Ban</label>
@@ -2639,7 +2698,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="exel_1a">No. Seri Ban</label>
-                                            <select class="form-control" id="exel_1b" name="exel_6d">
+                                            <select class="select2bs4 select2-hidden-accessible" name="exel_6d"
+                                                data-placeholder="Cari Ban.." style="width: 100%;" tabindex="-1"
+                                                aria-hidden="true" id="exel_6d">
                                                 <option value="">- Pilih -</option>
                                                 @foreach ($daftarbans as $ban)
                                                     <option value="{{ $ban->id }}"

@@ -42,27 +42,27 @@ class PelangganController extends Controller
             $request->all(),
             [
                 'nama_pell' => 'required',
-                'nama_alias' => 'required',
+                // 'nama_alias' => 'required',
                 'alamat' => 'required',
-                'npwp' => 'required',
-                'nama_person' => 'required',
-                'jabatan' => 'required',
-                'fax' => 'required',
-                'telp' => 'required',
-                'hp' => 'required',
-                'email' => 'required',
+                // 'npwp' => 'required',
+                // 'nama_person' => 'required',
+                // 'jabatan' => 'required',
+                // 'fax' => 'required',
+                // 'telp' => 'required',
+                // 'hp' => 'required',
+                // 'email' => 'required',
             ],
             [
                 'nama_pell.required' => 'Masukkan nama pelanggan',
-                'nama_alias.required' => 'Masukkan nama alias',
+                // 'nama_alias.required' => 'Masukkan nama alias',
                 'alamat.required' => 'Masukkan alamat',
-                'npwp.required' => 'Masukkan no npwp',
-                'nama_person.required' => 'Masukkan nama',
-                'jabatan.required' => 'Masukkan jabatan',
-                'telp.required' => 'Masukkan no telepon',
-                'fax.required' => 'Masukkan no fax',
-                'hp.required' => 'Masukkan no hp',
-                'email.required' => 'Masukkan email',
+                // 'npwp.required' => 'Masukkan no npwp',
+                // 'nama_person.required' => 'Masukkan nama',
+                // 'jabatan.required' => 'Masukkan jabatan',
+                // 'telp.required' => 'Masukkan no telepon',
+                // 'fax.required' => 'Masukkan no fax',
+                // 'hp.required' => 'Masukkan no hp',
+                // 'email.required' => 'Masukkan email',
             ]
         );
 
@@ -100,22 +100,38 @@ class PelangganController extends Controller
         $dompdf->stream();
     }
 
+    // public function kode()
+    // {
+    //     $supplier = Pelanggan::all();
+    //     if ($supplier->isEmpty()) {
+    //         $num = "000001";
+    //     } else {
+    //         $id = Pelanggan::getId();
+    //         foreach ($id as $value);
+    //         $idlm = $value->id;
+    //         $idbr = $idlm + 1;
+    //         $num = sprintf("%06s", $idbr);
+    //     }
+
+    //     $data = 'AP';
+    //     $kode_pelanggan = $data . $num;
+    //     return $kode_pelanggan;
+    // }
+
+
     public function kode()
     {
-        $supplier = Pelanggan::all();
-        if ($supplier->isEmpty()) {
-            $num = "000001";
+        $lastBarang = Pelanggan::latest()->first();
+        if (!$lastBarang) {
+            $num = 1;
         } else {
-            $id = Pelanggan::getId();
-            foreach ($id as $value);
-            $idlm = $value->id;
-            $idbr = $idlm + 1;
-            $num = sprintf("%06s", $idbr);
+            $lastCode = $lastBarang->kode_pelanggan;
+            $num = (int) substr($lastCode, strlen('AP')) + 1;
         }
-
-        $data = 'AD';
-        $kode_pelanggan = $data . $num;
-        return $kode_pelanggan;
+        $formattedNum = sprintf("%06s", $num);
+        $prefix = 'AP';
+        $newCode = $prefix . $formattedNum;
+        return $newCode;
     }
 
     public function show($id)
@@ -148,29 +164,29 @@ class PelangganController extends Controller
             $request->all(),
             [
                 'nama_pell' => 'required',
-                'nama_alias' => 'required',
+                // 'nama_alias' => 'required',
                 'alamat' => 'required',
-                'npwp' => 'required',
-                'nama_person' => 'required',
-                'jabatan' => 'required',
-                'fax' => 'required',
-                'telp' => 'required',
-                'hp' => 'required',
-                'email' => 'required',
-                'gambar' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+                // 'npwp' => 'required',
+                // 'nama_person' => 'required',
+                // 'jabatan' => 'required',
+                // 'fax' => 'required',
+                // 'telp' => 'required',
+                // 'hp' => 'required',
+                // 'email' => 'required',
+                // 'gambar' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
             ],
             [
                 'nama_pell.required' => 'Masukkan nama pelanggan',
-                'nama_alias.required' => 'Masukkan nama alias',
+                // 'nama_alias.required' => 'Masukkan nama alias',
                 'alamat.required' => 'Masukkan alamat',
-                'npwp.required' => 'Masukkan no npwp',
-                'nama_person.required' => 'Masukkan nama',
-                'jabatan.required' => 'Masukkan jabatan',
-                'telp.required' => 'Masukkan no telepon',
-                'fax.required' => 'Masukkan no fax',
-                'hp.required' => 'Masukkan no hp',
-                'email.required' => 'Masukkan email',
-                'gambar.image' => 'Gambar yang dimasukan salah!',
+                // 'npwp.required' => 'Masukkan no npwp',
+                // 'nama_person.required' => 'Masukkan nama',
+                // 'jabatan.required' => 'Masukkan jabatan',
+                // 'telp.required' => 'Masukkan no telepon',
+                // 'fax.required' => 'Masukkan no fax',
+                // 'hp.required' => 'Masukkan no hp',
+                // 'email.required' => 'Masukkan email',
+                // 'gambar.image' => 'Gambar yang dimasukan salah!',
             ]
         );
 

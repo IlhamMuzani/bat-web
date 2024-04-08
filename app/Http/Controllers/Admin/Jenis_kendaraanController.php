@@ -96,22 +96,37 @@ class Jenis_kendaraanController extends Controller
         $dompdf->stream();
     }
 
+    // public function kode()
+    // {
+    //     $jenis = Jenis_kendaraan::all();
+    //     if ($jenis->isEmpty()) {
+    //         $num = "000001";
+    //     } else {
+    //         $id = Jenis_kendaraan::getId();
+    //         foreach ($id as $value);
+    //         $idlm = $value->id;
+    //         $idbr = $idlm + 1;
+    //         $num = sprintf("%06s", $idbr);
+    //     }
+
+    //     $data = 'AG';
+    //     $kode_jenis = $data . $num;
+    //     return $kode_jenis;
+    // }
+
     public function kode()
     {
-        $jenis = Jenis_kendaraan::all();
-        if ($jenis->isEmpty()) {
-            $num = "000001";
+        $lastBarang = Jenis_kendaraan::latest()->first();
+        if (!$lastBarang) {
+            $num = 1;
         } else {
-            $id = Jenis_kendaraan::getId();
-            foreach ($id as $value);
-            $idlm = $value->id;
-            $idbr = $idlm + 1;
-            $num = sprintf("%06s", $idbr);
+            $lastCode = $lastBarang->kode_jenis_kendaraan;
+            $num = (int) substr($lastCode, strlen('AG')) + 1;
         }
-
-        $data = 'AG';
-        $kode_jenis = $data . $num;
-        return $kode_jenis;
+        $formattedNum = sprintf("%06s", $num);
+        $prefix = 'AG';
+        $newCode = $prefix . $formattedNum;
+        return $newCode;
     }
 
     public function edit($id)

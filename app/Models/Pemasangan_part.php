@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pemasangan_part extends Model
 {
@@ -14,6 +15,7 @@ class Pemasangan_part extends Model
     use LogsActivity;
 
     protected $fillable = [
+        'user_id',
         'kode_pemasanganpart',
         'kendaraan_id',
         'tanggal_pemasangan',
@@ -24,12 +26,19 @@ class Pemasangan_part extends Model
     ];
 
 
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logFillable('*');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function kendaraan()
     {

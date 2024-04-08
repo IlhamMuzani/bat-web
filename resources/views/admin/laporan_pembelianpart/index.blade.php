@@ -40,24 +40,39 @@
                 <div class="card-body">
                     <form method="GET" id="form-action">
                         <div class="row">
-                            <div class="col-md-5 mb-3">
+                            <div class="col-md-3 mb-3">
+                                <label for="created_at">Kategori</label>
+                                <select class="custom-select form-control" id="status" name="status">
+                                    <option value="">- Semua Status -</option>
+                                    <option value="posting" {{ Request::get('status') == 'posting' ? 'selected' : '' }}>
+                                        Belum Lunas
+                                    </option>
+                                    <option value="selesai" {{ Request::get('status') == 'selesai' ? 'selected' : '' }}>
+                                        Lunas</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
                                 <label for="tanggal_awal">Tanggal Awal</label>
                                 <input class="form-control" id="tanggal_awal" name="tanggal_awal" type="date"
                                     value="{{ Request::get('tanggal_awal') }}" max="{{ date('Y-m-d') }}" />
                             </div>
-                            <div class="col-md-5 mb-3">
+                            <div class="col-md-3 mb-3">
                                 <label for="tanggal_akhir">Tanggal Akhir</label>
                                 <input class="form-control" id="tanggal_akhir" name="tanggal_akhir" type="date"
                                     value="{{ Request::get('tanggal_akhir') }}" max="{{ date('Y-m-d') }}" />
                             </div>
-                            <div class="col-md-2 mb-3">
-                                <button type="button" class="btn btn-outline-primary btn-block" onclick="cari()">
-                                    <i class="fas fa-search"></i> Cari
-                                </button>
-                                <button type="button" class="btn btn-primary btn-block" onclick="printReport()"
-                                    target="_blank">
-                                    <i class="fas fa-print"></i> Cetak
-                                </button>
+                            <div class="col-md-3 mb-3">
+                                @if (auth()->check() && auth()->user()->fitur['laporan pembelian part cari'])
+                                    <button type="button" class="btn btn-outline-primary btn-block" onclick="cari()">
+                                        <i class="fas fa-search"></i> Cari
+                                    </button>
+                                @endif
+                                @if (auth()->check() && auth()->user()->fitur['laporan pembelian part cetak'])
+                                    <button type="button" class="btn btn-primary btn-block" onclick="printReport()"
+                                        target="_blank">
+                                        <i class="fas fa-print"></i> Cetak
+                                    </button>
+                                @endif
                             </div>
                         </div>
                     </form>
@@ -81,7 +96,8 @@
                                     <td>{{ $part->tanggal_awal }}</td>
                                     <td>{{ $part->supplier->nama_supp }}</td>
                                     <td>{{ $part->detail_part->count() }}</td>
-                                    <td> Rp. {{ $part->detail_part->sum('harga') }}</td>
+                                    <td class="text-right">
+                                        {{ number_format($part->detail_part->sum('harga'), 0, ',', '.') }}</td>
                                     {{-- <td class="text-center">
                                         <a href="{{ url('admin/pembelian_part/cetak-pdf/' . $part->id) }}"
                                             class="btn btn-info btn-sm">

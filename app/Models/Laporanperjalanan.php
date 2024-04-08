@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Laporanperjalanan extends Model
 {
@@ -14,9 +15,9 @@ class Laporanperjalanan extends Model
     use LogsActivity;
 
     protected $fillable = [
+        'user_id',
         'kode_kendaraan',
         'kendaraan_id',
-        'user_id',
         'pelanggan_id',
         'no_kabin',
         'no_pol',
@@ -55,12 +56,14 @@ class Laporanperjalanan extends Model
         'kota_id',
     ];
 
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logFillable('*');
     }
-
 
     public function ban()
     {

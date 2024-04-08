@@ -189,22 +189,37 @@ class SupplierController extends Controller
 
     }
 
+    // public function kode()
+    // {
+    //     $supplier = Supplier::all();
+    //     if ($supplier->isEmpty()) {
+    //         $num = "000001";
+    //     } else {
+    //         $id = Supplier::getId();
+    //         foreach ($id as $value);
+    //         $idlm = $value->id;
+    //         $idbr = $idlm + 1;
+    //         $num = sprintf("%06s", $idbr);
+    //     }
+
+    //     $data = 'AC';
+    //     $kode_supplier = $data . $num;
+    //     return $kode_supplier;
+    // }
+
     public function kode()
     {
-        $supplier = Supplier::all();
-        if ($supplier->isEmpty()) {
-            $num = "000001";
+        $lastBarang = Supplier::latest()->first();
+        if (!$lastBarang) {
+            $num = 1;
         } else {
-            $id = Supplier::getId();
-            foreach ($id as $value);
-            $idlm = $value->id;
-            $idbr = $idlm + 1;
-            $num = sprintf("%06s", $idbr);
+            $lastCode = $lastBarang->kode_supplier;
+            $num = (int) substr($lastCode, strlen('AC')) + 1;
         }
-
-        $data = 'AC';
-        $kode_supplier = $data . $num;
-        return $kode_supplier;
+        $formattedNum = sprintf("%06s", $num);
+        $prefix = 'AC';
+        $newCode = $prefix . $formattedNum;
+        return $newCode;
     }
 
     public function destroy($id)

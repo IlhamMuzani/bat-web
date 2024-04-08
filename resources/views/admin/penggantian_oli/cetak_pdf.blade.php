@@ -71,7 +71,7 @@
 
 <body style="margin: 0; padding: 0;">
     <div id="logo-container">
-        <img src="{{ asset('storage/uploads/gambar_logo/Logo.png') }}" alt="BAT" width="70" height="35">
+        <img src="{{ public_path('storage/uploads/gambar_logo/Logo.jpg') }}" alt="BAT" width="70" height="35">
     </div>
     <div style="font-weight: bold; text-align: center; margin-bottom:5px">
         <span style="font-weight: bold; font-size: 20px;">SURAT PENGGANTIAN OLI</span>
@@ -182,7 +182,13 @@
             <td style="text-align: center;">
                 <table style="margin: 0 auto;">
                     <tr style="text-align: center; font-size:15px">
-                        <td class="label">{{ auth()->user()->karyawan->nama_lengkap }}</td>
+                        <td class="label">
+                            @if ($pemasangans->user)
+                                {{ $pemasangans->user->karyawan->nama_lengkap }}
+                            @else
+                                user tidak ada
+                            @endif
+                        </td>
                     </tr>
                     <tr>
                         <td class="separator" colspan="2"><span></span></td>
@@ -220,6 +226,10 @@
             </td>
         </tr>
     </table>
+
+    <div style="text-align: right; font-size:12px; margin-top:25px">
+        <span style="font-style: italic;">Printed Date {{ \Carbon\Carbon::now()->format('Y-m-d H:i:s') }}</span>
+    </div>
 </body>
 
 </html>

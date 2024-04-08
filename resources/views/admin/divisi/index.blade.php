@@ -36,9 +36,11 @@
                 <div class="card-header">
                     <h3 class="card-title">Data Divisi</h3>
                     <div class="float-right">
-                        <a href="{{ url('admin/divisi/create') }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus"></i> Tambah
-                        </a>
+                        @if (auth()->check() && auth()->user()->fitur['divisi create'])
+                            <a href="{{ url('admin/divisi/create') }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-plus"></i> Tambah
+                            </a>
+                        @endif
                     </div>
                 </div>
                 <!-- /.card-header -->
@@ -66,14 +68,18 @@
                                         </div>
                                     </td>
                                     <td class="text-center">
-                                        <a href="{{ url('admin/divisi/' . $divisi->id . '/edit') }}"
-                                            class="btn btn-warning btn-sm">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <button type="submit" class="btn btn-danger btn-sm" data-toggle="modal"
-                                            data-target="#modal-hapus-{{ $divisi->id }}">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                        @if (auth()->check() && auth()->user()->fitur['divisi update'])
+                                            <a href="{{ url('admin/divisi/' . $divisi->id . '/edit') }}"
+                                                class="btn btn-warning btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        @endif
+                                        @if (auth()->check() && auth()->user()->fitur['divisi delete'])
+                                            <button type="submit" class="btn btn-danger btn-sm" data-toggle="modal"
+                                                data-target="#modal-hapus-{{ $divisi->id }}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        @endif
                                     </td>
                                 </tr>
                                 <div class="modal fade" id="modal-hapus-{{ $divisi->id }}">
@@ -114,9 +120,13 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div style="text-align: center;">
+                                                    <p style="font-size:20px; font-weight: bold;">
+                                                        {{ $divisi->kode_divisi }}</p>
                                                     <div style="display: inline-block;">
                                                         {!! DNS2D::getBarcodeHTML("$divisi->qrcode_divisi", 'QRCODE', 15, 15) !!}
                                                     </div>
+                                                    <p style="font-size:20px; font-weight: bold;">
+                                                        {{ $divisi->nama_divisi }}</p>
                                                 </div>
                                                 <div class="modal-footer justify-content-between">
                                                     <button type="button" class="btn btn-default"

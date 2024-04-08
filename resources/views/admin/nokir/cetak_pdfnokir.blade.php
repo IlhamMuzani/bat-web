@@ -168,7 +168,8 @@
     <table class="gambar2">
         <tr>
             <td class="image-cell1">
-                <img src="{{ asset('storage/uploads/gambar_logo/dinas_perhubungan.jpg') }}" height="40" width="35">
+                <img src="{{ public_path('storage/uploads/gambar_logo/dinas_perhubungan.jpg') }}" height="40"
+                    width="35">
             </td>
         </tr>
     </table>
@@ -239,12 +240,22 @@
                         <tr>
                             <td data-toggle="modal" data-target="#modal-qrcode-{{ $nokir->id }}"
                                 style="display: inline-block;">
-                                {!! DNS2D::getBarcodeHTML("$nokir->qrcode_kir", 'QRCODE', 2.5, 2.5) !!}
+                                <img src="data:image/png;base64, {!! base64_encode(
+                                    QrCode::format('png')->merge(public_path('storage/uploads/gambar_logo/dinas_perhubungand2.png'), 0.2, true)->size(75)->generate($nokir->qrcode_kir),
+                                ) !!}" alt="">
+                                {{-- {!! DNS2D::getBarcodeHTML("$nokir->qrcode_kir", 'QRCODE', 2.5, 2.5) !!} --}}
                             </td>
                         </tr>
                     </table>
                 </div>
             </td>
+            {{-- <td data-toggle="modal" data-target="#modal-qrcode-{{ $nokir->id }}" style="display: inline-block;">
+                <div style="position: relative;">
+                    <img src="{{ public_path('storage/uploads/gambar_logo/dinas_perhubungan.jpg') }}" height="40"
+                        width="35" style="position: absolute; top: 13; left: 13;">
+                    {!! DNS2D::getBarcodeHTML("$nokir->qrcode_kir", 'QRCODE', 2.5, 2.5) !!}
+                </div>
+            </td> --}}
         </tr>
     </table>
 
@@ -313,7 +324,7 @@
                             </td>
                             <td class="info-item" style="font-size: 8px; font-weight: bold;">:</td>
                             <td class="info-text info-left" style="font-size: 8px; font-weight: bold;">
-                                PT JAVALINE LOGISTICS
+                                {{ $nokir->nama_pemilik }}
                             </td>
                         </tr>
                         <tr>
@@ -326,8 +337,7 @@
                             <td class="info-item" style="font-size: 8px; font-weight: bold;">:</td>
                             <td class="info-text info-left"
                                 style="font-size: 8px; font-weight: bold; margin-bottom: 8px;">
-                                JL HOS COKROAMINOTO NO 5 06/03 <br>
-                                SLAWI WETAN KAB. TEGAL
+                                {{ $nokir->alamat }}
                             </td>
                         </tr>
                         <tr>
@@ -487,14 +497,15 @@
                             style="font-size: 8px; font-style: italic; color: #666; font-weight: normal;">
                             Image Front</span></p>
                     </p>
-                    <img src="{{ asset('storage/uploads/' . $nokir->gambar_depan) }}" height="50" width="100">
+                    <img src="{{ public_path('storage/uploads/' . $nokir->gambar_depan) }}" height="50"
+                        width="100">
                 </td>
                 <td class="image-cell">
                     <p style="font-size: 8px; font-weight: bold;">Foto Belakang <br> <span
                             style="font-size: 8px; font-style: italic; color: #666; font-weight: normal;">
                             Image Rear</span></p>
                     </p>
-                    <img src="{{ asset('storage/uploads/' . $nokir->gambar_belakang) }}" height="50"
+                    <img src="{{ public_path('storage/uploads/' . $nokir->gambar_belakang) }}" height="50"
                         width="100">
                 </td>
                 <td class="image-cell">
@@ -502,13 +513,15 @@
                             style="font-size: 8px; font-style: italic; color: #666; font-weight: normal;">
                             Image Right</span></p>
                     </p>
-                    <img src="{{ asset('storage/uploads/' . $nokir->gambar_kanan) }}" height="50" width="100">
+                    <img src="{{ public_path('storage/uploads/' . $nokir->gambar_kanan) }}" height="50"
+                        width="100">
                 </td>
                 <td class="image-cell">
                     <p style="font-size: 8px; font-weight: bold;">Foto Kiri <br> <span
                             style="font-size: 8px; font-style: italic; color: #666; font-weight: normal;">
                             Image Left</span></p>
-                    <img src="{{ asset('storage/uploads/' . $nokir->gambar_kiri) }}" height="50" width="100">
+                    <img src="{{ public_path('storage/uploads/' . $nokir->gambar_kiri) }}" height="50"
+                        width="100">
                 </td>
             </tr>
         </table>
@@ -1073,7 +1086,7 @@
                                                         </span>
                                                     </td>
                                                     <td class="info-catatan2" style="font-size: 7px;">
-                                                        :{{ $nokir->masa_berlaku }}
+                                                        :{{ \Carbon\Carbon::parse($nokir->masa_berlaku)->format('d M Y') }}
                                                     </td>
                                                     <td class="info-catatan2" style="font-size: 7px;">
                                                     </td>
@@ -1162,7 +1175,5 @@
             </td>
         </tr>
     </table>
-
-
 
 </html>

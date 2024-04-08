@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('penggantian_olis', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->string('kode_penggantianoli')->nullable();
             $table->unsignedBigInteger('kendaraan_id')->nullable();
             $table->foreign('kendaraan_id')->references('id')->on('kendaraans')->onDelete('set null');
@@ -23,6 +25,7 @@ return new class extends Migration
             $table->string('tanggal_penggantian')->nullable();
             $table->string('tanggal_awal')->nullable();
             $table->string('tanggal_akhir')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

@@ -36,9 +36,11 @@
                 <div class="card-header">
                     <h3 class="card-title">Data Type Ban</h3>
                     <div class="float-right">
-                        <a href="{{ url('admin/type_ban/create') }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus"></i> Tambah
-                        </a>
+                        @if (auth()->check() && auth()->user()->fitur['type create'])
+                            <a href="{{ url('admin/type_ban/create') }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-plus"></i> Tambah
+                            </a>
+                        @endif
                     </div>
                 </div>
                 <!-- /.card-header -->
@@ -66,14 +68,18 @@
                                         </div>
                                     </td>
                                     <td class="text-center">
-                                        <a href="{{ url('admin/type_ban/' . $type_ban->id . '/edit') }}"
-                                            class="btn btn-warning btn-sm">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <button type="submit" class="btn btn-danger btn-sm" data-toggle="modal"
-                                            data-target="#modal-hapus-{{ $type_ban->id }}">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                        @if (auth()->check() && auth()->user()->fitur['type update'])
+                                            <a href="{{ url('admin/type_ban/' . $type_ban->id . '/edit') }}"
+                                                class="btn btn-warning btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        @endif
+                                        @if (auth()->check() && auth()->user()->fitur['type delete'])
+                                            <button type="submit" class="btn btn-danger btn-sm" data-toggle="modal"
+                                                data-target="#modal-hapus-{{ $type_ban->id }}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        @endif
                                     </td>
                                 </tr>
                                 <div class="modal fade" id="modal-hapus-{{ $type_ban->id }}">
@@ -92,8 +98,7 @@
                                             <div class="modal-footer justify-content-between">
                                                 <button type="button" class="btn btn-default"
                                                     data-dismiss="modal">Batal</button>
-                                                <form action="{{ url('admin/type_ban/' . $type_ban->id) }}"
-                                                    method="POST">
+                                                <form action="{{ url('admin/type_ban/' . $type_ban->id) }}" method="POST">
                                                     @csrf
                                                     @method('delete')
                                                     <button type="submit" class="btn btn-danger">Hapus</button>
@@ -103,7 +108,7 @@
                                     </div>
                                 </div>
 
-                                    <div class="modal fade" id="modal-qrcode-{{ $type_ban->id }}">
+                                <div class="modal fade" id="modal-qrcode-{{ $type_ban->id }}">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -115,9 +120,13 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div style="text-align: center;">
+                                                    <p style="font-size:20px; font-weight: bold;">
+                                                        {{ $type_ban->kode_type }}</p>
                                                     <div style="display: inline-block;">
                                                         {!! DNS2D::getBarcodeHTML("$type_ban->qrcode_type", 'QRCODE', 15, 15) !!}
                                                     </div>
+                                                    <p style="font-size:20px; font-weight: bold;">
+                                                        {{ $type_ban->nama_type }}</p>
                                                 </div>
                                                 <div class="modal-footer justify-content-between">
                                                     <button type="button" class="btn btn-default"

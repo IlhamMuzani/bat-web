@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pembelian_ban extends Model
 {
@@ -16,17 +17,23 @@ class Pembelian_ban extends Model
     protected $fillable =
     [
         'kode_pembelian_ban',
+        'user_id',
         'qr_pembelian_ban',
         'supplier_id',
         'no_seri',
         'kondisi_ban',
         'harga_ban',
+        'grand_total',
         'tanggal',
         'tanggal_awal',
         'tanggal_akhir',
         'status',
+        'status_pelunasan',
         'status_notif',
     ];
+
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
 
     public function getActivitylogOptions(): LogOptions
     {
@@ -34,6 +41,10 @@ class Pembelian_ban extends Model
             ->logFillable('*');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public static function getId()
     {

@@ -33,9 +33,11 @@
                 <div class="card-header">
                     <h3 class="card-title">Data User</h3>
                     <div class="float-right">
-                        <a href="{{ url('admin/user/create') }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus"></i> Tambah
-                        </a>
+                        @if (auth()->check() && auth()->user()->fitur['user create'])
+                            <a href="{{ url('admin/user/create') }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-plus"></i> Tambah
+                            </a>
+                        @endif
                     </div>
                 </div>
                 <div class="card-body">
@@ -47,7 +49,7 @@
                                 <th>Nama</th>
                                 <th>Telepon</th>
                                 <th>Departemen</th>
-                                <th class="text-center">Qr Code</th>
+                                {{-- <th class="text-center">Qr Code</th> --}}
                                 <th class="text-center" width="20">Opsi</th>
                             </tr>
                         </thead>
@@ -59,17 +61,19 @@
                                     <td>{{ $user->karyawan->nama_lengkap }}</td>
                                     <td>{{ $user->karyawan->telp }}</td>
                                     <td>{{ $user->karyawan->departemen->nama }}</td>
-                                    <td data-toggle="modal" data-target="#modal-qrcode-{{ $user->id }}"
+                                    {{-- <td data-toggle="modal" data-target="#modal-qrcode-{{ $user->id }}"
                                         style="text-align: center;">
                                         <div style="display: inline-block;">
                                             {!! DNS2D::getBarcodeHTML("$user->qrcode_user", 'QRCODE', 2, 2) !!}
                                         </div>
-                                    </td>
+                                    </td> --}}
                                     <td class="text-center">
-                                        <button type="submit" class="btn btn-danger btn-sm" data-toggle="modal"
-                                            data-target="#modal-hapus-{{ $user->id }}">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                        @if (auth()->check() && auth()->user()->fitur['user delete'])
+                                            <button type="submit" class="btn btn-danger btn-sm" data-toggle="modal"
+                                                data-target="#modal-hapus-{{ $user->id }}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        @endif
                                     </td>
                                 </tr>
                                 <div class="modal fade" id="modal-hapus-{{ $user->id }}">

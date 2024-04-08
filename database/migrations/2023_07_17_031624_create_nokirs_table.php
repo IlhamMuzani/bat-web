@@ -58,7 +58,6 @@ return new class extends Migration
             $table->string('emisi')->nullable();
             $table->string('keterangan')->nullable();
             $table->string('masa_berlaku')->nullable();
-            $table->string('kategori')->nullable();
             $table->string('nama_petugas_penguji')->nullable();
             $table->string('nrp_petugas_penguji')->nullable();
             $table->string('nama_kepala_dinas')->nullable();
@@ -68,12 +67,14 @@ return new class extends Migration
             $table->string('nama_direktur')->nullable();
             $table->string('pangkat_direktur')->nullable();
             $table->string('nip_direktur')->nullable();
+            $table->string('kategori')->nullable();
             $table->string('jumlah')->nullable();
             $table->string('status_kir')->nullable();
             $table->string('status_notif')->nullable();
             $table->string('tanggal')->nullable();
             $table->string('tanggal_awal')->nullable();
             $table->string('tanggal_akhir')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

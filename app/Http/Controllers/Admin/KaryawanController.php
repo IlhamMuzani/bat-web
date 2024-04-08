@@ -41,7 +41,8 @@ class KaryawanController extends Controller
             $request->all(),
             [
                 'departemen_id' => 'required',
-                'no_ktp' => 'required',
+                'no_ktp' => 'required|unique:karyawans', // Memastikan no_ktp adalah unik dalam tabel 'karyawans'
+                // Tambahkan aturan validasi lainnya sesuai kebutuhan Anda
                 'no_sim' => 'required',
                 'nama_lengkap' => 'required',
                 'nama_kecil' => 'required',
@@ -56,6 +57,8 @@ class KaryawanController extends Controller
             [
                 'departemen_id.required' => 'Pilih departemen',
                 'no_ktp.required' => 'Masukkan no ktp',
+                'no_ktp.unique' => 'Nomor KTP sudah terdaftar', // Pesan kustom jika validasi unik gagal
+                // Tambahkan pesan validasi lainnya sesuai kebutuhan Anda
                 'no_sim.required' => 'Masukkan no sim',
                 'nama_lengkap.required' => 'Masukkan nama lengkap',
                 'nama_kecil.required' => 'Masukkan nama kecil',
@@ -83,16 +86,33 @@ class KaryawanController extends Controller
         }
 
         $kode = $this->kode();
+        $kodedriver = $this->kodedriver();
+        $departemen = $request->departemen_id;
+
+        if ($departemen == 1) {
+            $kode_karyawan = $kode;
+        } elseif ($departemen == 2) {
+            $kode_karyawan = $kodedriver;
+        } else {
+            // Handle other cases if needed
+            $kode_karyawan =  $kode;
+        }
 
         Karyawan::create(array_merge(
             $request->all(),
             [
                 'gambar' => $namaGambar,
                 'tanggal_keluar' => '-',
-                'gaji' => '-',
-                'pembayaran' => '-',
+                'gaji' => 0,
+                'pembayaran' => 0,
+                'tabungan' => 0,
+                'kasbon' => 0,
+                'bayar_kasbon' => 0,
+                'deposit' => 0,
+                'bayar_kasbon' => 0,
+                'pembayaran' => 0,
                 'status' => 'null',
-                'kode_karyawan' => $this->kode(),
+                'kode_karyawan' => $kode_karyawan,
                 'qrcode_karyawan' => 'https://batlink.id/karyawan/' . $kode,
                 // 'qrcode_karyawan' => 'http://192.168.1.46/batlink/karyawan/' . $kode
                 'tanggal' => Carbon::now('Asia/Jakarta'),
@@ -103,17 +123,91 @@ class KaryawanController extends Controller
         return redirect('admin/karyawan')->with('success', 'Berhasil menambahkan karyawan');
     }
 
+    // public function kodedriver()
+    // {
+    //     $id = Karyawan::getId();
+    //     foreach ($id as $value);
+    //     $idlm = $value->id;
+    //     $idbr = $idlm + 1;
+    //     $num = sprintf("%06s", $idbr);
+    //     $data = 'AD';
+    //     $kode_karyawan = $data . $num;
+
+    //     return $kode_karyawan;
+    // }
+
+
+    // public function kode()
+    // {
+    //     $id = Karyawan::getId();
+    //     foreach ($id as $value);
+    //     $idlm = $value->id;
+    //     $idbr = $idlm + 1;
+    //     $num = sprintf("%06s", $idbr);
+    //     $data = 'AA';
+    //     $kode_karyawan = $data . $num;
+
+    //     return $kode_karyawan;
+    // }
+
+    // public function kode()
+    // {
+    //     $lastBarang = Karyawan::latest()->first();
+    //     if (!$lastBarang) {
+    //         $num = 1;
+    //     } else {
+    //         $lastCode = $lastBarang->kode_karyawan;
+    //         $num = (int) substr($lastCode, strlen('AA')) + 1;
+    //     }
+    //     $formattedNum = sprintf("%06s", $num);
+    //     $prefix = 'AA';
+    //     $newCode = $prefix . $formattedNum;
+    //     return $newCode;
+    // }
+
+    // public function kodedriver()
+    // {
+    //     $lastBarang = Karyawan::latest()->first();
+    //     if (!$lastBarang) {
+    //         $num = 1;
+    //     } else {
+    //         $lastCode = $lastBarang->kode_karyawan;
+    //         $num = (int) substr($lastCode, strlen('AD')) + 1;
+    //     }
+    //     $formattedNum = sprintf("%06s", $num);
+    //     $prefix = 'AD';
+    //     $newCode = $prefix . $formattedNum;
+    //     return $newCode;
+    // }
+
     public function kode()
     {
-        $id = Karyawan::getId();
-        foreach ($id as $value);
-        $idlm = $value->id;
-        $idbr = $idlm + 1;
-        $num = sprintf("%06s", $idbr);
-        $data = 'AA';
-        $kode_karyawan = $data . $num;
+        $lastBarang = Karyawan::latest()->first();
+        if (!$lastBarang) {
+            $num = 1;
+        } else {
+            $lastCode = $lastBarang->kode_karyawan;
+            $num = (int) substr($lastCode, strlen('FE')) + 1;
+        }
+        $formattedNum = sprintf("%06s", $num);
+        $prefix = 'AA';
+        $newCode = $prefix . $formattedNum;
+        return $newCode;
+    }
 
-        return $kode_karyawan;
+    public function kodedriver()
+    {
+        $lastBarang = Karyawan::latest()->first();
+        if (!$lastBarang) {
+            $num = 1;
+        } else {
+            $lastCode = $lastBarang->kode_karyawan;
+            $num = (int) substr($lastCode, strlen('FE')) + 1;
+        }
+        $formattedNum = sprintf("%06s", $num);
+        $prefix = 'AD';
+        $newCode = $prefix . $formattedNum;
+        return $newCode;
     }
 
     public function cetakpdf($id)

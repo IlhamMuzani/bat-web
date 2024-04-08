@@ -15,11 +15,13 @@ return new class extends Migration
     {
         Schema::create('laporankirs', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->unsignedBigInteger('nokir_id')->nullable();
             $table->foreign('nokir_id')->references('id')->on('nokirs')->onDelete('set null');
             $table->string('kode_perpanjangan')->nullable();
-            $table->string('kategori')->nullable();
             $table->string('masa_berlaku')->nullable();
+            $table->string('kategori')->nullable();
             $table->string('jumlah')->nullable();
             $table->string('tanggal')->nullable();
             $table->string('tanggal_awal')->nullable();
@@ -27,6 +29,7 @@ return new class extends Migration
             $table->string('status')->nullable();
             $table->string('status_kir')->nullable();
             $table->string('status_notif')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

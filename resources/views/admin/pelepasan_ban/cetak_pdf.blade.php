@@ -188,6 +188,11 @@
             </td>
         </tr>
     </table>
+
+
+        <div style="text-align: right; font-size:12px; margin-top:25px">
+        <span style="font-style: italic;">Printed Date {{ \Carbon\Carbon::now()->format('Y-m-d H:i:s') }}</span>
+    </div>
 </body>
 
 </html>

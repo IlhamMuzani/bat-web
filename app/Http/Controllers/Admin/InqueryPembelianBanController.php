@@ -148,6 +148,8 @@ class InqueryPembelianBanController extends Controller
             'supplier_id' => $request->supplier_id,
             'tanggal' => $format_tanggal,
             'tanggal_awal' => $tanggal,
+            'grand_total' => str_replace(',', '.', str_replace('.', '', $request->grand_total)),
+            // 'grand_total' => str_replace('.', '', $request->grand_total),
             'status' => 'posting',
         ]);
 
@@ -166,7 +168,7 @@ class InqueryPembelianBanController extends Controller
                     'kondisi_ban' => $data_pesanan['kondisi_ban'],
                     'merek_id' => $data_pesanan['merek_id'],
                     'typeban_id' => $data_pesanan['typeban_id'],
-                    'harga' => $data_pesanan['harga'],
+                    'harga' =>  str_replace(',', '.', str_replace('.', '', $data_pesanan['harga'])),
                 ]);
             } else {
                 $existingDetail = Ban::where([
@@ -182,13 +184,13 @@ class InqueryPembelianBanController extends Controller
                         'pembelian_ban_id' => $transaksi->id,
                         'qrcode_ban' => 'https://batlink.id/ban/' . $this->kodeban(),
                         'status' => 'stok',
-                        'tanggal_awal' => Carbon::now('Asia/Jakarta'),
+                        'tanggal_awal' => Carbon::now()->format('Y-m-d'),
                         'no_seri' => $data_pesanan['no_seri'],
                         'ukuran_id' => $data_pesanan['ukuran_id'],
                         'kondisi_ban' => $data_pesanan['kondisi_ban'],
                         'merek_id' => $data_pesanan['merek_id'],
                         'typeban_id' => $data_pesanan['typeban_id'],
-                        'harga' => $data_pesanan['harga'],
+                        'harga' =>  str_replace(',', '.', str_replace('.', '', $data_pesanan['harga'])),
                     ]);
                 }
             }
@@ -312,6 +314,15 @@ class InqueryPembelianBanController extends Controller
             // tidak memiliki akses
             return back()->with('error', array('Anda tidak memiliki akses'));
         }
+    }
+
+    public function hapusban($id)
+    {
+        $ban = Pembelian_ban::where('id', $id)->first();
+
+        $ban->detail_ban()->delete();
+        $ban->delete();
+        return back()->with('success', 'Berhasil');
     }
 
     public function destroy($id)
