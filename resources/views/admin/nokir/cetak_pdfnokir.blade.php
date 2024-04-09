@@ -240,10 +240,10 @@
                         <tr>
                             <td data-toggle="modal" data-target="#modal-qrcode-{{ $nokir->id }}"
                                 style="display: inline-block;">
-                                <img src="data:image/png;base64, {!! base64_encode(
+                                {{-- <img src="data:image/png;base64, {!! base64_encode(
                                     QrCode::format('png')->merge(public_path('storage/uploads/gambar_logo/dinas_perhubungand2.png'), 0.2, true)->size(75)->generate($nokir->qrcode_kir),
-                                ) !!}" alt="">
-                                {{-- {!! DNS2D::getBarcodeHTML("$nokir->qrcode_kir", 'QRCODE', 2.5, 2.5) !!} --}}
+                                ) !!}" alt=""> --}}
+                                {!! DNS2D::getBarcodeHTML("$nokir->qrcode_kir", 'QRCODE', 2.5, 2.5) !!}
                             </td>
                         </tr>
                     </table>
