@@ -17,17 +17,31 @@ use Illuminate\Support\Facades\Storage;
 
 class KendaraanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (auth()->check() && auth()->user()->menu['kendaraan']) {
-            // Retrieve the vehicles ordered by the latest input
-            $kendaraans = Kendaraan::orderBy('created_at', 'desc')->get();
+            if ($request->has('keyword')) {
+                $keyword = $request->keyword;
+                $kendaraans = Kendaraan::with('jenis_kendaraan')
+                    ->where(function ($query) use ($keyword) {
+                        $query->whereHas('jenis_kendaraan', function ($query) use ($keyword) {
+                            $query->where('nama_jenis_kendaraan', 'like', "%$keyword%");
+                        })
+                            ->orWhere('kode_kendaraan', 'like', "%$keyword%")
+                            ->orWhere('no_kabin', 'like', "%$keyword%")
+                            ->orWhere('no_pol', 'like', "%$keyword%");
+                    })
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(10);
+            } else {
+                $kendaraans = Kendaraan::with('jenis_kendaraan')
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(10);
+            }
 
-            return view('admin/kendaraan.index', compact('kendaraans'));
-        } else {
-            // tidak memiliki akses
-            return back()->with('error', ['Anda tidak memiliki akses']);
+            return view('admin.kendaraan.index', compact('kendaraans'));
         }
+        return back()->with('error', array('Anda tidak memiliki akses'));
     }
 
     public function create()

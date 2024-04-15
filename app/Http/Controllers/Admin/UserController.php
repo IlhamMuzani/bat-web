@@ -14,15 +14,28 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (auth()->check() && auth()->user()->menu['user']) {
-
-            $users = User::where(['cek_hapus' => 'tidak'])->get();
-            return view('admin/user.index', compact('users'));
+            if ($request->has('keyword')) {
+                $keyword = $request->keyword;
+                $users = User::where(['cek_hapus' => 'tidak'])
+                    ->with('karyawan')
+                    ->where(function ($query) use ($keyword) {
+                        $query->whereHas('karyawan', function ($query) use ($keyword) {
+                            $query->where('nama_lengkap', 'like', "%$keyword%");
+                        })
+                            ->orWhere('kode_user', 'like', "%$keyword%");
+                    })
+                    ->paginate(10);
+            } else {
+                $users = User::where(['cek_hapus' => 'tidak'])
+                    ->with('karyawan')
+                    ->paginate(10);
+            }
+            return view('admin.user.index', compact('users'));
         } else {
-            // tidak memiliki akses
-            return back()->with('error', array('Anda tidak memiliki akses'));
+            return back()->with('error', 'Anda tidak memiliki akses');
         }
     }
 
