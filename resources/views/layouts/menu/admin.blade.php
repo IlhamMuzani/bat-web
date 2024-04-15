@@ -8,6 +8,19 @@
         </p>
     </a>
 </li>
+<li class="nav-header">Search</li>
+
+<div class="form-inline">
+    <div class="input-group" data-widget="sidebar-search">
+        <input class="form-control form-control-sidebar" type="search" placeholder="Search"
+            aria-label="Search">
+        <div class="input-group-append">
+            <button class="btn btn-sidebar">
+                <i class="fas fa-search fa-fw"></i>
+            </button>
+        </div>
+    </div>
+</div>
 <li class="nav-header">Menu</li>
 <li
     class="nav-item {{ request()->is('admin/akun*') ||
@@ -551,6 +564,16 @@
                 </a>
             </li>
         @endif
+        @if (auth()->check() && auth()->user()->menu['deposit sopir'])
+            <li class="nav-item">
+                <a href="{{ url('admin/saldo_kasbon') }}"
+                    class="nav-link {{ request()->is('admin/saldo_kasbon*') || request()->is('admin/pelunasan_deposit*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 14px;">Deposit Karyawan
+                    </p>
+                </a>
+            </li>
+        @endif
         @if (auth()->check() && auth()->user()->menu['memo ekspedisi'])
             <li class="nav-item">
                 <a href="{{ url('admin/tablememo') }}"
@@ -725,6 +748,17 @@
                     class="nav-link {{ request()->is('admin/inquery_penerimaankaskecil*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
                     <p style="font-size: 14px;">Inquery Saldo Kas Kecil
+                    </p>
+                </a>
+            </li>
+        @endif
+        @if (auth()->check() && auth()->user()->menu['inquery penerimaan kas kecil'])
+            <li class="nav-item">
+                <a href="{{ url('admin/inquery_penambahansaldokasbon') }}"
+                    class="nav-link {{ request()->is('admin/inquery_penambahansaldokasbon*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 14px;">Inquery Saldo -<br>
+                        <span style="margin-left: 32px">Deposit Karyawan</span>
                     </p>
                 </a>
             </li>

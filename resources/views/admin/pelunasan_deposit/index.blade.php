@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Inquery Perhitungan Gaji')
+@section('title', 'Pelunasan Deposit Karyawan')
 
 @section('content')
     <!-- Content Header (Page header) -->
@@ -8,11 +8,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Inquery Perhitungan Gaji</h1>
+                    <h1 class="m-0">Pelunasan Deposit Karyawan</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item active">Inquery Perhitungan Gaji</li>
+                        <li class="breadcrumb-item active">Pelunasan Deposit Karyawan</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -43,7 +43,7 @@
             @endif
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Inquery Perhitungan Gaji</h3>
+                    <h3 class="card-title">Pelunasan Deposit Karyawan</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -51,15 +51,11 @@
                         <div class="row">
                             <div class="col-md-2 mb-3">
                                 <select class="custom-select form-control" id="statusx" name="statusx">
-                                    <option value="">- Pilih Kategori -</option>
-                                    <option value="memo_perjalanan" selected>Gaji Mingguan</option>
-                                    <option value="slip_mingguan">Slip Gaji Mingguan</option>
-                                    @if (auth()->check() && auth()->user()->menu['gaji karyawan'])
-                                        <option value="memo_borong">Gaji Bulanan</option>
-                                        <option value="slip_bulanan">Slip Gaji Bulanan</option>
-                                    @endif
+                                    <option value="">- Pilih -</option>
+                                    <option value="penambahan">Penambahan Deposit Pelunasan Karyawan</option>
+                                    <option value="pengembalian" selected>Pelunasan Deposit Karyawan</option>
+                                    <option value="saldo">Saldo Deposit Karyawan</option>
                                 </select>
-                                <label>(Kategori)</label>
                             </div>
                             <div class="col-md-2 mb-3">
                                 <select class="custom-select form-control" id="status" name="status">
@@ -86,21 +82,15 @@
                                 <button type="button" class="btn btn-outline-primary btn-block" onclick="cari()">
                                     <i class="fas fa-search"></i> Cari
                                 </button>
-                                <input type="hidden" name="ids" id="selectedIds" value="">
-                                <button type="button" class="btn btn-primary btn-block mt-1" id="checkfilter"
-                                    onclick="printSelectedData()" target="_blank">
-                                    <i class="fas fa-print"></i> Cetak Filter
-                                </button>
                             </div>
                         </div>
                     </form>
-                    <table id="datatables66" class="table table-bordered table-striped table-hover" style="font-size: 13px">
-                        <thead class="thead-dark">
+                    <table id="datatables66" class="table table-bordered table-striped" style="font-size: 13px">
+                        <thead>
                             <tr>
-                                <th class="text-center" width="10"> <input type="checkbox" name=""
-                                        id="select_all_ids"></th>
                                 <th class="text-center">No</th>
-                                <th>Kode Gaji</th>
+                                <th>Kode Pelunasan Deposit</th>
+                                <th>Kategori</th>
                                 <th>Tanggal</th>
                                 <th>Bag.Input</th>
                                 <th>Periode Awal</th>
@@ -112,12 +102,12 @@
                         <tbody>
                             @foreach ($inquery as $perhitungan)
                                 <tr class="dropdown"{{ $perhitungan->id }}>
-                                    <td><input type="checkbox" name="selectedIds[]" class="checkbox_ids"
-                                            value="{{ $perhitungan->id }}">
-                                    </td>
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <td>
                                         {{ $perhitungan->kode_gaji }}
+                                    </td>
+                                    <td>
+                                        {{ $perhitungan->kategori }}
                                     </td>
                                     <td>
                                         {{ $perhitungan->tanggal_awal }}
@@ -136,7 +126,7 @@
                                     <td>
                                         {{ $perhitungan->periode_akhir }}
                                     </td>
-                                    <td class="text-right">{{ number_format($perhitungan->total_gaji, 2, ',', '.') }}</td>
+                                    <td class="text-right">{{ number_format($perhitungan->grand_total, 2, ',', '.') }}</td>
                                     <td class="text-center">
                                         @if ($perhitungan->status == 'posting')
                                             <button type="button" class="btn btn-success btn-sm">
@@ -149,42 +139,21 @@
                                         @endif
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             @if ($perhitungan->status == 'unpost')
-                                                {{-- @if (auth()->check() && auth()->user()->fitur['inquery perhitungan ekspedisi posting']) --}}
-                                                <a class="dropdown-item posting-btn"
-                                                    data-memo-id="{{ $perhitungan->id }}">Posting</a>
-                                                {{-- @endif --}}
-                                                {{-- @if (auth()->check() && auth()->user()->fitur['inquery perhitungan ekspedisi update']) --}}
-                                                <a class="dropdown-item"
-                                                    href="{{ url('admin/inquery_perhitungangaji/' . $perhitungan->id . '/edit') }}">Update</a>
-                                                {{-- @endif --}}
                                                 {{-- @if (auth()->check() && auth()->user()->fitur['inquery perhitungan ekspedisi show']) --}}
                                                 <a class="dropdown-item"
-                                                    href="{{ url('admin/inquery_perhitungangaji/' . $perhitungan->id) }}">Show</a>
-                                                {{-- @endif --}}
-                                                {{-- @if (auth()->check() && auth()->user()->fitur['inquery perhitungan ekspedisi delete']) --}}
-                                                <form style="margin-top:5px" method="GET"
-                                                    action="{{ route('hapusperhitungan', ['id' => $perhitungan->id]) }}">
-                                                    <button type="submit"
-                                                        class="dropdown-item btn btn-outline-danger btn-block mt-2">
-                                                        </i> Delete
-                                                    </button>
-                                                </form>
+                                                    href="{{ url('admin/pelunasan_deposit/' . $perhitungan->id) }}">Show</a>
                                                 {{-- @endif --}}
                                             @endif
                                             @if ($perhitungan->status == 'posting')
-                                                {{-- @if (auth()->check() && auth()->user()->fitur['inquery perhitungan ekspedisi unpost']) --}}
-                                                <a class="dropdown-item unpost-btn"
-                                                    data-memo-id="{{ $perhitungan->id }}">Unpost</a>
-                                                {{-- @endif --}}
                                                 {{-- @if (auth()->check() && auth()->user()->fitur['inquery perhitungan ekspedisi show']) --}}
                                                 <a class="dropdown-item"
-                                                    href="{{ url('admin/inquery_perhitungangaji/' . $perhitungan->id) }}">Show</a>
+                                                    href="{{ url('admin/pelunasan_deposit/' . $perhitungan->id) }}">Show</a>
                                                 {{-- @endif --}}
                                             @endif
                                             @if ($perhitungan->status == 'selesai')
                                                 {{-- @if (auth()->check() && auth()->user()->fitur['inquery perhitungan ekspedisi show']) --}}
                                                 <a class="dropdown-item"
-                                                    href="{{ url('admin/inquery_perhitungangaji/' . $perhitungan->id) }}">Show</a>
+                                                    href="{{ url('admin/pelunasan_deposit/' . $perhitungan->id) }}">Show</a>
                                                 {{-- @endif --}}
                                             @endif
                                         </div>
@@ -237,116 +206,9 @@
         var form = document.getElementById('form-action');
 
         function cari() {
-            form.action = "{{ url('admin/inquery_perhitungangaji') }}";
+            form.action = "{{ url('admin/pelunasan_deposit') }}";
             form.submit();
         }
-    </script>
-
-    {{-- <script>
-        $(function(e) {
-            $("#select_all_ids").click(function() {
-                $('.checkbox_ids').prop('checked', $(this).prop('checked'))
-            })
-        });
-
-        function printSelectedData() {
-            var selectedIds = document.querySelectorAll(".checkbox_ids:checked");
-            if (selectedIds.length === 0) {
-                alert("Harap centang setidaknya satu item sebelum mencetak.");
-            } else {
-                var selectedCheckboxes = document.querySelectorAll('.checkbox_ids:checked');
-                var selectedIds = [];
-                selectedCheckboxes.forEach(function(checkbox) {
-                    selectedIds.push(checkbox.value);
-                });
-                document.getElementById('selectedIds').value = selectedIds.join(',');
-                var selectedIdsString = selectedIds.join(',');
-                window.location.href = "{{ url('admin/cetak_fakturekspedisifilter') }}?ids=" + selectedIdsString;
-                // var url = "{{ url('admin/ban/cetak_pdffilter') }}?ids=" + selectedIdsString;
-            }
-        }
-    </script> --}}
-
-    {{-- unpost memo  --}}
-    <script>
-        $(document).ready(function() {
-            $('.unpost-btn').click(function() {
-                var memoId = $(this).data('memo-id');
-
-                // Tampilkan modal loading saat permintaan AJAX diproses
-                $('#modal-loading').modal('show');
-
-                // Kirim permintaan AJAX untuk melakukan unpost
-                $.ajax({
-                    url: "{{ url('admin/inquery_perhitungangaji/unpostperhitungan/') }}/" + memoId,
-                    type: 'GET',
-                    data: {
-                        id: memoId
-                    },
-                    success: function(response) {
-                        // Sembunyikan modal loading setelah permintaan selesai
-                        $('#modal-loading').modal('hide');
-
-                        // Tampilkan pesan sukses atau lakukan tindakan lain sesuai kebutuhan
-                        console.log(response);
-
-                        // Tutup modal setelah berhasil unpost
-                        $('#modal-posting-' + memoId).modal('hide');
-
-                        // Reload the page to refresh the table
-                        location.reload();
-                    },
-                    error: function(error) {
-                        // Sembunyikan modal loading setelah permintaan selesai
-                        $('#modal-loading').modal('hide');
-
-                        // Tampilkan pesan error atau lakukan tindakan lain sesuai kebutuhan
-                        console.log(error);
-                    }
-                });
-            });
-        });
-    </script>
-    {{-- posting memo --}}
-    <script>
-        $(document).ready(function() {
-            $('.posting-btn').click(function() {
-                var memoId = $(this).data('memo-id');
-
-                // Tampilkan modal loading saat permintaan AJAX diproses
-                $('#modal-loading').modal('show');
-
-                // Kirim permintaan AJAX untuk melakukan posting
-                $.ajax({
-                    url: "{{ url('admin/inquery_perhitungangaji/postingperhitungan/') }}/" +
-                        memoId,
-                    type: 'GET',
-                    data: {
-                        id: memoId
-                    },
-                    success: function(response) {
-                        // Sembunyikan modal loading setelah permintaan selesai
-                        $('#modal-loading').modal('hide');
-
-                        // Tampilkan pesan sukses atau lakukan tindakan lain sesuai kebutuhan
-                        console.log(response);
-
-                        // Tutup modal setelah berhasil posting
-                        $('#modal-posting-' + memoId).modal('hide');
-
-                        // Reload the page to refresh the table
-                        location.reload();
-                    },
-                    error: function(error) {
-                        // Sembunyikan modal loading setelah permintaan selesai
-                        $('#modal-loading').modal('hide');
-
-                        // Tampilkan pesan error atau lakukan tindakan lain sesuai kebutuhan
-                        console.log(error);
-                    }
-                });
-            });
-        });
     </script>
 
     <script>
@@ -414,17 +276,14 @@
 
                 // Check the selected value and redirect accordingly
                 switch (selectedValue) {
-                    case 'memo_perjalanan':
-                        window.location.href = "{{ url('admin/inquery_perhitungangaji') }}";
+                    case 'penambahan':
+                        window.location.href = "{{ url('admin/penambahan_saldokasbon') }}";
                         break;
-                    case 'slip_mingguan':
-                        window.location.href = "{{ url('admin/inquery_slipgaji') }}";
+                    case 'pengembalian':
+                        window.location.href = "{{ url('admin/pelunasan_deposit') }}";
                         break;
-                    case 'memo_borong':
-                        window.location.href = "{{ url('admin/inquery_perhitungangajibulanan') }}";
-                        break;
-                    case 'slip_bulanan':
-                        window.location.href = "{{ url('admin/inquery_slipgajibulanan') }}";
+                    case 'saldo':
+                        window.location.href = "{{ url('admin/saldo_kasbon') }}";
                         break;
                     default:
                         // Handle other cases or do nothing

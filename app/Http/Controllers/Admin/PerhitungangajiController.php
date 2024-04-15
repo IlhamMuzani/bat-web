@@ -7,14 +7,16 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Detail_gajikaryawan;
+use App\Models\Detail_pelunasandeposit;
 use App\Models\Detail_pengeluaran;
 use App\Models\Detail_tariftambahan;
 use App\Models\Karyawan;
 use App\Models\Kasbon_karyawan;
 use App\Models\Pengeluaran_kaskecil;
+use App\Models\Pelunasan_deposit;
 use App\Models\Perhitungan_gajikaryawan;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class PerhitungangajiController extends Controller
 {
@@ -169,10 +171,6 @@ class PerhitungangajiController extends Controller
             foreach ($data_pembelians as $data_pesanan) {
                 // Mendapatkan nilai potongan dari model Karyawan
                 $karyawan = Karyawan::find($data_pesanan['karyawan_id']);
-                $kasbon = Kasbon_karyawan::where('karyawan_id', $data_pesanan['karyawan_id'])->latest()->first();
-
-                // Inisialisasi potongan_ke
-                $potongan_ke = null;
 
                 // Simpan Detail_gajikaryawan baru
                 $detailfaktur = Detail_gajikaryawan::create([
@@ -203,14 +201,13 @@ class PerhitungangajiController extends Controller
                     'gajinol_pelunasan' => str_replace('.', '', $data_pesanan['gajinol_pelunasan']),
                     'gaji_bersih' => str_replace('.', '', $data_pesanan['gaji_bersih']),
                     'kasbon_awal' => $karyawan ? $karyawan->kasbon : 0,
-                    'sisa_kasbon' => $karyawan->kasbon - str_replace('.', '', $data_pesanan['pelunasan_kasbon']),
+                    'sisa_kasbon' => $karyawan->kasbon,
                     'status' => 'unpost',
                     'tanggal' => $format_tanggal,
                     'tanggal_awal' => $tanggal,
                 ]);
             }
         }
-
 
         $kodepengeluaran = $this->kodepengeluaran();
 
@@ -220,11 +217,11 @@ class PerhitungangajiController extends Controller
             'kode_pengeluaran' => $this->kodepengeluaran(),
             // 'kendaraan_id' => $request->kendaraan_id,
             'keterangan' => $request->keterangan,
-            'grand_total' => str_replace(',', '.', str_replace('.', '', $request->grand_total)),
+            'grand_total' => str_replace(',', '.', str_replace('.', '', $request->total_gaji)),
             'jam' => $tanggal1->format('H:i:s'),
             'tanggal' => $format_tanggal,
             'tanggal_awal' => $tanggal,
-            'qrcode_return' => 'https://javaline.id/pengeluaran_kaskecil/' . $kodepengeluaran,
+            'qrcode_return' => 'https://batlink.id/pengeluaran_kaskecil/' . $kodepengeluaran,
             'status' => 'unpost',
         ]);
 
@@ -235,7 +232,7 @@ class PerhitungangajiController extends Controller
             'kode_akun' => 'KA000004',
             'nama_akun' => 'GAJI & TUNJANGAN',
             'keterangan' => $request->keterangan,
-            'nominal' => str_replace(',', '.', str_replace('.', '', $request->grand_total)),
+            'nominal' => str_replace(',', '.', str_replace('.', '', $request->total_gaji)),
             'status' => 'unpost',
         ]);
 
@@ -356,7 +353,6 @@ class PerhitungangajiController extends Controller
         }
     }
 
-
     public function kode()
     {
         // Mengambil kode terbaru dari database dengan awalan 'MP'
@@ -386,21 +382,6 @@ class PerhitungangajiController extends Controller
         return $newCode;
     }
 
-    // public function kodegaji()
-    // {
-    //     $lastBarang = Detail_gajikaryawan::latest()->first();
-    //     if (!$lastBarang) {
-    //         $num = 1;
-    //     } else {
-    //         $lastCode = $lastBarang->kode_gajikaryawan;
-    //         $num = (int) substr($lastCode, strlen('GK')) + 1;
-    //     }
-    //     $formattedNum = sprintf("%06s", $num);
-    //     $prefix = 'GK';
-    //     $newCode = $prefix . $formattedNum;
-    //     return $newCode;
-    // }
-
     public function kodegaji()
     {
         $gaji = Detail_gajikaryawan::all();
@@ -419,14 +400,41 @@ class PerhitungangajiController extends Controller
         return $kodeGaji;
     }
 
+    public function kodepelunasan()
+    {
+        // Mengambil kode terbaru dari database dengan awalan 'MP'
+        $lastBarang = Pelunasan_deposit::where('kode_pelunasan', 'like', 'DK%')->latest()->first();
+
+        // Jika tidak ada kode sebelumnya, mulai dengan 1
+        if (!$lastBarang) {
+            $num = 1;
+        } else {
+            // Jika ada kode sebelumnya, ambil nomor terakhir
+            $lastCode = $lastBarang->kode_pelunasan;
+
+            // Ambil nomor dari kode terakhir, tanpa awalan 'MP', lalu tambahkan 1
+            $num = (int) substr($lastCode, strlen('DK')) + 1;
+        }
+
+        // Format nomor dengan leading zeros sebanyak 6 digit
+        $formattedNum = sprintf("%06s", $num);
+
+        // Awalan untuk kode baru
+        $prefix = 'DK';
+
+        // Buat kode baru dengan menggabungkan awalan dan nomor yang diformat
+        $newCode = $prefix . $formattedNum;
+
+        // Kembalikan kode
+        return $newCode;
+    }
 
     public function cetakpdf($id)
     {
         $cetakpdf = Perhitungan_gajikaryawan::where('id', $id)->first();
         $details = Detail_gajikaryawan::where('perhitungan_gajikaryawan_id', $cetakpdf->id)->get();
 
-        $pdf = PDF::loadView('admin.perhitungan_gaji.cetak_pdf', compact('cetakpdf', 'details'));
-        $pdf->setPaper('letter', 'portrait'); // Set the paper size to portrait letter
+        $pdf = PDF::loadView('admin.perhitungan_gaji.cetak_pdf', compact('cetakpdf', 'details'))->setPaper('a4', 'landscape');
 
         return $pdf->stream('Gaji_karyawan.pdf');
     }

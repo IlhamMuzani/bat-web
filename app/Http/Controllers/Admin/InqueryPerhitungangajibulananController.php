@@ -15,8 +15,10 @@ use App\Models\Detail_gajikaryawan;
 use App\Models\Detail_pengeluaran;
 use App\Models\Karyawan;
 use App\Models\Kasbon_karyawan;
+use App\Models\Pelunasan_deposit;
 use App\Models\Pengeluaran_kaskecil;
 use App\Models\Saldo;
+use App\Models\Total_kasbon;
 use Illuminate\Support\Facades\Validator;
 use Egulias\EmailValidator\Result\Reason\DetailedReason;
 use Illuminate\Support\Facades\DB;
@@ -372,23 +374,7 @@ class InqueryPerhitungangajibulananController extends Controller
     {
         try {
             $item = Perhitungan_gajikaryawan::findOrFail($id);
-
-            $TotalGaji = $item->total_gaji;
-
-            $lastSaldo = Saldo::latest()->first();
-            if (!$lastSaldo) {
-                return back()->with('error', 'Saldo tidak ditemukan');
-            }
-            $totalgaji = $item->total_gaji;
-            if ($lastSaldo->sisa_saldo < $totalgaji) {
-                return back()->with('error', 'Saldo tidak mencukupi');
-            }
-
-            $sisaSaldo = $lastSaldo->sisa_saldo + $TotalGaji;
-            Saldo::create([
-                'sisa_saldo' => $sisaSaldo,
-            ]);
-
+            $TotalPelunasan = $item->total_pelunasan;
             $detailGaji = Detail_gajikaryawan::where('perhitungan_gajikaryawan_id', $id)->get();
 
             foreach ($detailGaji as $detail) {
@@ -428,12 +414,18 @@ class InqueryPerhitungangajibulananController extends Controller
                 }
             }
 
-            Pengeluaran_kaskecil::where('perhitungan_gajikaryawan_id', $id)->update([
+            Pelunasan_deposit::where('perhitungan_gajikaryawan_id', $id)->update([
                 'status' => 'unpost'
             ]);
 
-            Detail_pengeluaran::where('perhitungan_gajikaryawan_id', $id)->update([
-                'status' => 'unpost'
+            $totalKasbon = Total_kasbon::latest()->first();
+            if (!$totalKasbon) {
+                return back()->with('error', 'Saldo Kasbon tidak ditemukan');
+            }
+
+            $sisaKasbon = $totalKasbon->sisa_kasbon - $TotalPelunasan;
+            Total_kasbon::create([
+                'sisa_kasbon' => $sisaKasbon,
             ]);
 
             // Update the Memo_ekspedisi status
@@ -451,22 +443,7 @@ class InqueryPerhitungangajibulananController extends Controller
     {
         try {
             $item = Perhitungan_gajikaryawan::findOrFail($id);
-
-            $TotalGaji = $item->total_gaji;
-
-            $lastSaldo = Saldo::latest()->first();
-            if (!$lastSaldo) {
-                return back()->with('error', 'Saldo tidak ditemukan');
-            }
-            $totalgaji = $item->total_gaji;
-            if ($lastSaldo->sisa_saldo < $totalgaji) {
-                return back()->with('error', 'Saldo tidak mencukupi');
-            }
-
-            $sisaSaldo = $lastSaldo->sisa_saldo - $TotalGaji;
-            Saldo::create([
-                'sisa_saldo' => $sisaSaldo,
-            ]);
+            $TotalPelunasan = $item->total_pelunasan;
 
             $detailGaji = Detail_gajikaryawan::where('perhitungan_gajikaryawan_id', $id)->get();
 
@@ -511,14 +488,18 @@ class InqueryPerhitungangajibulananController extends Controller
                 }
             }
 
-            // return;
-
-            Pengeluaran_kaskecil::where('perhitungan_gajikaryawan_id', $id)->update([
+            Pelunasan_deposit::where('perhitungan_gajikaryawan_id', $id)->update([
                 'status' => 'posting'
             ]);
 
-            Detail_pengeluaran::where('perhitungan_gajikaryawan_id', $id)->update([
-                'status' => 'posting'
+            $totalKasbon = Total_kasbon::latest()->first();
+            if (!$totalKasbon) {
+                return back()->with('error', 'Saldo Kasbon tidak ditemukan');
+            }
+
+            $sisaKasbon = $totalKasbon->sisa_kasbon + $TotalPelunasan;
+            Total_kasbon::create([
+                'sisa_kasbon' => $sisaKasbon,
             ]);
 
             // Update the Memo_ekspedisi status

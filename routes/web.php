@@ -149,6 +149,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('laporan_pemasanganban', [\App\Http\Controllers\Admin\LaporanpemasanganbanController::class, 'index']);
     Route::get('print_pemasanganban', [\App\Http\Controllers\Admin\LaporanpemasanganbanController::class, 'print_pemasanganban']);
     Route::get('cetak_pdffilter', [\App\Http\Controllers\Admin\BanController::class, 'cetak_pdffilter']);
+    Route::get('print_saldokasbon', [\App\Http\Controllers\Admin\LaporanSaldokasbonController::class, 'print_saldokasbon']);
 
     Route::get('print_sopir', [\App\Http\Controllers\Admin\DriverController::class, 'print_sopir']);
     Route::get('driver/rekapexport', [\App\Http\Controllers\Admin\DriverController::class, 'rekapexport']);
@@ -496,6 +497,10 @@ Route::middleware('admin')->prefix('admin')->group(function () {
 
     Route::get('inquery_slipgaji', [\App\Http\Controllers\Admin\InqueryslipgajiController::class, 'index']);
     Route::get('inquery_printslipgaji', [\App\Http\Controllers\Admin\InqueryslipgajiController::class, 'inquery_printslipgaji']);
+    Route::get('pelunasan_deposit/cetak-pdf/{id}', [\App\Http\Controllers\Admin\PelunasandepositController::class, 'cetakpdf']);
+    Route::get('inquery_penambahansaldokasbon/unpostpenambahansaldokasbon/{id}', [\App\Http\Controllers\Admin\InqueryPenambahansaldokasbonController::class, 'unpostpenambahansaldokasbon']);
+    Route::get('inquery_penambahansaldokasbon/postingpenambahansaldokasbon/{id}', [\App\Http\Controllers\Admin\InqueryPenambahansaldokasbonController::class, 'postingpenambahansaldokasbon']);
+    Route::get('hapuspenambahansaldokasbon/{id}', [\App\Http\Controllers\Admin\InqueryPenambahansaldokasbonController::class, 'hapuspenambahansaldokasbon'])->name('hapuspenambahansaldokasbon');
 
     Route::get('inquery_slipgajibulanan', [\App\Http\Controllers\Admin\InqueryslipgajibulananController::class, 'index']);
     Route::get('inquery_printslipgajibulanan', [\App\Http\Controllers\Admin\InqueryslipgajibulananController::class, 'inquery_printslipgajibulanan']);
@@ -598,8 +603,8 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::resource('tablepembelianban', \App\Http\Controllers\Admin\TablePelunasanbanController::class);
     Route::resource('tablepembelianpart', \App\Http\Controllers\Admin\TablePelunasanpartController::class);
     Route::resource('tablepotongan', \App\Http\Controllers\Admin\TablepotonganController::class);
-    // Route::resource('tablenota', \App\Http\Controllers\Admin\TabletagihanController::class);
-    // Route::resource('tablepenjualanreturn', \App\Http\Controllers\Admin\TabletagihanController::class);
+    Route::resource('saldo_kasbon', \App\Http\Controllers\Admin\LaporanSaldokasbonController::class);
+    Route::resource('penambahan_saldokasbon', \App\Http\Controllers\Admin\PenambahansaldokasbonController::class);
     Route::resource('potongan_penjualan', \App\Http\Controllers\Admin\PotonganpenjualanController::class);
     Route::resource('gaji_karyawan', \App\Http\Controllers\Admin\GajikaryawanController::class);
     Route::resource('perhitungan_gaji', \App\Http\Controllers\Admin\PerhitungangajiController::class);
@@ -612,4 +617,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::resource('laporan_kasbonkaryawan', \App\Http\Controllers\Admin\LaporanKasbonkaryawanController::class);
     Route::resource('kasbon_karyawan', \App\Http\Controllers\Admin\KasbonkaryawanController::class);
     Route::resource('inquery_kasbonkaryawan', \App\Http\Controllers\Admin\InqueryKasbonkaryawanController::class);
+    Route::resource('pelunasan_deposit', \App\Http\Controllers\Admin\PelunasandepositController::class);
+    Route::resource('inquery_penambahansaldokasbon', \App\Http\Controllers\Admin\InqueryPenambahansaldokasbonController::class);
+
 });

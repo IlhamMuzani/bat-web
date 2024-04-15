@@ -12,14 +12,16 @@ use App\Models\Perhitungan_gajikaryawan;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
 use App\Models\Detail_gajikaryawan;
+use App\Models\Detail_pelunasandeposit;
 use App\Models\Detail_pengeluaran;
 use App\Models\Karyawan;
 use App\Models\Kasbon_karyawan;
+use App\Models\Pelunasan_deposit;
 use App\Models\Pengeluaran_kaskecil;
 use App\Models\Saldo;
+use App\Models\Total_kasbon;
 use Illuminate\Support\Facades\Validator;
 use Egulias\EmailValidator\Result\Reason\DetailedReason;
-use Illuminate\Support\Facades\DB;
 
 class InqueryPerhitungangajiController extends Controller
 {
@@ -212,20 +214,9 @@ class InqueryPerhitungangajiController extends Controller
 
             if ($detailId) {
 
+                // Mendapatkan nilai potongan dari model Karyawan
                 $karyawan = Karyawan::find($data_pesanan['karyawan_id']);
-                $kasbon = Kasbon_karyawan::where('karyawan_id', $data_pesanan['karyawan_id'])->latest()->first();
-                $potongan = $karyawan->potongan_ke ?? 0;
 
-                // Inisialisasi potongan_ke
-                $potongan_ke = null;
-
-                // Jika nilai 'pelunasan_kasbon' tidak null dan tidak sama dengan 0, tambahkan 1 ke potongan
-                if ($data_pesanan['pelunasan_kasbon'] !== null && $data_pesanan['pelunasan_kasbon'] !== 0) {
-                    $potongan_ke = $potongan + 1;
-                } else {
-                    // Jika tidak, gunakan nilai potongan yang ada
-                    $potongan_ke = $potongan;
-                }
 
                 Detail_gajikaryawan::where('id', $detailId)->update([
                     'perhitungan_gajikaryawan_id' => $transaksi->id,
@@ -253,9 +244,8 @@ class InqueryPerhitungangajiController extends Controller
                     'hasil_absen' => str_replace('.', '', $data_pesanan['hasil_absen']),
                     'gajinol_pelunasan' => str_replace('.', '', $data_pesanan['gajinol_pelunasan']),
                     'gaji_bersih' => str_replace('.', '', $data_pesanan['gaji_bersih']),
-                    'kasbon_awal' => $kasbon ? $kasbon->sub_total : 0,
+                    'kasbon_awal' => $karyawan ? $karyawan->kasbon : 0,
                     'sisa_kasbon' => $karyawan->kasbon,
-                    'potongan_ke' => $potongan_ke, // Nilai potongan_ke diambil dari potongan karyawan ditambah 1 jika pelunasan_kasbon tidak 0 atau null
                 ]);
             } else {
                 $existingDetail = Detail_gajikaryawan::where([
@@ -265,20 +255,9 @@ class InqueryPerhitungangajiController extends Controller
 
                 $kodeban = $this->kodegaji();
 
+                // Mendapatkan nilai potongan dari model Karyawan
                 $karyawan = Karyawan::find($data_pesanan['karyawan_id']);
-                $kasbon = Kasbon_karyawan::where('karyawan_id', $data_pesanan['karyawan_id'])->latest()->first();
-                $potongan = $karyawan->potongan_ke ?? 0;
 
-                // Inisialisasi potongan_ke
-                $potongan_ke = null;
-
-                // Jika nilai 'pelunasan_kasbon' tidak null dan tidak sama dengan 0, tambahkan 1 ke potongan
-                if ($data_pesanan['pelunasan_kasbon'] !== null && $data_pesanan['pelunasan_kasbon'] !== 0) {
-                    $potongan_ke = $potongan + 1;
-                } else {
-                    // Jika tidak, gunakan nilai potongan yang ada
-                    $potongan_ke = $potongan;
-                }
 
                 if (!$existingDetail) {
                     $detailfaktur = Detail_gajikaryawan::create([
@@ -309,9 +288,8 @@ class InqueryPerhitungangajiController extends Controller
                         'hasil_absen' => str_replace('.', '', $data_pesanan['hasil_absen']),
                         'gajinol_pelunasan' => str_replace('.', '', $data_pesanan['gajinol_pelunasan']),
                         'gaji_bersih' => str_replace('.', '', $data_pesanan['gaji_bersih']),
-                        'kasbon_awal' => $kasbon ? $kasbon->sub_total : 0,
+                        'kasbon_awal' => $karyawan ? $karyawan->kasbon : 0,
                         'sisa_kasbon' => $karyawan->kasbon,
-                        'potongan_ke' => $potongan_ke, // Nilai potongan_ke diambil dari potongan karyawan ditambah 1 jika pelunasan_kasbon tidak 0 atau null
                         'status' => 'unpost',
                         'tanggal' => $format_tanggal,
                         'tanggal_awal' => $tanggal,
@@ -325,7 +303,7 @@ class InqueryPerhitungangajiController extends Controller
             [
                 'perhitungan_gajikaryawan_id' => $id,
                 'keterangan' => $request->keterangan,
-                'grand_total' => str_replace(',', '.', str_replace('.', '', $request->grand_total)),
+                'grand_total' => str_replace(',', '.', str_replace('.', '', $request->total_gaji)),
                 'status' => 'unpost',
             ]
         );
@@ -335,7 +313,7 @@ class InqueryPerhitungangajiController extends Controller
             [
                 'perhitungan_gajikaryawan_id' => $id,
                 'keterangan' => $request->keterangan,
-                'nominal' => str_replace(',', '.', str_replace('.', '', $request->grand_total)),
+                'nominal' => str_replace(',', '.', str_replace('.', '', $request->total_gaji)),
                 'status' => 'unpost',
             ]
         );
@@ -361,6 +339,7 @@ class InqueryPerhitungangajiController extends Controller
             $item = Perhitungan_gajikaryawan::findOrFail($id);
 
             $TotalGaji = $item->total_gaji;
+            $TotalPelunasan = $item->total_pelunasan;
 
             $lastSaldo = Saldo::latest()->first();
             if (!$lastSaldo) {
@@ -396,22 +375,6 @@ class InqueryPerhitungangajiController extends Controller
                         'kasbon' => $kasbon + $detail->pelunasan_kasbon,
                         'bayar_kasbon' => $bayar_kasbon - $detail->pelunasan_kasbon,
                     ]);
-
-                    // Cek jika hasil pengurangan pelunasan_kasbon dari kasbon adalah 0
-                    if (($kasbon - $detail->pelunasan_kasbon) == 0) {
-                        // Set potongan_ke menjadi 0
-                        $karyawan->update([
-                            'potongan_ke' => $karyawan->potongan_backup,
-                            'kasbon' => $karyawan->kasbon_backup,
-                            'kasbon_backup' => null,
-                            'potongan_backup' => null
-                        ]);
-                    } else {
-                        // Jika tidak 0, tambahkan 1 ke potongan_ke
-                        if ($detail->pelunasan_kasbon != 0) {
-                            $karyawan->decrement('potongan_ke', 1);
-                        }
-                    }
                 }
             }
 
@@ -422,6 +385,17 @@ class InqueryPerhitungangajiController extends Controller
             Detail_pengeluaran::where('perhitungan_gajikaryawan_id', $id)->update([
                 'status' => 'unpost'
             ]);
+
+            $totalKasbon = Total_kasbon::latest()->first();
+            if (!$totalKasbon) {
+                return back()->with('error', 'Saldo Kasbon tidak ditemukan');
+            }
+
+            $sisaKasbon = $totalKasbon->sisa_kasbon + $TotalPelunasan;
+            Total_kasbon::create([
+                'sisa_kasbon' => $sisaKasbon,
+            ]);
+
 
             // Update the Memo_ekspedisi status
             $item->update([
@@ -440,6 +414,7 @@ class InqueryPerhitungangajiController extends Controller
             $item = Perhitungan_gajikaryawan::findOrFail($id);
 
             $TotalGaji = $item->total_gaji;
+            $TotalPelunasan = $item->total_pelunasan;
 
             $lastSaldo = Saldo::latest()->first();
             if (!$lastSaldo) {
@@ -450,7 +425,7 @@ class InqueryPerhitungangajiController extends Controller
                 return back()->with('error', 'Saldo tidak mencukupi');
             }
 
-            $sisaSaldo = $lastSaldo->sisa_saldo - $TotalGaji;
+            $sisaSaldo = $lastSaldo->sisa_saldo + $TotalGaji;
             Saldo::create([
                 'sisa_saldo' => $sisaSaldo,
             ]);
@@ -469,35 +444,15 @@ class InqueryPerhitungangajiController extends Controller
                 if ($karyawan) {
                     $kasbon = $karyawan->kasbon;
                     $bayar_kasbon = $karyawan->bayar_kasbon;
-
-                    $karyawan->update(['kasbon_backup' => $kasbon]);
-
-                    // Memastikan potongan_ke tidak null
-                    if ($karyawan->potongan_ke === null) {
-                        $karyawan->potongan_ke = 0;
-                    }
                     // Mengurangi kasbon dan menambah bayar_kasbon
                     $karyawan->update([
                         'kasbon' => $kasbon - $detail->pelunasan_kasbon,
                         'bayar_kasbon' => $bayar_kasbon + $detail->pelunasan_kasbon,
                     ]);
-
-                    // Cek jika hasil pengurangan pelunasan_kasbon dari kasbon adalah 0
-                    if (($kasbon - $detail->pelunasan_kasbon) == 0) {
-                        // Set potongan_ke menjadi 0
-                        $karyawan->update([
-                            'potongan_backup' => $karyawan->potongan_ke,
-                            'potongan_ke' => 0
-                        ]);
-                    } else {
-                        // Jika tidak 0, tambahkan 1 ke potongan_ke
-                        if ($detail->pelunasan_kasbon != 0) {
-                            $karyawan->increment('potongan_ke', 1);
-                        }
-                    }
                 }
             }
 
+            // return;
 
             Pengeluaran_kaskecil::where('perhitungan_gajikaryawan_id', $id)->update([
                 'status' => 'posting'
@@ -505,6 +460,16 @@ class InqueryPerhitungangajiController extends Controller
 
             Detail_pengeluaran::where('perhitungan_gajikaryawan_id', $id)->update([
                 'status' => 'posting'
+            ]);
+
+            $totalKasbon = Total_kasbon::latest()->first();
+            if (!$totalKasbon) {
+                return back()->with('error', 'Saldo Kasbon tidak ditemukan');
+            }
+
+            $sisaKasbon = $totalKasbon->sisa_kasbon - $TotalPelunasan;
+            Total_kasbon::create([
+                'sisa_kasbon' => $sisaKasbon,
             ]);
 
             // Update the Memo_ekspedisi status
@@ -535,114 +500,33 @@ class InqueryPerhitungangajiController extends Controller
 
     public function kodeakuns()
     {
-        try {
-            return DB::transaction(function () {
-                // Mengambil kode terbaru dari database dengan awalan 'KKA'
-                $lastBarang = Detail_pengeluaran::where('kode_detailakun', 'like', 'KKA%')->latest()->first();
-
-                // Mendapatkan bulan dari tanggal kode terakhir
-                $lastMonth = $lastBarang ? date('m', strtotime($lastBarang->created_at)) : null;
-                $currentMonth = date('m');
-
-                // Jika tidak ada kode sebelumnya atau bulan saat ini berbeda dari bulan kode terakhir
-                if (!$lastBarang || $currentMonth != $lastMonth) {
-                    $num = 1; // Mulai dari 1 jika bulan berbeda
-                } else {
-                    // Jika ada kode sebelumnya, ambil nomor terakhir
-                    $lastCode = $lastBarang->kode_detailakun;
-
-                    // Pisahkan kode menjadi bagian-bagian terpisah
-                    $parts = explode('/', $lastCode);
-                    $lastNum = end($parts); // Ambil bagian terakhir sebagai nomor terakhir
-                    $num = (int) $lastNum + 1; // Tambahkan 1 ke nomor terakhir
-                }
-
-                // Format nomor dengan leading zeros sebanyak 6 digit
-                $formattedNum = sprintf("%06s", $num);
-
-                // Awalan untuk kode baru
-                $prefix = 'KKA';
-                $tahun = date('y');
-                $tanggal = date('dm');
-
-                // Buat kode baru dengan menggabungkan awalan, tanggal, tahun, dan nomor yang diformat
-                $newCode = $prefix . "/" . $tanggal . $tahun . "/" . $formattedNum;
-
-                // Kembalikan kode
-                return $newCode;
-            });
-        } catch (\Throwable $e) {
-            // Jika terjadi kesalahan, melanjutkan dengan kode berikutnya
-            $lastCode = Detail_pengeluaran::where('kode_detailakun', 'like', 'KKA%')->latest()->value('kode_detailakun');
-            if (!$lastCode) {
-                $lastNum = 0;
-            } else {
-                $parts = explode('/', $lastCode);
-                $lastNum = end($parts);
-            }
-            $nextNum = (int) $lastNum + 1;
-            $formattedNextNum = sprintf("%06s", $nextNum);
-            $tahun = date('y');
-            $tanggal = date('dm');
-            return 'KKA/' . $tanggal . $tahun . "/" . $formattedNextNum;
+        $lastBarang = Detail_pengeluaran::latest()->first();
+        if (!$lastBarang) {
+            $num = 1;
+        } else {
+            $lastCode = $lastBarang->kode_detailakun;
+            $num = (int) substr($lastCode, strlen('KKA')) + 1;
         }
+        $formattedNum = sprintf("%06s", $num);
+        $prefix = 'KKA';
+        $newCode = $prefix . $formattedNum;
+        return $newCode;
     }
 
     public function kodepengeluaran()
     {
-        try {
-            return DB::transaction(function () {
-                // Mengambil kode terbaru dari database dengan awalan 'KK'
-                $lastBarang = Pengeluaran_kaskecil::where('kode_pengeluaran', 'like', 'KK%')->latest()->first();
-
-                // Mendapatkan bulan dari tanggal kode terakhir
-                $lastMonth = $lastBarang ? date('m', strtotime($lastBarang->created_at)) : null;
-                $currentMonth = date('m');
-
-                // Jika tidak ada kode sebelumnya atau bulan saat ini berbeda dari bulan kode terakhir
-                if (!$lastBarang || $currentMonth != $lastMonth) {
-                    $num = 1; // Mulai dari 1 jika bulan berbeda
-                } else {
-                    // Jika ada kode sebelumnya, ambil nomor terakhir
-                    $lastCode = $lastBarang->kode_pengeluaran;
-
-                    // Pisahkan kode menjadi bagian-bagian terpisah
-                    $parts = explode('/', $lastCode);
-                    $lastNum = end($parts); // Ambil bagian terakhir sebagai nomor terakhir
-                    $num = (int) $lastNum + 1; // Tambahkan 1 ke nomor terakhir
-                }
-
-                // Format nomor dengan leading zeros sebanyak 6 digit
-                $formattedNum = sprintf("%06s", $num);
-
-                // Awalan untuk kode baru
-                $prefix = 'KK';
-                $tahun = date('y');
-                $tanggal = date('dm');
-
-                // Buat kode baru dengan menggabungkan awalan, tanggal, tahun, dan nomor yang diformat
-                $newCode = $prefix . "/" . $tanggal . $tahun . "/" . $formattedNum;
-
-                // Kembalikan kode
-                return $newCode;
-            });
-        } catch (\Throwable $e) {
-            // Jika terjadi kesalahan, melanjutkan dengan kode berikutnya
-            $lastCode = Pengeluaran_kaskecil::where('kode_pengeluaran', 'like', 'KK%')->latest()->value('kode_pengeluaran');
-            if (!$lastCode) {
-                $lastNum = 0;
-            } else {
-                $parts = explode('/', $lastCode);
-                $lastNum = end($parts);
-            }
-            $nextNum = (int) $lastNum + 1;
-            $formattedNextNum = sprintf("%06s", $nextNum);
-            $tahun = date('y');
-            $tanggal = date('dm');
-            return 'KK/' . $tanggal . $tahun . "/" . $formattedNextNum;
+        $lastBarang = Pengeluaran_kaskecil::latest()->first();
+        if (!$lastBarang) {
+            $num = 1;
+        } else {
+            $lastCode = $lastBarang->kode_pengeluaran;
+            $num = (int) substr($lastCode, strlen('KK')) + 1;
         }
+        $formattedNum = sprintf("%06s", $num);
+        $prefix = 'KK';
+        $newCode = $prefix . $formattedNum;
+        return $newCode;
     }
-
 
 
     public function hapusperhitungan($id)
@@ -652,6 +536,7 @@ class InqueryPerhitungangajiController extends Controller
         $ban->detail_gajikaryawan()->delete();
         $ban->pengeluaran_kaskecil()->delete();
         $ban->detail_pengeluaran()->delete();
+        $ban->pelunasan_deposit()->delete();
         $ban->delete();
         return back()->with('success', 'Berhasil');
     }
