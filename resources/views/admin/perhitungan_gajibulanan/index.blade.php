@@ -1127,4 +1127,40 @@
         }
     </script>
 
+    <script>
+        var startX;
+
+        function startDrag(event) {
+            startX = event.clientX;
+            // Mencegah seleksi teks saat menyeret mouse
+            event.preventDefault();
+            document.addEventListener('mousemove', dragTable);
+            document.addEventListener('mouseup', stopDrag);
+        }
+
+        function dragTable(event) {
+            var table = document.querySelector('.table-responsive');
+            // Mendapatkan perubahan posisi mouse
+            var movementX = event.clientX - startX;
+            // Geser tabel berdasarkan arah pergerakan mouse
+            table.scrollLeft -= movementX;
+            // Simpan posisi mouse untuk digunakan di event selanjutnya
+            startX = event.clientX;
+        }
+
+        function stopDrag() {
+            document.removeEventListener('mousemove', dragTable);
+            document.removeEventListener('mouseup', stopDrag);
+        }
+
+        // Menambahkan event listener ke tabel untuk memulai drag
+        var table = document.querySelector('.table-responsive');
+        table.addEventListener('mousedown', function(event) {
+            // Periksa apakah mouse ditekan pada elemen selain sel-sel input
+            if (!event.target.tagName.toLowerCase().match(/input|textarea/)) {
+                startDrag(event);
+            }
+        });
+    </script>
+
 @endsection

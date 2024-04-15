@@ -56,8 +56,8 @@
                             </form>
                         </div>
                     </div>
-                    <table id="" class="table table-bordered table-striped">
-                        <thead>
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead class="thead-dark">
                             <tr>
                                 <th>Sisa Saldo Adm UJS</th>
                             </tr>

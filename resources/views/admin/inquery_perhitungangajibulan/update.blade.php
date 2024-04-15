@@ -199,8 +199,8 @@
                                         </td>
                                         <td style="width: 150px;">
                                             <div class="form-group">
-                                                <input type="text" onclick="Karyawan({{ $loop->index }})"
-                                                    style="font-size:14px" readonly class="form-control gaji_perhari"
+                                                <input type="text" style="font-size:14px" readonly
+                                                    class="form-control gaji_perhari"
                                                     id="gaji_perhari-{{ $loop->index }}" name="gaji_perhari[]"
                                                     value="{{ number_format($detail['gaji_perhari'], 0, ',', '.') }}">
                                             </div>
@@ -227,7 +227,8 @@
                                             <div class="form-group">
                                                 <input type="text" style="font-size:14px" readonly
                                                     class="form-control hasil_hk" id="hasil_hk-{{ $loop->index }}"
-                                                    name="hasil_hk[]" data-row-id="0" value="{{ $detail['hasil_hk'] }}">
+                                                    name="hasil_hk[]" data-row-id="0"
+                                                    value="{{ number_format($detail['hasil_hk'], 0, ',', '.') }}">
                                             </div>
                                         </td style="width: 150px;">
                                         <td>
@@ -240,8 +241,8 @@
                                         </td>
                                         <td style="width: 150px;">
                                             <div class="form-group">
-                                                <input style="font-size:14px" onclick="Karyawan({{ $loop->index }})"
-                                                    readonly type="text" class="form-control hasil_lembur"
+                                                <input style="font-size:14px" readonly type="text"
+                                                    class="form-control hasil_lembur"
                                                     id="hasil_lembur-{{ $loop->index }}" name="hasil_lembur[]"
                                                     data-row-id="0"
                                                     value="{{ number_format($detail['hasil_lembur'], 0, ',', '.') }}">
@@ -257,8 +258,8 @@
                                         </td>
                                         <td style="width: 150px;">
                                             <div class="form-group">
-                                                <input style="font-size:14px" onclick="Karyawan({{ $loop->index }})"
-                                                    readonly type="text" class="form-control hasil_storing"
+                                                <input style="font-size:14px" readonly type="text"
+                                                    class="form-control hasil_storing"
                                                     id="hasil_storing-{{ $loop->index }}" name="hasil_storing[]"
                                                     data-row-id="0"
                                                     value="{{ number_format($detail['hasil_storing'], 0, ',', '.') }}">
@@ -266,9 +267,9 @@
                                         </td>
                                         <td style="width: 150px;">
                                             <div class="form-group">
-                                                <input style="font-size:14px" onclick="Karyawan({{ $loop->index }})"
-                                                    readonly type="text" class="form-control gaji_kotor"
-                                                    id="gaji_kotor-{{ $loop->index }}" name="gaji_kotor[]"
+                                                <input style="font-size:14px" readonly type="text"
+                                                    class="form-control gaji_kotor" id="gaji_kotor-{{ $loop->index }}"
+                                                    name="gaji_kotor[]"
                                                     value="{{ number_format($detail['gaji_kotor'], 0, ',', '.') }}">
                                             </div>
                                         </td>
@@ -360,8 +361,8 @@
                                         </td>
                                         <td hidden style="width: 150px;">
                                             <div class="form-group">
-                                                <input style="font-size:14px" onclick="Karyawan(0)" readonly
-                                                    type="text" class="form-control gajinol_pelunasan"
+                                                <input style="font-size:14px" readonly type="text"
+                                                    class="form-control gajinol_pelunasan"
                                                     value="{{ number_format($detail['gajinol_pelunasan'], 0, ',', '.') }}"
                                                     id="gajinol_pelunasan-{{ $loop->index }}"
                                                     name="gajinol_pelunasan[]">
@@ -369,9 +370,9 @@
                                         </td>
                                         <td style="width: 150px;">
                                             <div class="form-group">
-                                                <input style="font-size:14px" onclick="Karyawan({{ $loop->index }})"
-                                                    readonly type="text" class="form-control gaji_bersih"
-                                                    id="gaji_bersih-{{ $loop->index }}" name="gaji_bersih[]"
+                                                <input style="font-size:14px" readonly type="text"
+                                                    class="form-control gaji_bersih" id="gaji_bersih-{{ $loop->index }}"
+                                                    name="gaji_bersih[]"
                                                     value="{{ number_format($detail['gaji_bersih'], 0, ',', '.') }}">
                                             </div>
                                         </td>
@@ -389,6 +390,11 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+                    <div class="float-left mt-3">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="addPesanan()">
+                            <i class="fas fa-plus"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -665,8 +671,7 @@
             item_pembelian += '</td>';
 
             // gaji_perhari 
-            item_pembelian += '<td onclick="Karyawan(' + key +
-                ')">';
+            item_pembelian += '<td>';
             item_pembelian += '<div class="form-group">'
             item_pembelian +=
                 '<input type="text" class="form-control gaji_perhari" style="font-size:14px" readonly id="gaji_perhari-' +
@@ -716,8 +721,7 @@
             item_pembelian += '</td>';
 
             // hasil_lembur 
-            item_pembelian += '<td onclick="Karyawan(' + key +
-                ')">';
+            item_pembelian += '<td >';
             item_pembelian += '<div class="form-group">'
             item_pembelian +=
                 '<input type="text" class="form-control hasil_lembur" style="font-size:14px" readonly id="hasil_lembur-' +
@@ -737,8 +741,7 @@
             item_pembelian += '</td>';
 
             // hasil_storing 
-            item_pembelian += '<td onclick="Karyawan(' + key +
-                ')">';
+            item_pembelian += '<td >';
             item_pembelian += '<div class="form-group">'
             item_pembelian +=
                 '<input type="text" class="form-control hasil_storing" style="font-size:14px" readonly id="hasil_storing-' +
@@ -748,8 +751,7 @@
             item_pembelian += '</td>';
 
             // gaji_kotor 
-            item_pembelian += '<td onclick="Karyawan(' + key +
-                ')">';
+            item_pembelian += '<td >';
             item_pembelian += '<div class="form-group">'
             item_pembelian +=
                 '<input type="text" class="form-control gaji_kotor" style="font-size:14px" readonly id="gaji_kotor-' +
@@ -814,8 +816,7 @@
             item_pembelian += '</td>';
 
             // hasil_absen 
-            item_pembelian += '<td onclick="Karyawan(' + key +
-                ')">';
+            item_pembelian += '<td >';
             item_pembelian += '<div class="form-group">'
             item_pembelian +=
                 '<input type="text" class="form-control hasil_absen" style="font-size:14px" readonly id="hasil_absen-' +
@@ -859,8 +860,7 @@
             item_pembelian += '</td>';
 
             // gajinol_pelunasan 
-            item_pembelian += '<td hidden onclick="Karyawan(' + key +
-                ')">';
+            item_pembelian += '<td hidden >';
             item_pembelian += '<div class="form-group">'
             item_pembelian +=
                 '<input type="text" class="form-control gajinol_pelunasan" style="font-size:14px" readonly id="gajinol_pelunasan-' +
@@ -870,8 +870,7 @@
             item_pembelian += '</td>';
 
             // gaji_bersih 
-            item_pembelian += '<td onclick="Karyawan(' + key +
-                ')">';
+            item_pembelian += '<td>';
             item_pembelian += '<div class="form-group">'
             item_pembelian +=
                 '<input type="text" class="form-control gaji_bersih" style="font-size:14px" readonly id="gaji_bersih-' +
@@ -921,7 +920,7 @@
             $('#potongan_bpjs-' + activeSpecificationIndex).val(bpjs);
             $('#gaji-' + activeSpecificationIndex).val(gaji);
 
-             // Check if bpjs is not null or has a value
+            // Check if bpjs is not null or has a value
             if (bpjs !== null && bpjs !== '') {
                 // Jika ada nilai bpjs
                 if (bpjs === 65735) {
@@ -935,7 +934,7 @@
                 // Jika tidak ada nilai bpjs, pastikan checkbox potongan_bpjs tidak dicentang dan biarkan nilainya kosong
                 $('#potongan_bpjs-' + activeSpecificationIndex).val("");
             }
-            
+
             // Hide the modal after updating the form fields
             $('#tableMemo').modal('hide');
         }
@@ -1121,5 +1120,43 @@
             return !(charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 46);
         }
     </script>
+
+
+    <script>
+        var startX;
+
+        function startDrag(event) {
+            startX = event.clientX;
+            // Mencegah seleksi teks saat menyeret mouse
+            event.preventDefault();
+            document.addEventListener('mousemove', dragTable);
+            document.addEventListener('mouseup', stopDrag);
+        }
+
+        function dragTable(event) {
+            var table = document.querySelector('.table-responsive');
+            // Mendapatkan perubahan posisi mouse
+            var movementX = event.clientX - startX;
+            // Geser tabel berdasarkan arah pergerakan mouse
+            table.scrollLeft -= movementX;
+            // Simpan posisi mouse untuk digunakan di event selanjutnya
+            startX = event.clientX;
+        }
+
+        function stopDrag() {
+            document.removeEventListener('mousemove', dragTable);
+            document.removeEventListener('mouseup', stopDrag);
+        }
+
+        // Menambahkan event listener ke tabel untuk memulai drag
+        var table = document.querySelector('.table-responsive');
+        table.addEventListener('mousedown', function(event) {
+            // Periksa apakah mouse ditekan pada elemen selain sel-sel input
+            if (!event.target.tagName.toLowerCase().match(/input|textarea/)) {
+                startDrag(event);
+            }
+        });
+    </script>
+
 
 @endsection

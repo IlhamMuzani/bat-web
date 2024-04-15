@@ -73,8 +73,8 @@
                             </div>
                         </div>
                     </form>
-                    <table id="datatables66" class="table table-bordered table-striped" style="font-size:15px">
-                        <thead>
+                    <table id="datatables66" class="table table-bordered table-striped table-hover" style="font-size: 13px">
+                        <thead class="thead-dark">
                             <tr>
                                 <th class="text-center">No</th>
                                 <th>No Kabin</th>
@@ -105,13 +105,7 @@
                                 <tr>
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <td>{{ $kendaraan->no_kabin }} {{ $kendaraan->no_pol }}</td>
-                                    <td>
-                                        @if ($kendaraan->user)
-                                            {{ $kendaraan->user->karyawan->nama_lengkap }}
-                                        @else
-                                            tidak ada
-                                        @endif
-                                    </td>
+                                    <td>{{ $kendaraan->user->karyawan->nama_lengkap }}</td>
                                     <td class="text-right">
                                         {{ $kendaraan->memo_ekspedisi->whereBetween('created_at', [$created_at, $tanggal_akhir])->count() }}
 

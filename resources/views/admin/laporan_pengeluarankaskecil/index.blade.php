@@ -75,8 +75,8 @@
                             </div>
                         </div>
                     </form>
-                    <table id="datatables66" class="table table-bordered table-striped">
-                        <thead>
+                    <table id="datatables66" class="table table-bordered table-striped table-hover" style="font-size: 13px">
+                        <thead class="thead-dark">
                             <tr>
                                 <th style=" width: 5%" class="text-center">No</th>
                                 <th style=" width: 18%">Kode Pengeluaran</th>

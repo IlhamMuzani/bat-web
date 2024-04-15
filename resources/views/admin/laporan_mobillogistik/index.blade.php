@@ -89,8 +89,8 @@
                             </div>
                         </div>
                     </form>
-                    <table class="table table-bordered table-striped">
-                        <thead>
+                    <table id="datatables66" class="table table-bordered table-striped table-hover" style="font-size: 13px">
+                        <thead class="thead-dark">
                             <tr>
                                 <th>Faktur Ekspedisi</th>
                                 <th>Tanggal</th>

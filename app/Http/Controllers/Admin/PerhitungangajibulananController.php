@@ -7,14 +7,16 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Detail_gajikaryawan;
+use App\Models\Detail_pelunasandeposit;
 use App\Models\Detail_pengeluaran;
 use App\Models\Detail_tariftambahan;
 use App\Models\Karyawan;
 use App\Models\Kasbon_karyawan;
+use App\Models\Pelunasan_deposit;
 use App\Models\Pengeluaran_kaskecil;
 use App\Models\Perhitungan_gajikaryawan;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class PerhitungangajibulananController extends Controller
 {
@@ -169,22 +171,8 @@ class PerhitungangajibulananController extends Controller
         $kodeban = $this->kodegaji();
         if ($cetakpdf) {
             foreach ($data_pembelians as $data_pesanan) {
-
                 // Mendapatkan nilai potongan dari model Karyawan
                 $karyawan = Karyawan::find($data_pesanan['karyawan_id']);
-                $kasbon = Kasbon_karyawan::where('karyawan_id', $data_pesanan['karyawan_id'])->latest()->first();
-                $potongan = $karyawan->potongan_ke ?? 0;
-
-                // Inisialisasi potongan_ke
-                $potongan_ke = null;
-
-                // Jika nilai 'pelunasan_kasbon' tidak null dan tidak sama dengan 0, tambahkan 1 ke potongan
-                if ($data_pesanan['pelunasan_kasbon'] !== null && $data_pesanan['pelunasan_kasbon'] !== 0) {
-                    $potongan_ke = $potongan + 1;
-                } else {
-                    // Jika tidak, gunakan nilai potongan yang ada
-                    $potongan_ke = $potongan;
-                }
                 // Simpan Detail_gajikaryawan baru
                 $detailfaktur = Detail_gajikaryawan::create([
                     'kode_gajikaryawan' => $this->kodegaji(),
@@ -215,8 +203,7 @@ class PerhitungangajibulananController extends Controller
                     'hasil_absen' => str_replace(',', '.', str_replace('.', '', $data_pesanan['hasil_absen'])),
                     'gajinol_pelunasan' => str_replace(',', '.', str_replace('.', '', $data_pesanan['gajinol_pelunasan'])),
                     'gaji_bersih' => str_replace(',', '.', str_replace('.', '', $data_pesanan['gaji_bersih'])),
-                    'potongan_ke' => $potongan_ke, // Nilai potongan_ke diambil dari potongan karyawan ditambah 1 jika pelunasan_kasbon tidak 0 atau null
-                    'kasbon_awal' => $kasbon ? $kasbon->sub_total : 0,
+                    'kasbon_awal' => $karyawan ? $karyawan->kasbon : 0,
                     'sisa_kasbon' => $karyawan->kasbon,
                     'status' => 'unpost',
                     'tanggal' => $format_tanggal,
@@ -225,39 +212,40 @@ class PerhitungangajibulananController extends Controller
             }
         }
 
-        $kodepengeluaran = $this->kodepengeluaran();
-
-        Pengeluaran_kaskecil::create([
-            'perhitungan_gajikaryawan_id' => $cetakpdf->id,
-            'user_id' => auth()->user()->id,
-            'kode_pengeluaran' => $this->kodepengeluaran(),
-            // 'kendaraan_id' => $request->kendaraan_id,
-            'keterangan' => $request->keterangan,
-            'grand_total' => str_replace(',', '.', str_replace('.', '', $request->grand_total)),
-            'jam' => $tanggal1->format('H:i:s'),
-            'tanggal' => $format_tanggal,
-            'tanggal_awal' => $tanggal,
-            'qrcode_return' => 'https://javaline.id/pengeluaran_kaskecil/' . $kodepengeluaran,
-            'status' => 'unpost',
-        ]);
-
-        Detail_pengeluaran::create([
-            'perhitungan_gajikaryawan_id' => $cetakpdf->id,
-            'barangakun_id' => 1,
-            'kode_detailakun' => $this->kodeakuns(),
-            'kode_akun' => 'KA000004',
-            'nama_akun' => 'GAJI & TUNJANGAN',
-            'keterangan' => $request->keterangan,
-            'nominal' => str_replace(',', '.', str_replace('.', '', $request->grand_total)),
-            'status' => 'unpost',
-        ]);
-
-
         $details = Detail_gajikaryawan::where('perhitungan_gajikaryawan_id', $cetakpdf->id)->get();
 
         return view('admin.perhitungan_gajibulanan.show', compact('details', 'cetakpdf'));
     }
 
+
+    public function kodepelunasan()
+    {
+        // Mengambil kode terbaru dari database dengan awalan 'MP'
+        $lastBarang = Pelunasan_deposit::where('kode_pelunasan', 'like', 'DK%')->latest()->first();
+
+        // Jika tidak ada kode sebelumnya, mulai dengan 1
+        if (!$lastBarang) {
+            $num = 1;
+        } else {
+            // Jika ada kode sebelumnya, ambil nomor terakhir
+            $lastCode = $lastBarang->kode_pelunasan;
+
+            // Ambil nomor dari kode terakhir, tanpa awalan 'MP', lalu tambahkan 1
+            $num = (int) substr($lastCode, strlen('DK')) + 1;
+        }
+
+        // Format nomor dengan leading zeros sebanyak 6 digit
+        $formattedNum = sprintf("%06s", $num);
+
+        // Awalan untuk kode baru
+        $prefix = 'DK';
+
+        // Buat kode baru dengan menggabungkan awalan dan nomor yang diformat
+        $newCode = $prefix . $formattedNum;
+
+        // Kembalikan kode
+        return $newCode;
+    }
 
     public function kodeakuns()
     {
@@ -437,8 +425,7 @@ class PerhitungangajibulananController extends Controller
         $cetakpdf = Perhitungan_gajikaryawan::where('id', $id)->first();
         $details = Detail_gajikaryawan::where('perhitungan_gajikaryawan_id', $cetakpdf->id)->get();
 
-        $pdf = PDF::loadView('admin.perhitungan_gajibulanan.cetak_pdf', compact('cetakpdf', 'details'));
-        $pdf->setPaper('letter', 'portrait'); // Set the paper size to portrait letter
+        $pdf = PDF::loadView('admin.perhitungan_gajibulanan.cetak_pdf', compact('cetakpdf', 'details'))->setPaper('a4', 'landscape');
 
         return $pdf->stream('Gaji_karyawan.pdf');
     }

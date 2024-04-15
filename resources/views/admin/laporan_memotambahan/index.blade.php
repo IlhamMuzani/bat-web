@@ -65,8 +65,8 @@
                             </div>
                         </div>
                     </form>
-                    <table id="example1" class="table table-bordered table-striped" style="font-size:13px">
-                        <thead>
+                    <table id="datatables66" class="table table-bordered table-striped table-hover" style="font-size: 13px">
+                        <thead class="thead-dark">
                             <tr>
                                 <th class="text-center">No</th>
                                 <th>No Memo Tambahan</th>
@@ -84,15 +84,36 @@
                                     data-target="#modal-posting-{{ $memotambahan->id }}" style="cursor: pointer;">
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <td>{{ $memotambahan->kode_tambahan }}</td>
-                                    <td>{{ $memotambahan->memo_ekspedisi->kode_memo }}</td>
+                                    <td>
+                                        @if ($memotambahan->memo_ekspedisi)
+                                            {{ $memotambahan->memo_ekspedisi->kode_memo }}
+                                        @else
+                                            tidak ada
+                                        @endif
+                                    </td>
                                     <td>{{ $memotambahan->tanggal_awal }}</td>
                                     <td>
-                                        {{ explode(' ', $memotambahan->memo_ekspedisi->nama_driver)[0] }}
+                                        @if ($memotambahan->memo_ekspedisi)
+                                            {{ explode(' ', $memotambahan->memo_ekspedisi->nama_driver)[0] }}
+                                        @else
+                                            tidak ada
+                                        @endif
                                     </td>
                                     <td>
-                                        {{ $memotambahan->memo_ekspedisi->no_kabin }}
+                                        @if ($memotambahan->memo_ekspedisi)
+                                            {{ $memotambahan->memo_ekspedisi->no_kabin }}
+                                        @else
+                                            tidak ada
+                                        @endif
+
                                     </td>
-                                    <td>{{ $memotambahan->memo_ekspedisi->nama_rute }}</td>
+                                    <td>
+                                        @if ($memotambahan->memo_ekspedisi)
+                                            {{ $memotambahan->memo_ekspedisi->nama_rute }}
+                                        @else
+                                            tidak ada
+                                        @endif
+                                    </td>
                                     <td style="text-align: end">
                                         {{ number_format($memotambahan->grand_total, 0, ',', '.') }}</td>
                                 </tr>

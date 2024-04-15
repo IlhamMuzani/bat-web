@@ -60,8 +60,8 @@
 
                 </div>
                 <div class="card-body">
-                    <table id="datatables66" class="table table-bordered table-striped">
-                        <thead>
+                    <table id="datatables66" class="table table-bordered table-striped table-hover">
+                        <thead class="thead-dark">
                             <tr>
                                 <th class="text-center">No</th>
                                 <th>Kode Sopir</th>
@@ -70,7 +70,7 @@
                                 <th class="text-right">Kasbon</th>
                                 <th class="text-right">Bayar Kasbon</th>
                                 <th class="text-right">Saldo Deposit</th>
-                                {{-- <th class="text-center" width="50">Opsi</th> --}}
+                                <th class="text-center" width="50">Opsi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -100,12 +100,12 @@
                                             </a>
                                         @endif --}}
                                     {{-- @if (auth()->check() && auth()->user()->fitur['driver update']) --}}
-                                    {{-- <td>
+                                    <td>
                                         <a href="{{ url('admin/driver/' . $driver->id . '/edit') }}"
                                             class="btn btn-warning btn-sm">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                    </td> --}}
+                                    </td>
                                     {{-- @endif --}}
                                     {{-- @if (auth()->check() && auth()->user()->fitur['driver delete'])
                                         <button type="submit" class="btn btn-danger btn-sm" data-toggle="modal"

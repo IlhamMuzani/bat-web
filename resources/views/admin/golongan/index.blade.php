@@ -45,28 +45,29 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table id="example1" class="table table-bordered table-striped">
-                        <thead style="background-color: #000000; color: white;">
+                    <table id="datatables66" class="table table-bordered table-striped table-hover">
+                        <thead class="thead-dark">
                             <tr>
-                                <th style="text-align: center;">No</th>
+                                <th class="text-center">No</th>
                                 <th>Kode Golongan</th>
                                 <th>Nama Golongan</th>
-                                <th style="text-align: center;" width="80">Qr Code</th>
-                                <th style="text-align: center;" width="80">Opsi</th>
+                                <th class="text-center">Qr Code</th>
+                                <th class="text-center" width="80">Opsi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($golongans as $golongan)
-                                <tr style="background-color: #f8f9fa;">
-                                    <td style="text-align: center;">{{ $loop->iteration }}</td>
+                                <tr>
+                                    <td class="text-center">{{ $loop->iteration }}</td>
                                     <td>{{ $golongan->kode_golongan }}</td>
                                     <td>{{ $golongan->nama_golongan }}</td>
-                                    <td style="text-align: center;">
+                                    <td data-toggle="modal" data-target="#modal-qrcode-{{ $golongan->id }}"
+                                        style="text-align: center;">
                                         <div style="display: inline-block;">
                                             {!! DNS2D::getBarcodeHTML("$golongan->qrcode_golongan", 'QRCODE', 2, 2) !!}
                                         </div>
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td class="text-center">
                                         @if (auth()->check() && auth()->user()->fitur['golongan update'])
                                             <a href="{{ url('admin/golongan/' . $golongan->id . '/edit') }}"
                                                 class="btn btn-warning btn-sm">
@@ -81,10 +82,79 @@
                                         @endif
                                     </td>
                                 </tr>
+                                <div class="modal fade" id="modal-hapus-{{ $golongan->id }}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Hapus Golongan</h4>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Yakin hapus golongan <strong>{{ $golongan->nama_golongan }}</strong>?
+                                                </p>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-default"
+                                                    data-dismiss="modal">Batal</button>
+                                                <form action="{{ url('admin/golongan/' . $golongan->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal fade" id="modal-qrcode-{{ $golongan->id }}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Gambar QR Code</h4>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                {{-- <p>Yakin hapus kendaraan
+                                                    <strong>{{ $kendaraan->kode_kendaraan }}</strong>?
+                                                </p> --}}
+                                                <div style="text-align: center;">
+                                                    <p style="font-size:20px; font-weight: bold;">
+                                                        {{ $golongan->kode_golongan }}</p>
+                                                    <div style="display: inline-block;">
+                                                        {!! DNS2D::getBarcodeHTML("$golongan->qrcode_golongan", 'QRCODE', 15, 15) !!}
+                                                    </div>
+                                                    <p style="font-size:20px; font-weight: bold;">
+                                                        {{ $golongan->nama_golongan }}</p>
+                                                </div>
+                                                <div class="modal-footer justify-content-between">
+                                                    <button type="button" class="btn btn-default"
+                                                        data-dismiss="modal">Batal</button>
+                                                    {{-- <form action="{{ url('admin/ban/' . $golongan->id) }}" method="POST">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-primary">Cetak</button>
+                                                    </form> --}}
+                                                    <a href="{{ url('admin/golongan/cetak-pdf/' . $golongan->id) }}"
+                                                        class="btn btn-primary btn-sm">
+                                                        <i class=""></i> Cetak
+                                                    </a>
+                                                    {{-- <a href="{{ url('admin/cetak-pdf/' . $golongan->id) }}" target="_blank"
+                                                        class="btn btn-outline-primary btn-sm float-end">
+                                                        <i class="fa-solid fa-print"></i> Cetak PDV
+                                                    </a> --}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             @endforeach
                         </tbody>
                     </table>
-
                 </div>
                 <!-- /.card-body -->
             </div>

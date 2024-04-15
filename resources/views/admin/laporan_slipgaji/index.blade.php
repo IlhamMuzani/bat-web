@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Laporan Perhitungan Gaji')
+@section('title', 'Laporan Slip Gaji Mingguan')
 
 @section('content')
     <!-- Content Header (Page header) -->
@@ -8,11 +8,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Laporan Perhitungan Gaji</h1>
+                    <h1 class="m-0">Laporan Slip Gaji Mingguan</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item active">Laporan Perhitungan Gaji</li>
+                        <li class="breadcrumb-item active">Laporan Slip Gaji Mingguan</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -34,19 +34,26 @@
             @endif
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Data Laporan Perhitungan Gaji</h3>
+                    <h3 class="card-title">Data Laporan Slip Gaji Mingguan</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
                     <form method="GET" id="form-action">
                         <div class="row">
-
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-2 mb-3">
+                                <label>Kategori Gaji Mingguan</label>
+                                <select class="custom-select form-control" id="kategori" name="kategori">
+                                    <option value="">- Pilih Kategori -</option>
+                                    <option value="memo_perjalanans"selected>Gaji Mingguan</option>
+                                    <option value="memo_borongs">Gaji Bulanan</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
                                 <label for="tanggal_awal">Kategori</label>
                                 <select class="custom-select form-control" id="statusx" name="statusx">
                                     <option value="">- Pilih Laporan -</option>
-                                    <option value="memo_perjalanan">Laporan Gaji Karyawan</option>
-                                    <option value="memo_borong" selected>Laporan Slip Gaji</option>
+                                    <option value="memo_perjalanan">Laporan Gaji Mingguan Karyawan</option>
+                                    <option value="memo_borong"selected>Laporan Slip Gaji Mingguan</option>
                                 </select>
                             </div>
                             <div class="col-md-3 mb-3">
@@ -59,7 +66,7 @@
                                 <input class="form-control" id="tanggal_akhir" name="tanggal_akhir" type="date"
                                     value="{{ Request::get('tanggal_akhir') }}" max="{{ date('Y-m-d') }}" />
                             </div>
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-2 mb-3">
                                 {{-- @if (auth()->check() && auth()->user()->fitur['laporan slips kas kecil cari']) --}}
                                 <button type="button" class="btn btn-outline-primary btn-block" onclick="cari()">
                                     <i class="fas fa-search"></i> Cari
@@ -74,16 +81,16 @@
                             </div>
                         </div>
                     </form>
-                    <table id="example1" class="table table-bordered table-striped">
-                        <thead>
+                    <table id="datatables66" class="table table-bordered table-striped table-hover" style="font-size: 13px">
+                        <thead class="thead-dark">
                             <tr>
                                 <th class="text-center">No</th>
-                                <th>Kode Gaji</th>
+                                <th>Kode Gaji Mingguan</th>
                                 <th>Tanggal</th>
                                 <th>Bag.Input</th>
                                 <th>Nama</th>
-                                <th>Gaji</th>
-                                {{-- <th class="text-center" width="70">Opsi</th> --}}
+                                <th>Gaji Mingguan</th>
+                                <th class="text-center"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -186,6 +193,29 @@
                         break;
                     case 'memo_borong':
                         window.location.href = "{{ url('admin/laporan_slipgaji') }}";
+                        break;
+                    default:
+                        // Handle other cases or do nothing
+                        break;
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Detect the change event on the 'status' dropdown
+            $('#kategori').on('change', function() {
+                // Get the selected value
+                var selectedValue = $(this).val();
+
+                // Check the selected value and redirect accordingly
+                switch (selectedValue) {
+                    case 'memo_perjalanans':
+                        window.location.href = "{{ url('admin/laporan_perhitungangaji') }}";
+                        break;
+                    case 'memo_borongs':
+                        window.location.href = "{{ url('admin/laporan_perhitungangajibulanan') }}";
                         break;
                     default:
                         // Handle other cases or do nothing

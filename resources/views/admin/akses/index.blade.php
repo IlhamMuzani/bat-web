@@ -53,18 +53,18 @@
                             </div>
                         </div>
                     </form>
-                    <table id="datatables66" class="table table-bordered table-striped">
-                        <thead>
+                    <table id="datatables66" class="table table-bordered table-striped table-hover">
+                        <thead class="thead-dark">
                             <tr>
                                 <th class="text-center">No</th>
                                 <th>Kode User</th>
                                 <th>Nama</th>
-                                <th class="text-center" width="60">Opsi</th>
+                                <th class="text-center" width="60">Akses</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($aksess as $akses)
-                                <tr>
+                                <tr class="{{ $loop->iteration % 2 == 0 ? 'bg-light' : '' }}">
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <td>{{ $akses->kode_user }}</td>
                                     <td>{{ $akses->karyawan->nama_lengkap }}</td>
@@ -72,10 +72,9 @@
                                         @if (auth()->check() && auth()->user()->fitur['hak akses create'])
                                             <a href="{{ url('admin/akses/access/' . $akses->id) }}"
                                                 class="btn btn-info btn-sm">
-                                                <i class="fas fa-low-vision"></i> Akses
+                                                <i class="fas fa-low-vision"></i>
                                             </a>
                                         @endif
-
                                     </td>
                                 </tr>
                             @endforeach

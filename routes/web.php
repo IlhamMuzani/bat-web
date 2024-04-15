@@ -494,6 +494,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('laporan_slipgaji', [\App\Http\Controllers\Admin\LaporanSlipgajiController::class, 'index']);
     Route::get('print_slipgaji', [\App\Http\Controllers\Admin\LaporanSlipgajiController::class, 'print_slipgaji']);
     Route::resource('laporan_slipgaji', \App\Http\Controllers\Admin\LaporanSlipgajiController::class);
+    Route::get('karyawan/search', [\App\Http\Controllers\Admin\KaryawanController::class, 'search']);
 
     Route::get('inquery_slipgaji', [\App\Http\Controllers\Admin\InqueryslipgajiController::class, 'index']);
     Route::get('inquery_printslipgaji', [\App\Http\Controllers\Admin\InqueryslipgajiController::class, 'inquery_printslipgaji']);

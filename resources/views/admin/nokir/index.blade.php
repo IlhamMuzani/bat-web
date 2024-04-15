@@ -45,8 +45,8 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table id="example1" class="table table-bordered table-striped">
-                        <thead>
+                   <table id="datatables66" class="table table-bordered table-striped table-hover">
+                        <thead class="thead-dark">
                             <tr>
                                 <th class="text-center">No</th>
                                 <th>Kode</th>
@@ -152,13 +152,10 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div style="text-align: center;">
-                                                    <p style="font-size:20px; font-weight: bold;">{{ $nokir->kode_kir }}
-                                                    </p>
-                                                    <div class="qr-code-container"
-                                                        style="position: relative; display: inline-block;">
+                                                    <p style="font-size:20px; font-weight: bold;">
+                                                        {{ $nokir->kode_kir }}</p>
+                                                    <div style="display: inline-block;">
                                                         {!! DNS2D::getBarcodeHTML("$nokir->qrcode_kir", 'QRCODE', 15, 15) !!}
-                                                        <img src="{{ asset('storage/uploads/gambar_logo/dinas_perhubungan.jpg') }}"
-                                                            height="100" width="100" class="logo-overlay" />
                                                     </div>
                                                     <p style="font-size:20px; font-weight: bold;">
                                                         {{ $nokir->masa_berlaku }}</p>
@@ -183,15 +180,5 @@
             </div>
         </div>
     </section>
-
-    <style>
-        .logo-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-        }
-    </style>
     <!-- /.card -->
 @endsection
