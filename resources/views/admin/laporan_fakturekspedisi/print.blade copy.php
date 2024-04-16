@@ -7,73 +7,73 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Laporan Faktur Ekspedisi</title>
     <style>
-        html,
-        body {
-            font-family: 'DOSVGA', monospace;
-            color: black;
-        }
+    html,
+    body {
+        font-family: 'DOSVGA', monospace;
+        color: black;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-        .td {
-            text-align: center;
-            padding: 5px;
-            font-size: 8;
-            /* border: 1px solid black; */
-        }
+    .td {
+        text-align: center;
+        padding: 5px;
+        font-size: 8;
+        /* border: 1px solid black; */
+    }
 
-        .container {
-            position: relative;
-            margin-top: 7rem;
-        }
+    .container {
+        position: relative;
+        margin-top: 7rem;
+    }
 
-        .info-container {
-            display: flex;
-            justify-content: space-between;
-            font-size: 16px;
-            margin: 5px 0;
-        }
+    .info-container {
+        display: flex;
+        justify-content: space-between;
+        font-size: 16px;
+        margin: 5px 0;
+    }
 
-        .info-text {
-            text-align: left;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+    .info-text {
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
 
-        .info-catatan2 {
-            font-weight: bold;
-            margin-right: 5px;
-            min-width: 120px;
-            /* Menetapkan lebar minimum untuk kolom pertama */
-        }
+    .info-catatan2 {
+        font-weight: bold;
+        margin-right: 5px;
+        min-width: 120px;
+        /* Menetapkan lebar minimum untuk kolom pertama */
+    }
 
-        .alamat,
-        .nama-pt {
-            color: black;
-        }
+    .alamat,
+    .nama-pt {
+        color: black;
+    }
 
-        .separator {
-            padding-top: 8;
-            text-align: center;
-        }
+    .separator {
+        padding-top: 8;
+        text-align: center;
+    }
 
-        .separator span {
-            display: inline-block;
-            border-top: 1px solid black;
-            width: 100%;
-            position: relative;
-            top: -8px;
-        }
+    .separator span {
+        display: inline-block;
+        border-top: 1px solid black;
+        width: 100%;
+        position: relative;
+        top: -8px;
+    }
 
-        @page {
-            /* size: A4; */
-            margin: 1cm;
-        }
+    @page {
+        /* size: A4; */
+        margin: 1cm;
+    }
     </style>
 </head>
 
@@ -86,13 +86,13 @@
         <br>
         <div class="text">
             @php
-                $startDate = request()->query('tanggal_awal');
-                $endDate = request()->query('tanggal_akhir');
+            $startDate = request()->query('tanggal_awal');
+            $endDate = request()->query('tanggal_akhir');
             @endphp
             @if ($startDate && $endDate)
-                <p>Periode:{{ $startDate }} s/d {{ $endDate }}</p>
+            <p>Periode:{{ $startDate }} s/d {{ $endDate }}</p>
             @else
-                <p>Periode: Tidak ada tanggal awal dan akhir yang diteruskan.</p>
+            <p>Periode: Tidak ada tanggal awal dan akhir yang diteruskan.</p>
             @endif
         </div>
     </div>
@@ -124,47 +124,46 @@
         </tr>
         <!-- Data rows -->
         @foreach ($inquery as $faktur)
-            <tr>
-                <td class="td" style="text-align: left; padding: 5px; font-size: 8;">{{ $loop->iteration }}</td>
-                <td class="td" style="text-align: left; padding: 5px; font-size: 8;">{{ $faktur->kode_faktur }}</td>
-                <td class="td" style="text-align: left; padding: 5px; font-size: 8;">{{ $faktur->tanggal_awal }}
-                </td>
-                <td class="td"
-                    style="text-align: left; padding: 5px; font-size: 8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                    @if ($faktur->detail_faktur->first())
-                        {{ substr($faktur->detail_faktur->first()->nama_driver, 0, 5) . '...' }}
-                    @else
-                        tidak ada
-                    @endif
-                </td>
-                <td class="td" style="text-align: left; padding: 5px; font-size: 8;">
-                    @if ($faktur->detail_faktur->first())
-                        {{ $faktur->detail_faktur->first()->no_kabin }}
-                    @else
-                        tidak ada
-                    @endif
-                </td>
-                {{-- <td class="td" style="text-align: left; padding: 5px; font-size: 8;">{{ $faktur->kategori }}</td> --}}
+        <tr>
+            <td class="td" style="text-align: left; padding: 5px; font-size: 8;">{{ $loop->iteration }}</td>
+            <td class="td" style="text-align: left; padding: 5px; font-size: 8;">{{ $faktur->kode_faktur }}</td>
+            <td class="td" style="text-align: left; padding: 5px; font-size: 8;">{{ $faktur->tanggal_awal }}
+            </td>
+            <td class="td"
+                style="text-align: left; padding: 5px; font-size: 8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                @if ($faktur->detail_faktur->first())
+                {{ substr($faktur->detail_faktur->first()->nama_driver, 0, 5) . '...' }}
+                @else
+                tidak ada
+                @endif
+            </td>
+            <td class="td" style="text-align: left; padding: 5px; font-size: 8;">
+                @if ($faktur->detail_faktur->first())
+                {{ $faktur->detail_faktur->first()->no_kabin }}
+                @else
+                tidak ada
+                @endif
+            </td>
+            {{-- <td class="td" style="text-align: left; padding: 5px; font-size: 8;">{{ $faktur->kategori }}</td> --}}
 
+            <td class="td" style="text-align: left; padding: 5px; font-size: 8;">
+                @if ($faktur->detail_faktur->first())
+                {{ $faktur->detail_faktur->first()->nama_rute }}
+                @else
+                tidak ada
+                @endif
 
-                <td class="td" style="text-align: left; padding: 5px; font-size: 8;">
-                    @if ($faktur->detail_faktur->first())
-                        {{ $faktur->detail_faktur->first()->nama_rute }}
-                    @else
-                        tidak ada
-                    @endif
+            </td>
 
-                </td>
+            <td class="td" style="text-align: right; padding: 5px; font-size: 8;">
+                {{ $faktur->biaya_tambahan }}
+            </td>
 
-                <td class="td" style="text-align: right; padding: 5px; font-size: 8;">
-                    {{ $faktur->biaya_tambahan }}
-                </td>
+            <td class="td" style="text-align: right; padding: 5px; font-size: 8;">
+                {{ $faktur->grand_total }}
+            </td>
 
-                <td class="td" style="text-align: right; padding: 5px; font-size: 8;">
-                    {{ $faktur->grand_total }}
-                </td>
-
-            </tr>
+        </tr>
         @endforeach
         <!-- Separator row -->
         <tr style="border-bottom: 1px solid black;">
@@ -172,12 +171,12 @@
         </tr>
         <!-- Subtotal row -->
         @php
-            $total = 0;
+        $total = 0;
         @endphp
         @foreach ($inquery as $item)
-            @php
-                $total += $item->grand_total;
-            @endphp
+        @php
+        $total += $item->grand_total;
+        @endphp
         @endforeach
         <tr>
             <td colspan="7" style="text-align: right; font-weight: bold; padding: 5px; font-size: 8;">Sub Total
