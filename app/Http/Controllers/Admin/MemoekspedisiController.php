@@ -1018,11 +1018,11 @@ class MemoekspedisiController extends Controller
         $lastBarang = Memo_ekspedisi::where('kode_memo', 'like', 'MP%')->latest()->first();
 
         // Mendapatkan bulan dari tanggal kode terakhir
-        $lastDay = $lastBarang ? date('d', strtotime($lastBarang->created_at)) : null;
-        $currentDay = date('d');
+        $lastMonth = $lastBarang ? date('m', strtotime($lastBarang->created_at)) : null;
+        $currentMonth = date('m');
 
         // Jika tidak ada kode sebelumnya atau bulan saat ini berbeda dari bulan kode terakhir
-        if (!$lastBarang || $currentDay != $lastDay) {
+        if (!$lastBarang || $currentMonth != $lastMonth) {
             $num = 1; // Mulai dari 1 jika bulan berbeda
         } else {
             // Jika ada kode sebelumnya, ambil nomor terakhir
@@ -1055,11 +1055,11 @@ class MemoekspedisiController extends Controller
         $lastBarang = Memo_ekspedisi::where('kode_memo', 'like', 'MB%')->latest()->first();
 
         // Mendapatkan bulan dari tanggal kode terakhir
-        $lastDay = $lastBarang ? date('d', strtotime($lastBarang->created_at)) : null;
-        $currentDay = date('d');
+        $lastMonth = $lastBarang ? date('m', strtotime($lastBarang->created_at)) : null;
+        $currentMonth = date('m');
 
         // Jika tidak ada kode sebelumnya atau bulan saat ini berbeda dari bulan kode terakhir
-        if (!$lastBarang || $currentDay != $lastDay) {
+        if (!$lastBarang || $currentMonth != $lastMonth) {
             $num = 1; // Mulai dari 1 jika bulan berbeda
         } else {
             // Jika ada kode sebelumnya, ambil nomor terakhir
@@ -1093,11 +1093,11 @@ class MemoekspedisiController extends Controller
         $lastBarang = Memotambahan::where('kode_tambahan', 'like', 'MT%')->latest()->first();
 
         // Mendapatkan bulan dari tanggal kode terakhir
-        $lastDay = $lastBarang ? date('d', strtotime($lastBarang->created_at)) : null;
-        $currentDay = date('d');
+        $lastMonth = $lastBarang ? date('m', strtotime($lastBarang->created_at)) : null;
+        $currentMonth = date('m');
 
         // Jika tidak ada kode sebelumnya atau bulan saat ini berbeda dari bulan kode terakhir
-        if (!$lastBarang || $currentDay != $lastDay) {
+        if (!$lastBarang || $currentMonth != $lastMonth) {
             $num = 1; // Mulai dari 1 jika bulan berbeda
         } else {
             // Jika ada kode sebelumnya, ambil nomor terakhir
