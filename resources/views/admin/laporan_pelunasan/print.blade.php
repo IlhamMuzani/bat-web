@@ -169,20 +169,7 @@
             </td>
         </tr>
     </table>
-
-
-
-
     <br>
-
-    <!-- Tampilkan sub-total di bawah tabel -->
-    {{-- <div style="text-align: right;">
-        <strong>Sub Total: Rp. {{ number_format($total, 0, ',', '.') }}</strong>
-    </div> --}}
-
-
-    {{-- <br> --}}
-
     <br>
     <br>
 

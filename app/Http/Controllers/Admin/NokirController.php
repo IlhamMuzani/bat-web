@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Validator;
 
 class NokirController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (auth()->check() && auth()->user()->menu['nokir']) {
             $currentDate = now();
@@ -35,10 +35,25 @@ class NokirController extends Controller
                 ]);
             }
 
-            // Retrieve nokirs ordered by the latest creation
-            $nokirs = Nokir::where('status_kir', 'sudah perpanjang')
-                ->orderBy('created_at', 'desc') // Order by the latest creation
-                ->get();
+            if ($request->has('keyword')) {
+                $keyword = $request->keyword;
+                $nokirs = Nokir::select('id', 'kode_kir', 'kendaraan_id', 'nama_pemilik', 'masa_berlaku', 'qrcode_kir')
+                    ->where('status_kir', 'sudah perpanjang')
+                    ->where(function ($query) use ($keyword) {
+                        $query->where('kode_kir', 'like', "%$keyword%")
+                            ->orWhereHas('kendaraan', function ($query) use ($keyword) {
+                                $query->where('no_pol', 'like', "%$keyword%")
+                                    ->orWhere('no_kabin', 'like', "%$keyword%");
+                            });
+                    })
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(10);
+            } else {
+                $nokirs = Nokir::select('id', 'kode_kir', 'kendaraan_id', 'nama_pemilik', 'masa_berlaku', 'qrcode_kir')
+                    ->where('status_kir', 'sudah perpanjang')
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(10);
+            }
 
             return view('admin/nokir.index', compact('nokirs'));
         } else {
