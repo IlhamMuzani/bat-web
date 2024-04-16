@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Validator;
 
 class TablePelunasanbanController extends Controller
 {
-     public function index()
+    public function index()
     {
         $today = Carbon::today();
 
