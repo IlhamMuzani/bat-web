@@ -340,13 +340,10 @@
     </table>
     <footer style="position: fixed; bottom: 0; right: 20px; width: auto; text-align: end; font-size: 10px;">Page
     </footer>
-    <?php
-    // Hitung jumlah halaman dengan menghitung jumlah footer yang dibuat
-    $totalPages = count($inquery); // Misalkan $inquery adalah array yang berisi data-data halaman Anda
-    
-    // Mengirimkan nomor halaman terakhir ke dalam HTML
+    {{-- <?php
+    $totalPages = count($inquery);
     echo '<div style="position: fixed; bottom: 0; right: 0px; font-size: 10px;">of ' . $totalPages . '</div>';
-    ?>
+    ?> --}}
 
 </body>
 
