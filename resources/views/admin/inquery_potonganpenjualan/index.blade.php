@@ -113,43 +113,30 @@
                                         @endif
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             @if ($potongan_penjualan->status == 'unpost')
-                                                @if (auth()->check() && auth()->user()->fitur['inquery penerimaan kas kecil posting'])
-                                                    <a class="dropdown-item posting-btn"
-                                                        data-memo-id="{{ $potongan_penjualan->id }}">Posting</a>
-                                                @endif
-                                                @if (auth()->check() && auth()->user()->fitur['inquery penerimaan kas kecil update'])
-                                                    <a class="dropdown-item"
-                                                        href="{{ url('admin/inquery_potonganpenjualan/' . $potongan_penjualan->id . '/edit') }}">Update</a>
-                                                @endif
-                                                @if (auth()->check() && auth()->user()->fitur['inquery penerimaan kas kecil show'])
-                                                    <a class="dropdown-item"
-                                                        href="{{ url('admin/inquery_potonganpenjualan/' . $potongan_penjualan->id) }}">Show</a>
-                                                @endif
-                                                @if (auth()->check() && auth()->user()->fitur['inquery penerimaan kas kecil delete'])
-                                                    <form style="margin-top:5px" method="GET"
-                                                        action="{{ route('hapuspotongan', ['id' => $potongan_penjualan->id]) }}">
-                                                        <button type="submit"
-                                                            class="dropdown-item btn btn-outline-danger btn-block mt-2">
-                                                            </i> Delete
-                                                        </button>
-                                                    </form>
-                                                @endif
+                                                <a class="dropdown-item posting-btn"
+                                                    data-memo-id="{{ $potongan_penjualan->id }}">Posting</a>
+                                                <a class="dropdown-item"
+                                                    href="{{ url('admin/inquery_potonganpenjualan/' . $potongan_penjualan->id . '/edit') }}">Update</a>
+                                                <a class="dropdown-item"
+                                                    href="{{ url('admin/inquery_potonganpenjualan/' . $potongan_penjualan->id) }}">Show</a>
+                                                <form style="margin-top:5px" method="GET"
+                                                    action="{{ route('hapuspotongan', ['id' => $potongan_penjualan->id]) }}">
+                                                    <button type="submit"
+                                                        class="dropdown-item btn btn-outline-danger btn-block mt-2">
+                                                        </i> Delete
+                                                    </button>
+                                                </form>
                                             @endif
                                             @if ($potongan_penjualan->status == 'posting')
-                                                @if (auth()->check() && auth()->user()->fitur['inquery penerimaan kas kecil unpost'])
-                                                    <a class="dropdown-item unpost-btn"
-                                                        data-memo-id="{{ $potongan_penjualan->id }}">Unpost</a>
-                                                @endif
-                                                @if (auth()->check() && auth()->user()->fitur['inquery penerimaan kas kecil show'])
-                                                    <a class="dropdown-item"
-                                                        href="{{ url('admin/inquery_potonganpenjualan/' . $potongan_penjualan->id) }}">Show</a>
-                                                @endif
+                                                <a class="dropdown-item unpost-btn"
+                                                    data-memo-id="{{ $potongan_penjualan->id }}">Unpost</a>
+
+                                                <a class="dropdown-item"
+                                                    href="{{ url('admin/inquery_potonganpenjualan/' . $potongan_penjualan->id) }}">Show</a>
                                             @endif
                                             @if ($potongan_penjualan->status == 'selesai')
-                                                @if (auth()->check() && auth()->user()->fitur['inquery penerimaan kas kecil show'])
-                                                    <a class="dropdown-item"
-                                                        href="{{ url('admin/inquery_potonganpenjualan/' . $potongan_penjualan->id) }}">Show</a>
-                                                @endif
+                                                <a class="dropdown-item"
+                                                    href="{{ url('admin/inquery_potonganpenjualan/' . $potongan_penjualan->id) }}">Show</a>
                                             @endif
                                         </div>
                                     </td>

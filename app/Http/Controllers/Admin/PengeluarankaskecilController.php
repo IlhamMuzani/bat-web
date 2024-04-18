@@ -22,92 +22,6 @@ class PengeluarankaskecilController extends Controller
         return view('admin.pengeluaran_kaskecil.index', compact('kendaraans', 'barangakuns'));
     }
 
-    // public function store(Request $request)
-    // {
-    //     $error_pesanans = array();
-    //     $data_pembelians = collect();
-
-    //     if ($request->has('barangakun_id')) {
-    //         for ($i = 0; $i < count($request->barangakun_id); $i++) {
-    //             $validasi_produk = Validator::make($request->all(), [
-    //                 'barangakun_id.' . $i => 'required',
-    //                 'kode_akun.' . $i => 'required',
-    //                 'nama_akun.' . $i => 'required',
-    //                 'nominal.' . $i => 'required',
-    //                 'keterangan.' . $i => 'required',
-    //             ]);
-
-    //             if ($validasi_produk->fails()) {
-    //                 array_push($error_pesanans, "Akun nomor " . ($i + 1) . " belum dilengkapi!"); // Corrected the syntax for concatenation and indexing
-    //             }
-
-    //             $barangakun_id = is_null($request->barangakun_id[$i]) ? '' : $request->barangakun_id[$i];
-    //             $kode_akun = is_null($request->kode_akun[$i]) ? '' : $request->kode_akun[$i];
-    //             $nama_akun = is_null($request->nama_akun[$i]) ? '' : $request->nama_akun[$i];
-    //             $nominal = is_null($request->nominal[$i]) ? '' : $request->nominal[$i];
-    //             $keterangan = is_null($request->keterangan[$i]) ? '' : $request->keterangan[$i];
-
-    //             $data_pembelians->push([
-    //                 'barangakun_id' => $barangakun_id,
-    //                 'kode_akun' => $kode_akun,
-    //                 'nama_akun' => $nama_akun,
-    //                 'nominal' => $nominal,
-    //                 'keterangan' => $keterangan,
-    //             ]);
-    //         }
-    //     }
-
-
-    //     if ($error_pesanans) {
-    //         return back()
-    //             ->withInput()
-    //             ->with('error_pesanans', $error_pesanans)
-    //             ->with('data_pembelians', $data_pembelians);
-    //     }
-
-    //     $kode = $this->kode();
-    //     // format tanggal indo
-    //     $tanggal1 = Carbon::now('Asia/Jakarta');
-    //     $format_tanggal = $tanggal1->format('d F Y');
-
-    //     $tanggal = Carbon::now()->format('Y-m-d');
-    //     $cetakpdf = Pengeluaran_kaskecil::create([
-    //         'user_id' => auth()->user()->id,
-    //         'kode_pengeluaran' => $this->kode(),
-    //         'kendaraan_id' => $request->kendaraan_id,
-    //         // 'keterangan' => $request->keterangan,
-    //         'grand_total' => str_replace('.', '', $request->grand_total),
-    //         'jam' => $tanggal1->format('H:i:s'),
-    //         'tanggal' => $format_tanggal,
-    //         'tanggal_awal' => $tanggal,
-    //         'qrcode_return' => 'https://batlink.id/pengeluaran_kaskecil/' . $kode,
-    //         'status' => 'unpost',
-    //         'status_notif' => false,
-    //     ]);
-
-    //     $transaksi_id = $cetakpdf->id;
-
-    //     if ($cetakpdf) {
-    //         foreach ($data_pembelians as $data_pesanan) {
-    //             Detail_pengeluaran::create([
-    //                 'pengeluaran_kaskecil_id' => $cetakpdf->id,
-    //                 'status' => 'unpost',
-    //                 'kode_detailakun' => $this->kodeakuns(),
-    //                 'barangakun_id' => $data_pesanan['barangakun_id'],
-    //                 'kode_akun' => $data_pesanan['kode_akun'],
-    //                 'nama_akun' => $data_pesanan['nama_akun'],
-    //                 'nominal' => str_replace('.', '', $data_pesanan['nominal']),
-    //                 'keterangan' => $data_pesanan['keterangan'],
-    //             ]);
-    //         }
-    //     }
-
-    //     $details = Detail_pengeluaran::where('pengeluaran_kaskecil_id', $cetakpdf->id)->get();
-
-    //     return view('admin.pengeluaran_kaskecil.show', compact('cetakpdf', 'details'));
-    // }
-
-
     public function store(Request $request)
     {
         $error_pesanans = array();
@@ -199,7 +113,7 @@ class PengeluarankaskecilController extends Controller
         return view('admin.pengeluaran_kaskecil.show', compact('cetakpdf', 'details'));
     }
 
-  
+
     public function kode()
     {
         // Mengambil kode terbaru dari database dengan awalan 'MP'
