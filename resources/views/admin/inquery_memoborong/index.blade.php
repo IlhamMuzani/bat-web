@@ -98,7 +98,7 @@
                             </div>
                         </div>
                     </form>
-                    @if (auth()->user()->id == 1 || auth()->user()->id == 46)
+                    @if (auth()->user()->id == 1 || auth()->user()->id == 46 || auth()->user()->id == 49)
                         <form method="GET" id="form-action">
                             <div class="row">
                                 <div class="col-md-2 mb-3">

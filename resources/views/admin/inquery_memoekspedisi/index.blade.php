@@ -104,7 +104,7 @@
                             </div>
                         </div>
                     </form>
-                    @if (auth()->user()->id == 1 || auth()->user()->id == 46)
+                    @if (auth()->user()->id == 1 || auth()->user()->id == 46 || auth()->user()->id == 49)
                         {{-- @if (Request::get('kategori') == 'Memo Perjalanan') --}}
                         <form method="GET" id="form-action">
                             <div class="row">
