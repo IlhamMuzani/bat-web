@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\Barang_akun;
+use App\Models\Detail_cicilan;
 use App\Models\Detail_gajikaryawan;
 use App\Models\Detail_pengeluaran;
 use App\Models\Karyawan;
@@ -272,6 +273,7 @@ class InqueryPengeluarankaskecilController extends Controller
         $GajiKaryawanss = $item->perhitungan_gajikaryawan_id;
         if ($GajiKaryawanss) {
             $GajiKaryawan = Perhitungan_gajikaryawan::where('id', $item->perhitungan_gajikaryawan_id)->first();
+            $TotalPelunasan = $GajiKaryawan->total_pelunasan;
             Perhitungan_gajikaryawan::where('id', $item->perhitungan_gajikaryawan_id)->update([
                 'status' => 'unpost'
             ]);
@@ -281,9 +283,7 @@ class InqueryPengeluarankaskecilController extends Controller
                 $detail->update([
                     'status' => 'unpost'
                 ]);
-            }
 
-            foreach ($detailGaji as $detail) {
                 $karyawan = Karyawan::find($detail->karyawan_id);
                 if ($karyawan) {
                     $kasbon = $karyawan->kasbon_backup;
@@ -294,22 +294,18 @@ class InqueryPengeluarankaskecilController extends Controller
                         'kasbon' => $kasbon + $detail->pelunasan_kasbon,
                         'bayar_kasbon' => $bayar_kasbon - $detail->pelunasan_kasbon,
                     ]);
+                }
+                // Perbarui detail cicilan untuk setiap karyawan yang terlibat
+                $detail_cicilan = Detail_cicilan::where('detail_gajikaryawan_id', $detail->id)
+                    ->where('status', 'posting')
+                    ->where('status_cicilan', 'lunas')
+                    ->latest() // Mengambil data terbaru berdasarkan waktu pembuatan
+                    ->first();
 
-                    // Cek jika hasil pengurangan pelunasan_kasbon dari kasbon adalah 0
-                    if (($kasbon - $detail->pelunasan_kasbon) == 0) {
-                        // Set potongan_ke menjadi 0
-                        $karyawan->update([
-                            'potongan_ke' => $karyawan->potongan_backup,
-                            'kasbon' => $karyawan->kasbon_backup,
-                            'kasbon_backup' => null,
-                            'potongan_backup' => null
-                        ]);
-                    } else {
-                        // Jika tidak 0, tambahkan 1 ke potongan_ke
-                        if ($detail->pelunasan_kasbon != 0) {
-                            $karyawan->decrement('potongan_ke', 1);
-                        }
-                    }
+                if ($detail_cicilan) {
+                    $detail_cicilan->update([
+                        'status_cicilan' => 'belum lunas', // Kembalikan status cicilan menjadi 'belum lunas'
+                    ]);
                 }
             }
 
@@ -317,7 +313,6 @@ class InqueryPengeluarankaskecilController extends Controller
                 'status' => 'unpost'
             ]);
         }
-
 
         $item->update([
             'status' => 'unpost'
@@ -390,6 +385,8 @@ class InqueryPengeluarankaskecilController extends Controller
         $GajiKaryawanss = $item->perhitungan_gajikaryawan_id;
         if ($GajiKaryawanss) {
             $GajiKaryawan = Perhitungan_gajikaryawan::where('id', $item->perhitungan_gajikaryawan_id)->first();
+            $TotalPelunasan = $GajiKaryawan->total_pelunasan;
+
             Perhitungan_gajikaryawan::where('id', $item->perhitungan_gajikaryawan_id)->update([
                 'status' => 'posting'
             ]);
@@ -399,49 +396,46 @@ class InqueryPengeluarankaskecilController extends Controller
                 $detail->update([
                     'status' => 'posting'
                 ]);
-            }
 
-            // return;
-            foreach ($detailGaji as $detail) {
+                // Perbarui detail cicilan untuk setiap karyawan yang terlibat
+                $detail_cicilan = Detail_cicilan::where('detail_gajikaryawan_id', $detail->id)
+                    ->where('status', 'posting')
+                    ->where('status_cicilan', 'belum lunas')
+                    ->first();
+
+                if ($detail_cicilan) {
+                    $detail_cicilan->update([
+                        'status_cicilan' => 'lunas',
+                    ]);
+                }
+
                 $karyawan = Karyawan::find($detail->karyawan_id);
                 if ($karyawan) {
                     $kasbon = $karyawan->kasbon;
                     $bayar_kasbon = $karyawan->bayar_kasbon;
 
-                    $karyawan->update(['kasbon_backup' => $kasbon]);
-
-                    // Memastikan potongan_ke tidak null
-                    if ($karyawan->potongan_ke === null) {
-                        $karyawan->potongan_ke = 0;
-                    }
                     // Mengurangi kasbon dan menambah bayar_kasbon
                     $karyawan->update([
                         'kasbon' => $kasbon - $detail->pelunasan_kasbon,
                         'bayar_kasbon' => $bayar_kasbon + $detail->pelunasan_kasbon,
                     ]);
-
-                    // Cek jika hasil pengurangan pelunasan_kasbon dari kasbon adalah 0
-                    if (($kasbon - $detail->pelunasan_kasbon) == 0) {
-                        // Set potongan_ke menjadi 0
-                        $karyawan->update([
-                            'potongan_backup' => $karyawan->potongan_ke,
-                            'potongan_ke' => 0
-                        ]);
-                    } else {
-                        // Jika tidak 0, tambahkan 1 ke potongan_ke
-                        if ($detail->pelunasan_kasbon != 0) {
-                            $karyawan->increment('potongan_ke', 1);
-                        }
-                    }
                 }
             }
-
 
             Detail_pengeluaran::where('perhitungan_gajikaryawan_id', $GajiKaryawan->id)->update([
                 'status' => 'posting'
             ]);
-        }
 
+            // $totalKasbon = Total_kasbon::latest()->first();
+            // if (!$totalKasbon) {
+            //     return back()->with('error', 'Saldo Kasbon tidak ditemukan');
+            // }
+
+            // $sisaKasbon = $totalKasbon->sisa_kasbon - $TotalPelunasan;
+            // Total_kasbon::create([
+            //     'sisa_kasbon' => $sisaKasbon,
+            // ]);
+        }
 
         // Update the main record
         $item->update([
@@ -547,50 +541,55 @@ class InqueryPengeluarankaskecilController extends Controller
                     $GajiKaryawanss = $item->perhitungan_gajikaryawan_id;
                     if ($GajiKaryawanss) {
                         $GajiKaryawan = Perhitungan_gajikaryawan::where('id', $item->perhitungan_gajikaryawan_id)->first();
+                        $TotalPelunasan = $GajiKaryawan->total_pelunasan;
                         Perhitungan_gajikaryawan::where('id', $item->perhitungan_gajikaryawan_id)->update([
-                            'status' => 'unpost'
+                            'status' => 'posting'
                         ]);
                         $detailGaji = Detail_gajikaryawan::where('perhitungan_gajikaryawan_id', $GajiKaryawan->id)->get();
 
                         foreach ($detailGaji as $detail) {
                             $detail->update([
-                                'status' => 'unpost'
+                                'status' => 'posting'
                             ]);
-                        }
 
-                        foreach ($detailGaji as $detail) {
+                            // Perbarui detail cicilan untuk setiap karyawan yang terlibat
+                            $detail_cicilan = Detail_cicilan::where('detail_gajikaryawan_id', $detail->id)
+                                ->where('status', 'posting')
+                                ->where('status_cicilan', 'belum lunas')
+                                ->first();
+
+                            if ($detail_cicilan) {
+                                $detail_cicilan->update([
+                                    'status_cicilan' => 'lunas',
+                                ]);
+                            }
                             $karyawan = Karyawan::find($detail->karyawan_id);
                             if ($karyawan) {
-                                $kasbon = $karyawan->kasbon_backup;
+                                $kasbon = $karyawan->kasbon;
                                 $bayar_kasbon = $karyawan->bayar_kasbon;
 
                                 // Mengurangi kasbon dan menambah bayar_kasbon
                                 $karyawan->update([
-                                    'kasbon' => $kasbon + $detail->pelunasan_kasbon,
-                                    'bayar_kasbon' => $bayar_kasbon - $detail->pelunasan_kasbon,
+                                    'kasbon' => $kasbon - $detail->pelunasan_kasbon,
+                                    'bayar_kasbon' => $bayar_kasbon + $detail->pelunasan_kasbon,
                                 ]);
-
-                                // Cek jika hasil pengurangan pelunasan_kasbon dari kasbon adalah 0
-                                if (($kasbon - $detail->pelunasan_kasbon) == 0) {
-                                    // Set potongan_ke menjadi 0
-                                    $karyawan->update([
-                                        'potongan_ke' => $karyawan->potongan_backup,
-                                        'kasbon' => $karyawan->kasbon_backup,
-                                        'kasbon_backup' => null,
-                                        'potongan_backup' => null
-                                    ]);
-                                } else {
-                                    // Jika tidak 0, tambahkan 1 ke potongan_ke
-                                    if ($detail->pelunasan_kasbon != 0) {
-                                        $karyawan->decrement('potongan_ke', 1);
-                                    }
-                                }
                             }
                         }
 
+
                         Detail_pengeluaran::where('perhitungan_gajikaryawan_id', $GajiKaryawan->id)->update([
-                            'status' => 'unpost'
+                            'status' => 'posting'
                         ]);
+
+                        // $totalKasbon = Total_kasbon::latest()->first();
+                        // if (!$totalKasbon) {
+                        //     return back()->with('error', 'Saldo Kasbon tidak ditemukan');
+                        // }
+
+                        // $sisaKasbon = $totalKasbon->sisa_kasbon - $TotalPelunasan;
+                        // Total_kasbon::create([
+                        //     'sisa_kasbon' => $sisaKasbon,
+                        // ]);
                     }
                 }
             }
@@ -689,6 +688,7 @@ class InqueryPengeluarankaskecilController extends Controller
                     $GajiKaryawanss = $item->perhitungan_gajikaryawan_id;
                     if ($GajiKaryawanss) {
                         $GajiKaryawan = Perhitungan_gajikaryawan::where('id', $item->perhitungan_gajikaryawan_id)->first();
+                        $TotalPelunasan = $GajiKaryawan->total_pelunasan;
                         Perhitungan_gajikaryawan::where('id', $item->perhitungan_gajikaryawan_id)->update([
                             'status' => 'unpost'
                         ]);
@@ -698,9 +698,20 @@ class InqueryPengeluarankaskecilController extends Controller
                             $detail->update([
                                 'status' => 'unpost'
                             ]);
-                        }
 
-                        foreach ($detailGaji as $detail) {
+                            // Perbarui detail cicilan untuk setiap karyawan yang terlibat
+                            $detail_cicilan = Detail_cicilan::where('detail_gajikaryawan_id', $detail->id)
+                                ->where('status', 'posting')
+                                ->where('status_cicilan', 'lunas')
+                                ->latest() // Mengambil data terbaru berdasarkan waktu pembuatan
+                                ->first();
+
+                            if ($detail_cicilan) {
+                                $detail_cicilan->update([
+                                    'status_cicilan' => 'belum lunas', // Kembalikan status cicilan menjadi 'belum lunas'
+                                ]);
+                            }
+
                             $karyawan = Karyawan::find($detail->karyawan_id);
                             if ($karyawan) {
                                 $kasbon = $karyawan->kasbon_backup;
@@ -711,28 +722,22 @@ class InqueryPengeluarankaskecilController extends Controller
                                     'kasbon' => $kasbon + $detail->pelunasan_kasbon,
                                     'bayar_kasbon' => $bayar_kasbon - $detail->pelunasan_kasbon,
                                 ]);
-
-                                // Cek jika hasil pengurangan pelunasan_kasbon dari kasbon adalah 0
-                                if (($kasbon - $detail->pelunasan_kasbon) == 0) {
-                                    // Set potongan_ke menjadi 0
-                                    $karyawan->update([
-                                        'potongan_ke' => $karyawan->potongan_backup,
-                                        'kasbon' => $karyawan->kasbon_backup,
-                                        'kasbon_backup' => null,
-                                        'potongan_backup' => null
-                                    ]);
-                                } else {
-                                    // Jika tidak 0, tambahkan 1 ke potongan_ke
-                                    if ($detail->pelunasan_kasbon != 0) {
-                                        $karyawan->decrement('potongan_ke', 1);
-                                    }
-                                }
                             }
                         }
 
                         Detail_pengeluaran::where('perhitungan_gajikaryawan_id', $GajiKaryawan->id)->update([
                             'status' => 'unpost'
                         ]);
+
+                        // $totalKasbon = Total_kasbon::latest()->first();
+                        // if (!$totalKasbon) {
+                        //     return back()->with('error', 'Saldo Kasbon tidak ditemukan');
+                        // }
+
+                        // $sisaKasbon = $totalKasbon->sisa_kasbon + $TotalPelunasan;
+                        // Total_kasbon::create([
+                        //     'sisa_kasbon' => $sisaKasbon,
+                        // ]);
                     }
                 }
             }

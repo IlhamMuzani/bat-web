@@ -317,6 +317,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('postingmemotambahan/{id}', [\App\Http\Controllers\Admin\InqueryMemotambahanController::class, 'postingmemotambahan'])->name('postingmemotambahan');
     Route::get('hapusmemotambahan/{id}', [\App\Http\Controllers\Admin\InqueryMemotambahanController::class, 'hapusmemotambahan'])->name('hapusmemotambahan');
     Route::get('pengambilan_ujs/cetak-pdf/{id}', [\App\Http\Controllers\Admin\PengambilanujsController::class, 'cetakpdf']);
+    Route::delete('inquery_kasbonkaryawan/deletedetailcicilan/{id}', [\App\Http\Controllers\Admin\InqueryKasbonkaryawanController::class, 'deletedetailcicilan']);
 
     Route::get('penerimaan_kaskecil/cetak-pdf/{id}', [\App\Http\Controllers\Admin\PenerimaankaskecilController::class, 'cetakpdf']);
     Route::get('laporan_penerimaankaskecil', [\App\Http\Controllers\Admin\LaporanPenerimaankaskecilController::class, 'index']);
@@ -341,7 +342,8 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('print_pph', [\App\Http\Controllers\Admin\LaporanPphController::class, 'print_pph']);
 
     Route::get('hakaksesdriver', [\App\Http\Controllers\Admin\AksesController::class, 'indexdriver']);
-
+    Route::delete('inquery_perhitungangaji/deletedetailperhitungangaji/{id}', [\App\Http\Controllers\Admin\InqueryPerhitungangajiController::class, 'deletedetailperhitungangaji']);
+    Route::delete('inquery_perhitungangajibulanan/deletedetailperhitungan/{id}', [\App\Http\Controllers\Admin\InqueryPerhitungangajibulananController::class, 'deletedetailperhitungan']);
 
     Route::get('inquery_perhitungangaji/unpostperhitungan/{id}', [\App\Http\Controllers\Admin\InqueryPerhitungangajiController::class, 'unpostperhitungan']);
     Route::get('inquery_perhitungangaji/postingperhitungan/{id}', [\App\Http\Controllers\Admin\InqueryPerhitungangajiController::class, 'postingperhitungan']);

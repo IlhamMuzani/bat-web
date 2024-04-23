@@ -78,13 +78,14 @@
                 <tr>
                     <td style="width:20%;">
                         <div style="text-align: left;">
-                            <img src="{{ asset('storage/uploads/user/logo.png') }}" alt="JAVA LINE LOGISTICS"
-                                width="150" height="50">
+                            <img src="{{ public_path('storage/uploads/gambar_logo/Logo.jpg') }}" alt="BAT"
+                                width="70" height="35">
                         </div>
                     </td>
                     <td style="width: 95%; text-align: left;">
                         <div style="text-align: center; margin-top:20px">
-                            <span style="font-weight: bold; font-size: 15px;">REKAP GAJI KARYAWAN JAVA LINE LOGISTICS (
+                            <span style="font-weight: bold; font-size: 15px;">REKAP GAJI KARYAWAN BINA ANUGERAH
+                                TRANSINDO (
                                 {{ \Carbon\Carbon::parse($cetakpdf->tanggal_awal)->locale('id')->isoFormat('D MMMM YYYY') }})</span>
                             <div class="text">
                                 <p style="font-size: 13px">Periode:{{ $cetakpdf->periode_awal }}s/d

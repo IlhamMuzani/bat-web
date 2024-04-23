@@ -18,7 +18,7 @@
 </head>
 
 <body class="hold-transition login-page">
-     <img src="{{ asset('storage/uploads/gambar_logo/Logo.jpg') }}" alt="BAT" height="40"
+     <img src="{{ asset('storage/uploads/gambar_logo/Logo2.png') }}" alt="BAT" height="40"
         width="100">
     <div class="login-box">
         <div class="login-logo">

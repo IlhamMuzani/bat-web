@@ -67,7 +67,6 @@
             position: relative;
             top: -9px;
         }
-
     </style>
 </head>
 
@@ -79,13 +78,14 @@
                 <tr>
                     <td style="width:20%;">
                         <div style="text-align: left;">
-                            <img src="{{ asset('storage/uploads/user/logo.png') }}" alt="JAVA LINE LOGISTICS"
-                                width="150" height="50">
+                            <img src="{{ public_path('storage/uploads/gambar_logo/Logo.jpg') }}" alt="BAT"
+                                width="70" height="35">
                         </div>
                     </td>
                     <td style="width: 95%; text-align: left;">
                         <div style="text-align: center; margin-top:20px">
-                            <span style="font-weight: bold; font-size: 15px;">REKAP GAJI KARYAWAN JAVA LINE LOGISTICS (
+                            <span style="font-weight: bold; font-size: 15px;">REKAP GAJI KARYAWAN BINA ANUGERAH
+                                TRANSINDO (
                                 {{ \Carbon\Carbon::parse($cetakpdf->tanggal_awal)->locale('id')->isoFormat('D MMMM YYYY') }})</span>
                             <div class="text">
                                 <p style="font-size: 13px">Periode:{{ $cetakpdf->periode_awal }}s/d
@@ -121,8 +121,7 @@
                     ID KARYAWAN</td>
                 <td class="td" style="text-align: left; padding: 2px; font-size: 9px;  font-weight:bold; ">
                     NAMA LENGKAP</td>
-                <td class="td"
-                    style="text-align: right; padding: 2px; font-size: 9px;  font-weight:bold;  ">
+                <td class="td" style="text-align: right; padding: 2px; font-size: 9px;  font-weight:bold;  ">
                     GAPOK</td>
                 <td class="td" style="text-align: right; padding: 2px; font-size: 9px;  font-weight:bold;">
                     HE</td>
@@ -136,13 +135,11 @@
                 <td class="td" style="text-align: right; padding: 2px; font-size: 9px;  font-weight:bold;">
                     GAJI KOTOR</td>
                 </td>
-                <td class="td"
-                    style="text-align: center; padding: 2px; font-size: 9px; font-weight:bold; ">
+                <td class="td" style="text-align: center; padding: 2px; font-size: 9px; font-weight:bold; ">
                     KETERLAMBATAN <span> <br>(&lt; 30 MNT) (> 30 MNT)</span></td>
                 {{-- <td class="td" style="text-align: center; padding: 2px; font-size: 9px;  font-weight:bold;width:8%">
                 TIDAK ABSEN</td> --}}
-                <td class="td"
-                    style="text-align: center; padding-left: 2px; font-size: 9px;  font-weight:bold;">
+                <td class="td" style="text-align: center; padding-left: 2px; font-size: 9px;  font-weight:bold;">
                     TIDAK ABSEN <span> <br>ISTRAHAT</span></td>
                 </td>
                 <td class="td" style="text-align: right; padding: 2px; font-size: 9px;  font-weight:bold;">
@@ -311,9 +308,9 @@
     </div>
 
     <div class="container">
-    <a href="{{ url('admin/inquery_perhitungangajibulanan') }}" class="blue-button">Kembali</a>
-    <a href="{{ url('admin/perhitungan_gajibulanan/cetak-pdf/' . $cetakpdf->id) }}" class="blue-button">Cetak</a>
-</div>
+        <a href="{{ url('admin/inquery_perhitungangajibulanan') }}" class="blue-button">Kembali</a>
+        <a href="{{ url('admin/perhitungan_gajibulanan/cetak-pdf/' . $cetakpdf->id) }}" class="blue-button">Cetak</a>
+    </div>
 
 </body>
 

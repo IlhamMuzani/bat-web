@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Detail_cicilan;
 use App\Models\Detail_gajikaryawan;
 use App\Models\Detail_pelunasandeposit;
 use App\Models\Detail_pengeluaran;
@@ -209,6 +210,16 @@ class PerhitungangajibulananController extends Controller
                     'tanggal' => $format_tanggal,
                     'tanggal_awal' => $tanggal,
                 ]);
+                $detail_cicilan = Detail_cicilan::where('karyawan_id', $data_pesanan['karyawan_id'])
+                    ->where('status', 'posting')
+                    ->where('status_cicilan', 'belum lunas')
+                    ->first();
+                if ($detail_cicilan) {
+                    $detail_cicilan->update([
+                        // 'status_cicilan' => 'belum lunas',
+                        'detail_gajikaryawan_id' =>  $detailfaktur->id,
+                    ]);
+                }
             }
         }
 
