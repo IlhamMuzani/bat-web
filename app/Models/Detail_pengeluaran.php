@@ -65,6 +65,11 @@ class Detail_pengeluaran extends Model
         return $this->belongsTo(Kendaraan::class);
     }
 
+    public function kasbon_karyawan()
+    {
+        return $this->belongsTo(Kasbon_karyawan::class);
+    }
+    
     public static function getId()
     {
         return $getId = DB::table('detail_pengeluarans')->orderBy('id', 'DESC')->take(1)->get();

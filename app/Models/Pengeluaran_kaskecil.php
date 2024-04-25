@@ -74,7 +74,10 @@ class Pengeluaran_kaskecil extends Model
         return $this->hasMany(Detail_pengeluaran::class);
     }
 
-
+    public function kasbon_karyawan()
+    {
+        return $this->belongsTo(Kasbon_karyawan::class);
+    }
 
     public static function getId()
     {
