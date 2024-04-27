@@ -12,16 +12,21 @@ use Illuminate\Support\Facades\Validator;
 
 class RuteperjalananController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Ambil semua golongan
         $golongan = Golongan::all();
-
-        // Ambil semua rute perjalanan dan urutkan berdasarkan waktu pembuatan (created_at) secara descending
-        $rute_perjalanans = Rute_perjalanan::orderBy('created_at', 'desc')->get();
-
-        // Kembalikan view dengan data rute_perjalanans dan golongan
-        return view('admin/rute_perjalanan.index', compact('rute_perjalanans', 'golongan'));
+        if ($request->has('keyword')) {
+            $keyword = $request->keyword;
+            $rute_perjalanans = Rute_perjalanan::where('kode_rute', 'like', "%$keyword%")
+                ->orWhere('nama_rute', 'like', "%$keyword%")
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+        } else {
+            $rute_perjalanans = Rute_perjalanan::orderBy('created_at', 'desc')
+                ->paginate(10);
+        }
+        return view('admin.rute_perjalanan.index', compact('rute_perjalanans', 'golongan'));
     }
 
 
@@ -149,6 +154,23 @@ class RuteperjalananController extends Controller
         $dompdf->stream();
     }
 
+    // public function kode()
+    // {
+    //     $type = Rute_perjalanan::all();
+    //     if ($type->isEmpty()) {
+    //         $num = "000001";
+    //     } else {
+    //         $id = Rute_perjalanan::getId();
+    //         foreach ($id as $value);
+    //         $idlm = $value->id;
+    //         $idbr = $idlm + 1;
+    //         $num = sprintf("%06s", $idbr);
+    //     }
+
+    //     $data = 'RT';
+    //     $kode_type = $data . $num;
+    //     return $kode_type;
+    // }
 
     public function kode()
     {
@@ -187,7 +209,44 @@ class RuteperjalananController extends Controller
         // }
     }
 
-    
+    // public function update(Request $request, $id)
+    // {
+    //     $validator = Validator::make(
+    //         $request->all(),
+    //         [
+    //             'provinsi' => 'required',
+    //             'nama_rute' => 'required',
+    //         ],
+    //         [
+    //             'provinsi.required' => 'Pilih provinsi',
+    //             'nama_rute.required' => 'Masukkan tujuan',
+    //         ]
+    //     );
+
+    //     if ($validator->fails()) {
+    //         $error = $validator->errors()->all();
+    //         return back()->withInput()->with('error', $error);
+    //     }
+
+    //     $rute_perjalanan = Rute_perjalanan::findOrFail($id);
+
+    //     $rute_perjalanan->provinsi = $request->provinsi;
+    //     $rute_perjalanan->nama_rute = $request->nama_rute;
+    //     $rute_perjalanan->golongan1 = $request->golongan1;
+    //     $rute_perjalanan->golongan2 = $request->golongan2;
+    //     $rute_perjalanan->golongan3 = $request->golongan3;
+    //     $rute_perjalanan->golongan4 = $request->golongan4;
+    //     $rute_perjalanan->golongan5 = $request->golongan5;
+    //     $rute_perjalanan->golongan6 = $request->golongan6;
+    //     $rute_perjalanan->golongan7 = $request->golongan7;
+    //     $rute_perjalanan->golongan8 = $request->golongan8;
+    //     $rute_perjalanan->golongan9 = $request->golongan9;
+    //     $rute_perjalanan->golongan10 = $request->golongan10;
+
+    //     $rute_perjalanan->save();
+
+    //     return redirect('admin/rute_perjalanan')->with('success', 'Berhasil memperbarui rute perjalanan');
+    // }
 
     public function update(Request $request, $id)
     {

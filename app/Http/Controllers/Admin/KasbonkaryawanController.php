@@ -84,6 +84,7 @@ class KasbonkaryawanController extends Controller
             [
                 'kode_kasbon' => $this->kode(),
                 'kategori' => 'Pengambilan Kasbon',
+                'keterangan' => $request->keterangan,
                 'sub_total' => $request->sub_total2,
                 'tanggal' =>  $format_tanggal,
                 'tanggal_awal' =>  $tanggal,
