@@ -123,41 +123,47 @@
                                                     <strong>{{ $deposit->kode_deposit }}</strong>
                                                 </p>
                                                 @if ($deposit->status == 'unpost')
-                                                    <form method="GET"
-                                                        action="{{ route('hapusdeposit', ['id' => $deposit->id]) }}">
-                                                        <button type="submit"
-                                                            class="btn btn-outline-danger btn-block mt-2">
-                                                            <i class="fas fa-trash-alt"></i> Delete
-                                                        </button>
-                                                    </form>
+                                                    @if ($deposit->ban_id === null)
+                                                        <form method="GET"
+                                                            action="{{ route('hapusdeposit', ['id' => $deposit->id]) }}">
+                                                            <button type="submit"
+                                                                class="btn btn-outline-danger btn-block mt-2">
+                                                                <i class="fas fa-trash-alt"></i> Delete
+                                                            </button>
+                                                        </form>
+                                                    @endif
                                                     <a href="{{ url('admin/inquery_depositdriver/' . $deposit->id) }}"
                                                         type="button" class="btn btn-outline-info btn-block">
                                                         <i class="fas fa-eye"></i> Show
                                                     </a>
-                                                    <a href="{{ url('admin/inquery_depositdriver/' . $deposit->id . '/edit') }}"
-                                                        type="button" class="btn btn-outline-warning btn-block">
-                                                        <i class="fas fa-edit"></i> Update
-                                                    </a>
-                                                    <form method="GET"
-                                                        action="{{ route('postingdeposit', ['id' => $deposit->id]) }}">
-                                                        <button type="submit"
-                                                            class="btn btn-outline-success btn-block mt-2">
-                                                            <i class="fas fa-check"></i> Posting
-                                                        </button>
-                                                    </form>
+                                                    @if ($deposit->ban_id === null)
+                                                        <a href="{{ url('admin/inquery_depositdriver/' . $deposit->id . '/edit') }}"
+                                                            type="button" class="btn btn-outline-warning btn-block">
+                                                            <i class="fas fa-edit"></i> Update
+                                                        </a>
+                                                        <form method="GET"
+                                                            action="{{ route('postingdeposit', ['id' => $deposit->id]) }}">
+                                                            <button type="submit"
+                                                                class="btn btn-outline-success btn-block mt-2">
+                                                                <i class="fas fa-check"></i> Posting
+                                                            </button>
+                                                        </form>
+                                                    @endif
                                                 @endif
                                                 @if ($deposit->status == 'posting')
                                                     <a href="{{ url('admin/inquery_depositdriver/' . $deposit->id) }}"
                                                         type="button" class="btn btn-outline-info btn-block">
                                                         <i class="fas fa-eye"></i> Show
                                                     </a>
-                                                    <form method="GET"
-                                                        action="{{ route('unpostdeposit', ['id' => $deposit->id]) }}">
-                                                        <button type="submit"
-                                                            class="btn btn-outline-primary btn-block mt-2">
-                                                            <i class="fas fa-check"></i> Unpost
-                                                        </button>
-                                                    </form>
+                                                    @if ($deposit->ban_id === null)
+                                                        <form method="GET"
+                                                            action="{{ route('unpostdeposit', ['id' => $deposit->id]) }}">
+                                                            <button type="submit"
+                                                                class="btn btn-outline-primary btn-block mt-2">
+                                                                <i class="fas fa-check"></i> Unpost
+                                                            </button>
+                                                        </form>
+                                                    @endif
                                                 @endif
                                             </div>
                                         </div>

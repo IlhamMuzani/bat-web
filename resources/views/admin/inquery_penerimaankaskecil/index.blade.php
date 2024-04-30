@@ -113,18 +113,20 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <p>Perpanjangan Stnk
+                                                <p>Saldo
                                                     <strong>{{ $penerimaan->kode_memo }}</strong>
                                                 </p>
                                                 @if ($penerimaan->status == 'unpost')
-                                                    @if (auth()->check() && auth()->user()->fitur['inquery penerimaan kas kecil delete'])
-                                                        <form method="GET"
-                                                            action="{{ route('hapuspenerimaan', ['id' => $penerimaan->id]) }}">
-                                                            <button type="submit"
-                                                                class="btn btn-outline-danger btn-block mt-2">
-                                                                <i class="fas fa-trash-alt"></i> Delete
-                                                            </button>
-                                                        </form>
+                                                    @if ($penerimaan->deposit_driver_id === null)
+                                                        @if (auth()->check() && auth()->user()->fitur['inquery penerimaan kas kecil delete'])
+                                                            <form method="GET"
+                                                                action="{{ route('hapuspenerimaan', ['id' => $penerimaan->id]) }}">
+                                                                <button type="submit"
+                                                                    class="btn btn-outline-danger btn-block mt-2">
+                                                                    <i class="fas fa-trash-alt"></i> Delete
+                                                                </button>
+                                                            </form>
+                                                        @endif
                                                     @endif
                                                     @if (auth()->check() && auth()->user()->fitur['inquery penerimaan kas kecil show'])
                                                         <a href="{{ url('admin/inquery_penerimaankaskecil/' . $penerimaan->id) }}"
@@ -132,20 +134,22 @@
                                                             <i class="fas fa-eye"></i> Show
                                                         </a>
                                                     @endif
-                                                    @if (auth()->check() && auth()->user()->fitur['inquery penerimaan kas kecil update'])
-                                                        <a href="{{ url('admin/inquery_penerimaankaskecil/' . $penerimaan->id . '/edit') }}"
-                                                            type="button" class="btn btn-outline-warning btn-block">
-                                                            <i class="fas fa-edit"></i> Update
-                                                        </a>
-                                                    @endif
-                                                    @if (auth()->check() && auth()->user()->fitur['inquery penerimaan kas kecil posting'])
-                                                        <form method="GET"
-                                                            action="{{ route('postingpenerimaan', ['id' => $penerimaan->id]) }}">
-                                                            <button type="submit"
-                                                                class="btn btn-outline-success btn-block mt-2">
-                                                                <i class="fas fa-check"></i> Posting
-                                                            </button>
-                                                        </form>
+                                                    @if ($penerimaan->deposit_driver_id === null)
+                                                        @if (auth()->check() && auth()->user()->fitur['inquery penerimaan kas kecil update'])
+                                                            <a href="{{ url('admin/inquery_penerimaankaskecil/' . $penerimaan->id . '/edit') }}"
+                                                                type="button" class="btn btn-outline-warning btn-block">
+                                                                <i class="fas fa-edit"></i> Update
+                                                            </a>
+                                                        @endif
+                                                        @if (auth()->check() && auth()->user()->fitur['inquery penerimaan kas kecil posting'])
+                                                            <form method="GET"
+                                                                action="{{ route('postingpenerimaan', ['id' => $penerimaan->id]) }}">
+                                                                <button type="submit"
+                                                                    class="btn btn-outline-success btn-block mt-2">
+                                                                    <i class="fas fa-check"></i> Posting
+                                                                </button>
+                                                            </form>
+                                                        @endif
                                                     @endif
                                                 @endif
                                                 @if ($penerimaan->status == 'posting')
@@ -155,14 +159,16 @@
                                                             <i class="fas fa-eye"></i> Show
                                                         </a>
                                                     @endif
-                                                    @if (auth()->check() && auth()->user()->fitur['inquery penerimaan kas kecil unpost'])
-                                                        <form method="GET"
-                                                            action="{{ route('unpostpenerimaan', ['id' => $penerimaan->id]) }}">
-                                                            <button type="submit"
-                                                                class="btn btn-outline-primary btn-block mt-2">
-                                                                <i class="fas fa-check"></i> Unpost
-                                                            </button>
-                                                        </form>
+                                                    @if ($penerimaan->deposit_driver_id === null)
+                                                        @if (auth()->check() && auth()->user()->fitur['inquery penerimaan kas kecil unpost'])
+                                                            <form method="GET"
+                                                                action="{{ route('unpostpenerimaan', ['id' => $penerimaan->id]) }}">
+                                                                <button type="submit"
+                                                                    class="btn btn-outline-primary btn-block mt-2">
+                                                                    <i class="fas fa-check"></i> Unpost
+                                                                </button>
+                                                            </form>
+                                                        @endif
                                                     @endif
                                                 @endif
                                             </div>

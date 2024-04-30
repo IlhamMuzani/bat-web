@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use Carbon\Carbon;
-use Dompdf\Dompdf;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Ban;
 use App\Models\Merek;
 use App\Models\Ukuran;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Kendaraan;
+use App\Models\Klaim_ban;
 use App\Models\Typeban;
 use Illuminate\Support\Facades\Validator;
 
@@ -90,6 +91,17 @@ class BanController extends Controller
             // tidak memiliki akses
             return back()->with('error', array('Anda tidak memiliki akses'));
         }
+    }
+
+    public function lihat_klaim($id)
+    {
+        $ban = Ban::where('id', $id)->first();
+        $cetakpdf = Klaim_ban::where('ban_id', $id)->first();
+
+        $pdf = PDF::loadView('admin.klaim_ban.cetak_pdf', compact('cetakpdf'));
+        $pdf->setPaper('letter', 'portrait'); // Set the paper size to portrait letter
+
+        return $pdf->stream('Surat_klaim_ban_driver.pdf');
     }
 
     public function create()

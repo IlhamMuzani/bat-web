@@ -9,31 +9,34 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Deposit_driver extends Model
+class Klaim_ban extends Model
 {
     use HasFactory;
     use LogsActivity;
 
-    protected $fillable = [
+    protected $fillable =
+    [
+        'kode_klaimban',
+        'penerimaan_kaskecil_id',
+        'deposit_driver_id',
+        'kendaraan_id',
         'karyawan_id',
         'ban_id',
-        'memo_ekspedisi_id',
-        'kategori',
-        'kode_deposit',
-        'kode_sopir',
-        'nama_sopir',
-        'nominal',
         'keterangan',
-        'saldo_masuk',
-        'saldo_keluar',
-        'sisa_saldo',
-        'sub_total',
+        'qr_codeklaim',
+        'harga_ban',
+        'harga_klaim',
+        'km_terpakai',
+        'target_km',
+        'km_pemasangan',
+        'km_pelepasan',
+        'grand_total',
         'tanggal',
         'tanggal_awal',
+        'tanggal_akhir',
         'status',
         'status_notif',
     ];
-
 
     use SoftDeletes;
     protected $dates = ['deleted_at'];
@@ -44,6 +47,20 @@ class Deposit_driver extends Model
             ->logFillable('*');
     }
 
+    public function penerimaan_kaskecil()
+    {
+        return $this->belongsTo(Penerimaan_kaskecil::class);
+    }
+
+    public function deposit_driver()
+    {
+        return $this->belongsTo(Deposit_driver::class);
+    }
+
+    public function kendaraan()
+    {
+        return $this->belongsTo(Kendaraan::class);
+    }
 
     public function karyawan()
     {
@@ -55,13 +72,9 @@ class Deposit_driver extends Model
         return $this->belongsTo(Ban::class);
     }
 
-    public function penerimaan_kaskecil()
-    {
-        return $this->hasMany(Penerimaan_kaskecil::class);
-    }
 
     public static function getId()
     {
-        return $getId = DB::table('deposit_drivers')->orderBy('id', 'DESC')->take(1)->get();
+        return $getId = DB::table('klaim_bans')->orderBy('id', 'DESC')->take(1)->get();
     }
 }
