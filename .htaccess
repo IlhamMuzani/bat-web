@@ -19,5 +19,6 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
     php_value max_input_vars 2000
+    php_value memory_limit 1024M
 
 </IfModule>
