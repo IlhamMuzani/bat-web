@@ -118,7 +118,8 @@
                     </td>
                     <td style="width: 95%; text-align: left;">
                         <div style="text-align: center; margin-top:20px">
-                            <span style="font-weight: bold; font-size: 15px;">REKAP GAJI KARYAWAN BINA ANUGERAH TRANSINDO (
+                            <span style="font-weight: bold; font-size: 15px;">REKAP GAJI KARYAWAN BINA ANUGERAH
+                                TRANSINDO (
                                 {{ \Carbon\Carbon::parse($cetakpdf->tanggal_awal)->locale('id')->isoFormat('D MMMM YYYY') }})</span>
                             <div class="text">
                                 <p style="font-size: 13px">Periode:{{ $cetakpdf->periode_awal }}s/d
@@ -178,6 +179,9 @@
                     style="text-align: center; padding-left: 2px; font-size: 9px;  font-weight:bold;width:13%">
                     TIDAK ABSEN <span> <br>ISTRAHAT</span></td>
                 </td>
+                <td class="td"
+                    style="text-align: center; padding: 2px; font-size: 9px;  font-weight:bold; width:12%">
+                    POTONGAN LAINNYA</td>
                 <td class="td"
                     style="text-align: right; padding: 2px; font-size: 9px;  font-weight:bold; width:12%">
                     BPJS</td>
@@ -305,6 +309,10 @@
                         Rp. {{ number_format($item->hasil_absen, 0, ',', '.') }}
                     </td>
                     <td class="td"
+                        style="text-align: right; padding-right: 15px; font-size: 9px; border-bottom: 1px solid black;">
+                        Rp. {{ number_format($item->lainya, 0, ',', '.') }}
+                    </td>
+                    <td class="td"
                         style="text-align: right; padding-right: 7px; font-size: 9px; border-bottom: 1px solid black;">
                         Rp. {{ number_format($item->potongan_bpjs, 0, ',', '.') }}
                         {{-- <td class="td"
@@ -329,10 +337,10 @@
                 @endphp
             @endforeach
             <tr style="border-bottom: 1px solid black;">
-                <td colspan="13" style="padding: 2px;"></td>
+                <td colspan="14" style="padding: 2px;"></td>
             </tr>
             <tr>
-                <td colspan="12"
+                <td colspan="13"
                     style="text-align: right; font-weight: bold; margin-top:5px; margin-bottom:5px; font-size: 9px;">
                     {{-- GRAND
                 TOTAL --}}
