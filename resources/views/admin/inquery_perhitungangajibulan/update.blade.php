@@ -447,7 +447,7 @@
                                         <th class="text-center">No</th>
                                         <th>Kode Karyawan</th>
                                         <th>Nama Karyawan</th>
-                                        {{-- <th>Cicilan</th> --}}
+                                        <th>Cicilan</th>
                                         <th>Gapok</th>
                                         <th>Opsi</th>
                                     </tr>
@@ -458,7 +458,7 @@
                                             data-kode_karyawan="{{ $karyawan->kode_karyawan }}"
                                             data-nama_lengkap="{{ $karyawan->nama_lengkap }}"
                                             data-gaji="{{ $karyawan->gaji }}" data-bpjs="{{ $karyawan->bpjs }}"
-                                            {{-- data-pelunasan_kasbon="@php $detail_cicilan_posting_belum_lunas = $karyawan->detail_cicilan
+                                            data-pelunasan_kasbon="@php $detail_cicilan_posting_belum_lunas = $karyawan->detail_cicilan
                                             ->where('status', 'posting')
                                             ->where('status_cicilan', 'belum lunas')
                                             ->first();
@@ -466,13 +466,13 @@
                                                 echo $detail_cicilan_posting_belum_lunas->nominal_cicilan;
                                             } else {
                                                 echo 0;
-                                            } @endphp" --}}
+                                            } @endphp"
                                             data-param="{{ $loop->index }}">
                                             <td class="text-center">{{ $loop->iteration }}</td>
                                             <td>{{ $karyawan->kode_karyawan }}</td>
                                             <td>{{ $karyawan->nama_lengkap }}</td>
                                             <td>{{ number_format($karyawan->gaji, 0, ',', '.') }}</td>
-                                            {{-- <td>
+                                            <td>
                                                 @php
                                                     $detail_cicilan_posting_belum_lunas = $karyawan->detail_cicilan
                                                         ->where('status', 'posting')
@@ -485,7 +485,7 @@
                                                 @else
                                                     0
                                                 @endif
-                                            </td> --}}
+                                            </td>
                                             <td class="text-center">
                                                 <button type="button" id="btnTambah" class="btn btn-primary btn-sm"
                                                     onclick="getMemos({{ $loop->index }})">

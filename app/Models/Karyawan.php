@@ -64,6 +64,21 @@ class Karyawan extends Model
         return $this->belongsTo(Departemen::class);
     }
 
+    public function kasbon_karyyawan()
+    {
+        return $this->hasMany(Kasbon_karyawan::class, 'karyawan_id');
+    }
+
+    public function detail_cicilan()
+    {
+        return $this->hasMany(Detail_cicilan::class);
+    }
+
+    public function klaim_ban()
+    {
+        return $this->hasMany(Klaim_ban::class);
+    }
+
     public function user()
     {
         return $this->hasMany(User::class);
