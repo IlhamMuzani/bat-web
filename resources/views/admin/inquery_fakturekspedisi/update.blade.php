@@ -106,584 +106,643 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                {{-- <div class="mb-3 mt-4">
+                            <div class="form-group" style="flex: 8;">
+                                <div class="row">
+                                    {{-- <div class="mb-3 mt-4">
                                 <button class="btn btn-primary btn-sm" type="button" onclick="ShowMemo(this.value)">
                                     <i class="fas fa-plus mr-2"></i> Pilih Pelanggan
                                 </button>
                             </div> --}}
-                                <div class="form-group" hidden>
-                                    <label for="pelanggan_id">pelanggan Id</label>
-                                    <input type="text" class="form-control" id="pelanggan_id" readonly
-                                        name="pelanggan_id" placeholder=""
-                                        value="{{ old('pelanggan_id', $inquery->pelanggan_id) }}">
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label style="font-size:14px" for="kode_pelanggan">Kode Pelanggan</label>
-                                        <input onclick="showCategoryModalPelanggan(this.value)" style="font-size:14px"
-                                            type="text" class="form-control" id="kode_pelanggan" readonly
-                                            name="kode_pelanggan" placeholder=""
-                                            value="{{ old('kode_pelanggan', $inquery->kode_pelanggan) }}">
+                                    <div class="form-group" hidden>
+                                        <label for="pelanggan_id">pelanggan Id</label>
+                                        <input type="text" class="form-control" id="pelanggan_id" readonly
+                                            name="pelanggan_id" placeholder=""
+                                            value="{{ old('pelanggan_id', $inquery->pelanggan_id) }}">
                                     </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <label style="font-size:14px" class="form-label" for="nama_pelanggan">Nama
-                                        Pelanggan</label>
-                                    <div class="form-group d-flex">
-                                        <input onclick="showCategoryModalPelanggan(this.value)" class="form-control"
-                                            id="nama_pelanggan" name="nama_pelanggan" type="text" placeholder=""
-                                            value="{{ old('nama_pelanggan', $inquery->nama_pelanggan) }}" readonly
-                                            style="margin-right: 10px; font-size:14px" />
-                                        <button class="btn btn-primary" type="button"
-                                            onclick="showCategoryModalPelanggan(this.value)">
-                                            <i class="fas fa-search"></i>
-                                        </button>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label style="font-size:14px" for="kode_pelanggan">Kode Pelanggan</label>
+                                            <input onclick="showCategoryModalPelanggan(this.value)" style="font-size:14px"
+                                                type="text" class="form-control" id="kode_pelanggan" readonly
+                                                name="kode_pelanggan" placeholder=""
+                                                value="{{ old('kode_pelanggan', $inquery->kode_pelanggan) }}">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label style="font-size:14px" for="telp_pelanggan">No. Telp</label>
-                                        <input onclick="showCategoryModalPelanggan(this.value)" style="font-size:14px"
-                                            type="text" class="form-control" id="telp_pelanggan" readonly
-                                            name="telp_pelanggan" placeholder=""
-                                            value="{{ old('telp_pelanggan', $inquery->telp_pelanggan) }}">
+                                    <div class="col-lg-6">
+                                        <label style="font-size:14px" class="form-label" for="nama_pelanggan">Nama
+                                            Pelanggan</label>
+                                        <div class="form-group d-flex">
+                                            <input onclick="showCategoryModalPelanggan(this.value)" class="form-control"
+                                                id="nama_pelanggan" name="nama_pelanggan" type="text" placeholder=""
+                                                value="{{ old('nama_pelanggan', $inquery->nama_pelanggan) }}" readonly
+                                                style="margin-right: 10px; font-size:14px" />
+                                            <button class="btn btn-primary" type="button"
+                                                onclick="showCategoryModalPelanggan(this.value)">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label style="font-size:14px" for="alamat_pelanggan">Alamat</label>
-                                        <input onclick="showCategoryModalPelanggan(this.value)" style="font-size:14px"
-                                            type="text" class="form-control" id="alamat_pelanggan" readonly
-                                            name="alamat_pelanggan" placeholder=""
-                                            value="{{ old('alamat_pelanggan', $inquery->alamat_pelanggan) }}">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label style="font-size:14px" for="telp_pelanggan">No. Telp</label>
+                                            <input onclick="showCategoryModalPelanggan(this.value)" style="font-size:14px"
+                                                type="text" class="form-control" id="telp_pelanggan" readonly
+                                                name="telp_pelanggan" placeholder=""
+                                                value="{{ old('telp_pelanggan', $inquery->telp_pelanggan) }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label style="font-size:14px" for="alamat_pelanggan">Alamat</label>
+                                            <input onclick="showCategoryModalPelanggan(this.value)" style="font-size:14px"
+                                                type="text" class="form-control" id="alamat_pelanggan" readonly
+                                                name="alamat_pelanggan" placeholder=""
+                                                value="{{ old('alamat_pelanggan', $inquery->alamat_pelanggan) }}">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div id="memo_label" class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Memo Ekspedisi <span>
-                            </span></h3>
-                        <div class="float-right">
-                            <button type="button" class="btn btn-primary btn-sm" onclick="addPesanan()">
-                                <i class="fas fa-plus"></i>
-                            </button>
+                    <div id="memo_label" class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Memo Ekspedisi <span>
+                                </span></h3>
+                            <div class="float-right">
+                                <button type="button" class="btn btn-primary btn-sm" onclick="addPesanan()">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="font-size:14px" class="text-center">No</th>
+                                        <th style="font-size:14px">No Memo</th>
+                                        <th style="font-size:14px">Nama Sopir</th>
+                                        <th style="font-size:14px">Rute Perjalanan</th>
+                                        <th style="font-size:14px">MT</th>
+                                        <th style="font-size:14px">Nama Sopir</th>
+                                        <th style="font-size:14px">Rute</th>
+                                        <th style="font-size:14px">MT 2</th>
+                                        <th style="font-size:14px">Nama Sopir</th>
+                                        <th style="font-size:14px">Rute</th>
+                                        <th style="font-size:14px; text-align:center">Opsi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabel-pembelian">
+                                    @foreach ($details as $detail)
+                                        <tr id="pembelian-{{ $loop->index }}">
+                                            <td style="width: 70px; font-size:14px" class="text-center" id="urutan">
+                                                {{ $loop->index + 1 }}
+                                            </td>
+                                            <td hidden>
+                                                <div class="form-group" hidden>
+                                                    <input type="text" class="form-control"
+                                                        id="nomor_seri-{{ $loop->index }}" name="detail_ids[]"
+                                                        value="{{ $detail['id'] }}">
+                                                </div>
+                                            </td>
+                                            <td hidden>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control"
+                                                        id="memo_ekspedisi_id-{{ $loop->index }}"
+                                                        name="memo_ekspedisi_id[]"
+                                                        value="{{ $detail['memo_ekspedisi_id'] }}">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input onclick="MemoEkspedisi({{ $loop->index }})"
+                                                        style="font-size:14px" readonly type="text"
+                                                        class="form-control" id="kode_memo-{{ $loop->index }}"
+                                                        name="kode_memo[]" value="{{ $detail['kode_memo'] }}">
+                                                </div>
+                                            </td>
+                                            <td hidden>
+                                                <div class="form-group">
+                                                    <input style="font-size:14px" readonly type="text"
+                                                        class="form-control" id="tanggal_memo-{{ $loop->index }}"
+                                                        name="tanggal_memo[]" value="{{ $detail['tanggal_memo'] }}">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input onclick="MemoEkspedisi({{ $loop->index }})"
+                                                        style="font-size:14px" readonly type="text"
+                                                        class="form-control" id="nama_driver-{{ $loop->index }}"
+                                                        name="nama_driver[]" value="{{ $detail['nama_driver'] }}">
+                                                </div>
+                                            </td>
+                                            <td hidden>
+                                                <div class="form-group">
+                                                    <input style="font-size:14px" readonly type="text"
+                                                        class="form-control" id="telp_driver-{{ $loop->index }}"
+                                                        name="telp_driver[]" value="{{ $detail['telp_driver'] }}">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input onclick="MemoEkspedisi({{ $loop->index }})"
+                                                        style="font-size:14px" readonly type="text"
+                                                        class="form-control" id="nama_rute-{{ $loop->index }}"
+                                                        name="nama_rute[]" value="{{ $detail['nama_rute'] }}">
+                                                </div>
+                                            </td>
+                                            <td hidden>
+                                                <div class="form-group">
+                                                    <input style="font-size:14px" readonly type="text"
+                                                        class="form-control" id="kendaraan_id-{{ $loop->index }}"
+                                                        name="kendaraan_id[]" value="{{ $detail['kendaraan_id'] }}">
+                                                </div>
+                                            </td>
+                                            <td hidden>
+                                                <div class="form-group">
+                                                    <input style="font-size:14px" readonly type="text"
+                                                        class="form-control" id="no_kabin-{{ $loop->index }}"
+                                                        name="no_kabin[]" value="{{ $detail['no_kabin'] }}">
+                                                </div>
+                                            </td>
+                                            <td hidden>
+                                                <div class="form-group">
+                                                    <input style="font-size:14px" readonly type="text"
+                                                        class="form-control" id="no_pol-{{ $loop->index }}"
+                                                        name="no_pol[]" value="{{ $detail['no_pol'] }}">
+                                                </div>
+                                            </td>
+                                            <td hidden>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control"
+                                                        id="memotambahan_id-{{ $loop->index }}" name="memotambahan_id[]"
+                                                        value="{{ $detail['memotambahan_id'] }}">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input onclick="MemoEkspedisi(0)" style="font-size:14px"
+                                                        type="text" readonly class="form-control"
+                                                        id="kode_memotambahan-{{ $loop->index }}"
+                                                        name="kode_memotambahan[]"
+                                                        value="{{ $detail['kode_memotambahan'] }}">
+                                                </div>
+                                            </td>
+                                            <td hidden>
+                                                <div class="form-group">
+                                                    <input onclick="MemoEkspedisi(0)" style="font-size:14px"
+                                                        type="text" readonly class="form-control"
+                                                        id="tanggal_memotambahan-{{ $loop->index }}"
+                                                        name="tanggal_memotambahan[]"
+                                                        value="{{ $detail['tanggal_memotambahan'] }}">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input onclick="MemoEkspedisi(0)" style="font-size:14px" readonly
+                                                        type="text" class="form-control"
+                                                        id="nama_drivertambahan-{{ $loop->index }}"
+                                                        name="nama_drivertambahan[]"
+                                                        value="{{ $detail['nama_drivertambahan'] }}">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input onclick="MemoEkspedisi(0)" style="font-size:14px" readonly
+                                                        type="text" class="form-control"
+                                                        id="nama_rutetambahan-{{ $loop->index }}"
+                                                        name="nama_rutetambahan[]"
+                                                        value="{{ $detail['nama_rutetambahan'] }}">
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                <div class="form-group">
+                                                    <input onclick="MemoEkspedisi(0)" style="font-size:14px"
+                                                        type="text" readonly class="form-control"
+                                                        id="kode_memotambahans-{{ $loop->index }}"
+                                                        name="kode_memotambahans[]"
+                                                        value="{{ $detail['kode_memotambahans'] }}">
+                                                </div>
+                                            </td>
+                                            <td hidden>
+                                                <div class="form-group">
+                                                    <input onclick="MemoEkspedisi(0)" style="font-size:14px"
+                                                        type="text" readonly class="form-control"
+                                                        id="tanggal_memotambahans-{{ $loop->index }}"
+                                                        name="tanggal_memotambahans[]"
+                                                        value="{{ $detail['tanggal_memotambahans'] }}">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input onclick="MemoEkspedisi(0)" style="font-size:14px" readonly
+                                                        type="text" class="form-control"
+                                                        id="nama_drivertambahans-{{ $loop->index }}"
+                                                        name="nama_drivertambahans[]"
+                                                        value="{{ $detail['nama_drivertambahans'] }}">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input onclick="MemoEkspedisi(0)" style="font-size:14px" readonly
+                                                        type="text" class="form-control"
+                                                        id="nama_rutetambahans-{{ $loop->index }}"
+                                                        name="nama_rutetambahans[]"
+                                                        value="{{ $detail['nama_rutetambahans'] }}">
+                                                </div>
+                                            </td>
+
+                                            <td style="width: 100px">
+                                                <button type="button" class="btn btn-primary btn-sm"
+                                                    onclick="MemoEkspedisi({{ $loop->index }})">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                                <button style="margin-left:5px" type="button"
+                                                    class="btn btn-danger btn-sm"
+                                                    onclick="removeBan({{ $loop->index }}, {{ $detail['id'] }})">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th style="font-size:14px" class="text-center">No</th>
-                                    <th style="font-size:14px">No Memo</th>
-                                    <th style="font-size:14px">Nama Sopir</th>
-                                    <th style="font-size:14px">Rute Perjalanan</th>
-                                    <th style="font-size:14px">MT</th>
-                                    <th style="font-size:14px">Nama Sopir</th>
-                                    <th style="font-size:14px">Rute</th>
-                                    <th style="font-size:14px">MT 2</th>
-                                    <th style="font-size:14px">Nama Sopir</th>
-                                    <th style="font-size:14px">Rute</th>
-                                    <th style="font-size:14px; text-align:center">Opsi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabel-pembelian">
-                                @foreach ($details as $detail)
-                                    <tr id="pembelian-{{ $loop->index }}">
-                                        <td style="width: 70px; font-size:14px" class="text-center" id="urutan">
-                                            {{ $loop->index + 1 }}
-                                        </td>
-                                        <td hidden>
-                                            <div class="form-group" hidden>
-                                                <input type="text" class="form-control"
-                                                    id="nomor_seri-{{ $loop->index }}" name="detail_ids[]"
-                                                    value="{{ $detail['id'] }}">
-                                            </div>
-                                        </td>
-                                        <td hidden>
-                                            <div class="form-group">
-                                                <input type="text" class="form-control"
-                                                    id="memo_ekspedisi_id-{{ $loop->index }}" name="memo_ekspedisi_id[]"
-                                                    value="{{ $detail['memo_ekspedisi_id'] }}">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
-                                                <input onclick="MemoEkspedisi({{ $loop->index }})"
-                                                    style="font-size:14px" readonly type="text" class="form-control"
-                                                    id="kode_memo-{{ $loop->index }}" name="kode_memo[]"
-                                                    value="{{ $detail['kode_memo'] }}">
-                                            </div>
-                                        </td>
-                                        <td hidden>
-                                            <div class="form-group">
-                                                <input style="font-size:14px" readonly type="text"
-                                                    class="form-control" id="tanggal_memo-{{ $loop->index }}"
-                                                    name="tanggal_memo[]" value="{{ $detail['tanggal_memo'] }}">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
-                                                <input onclick="MemoEkspedisi({{ $loop->index }})"
-                                                    style="font-size:14px" readonly type="text" class="form-control"
-                                                    id="nama_driver-{{ $loop->index }}" name="nama_driver[]"
-                                                    value="{{ $detail['nama_driver'] }}">
-                                            </div>
-                                        </td>
-                                        <td hidden>
-                                            <div class="form-group">
-                                                <input style="font-size:14px" readonly type="text"
-                                                    class="form-control" id="telp_driver-{{ $loop->index }}"
-                                                    name="telp_driver[]" value="{{ $detail['telp_driver'] }}">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
-                                                <input onclick="MemoEkspedisi({{ $loop->index }})"
-                                                    style="font-size:14px" readonly type="text" class="form-control"
-                                                    id="nama_rute-{{ $loop->index }}" name="nama_rute[]"
-                                                    value="{{ $detail['nama_rute'] }}">
-                                            </div>
-                                        </td>
-                                        <td hidden>
-                                            <div class="form-group">
-                                                <input style="font-size:14px" readonly type="text"
-                                                    class="form-control" id="kendaraan_id-{{ $loop->index }}"
-                                                    name="kendaraan_id[]" value="{{ $detail['kendaraan_id'] }}">
-                                            </div>
-                                        </td>
-                                        <td hidden>
-                                            <div class="form-group">
-                                                <input style="font-size:14px" readonly type="text"
-                                                    class="form-control" id="no_kabin-{{ $loop->index }}"
-                                                    name="no_kabin[]" value="{{ $detail['no_kabin'] }}">
-                                            </div>
-                                        </td>
-                                        <td hidden>
-                                            <div class="form-group">
-                                                <input style="font-size:14px" readonly type="text"
-                                                    class="form-control" id="no_pol-{{ $loop->index }}" name="no_pol[]"
-                                                    value="{{ $detail['no_pol'] }}">
-                                            </div>
-                                        </td>
-                                        <td hidden>
-                                            <div class="form-group">
-                                                <input type="text" class="form-control"
-                                                    id="memotambahan_id-{{ $loop->index }}" name="memotambahan_id[]"
-                                                    value="{{ $detail['memotambahan_id'] }}">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
-                                                <input onclick="MemoEkspedisi(0)" style="font-size:14px" type="text"
-                                                    readonly class="form-control"
-                                                    id="kode_memotambahan-{{ $loop->index }}" name="kode_memotambahan[]"
-                                                    value="{{ $detail['kode_memotambahan'] }}">
-                                            </div>
-                                        </td>
-                                        <td hidden>
-                                            <div class="form-group">
-                                                <input onclick="MemoEkspedisi(0)" style="font-size:14px" type="text"
-                                                    readonly class="form-control"
-                                                    id="tanggal_memotambahan-{{ $loop->index }}"
-                                                    name="tanggal_memotambahan[]"
-                                                    value="{{ $detail['tanggal_memotambahan'] }}">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
-                                                <input onclick="MemoEkspedisi(0)" style="font-size:14px" readonly
-                                                    type="text" class="form-control"
-                                                    id="nama_drivertambahan-{{ $loop->index }}"
-                                                    name="nama_drivertambahan[]"
-                                                    value="{{ $detail['nama_drivertambahan'] }}">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
-                                                <input onclick="MemoEkspedisi(0)" style="font-size:14px" readonly
-                                                    type="text" class="form-control"
-                                                    id="nama_rutetambahan-{{ $loop->index }}" name="nama_rutetambahan[]"
-                                                    value="{{ $detail['nama_rutetambahan'] }}">
-                                            </div>
-                                        </td>
+                    <div id="non_memo" class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Kendaraan</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group" hidden>
+                                <label for="kendaraan_id">Kendaraan Id</label>
+                                <input type="text" class="form-control" id="kendaraan_ids" readonly
+                                    name="kendaraan_ids" placeholder=""
+                                    value="{{ old('kendaraan_ids', $inquery->kendaraan_id) }}">
+                            </div>
+                            <label style="font-size:14px" class="form-label" for="kode_kendaraan">Kode Kendaraan</label>
+                            <div class="form-group d-flex">
+                                <input onclick="showCategoryModalkendaraan(this.value)" class="form-control"
+                                    id="kode_kendaraan" name="kode_kendaraan" type="text" placeholder=""
+                                    value="  @if ($inquery->kendaraan != null) {{ old('kode_kendaraan', $inquery->kendaraan->kode_kendaraan) }} @endif"
+                                    readonly style="margin-right: 10px; font-size:14px" />
+                                <button class="btn btn-primary" type="button"
+                                    onclick="showCategoryModalkendaraan(this.value)">
+                                    <i class="fas fa-search"></i>
+                                </button>
 
-                                        <td>
-                                            <div class="form-group">
-                                                <input onclick="MemoEkspedisi(0)" style="font-size:14px" type="text"
-                                                    readonly class="form-control"
-                                                    id="kode_memotambahans-{{ $loop->index }}"
-                                                    name="kode_memotambahans[]"
-                                                    value="{{ $detail['kode_memotambahans'] }}">
-                                            </div>
-                                        </td>
+                                <button style="margin-left: 3px" class="btn btn-danger delete-row" type="button">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+
+                            <div class="form-group">
+                                <label style="font-size:14px" for="no_kabins">No. Kabin</label>
+                                <input style="font-size:14px" type="text" class="form-control" id="no_kabins"
+                                    name="no_kabins" placeholder="" value="{{ old('no_kabins', $inquery->no_kabin) }}">
+                            </div>
+                            <div class="form-group">
+                                <label style="font-size:14px" for="no_pols">No. Pol</label>
+                                <input style="font-size:14px" type="text" class="form-control" id="no_pols"
+                                    name="no_pols" placeholder="" value="{{ old('no_pols', $inquery->no_pol) }}">
+                            </div>
+                            <div class="form-group">
+                                <label style="font-size:14px" for="nama_sopir">No. Pol</label>
+                                <input style="font-size:14px" type="text" class="form-control" id="nama_sopir"
+                                    name="nama_sopir" placeholder=""
+                                    value="{{ old('nama_sopir', $inquery->nama_sopir) }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Tarif <span>
+                                </span></h3>
+                            <div class="float-right">
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="font-size:14px">Kode Tarif</th>
+                                        <th style="font-size:14px">Nama Tarif</th>
+                                        <th style="font-size:14px">Harga Tarif</th>
+                                        <th style="font-size:14px">Qty</th>
+                                        <th style="font-size:14px">Satuan</th>
+                                        <th style="font-size:14px">Total</th>
+                                        <th style="font-size:14px; text-align:center">Opsi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabel-pembelian">
+                                    <tr id="pembelian-0">
                                         <td hidden>
                                             <div class="form-group">
-                                                <input onclick="MemoEkspedisi(0)" style="font-size:14px" type="text"
-                                                    readonly class="form-control"
-                                                    id="tanggal_memotambahans-{{ $loop->index }}"
-                                                    name="tanggal_memotambahans[]"
-                                                    value="{{ $detail['tanggal_memotambahans'] }}">
+                                                <input type="text" class="form-control" id="tarif_id"
+                                                    value="{{ old('tarif_id', $inquery->tarif_id) }}" name="tarif_id">
                                             </div>
                                         </td>
                                         <td>
                                             <div class="form-group">
-                                                <input onclick="MemoEkspedisi(0)" style="font-size:14px" readonly
-                                                    type="text" class="form-control"
-                                                    id="nama_drivertambahans-{{ $loop->index }}"
-                                                    name="nama_drivertambahans[]"
-                                                    value="{{ $detail['nama_drivertambahans'] }}">
+                                                <input onclick="Tarifs(0)" style="font-size:14px" type="text"
+                                                    class="form-control" readonly id="kode_tarif" name="kode_tarif"
+                                                    value="{{ old('kode_tarif', $inquery->kode_tarif) }}">
                                             </div>
                                         </td>
                                         <td>
                                             <div class="form-group">
-                                                <input onclick="MemoEkspedisi(0)" style="font-size:14px" readonly
-                                                    type="text" class="form-control"
-                                                    id="nama_rutetambahans-{{ $loop->index }}"
-                                                    name="nama_rutetambahans[]"
-                                                    value="{{ $detail['nama_rutetambahans'] }}">
+                                                <input onclick="Tarifs(0)" style="font-size:14px" type="text"
+                                                    class="form-control" readonly id="nama_tarif" name="nama_tarif"
+                                                    value="{{ old('nama_tarif', $inquery->nama_tarif) }}">
                                             </div>
                                         </td>
-
-                                        <td style="width: 100px">
-                                            <button type="button" class="btn btn-primary btn-sm"
-                                                onclick="MemoEkspedisi({{ $loop->index }})">
+                                        <td>
+                                            <div class="form-group">
+                                                <input onclick="Tarifs(0)" style="font-size:14px" type="text"
+                                                    class="form-control harga_tarif" readonly id="harga_tarif"
+                                                    name="harga_tarif" data-row-id="0"
+                                                    value="{{ old('harga_tarif', number_format($inquery->harga_tarif, 0, ',', '.')) }}">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-group">
+                                                <input style="font-size:14px" type="text" class="form-control jumlah"
+                                                    id="jumlah" name="jumlah" data-row-id="0"
+                                                    value="{{ old('jumlah', str_replace(',', '.', $inquery->jumlah)) }}">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-group">
+                                                <select style="font-size:14px" class="form-control" id="satuan"
+                                                    name="satuan">
+                                                    <option value="">- Pilih -</option>
+                                                    <option value="pcs"
+                                                        {{ old('satuan', $inquery->satuan) == 'pcs' ? 'selected' : null }}>
+                                                        pcs</option>
+                                                    <option value="ltr"
+                                                        {{ old('satuan', $inquery->satuan) == 'ltr' ? 'selected' : null }}>
+                                                        ltr</option>
+                                                    <option value="kg"
+                                                        {{ old('satuan', $inquery->satuan) == 'kg' ? 'selected' : null }}>
+                                                        kg</option>
+                                                    <option value="ton"
+                                                        {{ old('satuan', $inquery->satuan) == 'ton' ? 'selected' : null }}>
+                                                        ton</option>
+                                                    <option value="dus"
+                                                        {{ old('satuan', $inquery->satuan) == 'dus' ? 'selected' : null }}>
+                                                        dus</option>
+                                                    <option value="M3"
+                                                        {{ old('M3', $inquery->satuan) == 'M3' ? 'selected' : null }}>
+                                                        M&sup3;</option>
+                                                    <option value="rit"
+                                                        {{ old('satuan', $inquery->satuan) == 'rit' ? 'selected' : null }}>
+                                                        rit</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-group">
+                                                <input onclick="Tarifs(0)" style="font-size:14px" type="text"
+                                                    class="form-control total_tarif" readonly id="total_tarif"
+                                                    name="total_tarif"
+                                                    value="{{ old('total_tarif', $inquery->total_tarif) }}">
+                                            </div>
+                                        </td>
+                                        <td style="width: 50px">
+                                            <button type="button" class="btn btn-primary btn-sm" onclick="Tarifs(0)">
                                                 <i class="fas fa-plus"></i>
-                                            </button>
-                                            <button style="margin-left:5px" type="button" class="btn btn-danger btn-sm"
-                                                onclick="removeBan({{ $loop->index }}, {{ $detail['id'] }})">
-                                                <i class="fas fa-trash"></i>
                                             </button>
                                         </td>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div id="non_memo" class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Kendaraan</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group" hidden>
-                            <label for="kendaraan_id">Kendaraan Id</label>
-                            <input type="text" class="form-control" id="kendaraan_ids" readonly name="kendaraan_ids"
-                                placeholder="" value="{{ old('kendaraan_ids', $inquery->kendaraan_id) }}">
+                                </tbody>
+                            </table>
+                            <div class="form-group mt-2">
+                                <label style="font-size:14px" for="keterangan">Keterangan</label>
+                                <textarea style="font-size:14px" type="text" class="form-control" id="keterangan" name="keterangan"
+                                    placeholder="Masukan keterangan">{{ old('keterangan', $inquery->keterangan) }}</textarea>
+                            </div>
                         </div>
-                        <label style="font-size:14px" class="form-label" for="kode_kendaraan">Kode Kendaraan</label>
-                        <div class="form-group d-flex">
-                            <input onclick="showCategoryModalkendaraan(this.value)" class="form-control"
-                                id="kode_kendaraan" name="kode_kendaraan" type="text" placeholder=""
-                                value="  @if ($inquery->kendaraan != null) {{ old('kode_kendaraan', $inquery->kendaraan->kode_kendaraan) }} @endif"
-                                readonly style="margin-right: 10px; font-size:14px" />
-                            <button class="btn btn-primary" type="button"
-                                onclick="showCategoryModalkendaraan(this.value)">
-                                <i class="fas fa-search"></i>
-                            </button>
+                    </div>
 
-                            <button style="margin-left: 3px" class="btn btn-danger delete-row" type="button">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-
-                        <div class="form-group">
-                            <label style="font-size:14px" for="no_kabins">No. Kabin</label>
-                            <input style="font-size:14px" type="text" class="form-control" id="no_kabins"
-                                name="no_kabins" placeholder="" value="{{ old('no_kabins', $inquery->no_kabin) }}">
-                        </div>
-                        <div class="form-group">
-                            <label style="font-size:14px" for="no_pols">No. Pol</label>
-                            <input style="font-size:14px" type="text" class="form-control" id="no_pols"
-                                name="no_pols" placeholder="" value="{{ old('no_pols', $inquery->no_pol) }}">
-                        </div>
-                        <div class="form-group">
-                            <label style="font-size:14px" for="nama_sopir">No. Pol</label>
-                            <input style="font-size:14px" type="text" class="form-control" id="nama_sopir"
-                                name="nama_sopir" placeholder="" value="{{ old('nama_sopir', $inquery->nama_sopir) }}">
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Tarif <span>
-                            </span></h3>
-                        <div class="float-right">
-                        </div>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th style="font-size:14px">Kode Tarif</th>
-                                    <th style="font-size:14px">Nama Tarif</th>
-                                    <th style="font-size:14px">Harga Tarif</th>
-                                    <th style="font-size:14px">Qty</th>
-                                    <th style="font-size:14px">Satuan</th>
-                                    <th style="font-size:14px">Total</th>
-                                    <th style="font-size:14px; text-align:center">Opsi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabel-pembelian">
-                                <tr id="pembelian-0">
-                                    <td hidden>
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" id="tarif_id"
-                                                value="{{ old('tarif_id', $inquery->tarif_id) }}" name="tarif_id">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group">
-                                            <input onclick="Tarifs(0)" style="font-size:14px" type="text"
-                                                class="form-control" readonly id="kode_tarif" name="kode_tarif"
-                                                value="{{ old('kode_tarif', $inquery->kode_tarif) }}">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group">
-                                            <input onclick="Tarifs(0)" style="font-size:14px" type="text"
-                                                class="form-control" readonly id="nama_tarif" name="nama_tarif"
-                                                value="{{ old('nama_tarif', $inquery->nama_tarif) }}">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group">
-                                            <input onclick="Tarifs(0)" style="font-size:14px" type="text"
-                                                class="form-control harga_tarif" readonly id="harga_tarif"
-                                                name="harga_tarif" data-row-id="0"
-                                                value="{{ old('harga_tarif', number_format($inquery->harga_tarif, 0, ',', '.')) }}">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group">
-                                            <input style="font-size:14px" type="text" class="form-control jumlah"
-                                                id="jumlah" name="jumlah" data-row-id="0"
-                                                value="{{ old('jumlah', str_replace(',', '.', $inquery->jumlah)) }}">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group">
-                                            <select style="font-size:14px" class="form-control" id="satuan"
-                                                name="satuan">
-                                                <option value="">- Pilih -</option>
-                                                <option value="pcs"
-                                                    {{ old('satuan', $inquery->satuan) == 'pcs' ? 'selected' : null }}>
-                                                    pcs</option>
-                                                <option value="ltr"
-                                                    {{ old('satuan', $inquery->satuan) == 'ltr' ? 'selected' : null }}>
-                                                    ltr</option>
-                                                <option value="kg"
-                                                    {{ old('satuan', $inquery->satuan) == 'kg' ? 'selected' : null }}>
-                                                    kg</option>
-                                                <option value="ton"
-                                                    {{ old('satuan', $inquery->satuan) == 'ton' ? 'selected' : null }}>
-                                                    ton</option>
-                                                <option value="dus"
-                                                    {{ old('satuan', $inquery->satuan) == 'dus' ? 'selected' : null }}>
-                                                    dus</option>
-                                                <option value="M3"
-                                                    {{ old('M3', $inquery->satuan) == 'M3' ? 'selected' : null }}>
-                                                    M&sup3;</option>
-                                                <option value="rit"
-                                                    {{ old('satuan', $inquery->satuan) == 'rit' ? 'selected' : null }}>
-                                                    rit</option>
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group">
-                                            <input onclick="Tarifs(0)" style="font-size:14px" type="text"
-                                                class="form-control total_tarif" readonly id="total_tarif"
-                                                name="total_tarif"
-                                                value="{{ old('total_tarif', $inquery->total_tarif) }}">
-                                        </div>
-                                    </td>
-                                    <td style="width: 50px">
-                                        <button type="button" class="btn btn-primary btn-sm" onclick="Tarifs(0)">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="form-group mt-2">
-                            <label style="font-size:14px" for="keterangan">Keterangan</label>
-                            <textarea style="font-size:14px" type="text" class="form-control" id="keterangan" name="keterangan"
-                                placeholder="Masukan keterangan">{{ old('keterangan', $inquery->keterangan) }}</textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
                     <div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="card" id="form_biayatambahan">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Biaya Tambahan <span>
-                                            </span></h3>
-                                        <div class="float-right">
-                                            <button type="button" class="btn btn-primary btn-sm"
-                                                onclick="addMemotambahan()">
-                                                <i class="fas fa-plus"></i>
-                                            </button>
+                        <div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card" id="form_biayatambahan">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Biaya Tambahan <span>
+                                                </span></h3>
+                                            <div class="float-right">
+                                                <button type="button" class="btn btn-primary btn-sm"
+                                                    onclick="addMemotambahan()">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <table class="table table-bordered table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th style="font-size:14px" class="text-center">No</th>
-                                                    <th style="font-size:14px">Keterangan</th>
-                                                    <th style="font-size:14px">Nominal</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="tabel-memotambahan">
-                                                @foreach ($detailtarifs as $detail)
-                                                    <tr id="memotambahan-{{ $loop->index }}">
-                                                        <td style="width: 70px; font-size:14px" class="text-center"
-                                                            id="urutantambahan">{{ $loop->index + 1 }}
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-group" hidden>
-                                                                <input type="text" class="form-control"
-                                                                    id="nomor_seri-{{ $loop->index }}"
-                                                                    name="detail_idss[]" value="{{ $detail['id'] }}">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <input style="font-size:14px" type="text"
-                                                                    class="form-control"
-                                                                    id="keterangan_tambahan-{{ $loop->index }}"
-                                                                    name="keterangan_tambahan[]"
-                                                                    value="{{ $detail['keterangan_tambahan'] }}">
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-group">
-                                                                <input style="font-size:14px" type="number"
-                                                                    class="form-control"
-                                                                    id="nominal_tambahan-{{ $loop->index }}"
-                                                                    name="nominal_tambahan[]"
-                                                                    value="{{ $detail['nominal_tambahan'] }}">
-                                                            </div>
-                                                        </td>
-                                                        <td style="width: 50px">
-                                                            <button style="margin-left:5px" type="button"
-                                                                class="btn btn-danger btn-sm"
-                                                                onclick="removememotambahans({{ $loop->index }})">
-                                                                <i class="fas fa-trash"></i>
-                                                            </button>
-                                                        </td>
+                                        <div class="card-body">
+                                            <table class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="font-size:14px" class="text-center">No</th>
+                                                        <th style="font-size:14px">Keterangan</th>
+                                                        <th style="font-size:14px">Nominal</th>
+                                                        <th style="font-size:14px">Qty</th>
+                                                        <th style="font-size:14px">Satuan</th>
+                                                        <th style="font-size:14px">Opsi</th>
                                                     </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody id="tabel-memotambahan">
+                                                    @foreach ($detailtarifs as $detail)
+                                                        <tr id="memotambahan-{{ $loop->index }}">
+                                                            <td style="width: 70px; font-size:14px" class="text-center"
+                                                                id="urutantambahan">{{ $loop->index + 1 }}
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-group" hidden>
+                                                                    <input type="text" class="form-control"
+                                                                        id="nomor_seri-{{ $loop->index }}"
+                                                                        name="detail_idss[]" value="{{ $detail['id'] }}">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <input style="font-size:14px" type="text"
+                                                                        class="form-control"
+                                                                        id="keterangan_tambahan-{{ $loop->index }}"
+                                                                        name="keterangan_tambahan[]"
+                                                                        value="{{ $detail['keterangan_tambahan'] }}">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-group">
+                                                                    <input style="font-size:14px" type="number"
+                                                                        class="form-control"
+                                                                        id="nominal_tambahan-{{ $loop->index }}"
+                                                                        name="nominal_tambahan[]"
+                                                                        value="{{ $detail['nominal_tambahan'] }}">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-group">
+                                                                    <input style="font-size:14px" type="number"
+                                                                        class="form-control"
+                                                                        id="qty_tambahan-{{ $loop->index }}"
+                                                                        name="qty_tambahan[]"
+                                                                        value="{{ $detail['qty_tambahan'] }}">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+
+                                                                <select style="font-size:14px" class="form-control"
+                                                                id="satuan_tambahan-0" name="satuan_tambahan[]">
+                                                                <option value="">- Pilih -</option>
+                                                                <option value="M3"
+                                                                    {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'M3' ? 'selected' : null }}>
+                                                                    M&sup3;</option>
+                                                                <option value="ton"
+                                                                    {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'ton' ? 'selected' : null }}>
+                                                                    ton</option>
+                                                                <option value="krtn"
+                                                                    {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'krtn' ? 'selected' : null }}>
+                                                                    krtn</option>
+                                                                <option value="dus"
+                                                                    {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'dus' ? 'selected' : null }}>
+                                                                    dus</option>
+                                                                <option value="rit"
+                                                                    {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'rit' ? 'selected' : null }}>
+                                                                    rit</option>
+                                                                <option value="kg"
+                                                                    {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'kg' ? 'selected' : null }}>
+                                                                    kg</option>
+                                                                <option value="ltr"
+                                                                    {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'ltr' ? 'selected' : null }}>
+                                                                    ltr</option>
+                                                                <option value="pcs"
+                                                                {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'pcs' ? 'selected' : null }}>
+                                                                pcs</option>
+                                                                <option value="hr"
+                                                                {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'hr' ? 'selected' : null }}>
+                                                                hr</option>
+                                                                <option value="ZAK"
+                                                                {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'ZAK' ? 'selected' : null }}>
+                                                                ZAK</option>
+                                                            </select>
+                                                        </td>
+                                                            <td style="width: 50px">
+                                                                <button style="margin-left:5px" type="button"
+                                                                    class="btn btn-danger btn-sm"
+                                                                    onclick="removememotambahans({{ $loop->index }})">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label style="font-size:14px; margin-top:5px" for="tarif">Tarif
-                                                        <span style="margin-left:89px">:</span></label>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label style="font-size:14px; margin-top:5px" for="tarif">Tarif
+                                                            <span style="margin-left:89px">:</span></label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input style="text-align: end; font-size:14px;" type="text"
+                                                            class="form-control total_tarif2" readonly id="total_tarif2"
+                                                            name="total_tarif2" placeholder=""
+                                                            value="{{ old('total_tarif2', $inquery->total_tarif2) }}">
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input style="text-align: end; font-size:14px;" type="text"
-                                                        class="form-control total_tarif2" readonly id="total_tarif2"
-                                                        name="total_tarif2" placeholder=""
-                                                        value="{{ old('total_tarif2', $inquery->total_tarif2) }}">
-                                                </div>
-                                            </div>
-                                        </div>
 
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label style="font-size:14px; margin-top:5px" for="tarif">PPH 2%
-                                                        <span style="margin-left:69px">:</span></label>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label style="font-size:14px; margin-top:5px" for="tarif">PPH
+                                                            2%
+                                                            <span style="margin-left:69px">:</span></label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input style="text-align: end; font-size:14px;" type="text"
+                                                            class="form-control pph2" readonly id="pph2"
+                                                            name="pph" placeholder=""
+                                                            value="{{ old('pph', $inquery->pph) }}">
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input style="text-align: end; font-size:14px;" type="text"
-                                                        class="form-control pph2" readonly id="pph2" name="pph"
-                                                        placeholder="" value="{{ old('pph', $inquery->pph) }}">
+                                            <div>
+                                                <hr
+                                                    style="border: 2px solid black; display: inline-block; width: 97%; vertical-align: middle;">
+                                                <span
+                                                    style="display: inline-block; margin-left: 0px; margin-right: 0; font-size: 18px; vertical-align: middle;">-</span>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label style="font-size:14px; margin-top:5px" for="tarif">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input style="text-align: end; font-size:14px;" type="text"
+                                                            class="form-control sisa" readonly id="sisa"
+                                                            name="sisa" placeholder=""
+                                                            value="{{ old('sisa', $inquery->sisa) }}">
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label style="font-size:14px; margin-top:5px" for="tarif">Biaya
+                                                            Tambahan
+                                                            <span class="ml-3">:</span></label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input style="text-align: end; font-size:14px;" type="text"
+                                                            class="form-control" readonly id="biaya_tambahan"
+                                                            name="biaya_tambahan" placeholder=""
+                                                            value="{{ number_format($inquery->uang_jalan, 0, ',', '.') }}">
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <hr
                                                 style="border: 2px solid black; display: inline-block; width: 97%; vertical-align: middle;">
                                             <span
-                                                style="display: inline-block; margin-left: 0px; margin-right: 0; font-size: 18px; vertical-align: middle;">-</span>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label style="font-size:14px; margin-top:5px" for="tarif">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input style="text-align: end; font-size:14px;" type="text"
-                                                        class="form-control sisa" readonly id="sisa" name="sisa"
-                                                        placeholder="" value="{{ old('sisa', $inquery->sisa) }}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label style="font-size:14px; margin-top:5px" for="tarif">Biaya
-                                                        Tambahan
-                                                        <span class="ml-3">:</span></label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input style="text-align: end; font-size:14px;" type="text"
-                                                        class="form-control" readonly id="biaya_tambahan"
-                                                        name="biaya_tambahan" placeholder=""
-                                                        value="{{ number_format($inquery->uang_jalan, 0, ',', '.') }}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <hr
-                                            style="border: 2px solid black; display: inline-block; width: 97%; vertical-align: middle;">
-                                        <span
-                                            style="display: inline-block; margin-left: 0px; margin-right: 0; font-size: 17px; vertical-align: middle;">+</span>
-                                        <div class="col-lg-6">
+                                                style="display: inline-block; margin-left: 0px; margin-right: 0; font-size: 17px; vertical-align: middle;">+</span>
+                                            <div class="col-lg-6">
 
-                                        </div>
-                                        <div class="form-group">
-                                            <label style="font-size:14px; margin-top:5px" for="sub_total">Grand
-                                                Total <span style="margin-left:46px">:</span></label>
-                                            <input style="text-align: end; margin:right:10px; font-size:14px;"
-                                                type="text" class="form-control sub_total" readonly id="sub_total"
-                                                name="sub_total" placeholder=""
-                                                value="{{ old('sub_total', $inquery->grand_total) }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="font-size:14px; margin-top:5px" for="sub_total">Grand
+                                                    Total <span style="margin-left:46px">:</span></label>
+                                                <input style="text-align: end; margin:right:10px; font-size:14px;"
+                                                    type="text" class="form-control sub_total" readonly id="sub_total"
+                                                    name="sub_total" placeholder=""
+                                                    value="{{ old('sub_total', $inquery->grand_total) }}">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="card-footer text-right">
-                            <button type="reset" class="btn btn-secondary">Reset</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            <div class="card-footer text-right">
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
                         </div>
-                    </div>
             </form>
         </div>
 
@@ -1653,6 +1712,7 @@
         document.getElementById("kategori").addEventListener("change", setPphValue);
     </script>
 
+
     <script>
         function toggleLabels() {
             var kategori = document.getElementById('kategoris');
@@ -1702,6 +1762,4 @@
             });
         });
     </script>
-
-
 @endsection

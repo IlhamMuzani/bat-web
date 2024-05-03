@@ -179,16 +179,18 @@ class FakturekspedisiController extends Controller
         }
 
 
-        if ($request->has('keterangan_tambahan') || $request->has('nominal_tambahan')) {
+        if ($request->has('keterangan_tambahan') || $request->has('nominal_tambahan') || $request->has('qty_tambahan') || $request->has('satuan_tambahan')) {
             for ($i = 0; $i < count($request->keterangan_tambahan); $i++) {
                 // Check if either 'keterangan_tambahan' or 'nominal_tambahan' has input
-                if (empty($request->keterangan_tambahan[$i]) && empty($request->nominal_tambahan[$i])) {
+                if (empty($request->keterangan_tambahan[$i]) && empty($request->nominal_tambahan[$i]) && empty($request->qty_tambahan[$i]) && empty($request->satuan_tambahan[$i])) {
                     continue; // Skip validation if both are empty
                 }
 
                 $validasi_produk = Validator::make($request->all(), [
                     'keterangan_tambahan.' . $i => 'required',
                     'nominal_tambahan.' . $i => 'required',
+                    'qty_tambahan.' . $i => 'required',
+                    'satuan_tambahan.' . $i => 'required',
                 ]);
 
                 if ($validasi_produk->fails()) {
@@ -197,10 +199,12 @@ class FakturekspedisiController extends Controller
 
                 $keterangan_tambahan = $request->keterangan_tambahan[$i] ?? '';
                 $nominal_tambahan = $request->nominal_tambahan[$i] ?? '';
-
-                $data_pembelians4->push(['keterangan_tambahan' => $keterangan_tambahan, 'nominal_tambahan' => $nominal_tambahan]);
+                $qty_tambahan = $request->qty_tambahan[$i] ?? '';
+                $satuan_tambahan = $request->satuan_tambahan[$i] ?? '';
+                $data_pembelians4->push(['keterangan_tambahan' => $keterangan_tambahan, 'nominal_tambahan' => $nominal_tambahan, 'qty_tambahan' => $qty_tambahan, 'satuan_tambahan' => $satuan_tambahan]);
             }
         }
+
 
         if ($error_pelanggans || $error_pesanans) {
             return back()
@@ -327,6 +331,8 @@ class FakturekspedisiController extends Controller
                     'faktur_ekspedisi_id' => $cetakpdf->id,
                     'keterangan_tambahan' => $data_pesanan['keterangan_tambahan'],
                     'nominal_tambahan' => str_replace('.', '', $data_pesanan['nominal_tambahan']),
+                    'qty_tambahan' => $data_pesanan['qty_tambahan'],
+                    'satuan_tambahan' => $data_pesanan['satuan_tambahan'],
                 ]);
             }
         }
