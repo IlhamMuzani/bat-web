@@ -114,7 +114,6 @@
                         <div style="text-align: left;">
                             <img src="{{ public_path('storage/uploads/gambar_logo/Logo.jpg') }}" alt="BAT"
                                 width="70" height="35">
-                            height="60">
                         </div>
                     </td>
                     <td style="width: 95%; text-align: left;">
@@ -434,7 +433,7 @@
                                         Rp.
                                     </td>
                                     <td style="width: 70%;">
-                                        {{ number_format($item->sisa_kasbon - $item->pelunasan_kasbon, 2, ',', '.') }}
+                                        - {{ number_format($item->sisa_kasbon - $item->pelunasan_kasbon, 2, ',', '.') }}
                                     </td>
                                 </tr>
                             </table>
