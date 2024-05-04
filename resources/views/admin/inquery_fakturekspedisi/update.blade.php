@@ -631,7 +631,7 @@
                                                             <td style="width: 50px">
                                                                 <button style="margin-left:5px" type="button"
                                                                     class="btn btn-danger btn-sm"
-                                                                    onclick="removememotambahans({{ $loop->index }})">
+                                                                    onclick="removememotambahans({{ $loop->index }}, {{ $detail['id'] }})">
                                                                     <i class="fas fa-trash"></i>
                                                                 </button>
                                                             </td>
@@ -1359,24 +1359,24 @@
         //     itemPembelians(jumlah_ban, jumlah_ban - 1);
         // }
 
-        function removememotambahans(identifier, detailId) {
+          function removememotambahans(identifier, detailId) {
             var row = document.getElementById('memotambahan-' + identifier);
             row.remove();
 
-            // $.ajax({
-            //     url: "{{ url('admin/ban/') }}/" + detailId,
-            //     type: "POST",
-            //     data: {
-            //         _method: 'DELETE',
-            //         _token: '{{ csrf_token() }}'
-            //     },
-            //     success: function(response) {
-            //         console.log('Data deleted successfully');
-            //     },
-            //     error: function(error) {
-            //         console.error('Failed to delete data:', error);
-            //     }
-            // });
+            $.ajax({
+                url: "{{ url('admin/inquery_fakturekspedisi/delettariftambahan/') }}/" + detailId,
+                type: "POST",
+                data: {
+                    _method: 'DELETE',
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    console.log('Data deleted successfully');
+                },
+                error: function(error) {
+                    console.error('Failed to delete data:', error);
+                }
+            });
 
             updateUrutan();
         }

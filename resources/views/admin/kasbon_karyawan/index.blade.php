@@ -348,10 +348,10 @@
             var sisaSaldo = parseCurrency($('#saldo_keluar').val());
 
             // Menghitung sub total
-            var subTotal = saldoMasuk - sisaSaldo;
+            var subTotal = saldoMasuk + sisaSaldo;
 
             // Mengonversi nilai sub total ke format rupiah dengan menambahkan simbol mines (-)
-            var subTotalRupiah = "Rp " + (subTotal < 0 ? "- " : "") + formatRupiah(Math.abs(subTotal));
+            var subTotalRupiah = "Rp " + formatRupiah(Math.abs(subTotal));
             var subTotalRupiahs = (subTotal);
 
             // Menetapkan nilai ke input sub total

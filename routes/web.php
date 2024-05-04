@@ -175,6 +175,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('hapuspart/{id}', [\App\Http\Controllers\Admin\InqueryPembelianPartController::class, 'hapuspart'])->name('hapuspart');
     Route::get('laporan_pembelianpart', [\App\Http\Controllers\Admin\LaporanPembelianPart::class, 'index']);
     Route::get('print_part', [\App\Http\Controllers\Admin\LaporanPembelianPart::class, 'print_part']);
+    Route::delete('inquery_fakturekspedisi/delettariftambahan/{id}', [\App\Http\Controllers\Admin\InqueryFakturekspedisiController::class, 'delettariftambahan']);
 
 
     Route::get('inquery_km', [\App\Http\Controllers\Admin\InqueryUpdateKMController::class, 'index']);
