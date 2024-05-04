@@ -951,16 +951,17 @@
             var kategori = document.getElementById("kategori").value;
 
             // Loop through all elements with name "nominal_tambahan[]"
-            $('input[name^="total"]').each(function() {
-                var nominalValue = parseFloat($(this).val().replace(/\./g, '')) || 0; // Remove dots
-                grandTotal += nominalValue;
+           $('input[name^="total"]').each(function() {
+                var nominalValue = $(this).val().replace(/\./g, '').replace(',',
+                    '.'); // Replace dots and convert comma to dot
+                grandTotal += parseFloat(nominalValue) || 0; // Convert to float and sum
             });
 
             var pph2Value = grandTotal * 0.02;
 
             // $('#sub_total').val(grandTotal.toLocaleString('id-ID'));
             $('#sub_total').val(formatRupiah(grandTotal));
-            $('#pph2').val(pph2Value.toLocaleString('id-ID')); // Display 2% of the grand total here
+            $('#pph2').val(pph2Value.toLocaleString('id-ID'));
 
             // Check the category and subtract pph2Value only if the category is "PPH"
             var grandtotals = (kategori === "PPH") ? grandTotal - pph2Value : grandTotal;
