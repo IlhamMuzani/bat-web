@@ -105,9 +105,9 @@ class InqueryDepositdriverController extends Controller
             $today = Carbon::now('Asia/Jakarta')->format('Y-m-d');
             $lastUpdatedDate = $tanggal_awal->format('Y-m-d');
 
-            if ($lastUpdatedDate < $today) {
-                return back()->with('errormax', 'Anda tidak dapat melakukan update setelah berganti hari.');
-            }
+            // if ($lastUpdatedDate < $today) {
+            //     return back()->with('errormax', 'Anda tidak dapat melakukan update setelah berganti hari.');
+            // }
 
             $tanggal1 = Carbon::now('Asia/Jakarta');
             $format_tanggal = $tanggal1->format('d F Y');
@@ -158,9 +158,9 @@ class InqueryDepositdriverController extends Controller
             $today = Carbon::now('Asia/Jakarta')->format('Y-m-d');
             $lastUpdatedDate = $tanggal_awal->format('Y-m-d');
 
-            if ($lastUpdatedDate < $today) {
-                return back()->with('errormax', 'Anda tidak dapat melakukan update setelah berganti hari.');
-            }
+            // if ($lastUpdatedDate < $today) {
+            //     return back()->with('errormax', 'Anda tidak dapat melakukan update setelah berganti hari.');
+            // }
 
             $tanggal1 = Carbon::now('Asia/Jakarta');
             $format_tanggal = $tanggal1->format('d F Y');
