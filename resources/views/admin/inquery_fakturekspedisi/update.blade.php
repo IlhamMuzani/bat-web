@@ -594,40 +594,40 @@
                                                             <td>
 
                                                                 <select style="font-size:14px" class="form-control"
-                                                                id="satuan_tambahan-0" name="satuan_tambahan[]">
-                                                                <option value="">- Pilih -</option>
-                                                                <option value="M3"
-                                                                    {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'M3' ? 'selected' : null }}>
-                                                                    M&sup3;</option>
-                                                                <option value="ton"
-                                                                    {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'ton' ? 'selected' : null }}>
-                                                                    ton</option>
-                                                                <option value="krtn"
-                                                                    {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'krtn' ? 'selected' : null }}>
-                                                                    krtn</option>
-                                                                <option value="dus"
-                                                                    {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'dus' ? 'selected' : null }}>
-                                                                    dus</option>
-                                                                <option value="rit"
-                                                                    {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'rit' ? 'selected' : null }}>
-                                                                    rit</option>
-                                                                <option value="kg"
-                                                                    {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'kg' ? 'selected' : null }}>
-                                                                    kg</option>
-                                                                <option value="ltr"
-                                                                    {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'ltr' ? 'selected' : null }}>
-                                                                    ltr</option>
-                                                                <option value="pcs"
-                                                                {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'pcs' ? 'selected' : null }}>
-                                                                pcs</option>
-                                                                <option value="hr"
-                                                                {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'hr' ? 'selected' : null }}>
-                                                                hr</option>
-                                                                <option value="ZAK"
-                                                                {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'ZAK' ? 'selected' : null }}>
-                                                                ZAK</option>
-                                                            </select>
-                                                        </td>
+                                                                    id="satuan_tambahan-0" name="satuan_tambahan[]">
+                                                                    <option value="">- Pilih -</option>
+                                                                    <option value="M3"
+                                                                        {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'M3' ? 'selected' : null }}>
+                                                                        M&sup3;</option>
+                                                                    <option value="ton"
+                                                                        {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'ton' ? 'selected' : null }}>
+                                                                        ton</option>
+                                                                    <option value="krtn"
+                                                                        {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'krtn' ? 'selected' : null }}>
+                                                                        krtn</option>
+                                                                    <option value="dus"
+                                                                        {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'dus' ? 'selected' : null }}>
+                                                                        dus</option>
+                                                                    <option value="rit"
+                                                                        {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'rit' ? 'selected' : null }}>
+                                                                        rit</option>
+                                                                    <option value="kg"
+                                                                        {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'kg' ? 'selected' : null }}>
+                                                                        kg</option>
+                                                                    <option value="ltr"
+                                                                        {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'ltr' ? 'selected' : null }}>
+                                                                        ltr</option>
+                                                                    <option value="pcs"
+                                                                        {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'pcs' ? 'selected' : null }}>
+                                                                        pcs</option>
+                                                                    <option value="hr"
+                                                                        {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'hr' ? 'selected' : null }}>
+                                                                        hr</option>
+                                                                    <option value="ZAK"
+                                                                        {{ old('satuan_tambahan', $detail['satuan_tambahan']) == 'ZAK' ? 'selected' : null }}>
+                                                                        ZAK</option>
+                                                                </select>
+                                                            </td>
                                                             <td style="width: 50px">
                                                                 <button style="margin-left:5px" type="button"
                                                                     class="btn btn-danger btn-sm"
@@ -1359,7 +1359,7 @@
         //     itemPembelians(jumlah_ban, jumlah_ban - 1);
         // }
 
-          function removememotambahans(identifier, detailId) {
+        function removememotambahans(identifier, detailId) {
             var row = document.getElementById('memotambahan-' + identifier);
             row.remove();
 
@@ -1384,10 +1384,14 @@
         function itemPembelians(identifier, key, value = null) {
             var keterangan_tambahan = '';
             var nominal_tambahan = '';
+            var qty_tambahan = '';
+            var satuan_tambahan = '';
 
             if (value !== null) {
                 keterangan_tambahan = value.keterangan_tambahan;
                 nominal_tambahan = value.nominal_tambahan;
+                qty_tambahan = value.qty_tambahan;
+                satuan_tambahan = value.satuan_tambahan;
             }
 
             // urutan 
@@ -1410,6 +1414,45 @@
             item_pembelian += '<input type="text" class="form-control" style="font-size:14px" id="nominal_tambahan-' +
                 key +
                 '" name="nominal_tambahan[]" value="' + nominal_tambahan + '" ';
+            item_pembelian += '</div>';
+            item_pembelian += '</td>';
+
+            // qty_tambahan 
+            item_pembelian += '<td>';
+            item_pembelian += '<div class="form-group">'
+            item_pembelian += '<input type="number" class="form-control" style="font-size:14px" id="nominal_tambahan-' +
+                urutan +
+                '" name="qty_tambahan[]" value="' + qty_tambahan + '" ';
+            item_pembelian += '</div>';
+            item_pembelian += '</td>';
+
+
+            // satuan_tambahan
+            item_pembelian += '<td>';
+            item_pembelian += '<div class="form-group">';
+            item_pembelian += '<select style="font-size:14px" class="form-control" id="satuan_tambahan-' + key +
+                '" name="satuan_tambahan[]">';
+            item_pembelian += '<option value="">- Pilih -</option>';
+            item_pembelian += '<option value="M3"' + (satuan_tambahan === 'M3' ? ' selected' : '') +
+                '>M&sup3;</option>';
+            item_pembelian += '<option value="ton"' + (satuan_tambahan === 'ton' ? ' selected' : '') +
+                '>ton</option>';
+            item_pembelian += '<option value="krtn"' + (satuan_tambahan === 'krtn' ? ' selected' : '') +
+                '>krtn</option>';
+            item_pembelian += '<option value="dus"' + (satuan_tambahan === 'dus' ? ' selected' : '') +
+                '>dus</option>';
+            item_pembelian += '<option value="rit"' + (satuan_tambahan === 'rit' ? ' selected' : '') +
+                '>rit</option>';
+            item_pembelian += '<option value="kg"' + (satuan_tambahan === 'kg' ? ' selected' : '') +
+                '>kg</option>';
+            item_pembelian += '<option value="ltr"' + (satuan_tambahan === 'ltr' ? ' selected' : '') +
+                '>ltr</option>';
+            item_pembelian += '<option value="pcs"' + (satuan_tambahan === 'pcs' ? ' selected' : '') + '>pcs</option>';
+            item_pembelian += '<option value="hr"' + (satuan_tambahan === 'hr' ? ' selected' : '') +
+                '>hr</option>';
+            item_pembelian += '<option value="ZAK"' + (satuan_tambahan === 'ZAK' ? ' selected' : '') +
+                '>ZAK</option>';
+            item_pembelian += '</select>';
             item_pembelian += '</div>';
             item_pembelian += '</td>';
 
@@ -1678,7 +1721,7 @@
                 // Jika kategori NON PPH, tidak kurangkan 2%
                 $(".pph2").val(0);
                 $(".sisa").val(harga.toLocaleString('id-ID'));
-                var Subtotal = harga + biaya_tambahan;
+                var Subtotal = harga;
                 $(".sub_total").val(Subtotal.toLocaleString('id-ID'));
             }
         }
