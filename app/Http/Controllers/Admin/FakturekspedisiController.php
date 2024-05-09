@@ -83,41 +83,6 @@ class FakturekspedisiController extends Controller
         $data_pembelians = collect();
         $data_pembelians4 = collect();
 
-        // if ($request->has('memo_ekspedisi_id')) {
-        //     for ($i = 0; $i < count($request->memo_ekspedisi_id); $i++) {
-        //         $validasi_produk = Validator::make($request->all(), [
-        //             'memo_ekspedisi_id.' . $i => 'required',
-        //             'kode_memo.' . $i => 'required',
-        //             'nama_driver.' . $i => 'required',
-        //             'nama_rute.' . $i => 'required',
-        //         ]);
-
-        //         if ($validasi_produk->fails()) {
-        //             array_push($error_pesanans, "Memo nomor " . ($i + 1) . " belum dilengkapi!"); // Corrected the syntax for concatenation and indexing
-        //         }
-
-        //         $memo_ekspedisi_id = is_null($request->memo_ekspedisi_id[$i]) ? '' : $request->memo_ekspedisi_id[$i];
-        //         $kode_memo = is_null($request->kode_memo[$i]) ? '' : $request->kode_memo[$i];
-        //         $nama_driver = is_null($request->nama_driver[$i]) ? '' : $request->nama_driver[$i];
-        //         $telp_driver = is_null($request->telp_driver[$i]) ? '' : $request->telp_driver[$i];
-        //         $nama_rute = is_null($request->nama_rute[$i]) ? '' : $request->nama_rute[$i];
-        //         $kendaraan_id = is_null($request->kendaraan_id[$i]) ? '' : $request->kendaraan_id[$i];
-        //         $no_kabin = is_null($request->no_kabin[$i]) ? '' : $request->no_kabin[$i];
-        //         $no_pol = is_null($request->no_pol[$i]) ? '' : $request->no_pol[$i];
-
-        //         $data_pembelians->push([
-        //             'memo_ekspedisi_id' => $memo_ekspedisi_id,
-        //             'kode_memo' => $kode_memo,
-        //             'nama_driver' => $nama_driver,
-        //             'telp_driver' => $telp_driver,
-        //             'nama_rute' => $nama_rute,
-        //             'kendaraan_id' => $kendaraan_id,
-        //             'no_kabin' => $no_kabin,
-        //             'no_pol' => $no_pol
-        //         ]);
-        //     }
-        // }
-
         if ($request->has('memo_ekspedisi_id') || $request->has('kode_memo') || $request->has('nama_driver') || $request->has('telp_driver') || $request->has('nama_rute') || $request->has('kendaraan_id') || $request->has('no_kabin') || $request->has('no_pol')) {
             for ($i = 0; $i < count($request->memo_ekspedisi_id); $i++) {
                 // Check if either 'keterangan_tambahan' or 'nominal_tambahan' has input

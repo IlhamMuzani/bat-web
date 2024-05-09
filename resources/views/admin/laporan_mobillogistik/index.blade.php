@@ -115,7 +115,11 @@
                                     <td>{{ $pengeluaran->nama_pelanggan }}</td>
                                     <td>
                                         @if ($pengeluaran->detail_faktur)
-                                            {{ $pengeluaran->detail_faktur->first()->nama_driver }}
+                                            @if ($pengeluaran->detail_faktur->first())
+                                                {{ $pengeluaran->detail_faktur->first()->nama_driver }}
+                                            @else
+                                            tidak ada
+                                            @endif
                                         @else
                                             tidak ada
                                         @endif
