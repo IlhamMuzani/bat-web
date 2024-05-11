@@ -88,6 +88,10 @@ class PerhitungangajibulananController extends Controller
                 $nama_lengkap = $request->nama_lengkap[$i] ?? '';
                 $gaji = $request->gaji[$i] ?? '';
                 $gaji_perhari = $request->gaji_perhari[$i] ?? '';
+                $tdk_berangkat = $request->tdk_berangkat[$i] ?? 0;
+                $hasiltdk_berangkat = $request->hasiltdk_berangkat[$i] ?? 0;
+                $tgl_merah = $request->tgl_merah[$i] ?? 0;
+                $hasiltgl_merah = $request->hasiltgl_merah[$i] ?? 0;
                 $hari_efektif = $request->hari_efektif[$i] ?? '';
                 $hari_kerja = $request->hari_kerja[$i] ?? '';
                 $hasil_hk = $request->hasil_hk[$i] ?? '';
@@ -114,6 +118,10 @@ class PerhitungangajibulananController extends Controller
                     'nama_lengkap' => $nama_lengkap,
                     'gaji' => $gaji,
                     'gaji_perhari' => $gaji_perhari,
+                    'tdk_berangkat' => $tdk_berangkat,
+                    'hasiltdk_berangkat' => $hasiltdk_berangkat,
+                    'tgl_merah' => $tgl_merah,
+                    'hasiltgl_merah' => $hasiltgl_merah,
                     'hari_efektif' => $hari_efektif,
                     'hari_kerja' => $hari_kerja,
                     'hasil_hk' => $hasil_hk,
@@ -184,6 +192,10 @@ class PerhitungangajibulananController extends Controller
                     'nama_lengkap' => $data_pesanan['nama_lengkap'],
                     'gaji' => str_replace(',', '.', str_replace('.', '', $data_pesanan['gaji'])),
                     'gaji_perhari' => str_replace(',', '.', str_replace('.', '', $data_pesanan['gaji_perhari'])),
+                    'tdk_berangkat' => $data_pesanan['tdk_berangkat'],
+                    'hasiltdk_berangkat' => str_replace(',', '.', str_replace('.', '', $data_pesanan['hasiltdk_berangkat'])),
+                    'tgl_merah' => $data_pesanan['tgl_merah'],
+                    'hasiltgl_merah' => str_replace(',', '.', str_replace('.', '', $data_pesanan['hasiltgl_merah'])),
                     'hari_efektif' => $data_pesanan['hari_efektif'],
                     'hari_kerja' => $data_pesanan['hari_kerja'],
                     'hasil_hk' => str_replace(',', '.', str_replace('.', '', $data_pesanan['hasil_hk'])),
@@ -222,6 +234,33 @@ class PerhitungangajibulananController extends Controller
                 }
             }
         }
+
+        $kodepengeluaran = $this->kodepengeluaran();
+
+        Pengeluaran_kaskecil::create([
+            'perhitungan_gajikaryawan_id' => $cetakpdf->id,
+            'user_id' => auth()->user()->id,
+            'kode_pengeluaran' => $this->kodepengeluaran(),
+            // 'kendaraan_id' => $request->kendaraan_id,
+            'keterangan' => $request->keterangan,
+            'grand_total' => str_replace(',', '.', str_replace('.', '', $request->grand_total)),
+            'jam' => $tanggal1->format('H:i:s'),
+            'tanggal' => $format_tanggal,
+            'tanggal_awal' => $tanggal,
+            'qrcode_return' => 'https://javaline.id/pengeluaran_kaskecil/' . $kodepengeluaran,
+            'status' => 'unpost',
+        ]);
+
+        Detail_pengeluaran::create([
+            'perhitungan_gajikaryawan_id' => $cetakpdf->id,
+            'barangakun_id' => 1,
+            'kode_detailakun' => $this->kodeakuns(),
+            'kode_akun' => 'KA000004',
+            'nama_akun' => 'GAJI & TUNJANGAN',
+            'keterangan' => $request->keterangan,
+            'nominal' => str_replace(',', '.', str_replace('.', '', $request->grand_total)),
+            'status' => 'unpost',
+        ]);
 
         $details = Detail_gajikaryawan::where('perhitungan_gajikaryawan_id', $cetakpdf->id)->get();
 

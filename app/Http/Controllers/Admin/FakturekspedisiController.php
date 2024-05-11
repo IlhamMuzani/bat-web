@@ -271,7 +271,7 @@ class FakturekspedisiController extends Controller
                 ]);
 
                 // Update status memo ekspedisi
-                Memo_ekspedisi::where('id', $data_pesanan['memo_ekspedisi_id'])->update(['status_memo' => 'aktif', 'status' => 'selesai']);
+                Memo_ekspedisi::where('id', $data_pesanan['memo_ekspedisi_id'])->update(['status_memo' => 'aktif', 'status' => 'selesai', 'status_terpakai' => 'digunakan']);
 
                 if ($data_pesanan['memo_ekspedisi_id']) {
                     // Ambil semua memo tambahan yang terkait dengan memo ekspedisi tertentu

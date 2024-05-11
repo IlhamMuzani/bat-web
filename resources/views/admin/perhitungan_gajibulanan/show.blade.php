@@ -84,8 +84,7 @@
                     </td>
                     <td style="width: 95%; text-align: left;">
                         <div style="text-align: center; margin-top:20px">
-                            <span style="font-weight: bold; font-size: 15px;">REKAP GAJI KARYAWAN BINA ANUGERAH
-                                TRANSINDO (
+                            <span style="font-weight: bold; font-size: 15px;">REKAP GAJI KARYAWAN BINA ANUGERAH TRANSINDO (
                                 {{ \Carbon\Carbon::parse($cetakpdf->tanggal_awal)->locale('id')->isoFormat('D MMMM YYYY') }})</span>
                             <div class="text">
                                 <p style="font-size: 13px">Periode:{{ $cetakpdf->periode_awal }}s/d
@@ -124,9 +123,9 @@
                 <td class="td" style="text-align: right; padding: 2px; font-size: 9px;  font-weight:bold;  ">
                     GAPOK</td>
                 <td class="td" style="text-align: right; padding: 2px; font-size: 9px;  font-weight:bold;">
-                    HE</td>
-                <td class="td" style="text-align: right; padding: 2px; font-size: 9px;  font-weight:bold;">
-                    HK</td>
+                    TDK MASUK</td>
+                <td class="td" style="text-align: center; padding: 2px; font-size: 9px; font-weight:bold;">
+                    LEMBUR <span> <br>(TGL MERAH)</span></td>
                 <td class="td" style="text-align: right; padding: 2px; font-size: 9px;  font-weight:bold;">
                     LEMBUR</td>
                 <td class="td" style="text-align: right; padding: 2px; font-size: 9px;  font-weight:bold;">
@@ -155,7 +154,7 @@
             </tr>
             <!-- Add horizontal line below this row -->
             <tr>
-                <td colspan="15" style="padding: 0px;">
+                <td colspan="14" style="padding: 0px;">
                     <hr style="border: 0.5px solid; margin-top:0px; margin-bottom: 1px; padding: 0;">
                     <hr style="border: 0.5px solid; margin-top:1px; margin-bottom: 1px; padding: 0;">
                 </td>
@@ -198,11 +197,11 @@
                     </td>
                     <td class="td"
                         style="text-align: right; padding: 2px; font-size: 9px;  border-bottom: 1px solid black;">
-                        {{ $item->hari_efektif }}
+                        Rp. {{ number_format($item->hasiltdk_berangkat, 0, ',', '.') }}
                     </td>
                     <td class="td"
                         style="text-align: right; padding: 2px; font-size: 9px; border-bottom: 1px solid black;">
-                        Rp. {{ number_format($item->hari_kerja, 0, ',', '.') }}
+                        Rp. {{ number_format($item->hasiltgl_merah, 0, ',', '.') }}
                     </td>
                     <td class="td"
                         style="text-align: center; padding: 1px; font-size: 9px; border-bottom: 1px solid black;">
@@ -298,10 +297,10 @@
                 @endphp
             @endforeach
             <tr style="border-bottom: 1px solid black;">
-                <td colspan="15" style="padding: 2px;"></td>
+                <td colspan="14" style="padding: 2px;"></td>
             </tr>
             <tr>
-                <td colspan="14"
+                <td colspan="13"
                     style="text-align: right; font-weight: bold; margin-top:5px; margin-bottom:5px; font-size: 9px;">
                     {{-- GRAND
                 TOTAL --}}

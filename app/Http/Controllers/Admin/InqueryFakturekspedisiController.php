@@ -364,7 +364,7 @@ class InqueryFakturekspedisiController extends Controller
                     'nama_rutetambahans' => $data_pesanan['nama_rutetambahans'],
                 ]);
                 // Update status memo ekspedisi
-                Memo_ekspedisi::where('id', $data_pesanan['memo_ekspedisi_id'])->update(['status_memo' => 'aktif', 'status' => 'selesai']);
+                Memo_ekspedisi::where('id', $data_pesanan['memo_ekspedisi_id'])->update(['status_memo' => 'aktif', 'status' => 'selesai', 'status_terpakai' => 'digunakan']);
 
                 if ($data_pesanan['memo_ekspedisi_id']) {
                     // Ambil semua memo tambahan yang terkait dengan memo ekspedisi tertentu
@@ -427,7 +427,7 @@ class InqueryFakturekspedisiController extends Controller
                     ]);
                     // Update status memo ekspedisi
                     // Update status memo ekspedisi
-                    Memo_ekspedisi::where('id', $data_pesanan['memo_ekspedisi_id'])->update(['status_memo' => 'aktif', 'status' => 'selesai']);
+                    Memo_ekspedisi::where('id', $data_pesanan['memo_ekspedisi_id'])->update(['status_memo' => 'aktif', 'status' => 'selesai', 'status_terpakai' => 'digunakan']);
 
                     if ($data_pesanan['memo_ekspedisi_id']) {
                         // Ambil semua memo tambahan yang terkait dengan memo ekspedisi tertentu
@@ -616,16 +616,12 @@ class InqueryFakturekspedisiController extends Controller
             // Retrieve related Detail_faktur instances
             $detailfaktur = Detail_faktur::where('faktur_ekspedisi_id', $id)->get();
 
-            // // Loop through each Detail_faktur and update associated Memo_ekspedisi and Memotambahan records
-            // foreach ($detailfaktur as $detail) {
-            //     if ($detail->memotambahan_id) {
-            //         Memotambahan::where('id', $detail->memotambahan_id)->update(['status_memo' => null, 'status' => 'posting']);
-            //     }
-
-            //     if ($detail->memo_ekspedisi_id) {
-            //         Memo_ekspedisi::where('id', $detail->memo_ekspedisi_id)->update(['status_memo' => null, 'status' => 'posting']);
-            //     }
-            // }
+            // Loop through each Detail_faktur and update associated Memo_ekspedisi and Memotambahan records
+            foreach ($detailfaktur as $detail) {
+                if ($detail->memo_ekspedisi_id) {
+                    Memo_ekspedisi::where('id', $detail->memo_ekspedisi_id)->update(['status_terpakai' => null]);
+                }
+            }
 
             // Delete related Detail_faktur instances
             $faktur->detail_faktur->each(function ($detail) {
@@ -641,36 +637,16 @@ class InqueryFakturekspedisiController extends Controller
             return back()->with('error', 'Faktur Ekspedisi tidak ditemukan');
         }
     }
-
     public function deletedetailfaktur($id)
     {
         $item = Detail_faktur::find($id);
 
         if ($item) {
-            $faktur = Faktur_ekspedisi::find($item->faktur_ekspedisi_id);
-
-            if ($faktur) {
-                $memo = Memo_ekspedisi::find($item->memo_ekspedisi_id);
-
-                // if ($memo) {
-                //     // Update status_memo menjadi null
-                //     $memo->update(['status_memo' => null, 'status' => 'posting']);
-                // }
-
-                // $memotambahan = Memotambahan::find($item->memotambahan_id);
-
-                // if ($memotambahan) {
-                //     // Update status_memo tambahan menjadi null
-                //     $memotambahan->update(['status_memo' => null, 'status' => 'posting']);
-                // }
-
-                // Hapus Detail_faktur
-                $item->delete();
-
-                return response()->json(['message' => 'Data deleted successfully']);
-            } else {
-                return response()->json(['message' => 'Faktur not found'], 404);
-            }
+            $memo = Memo_ekspedisi::where('id', $item->memo_ekspedisi_id);
+            $memo->update([
+                'status_terpakai' => null
+            ]);
+            $item->delete();
         } else {
             return response()->json(['message' => 'Detail Faktur not found'], 404);
         }
