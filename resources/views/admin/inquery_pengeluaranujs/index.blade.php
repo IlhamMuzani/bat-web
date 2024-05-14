@@ -77,8 +77,8 @@
                             </div>
                         </div>
                     </form>
-                    <table id="datatables66" class="table table-bordered table-striped" style="font-size: 13px">
-                        <thead>
+                    <table id="datatables66" class="table table-bordered table-striped table-hover" style="font-size: 13px">
+                        <thead class="thead-dark">
                             <tr>
                                 {{-- <th> <input type="checkbox" name="" id="select_all_ids"></th> --}}
                                 <th class="text-center">No</th>
@@ -197,7 +197,7 @@
         $(document).ready(function() {
             $('.unpost-btn').click(function() {
                 var memoId = $(this).data('memo-id');
-
+                $(this).addClass('disabled');
                 // Tampilkan modal loading saat permintaan AJAX diproses
                 $('#modal-loading').modal('show');
 
@@ -239,6 +239,7 @@
             $('.posting-btn').click(function() {
                 var memoId = $(this).data('memo-id');
 
+                $(this).addClass('disabled');
                 // Tampilkan modal loading saat permintaan AJAX diproses
                 $('#modal-loading').modal('show');
 

@@ -228,6 +228,14 @@ class InqueryPerpanjanganstnkController extends Controller
         return back()->with('success', 'Berhasil');
     }
 
+    public function hapusstnk($id)
+    {
+        $item = Laporanstnk::where('id', $id)->first();
+
+        $item->delete();
+        return back()->with('success', 'Berhasil');
+    }
+
     public function destroy($id)
     {
         $stnk = Laporanstnk::find($id);

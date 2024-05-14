@@ -287,6 +287,19 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::delete('inquery_penggantianoli/deleteoli/{id}', [\App\Http\Controllers\Admin\InqueryPenggantianoliController::class, 'delete']);
     Route::delete('inquery_penggantianoli/deleteolidetail/{id}', [\App\Http\Controllers\Admin\InqueryPenggantianoliController::class, 'deleteoli']);
     Route::delete('inquery_penggantianoli/deletefilterdetail/{id}', [\App\Http\Controllers\Admin\InqueryPenggantianoliController::class, 'deletefilter']);
+    Route::get('inquery_perpanjangankir/unpostkir/{id}', [\App\Http\Controllers\Admin\InqueryPerpanjangankirController::class, 'unpostkir']);
+    Route::get('inquery_perpanjangankir/postingkir/{id}', [\App\Http\Controllers\Admin\InqueryPerpanjangankirController::class, 'postingkir']);
+
+    Route::get('inquery_perpanjanganstnk/unpoststnk/{id}', [\App\Http\Controllers\Admin\InqueryPerpanjanganstnkController::class, 'unpoststnk']);
+    Route::get('inquery_perpanjanganstnk/postingstnk/{id}', [\App\Http\Controllers\Admin\InqueryPerpanjanganstnkController::class, 'postingstnk']);
+    Route::get('inquery_penerimaankaskecil/unpostpenerimaan/{id}', [\App\Http\Controllers\Admin\InqueryPenerimaankaskecilController::class, 'unpostpenerimaan']);
+    Route::get('inquery_penerimaankaskecil/postingpenerimaan/{id}', [\App\Http\Controllers\Admin\InqueryPenerimaankaskecilController::class, 'postingpenerimaan']);
+
+    Route::get('inquery_pengambilanujs/unpostpengeluaranujs/{id}', [\App\Http\Controllers\Admin\InqueryPengeluaranujsController::class, 'unpostpengeluaranujs']);
+    Route::get('inquery_pengambilanujs/postingpengeluaranujs/{id}', [\App\Http\Controllers\Admin\InqueryPengeluaranujsController::class, 'postingpengeluaran']);
+    
+    Route::get('inquery_depositdriver/unpostdeposit/{id}', [\App\Http\Controllers\Admin\InqueryDepositdriverController::class, 'unpostdeposit']);
+    Route::get('inquery_depositdriver/postingdeposit/{id}', [\App\Http\Controllers\Admin\InqueryDepositdriverController::class, 'postingdeposit']);
 
     Route::get('laporan_penggantianoli', [\App\Http\Controllers\Admin\LaporanPenggantianoliController::class, 'index']);
     Route::get('print_penggantianoli', [\App\Http\Controllers\Admin\LaporanPenggantianoliController::class, 'print_penggantianoli']);

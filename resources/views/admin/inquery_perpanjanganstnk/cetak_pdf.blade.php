@@ -70,7 +70,7 @@
 </head>
 <body style="margin: 0; padding: 0;">
     <div id="logo-container">
-        <img src="{{ public_path('storage/uploads/gambar_logo/Logo.png') }}" alt="BAT" width="70" height="35">
+        <img src="{{ public_path('storage/uploads/gambar_logo/Logo1.png') }}" alt="BAT" width="70" height="35">
     </div>
     <br>
     <div style="font-weight: bold; text-align: center">
