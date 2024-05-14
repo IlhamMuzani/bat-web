@@ -130,6 +130,7 @@ class InqueryKasbonkaryawanController extends Controller
         $penerimaan->update([
             'nominal' => $request->nominal,
             'keterangan' => $request->keterangan,
+            'saldo_keluar' => $request->saldo_keluar,
             'saldo_masuk' => $request->saldo_masuk,
             'sisa_saldo' => $request->sisa_saldo,
             'sub_total' => $request->sub_total2,

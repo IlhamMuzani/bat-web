@@ -128,9 +128,9 @@
                     LEMBUR <span> <br>(TGL MERAH)</span></td>
                 <td class="td" style="text-align: right; padding: 2px; font-size: 9px;  font-weight:bold;">
                     LEMBUR</td>
-                <td class="td" style="text-align: right; padding: 2px; font-size: 9px;  font-weight:bold;">
+                {{-- <td class="td" style="text-align: right; padding: 2px; font-size: 9px;  font-weight:bold;">
                     STORING</td>
-                </td>
+                </td> --}}
                 <td class="td" style="text-align: right; padding: 2px; font-size: 9px;  font-weight:bold;">
                     GAJI KOTOR</td>
                 </td>
@@ -216,7 +216,7 @@
                             </tr>
                         </table>
                     </td>
-                    <td class="td"
+                    {{-- <td class="td"
                         style="text-align: center; padding: 1px; font-size: 9px; border-bottom: 1px solid black;">
                         <table style="width: 100%; text-align: right; padding-left:10px">
                             <tr>
@@ -228,7 +228,7 @@
                                 </td>
                             </tr>
                         </table>
-                    </td>
+                    </td> --}}
                     <td class="td"
                         style="text-align: right; padding-right: 7px; font-size: 9px; border-bottom: 1px solid black;">
                         Rp. {{ number_format($item->gaji_kotor, 0, ',', '.') }}
