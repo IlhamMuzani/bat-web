@@ -27,7 +27,7 @@
                 <div class="alert alert-danger alert-dismissible">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <h5>
-                        <i class="icon fas fa-ban"></i> Error!
+                        <i class="icon fas fa-ban"></i> Gagal Menyimpan!
                     </h5>
                     @foreach (session('error') as $error)
                         - {{ $error }} <br>
@@ -83,7 +83,8 @@
                                 <div class="form-group">
                                     <label for="nominal">Nominal</label>
                                     <input type="text" class="form-control" id="nominals" name="nominal"
-                                        placeholder="Masukan nominal" value="{{ old('nominal', $inquery->nominal) }}">
+                                        placeholder="Masukan nominal" value="{{ old('nominal', $inquery->nominal) }}"
+                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -99,7 +100,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="alamat">Keterangan</label>
-                                    <textarea type="text" class="form-control" id="keterangan" name="keterangan" placeholder="Masukan keterangan">{{ old('keterangan', $inquery->keterangan) }}</textarea>
+                                    <textarea type="text" class="form-control" id="keterangans" name="keterangans" placeholder="Masukan keterangan">{{ old('keterangans', $inquery->keterangan) }}</textarea>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -129,67 +130,57 @@
                         </div>
                     </div>
                 </div>
-                <div class="card" id="form_biayatambahan">
+                <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Tambahkan Cicilan <span>
+                        <h3 class="card-title">Rincian Cicilan <span>
                             </span></h3>
-                        <div class="float-right">
-                            <button type="button" class="btn btn-primary btn-sm" onclick="addPesanan()">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th style="font-size:14px" class="text-center">No</th>
-                                    <th style="font-size:14px">Nominal</th>
-                                    <th style="font-size:14px">Opsi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabel-pembelian">
-                                @foreach ($details as $detail)
-                                    <tr id="pembelian-{{ $loop->index }}">
-                                        <td style="width: 70px; font-size:14px" class="text-center" id="urutan">
-                                            {{ $loop->index + 1 }}
-                                        </td>
-                                        <td hidden>
-                                            <div class="form-group" hidden>
-                                                <input type="text" class="form-control" name="detail_ids[]"
-                                                    value="{{ $detail['id'] }}">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
-                                                <input style="font-size:14px" type="text" class="form-control"
-                                                    id="nominal_cicilan-{{ $loop->index }}" name="nominal_cicilan[]"
-                                                    value="{{ number_format($detail['nominal_cicilan'], 0, ',', '.') }}"
-                                                    oninput="formatRupiahform(this)"
-                                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57">
-                                            </div>
-                                        </td>
-                                        <td style="width: 50px">
-                                            <button type="button" class="btn btn-danger btn-sm"
-                                                onclick="removePesanan({{ $loop->index }}, {{ $detail['id'] }})">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        {{-- <div class="form-group">
-                            <label style="font-size:14px" class="mt-0" for="nopol">Grand Total</label>
+                        <div class="form-group">
+                            <label for="sub_total">Cicilan</label>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <input style="font-size:14px" type="text" class="form-control"
+                                        id="nominal_cicilan" name="nominal_cicilan" placeholder="nominal cicilan"
+                                        value="{{ old('nominal_cicilan', number_format($inquery->nominal_cicilan, 0, ',', '.')) }}"
+                                        oninput="formatRupiahform(this)"
+                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                                </div>
+                                <div class="col-md-1">
+                                    <input style="font-size:14px; text-align:center" readonly type="text"
+                                        class="form-control" value="x">
+                                </div>
+                                <div class="col-md-6">
+                                    <input style="font-size:14px" type="text" class="form-control"
+                                        id="jumlah_cicilan" name="jumlah_cicilan" placeholder="jumlah cicilan"
+                                        value="{{ old('jumlah_cicilan', number_format($inquery->jumlah_cicilan, 0, ',', '.')) }}"
+                                        oninput="formatRupiahform(this)"
+                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size:14px" class="mt-3" for="nominal_lebih">Nominal lebih</label>
+                            <input style="font-size:14px" type="text" class="form-control" id="nominal_lebih"
+                                name="nominal_lebih" placeholder="nominal di luar perkalian"
+                                value="{{ old('nominal_lebih', number_format($inquery->nominal_lebih, 0, ',', '.')) }}"
+                                oninput="formatRupiahform(this)"
+                                onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size:14px" class="mt-3" for="grand_total">Grand Total</label>
                             <input style="font-size:14px" type="text" class="form-control text-right"
                                 id="grand_total" name="grand_total" readonly placeholder=""
                                 value="{{ old('grand_total', number_format($inquery->grand_total, 0, ',', '.')) }}">
-                        </div> --}}
+                        </div>
                     </div>
                     <div class="card-footer text-right">
-                        <button type="reset" class="btn btn-secondary">Reset</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="reset" class="btn btn-secondary" id="btnReset">Reset</button>
+                        <button type="submit" class="btn btn-primary" id="btnSimpan">Simpan</button>
+                        <div id="loading" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i> Sedang Menyimpan...
+                        </div>
                     </div>
                 </div>
             </form>
@@ -320,10 +311,10 @@
             var sisaSaldoValue = $('#sisa_saldos').val();
 
             // Mengonversi nilai ke format rupiah
-            // var sisaSaldoRupiah = formatRupiah(sisaSaldoValue);
+            var sisaSaldoRupiah = formatRupiah(sisaSaldoValue);
 
             // Menetapkan nilai ke input sisa saldo
-            $('#sisa_saldos').val(sisaSaldoValue);
+            $('#sisa_saldos').val(sisaSaldoRupiah);
 
             // Memperbarui nilai sub total saat dokumen selesai dimuat
             updateSubTotals();
@@ -353,108 +344,6 @@
         }
     </script>
 
-    <script>
-        var data_pembelian = @json(session('data_pembelians'));
-        var jumlah_ban = 1;
-
-        if (data_pembelian != null) {
-            jumlah_ban = data_pembelian.length;
-            $('#tabel-pembelian').empty();
-            var urutan = 0;
-            $.each(data_pembelian, function(key, value) {
-                urutan = urutan + 1;
-                itemPembelian(urutan, key, value);
-            });
-        }
-
-        function updateUrutan() {
-            var urutan = document.querySelectorAll('#urutan');
-            for (let i = 0; i < urutan.length; i++) {
-                urutan[i].innerText = i + 1;
-            }
-        }
-
-        var counter = 0;
-
-        function addPesanan() {
-            counter++;
-            jumlah_ban = jumlah_ban + 1;
-
-            if (jumlah_ban === 1) {
-                $('#tabel-pembelian').empty();
-            } else {
-                // Find the last row and get its index to continue the numbering
-                var lastRow = $('#tabel-pembelian tr:last');
-                var lastRowIndex = lastRow.find('#urutan').text();
-                jumlah_ban = parseInt(lastRowIndex) + 1;
-            }
-
-            console.log('Current jumlah_ban:', jumlah_ban);
-            itemPembelian(jumlah_ban, jumlah_ban - 1);
-            updateUrutan();
-        }
-
-        function removePesanan(identifier) {
-            var row = $('#pembelian-' + identifier);
-            var detailId = row.find("input[name='detail_ids[]']").val();
-
-            row.remove();
-
-            if (detailId) {
-                $.ajax({
-                    url: "{{ url('admin/inquery_kasbonkaryawan/deletedetailcicilan/') }}/" + detailId,
-                    type: "POST",
-                    data: {
-                        _method: 'DELETE',
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        console.log('Data deleted successfully');
-                    },
-                    error: function(error) {
-                        console.error('Failed to delete data:', error);
-                    }
-                });
-            }
-            // updateGrandTotal()
-            // updateUrutan();
-        }
-
-        function itemPembelian(identifier, key, value = null) {
-            var nominal_cicilan = '';
-
-            if (value !== null) {
-                nominal_cicilan = value.nominal_cicilan;
-            }
-
-            // urutan 
-            var item_pembelian = '<tr id="pembelian-' + key + '">';
-            item_pembelian += '<td style="width: 70px; font-size:14px" class="text-center" id="urutan">' + key + '</td>';
-
-            // nominal_cicilan 
-            item_pembelian += '<td>';
-            item_pembelian += '<div class="form-group">'
-            item_pembelian += '<input type="text" class="form-control" style="font-size:14px" id="nominal_cicilan-' +
-                key +
-                '" name="nominal_cicilan[]" value="' + nominal_cicilan + '" ';
-            item_pembelian += 'oninput="formatRupiahform(this)" ';
-            item_pembelian += 'onkeypress="return event.charCode >= 48 && event.charCode <= 57">';
-            item_pembelian += '</div>';
-            item_pembelian += '</td>';
-
-
-            item_pembelian += '<td style="width: 50px">';
-            item_pembelian +=
-                '<button type="button" class="btn btn-danger btn-sm" onclick="removePesanan(' +
-                key + ')">';
-            item_pembelian += '<i class="fas fa-trash"></i>';
-            item_pembelian += '</button>';
-            item_pembelian += '</td>';
-            item_pembelian += '</tr>';
-
-            $('#tabel-pembelian').append(item_pembelian);
-        }
-    </script>
 
     <script>
         function formatRupiahform(input) {
@@ -469,4 +358,29 @@
         }
     </script>
 
+    <script>
+        $(document).ready(function() {
+            function calculateTotal() {
+                // Ambil nilai input dan hapus titik pemisah ribuan
+                var nominalCicilan = parseFloat($('#nominal_cicilan').val().replace(/[.]/g, '')) || 0;
+                var jumlahCicilan = parseFloat($('#jumlah_cicilan').val().replace(/[.]/g, '')) || 0;
+                var nominalTambahan = parseFloat($('#nominal_lebih').val().replace(/[.]/g, '')) || 0;
+                var subTotals = parseFloat($('#nominals').val().replace(/[.]/g, '')) || 0;
+
+                // Lakukan perkalian dan penjumlahan
+                var grandTotal = (nominalCicilan * jumlahCicilan) + nominalTambahan;
+
+                // Pastikan grandTotal tidak melebihi subTotals
+                if (grandTotal > subTotals) {
+                    grandTotal = 0;
+                    $('#nominal_cicilan').val(0);
+                    $('#nominal_lebih').val(0);
+                }
+
+                // Tampilkan hasil dengan format pemisah ribuan
+                $('#grand_total').val(grandTotal.toLocaleString('id-ID'));
+            }
+            $('#nominal_cicilan, #jumlah_cicilan, #nominal_lebih').on('input', calculateTotal);
+        });
+    </script>
 @endsection

@@ -723,7 +723,22 @@ class MemoekspedisiController extends Controller
                 $kodepengeluaran = $this->kodepengeluaran();
 
                 if ($cetakpdf) {
-                    foreach ($data_pembelians4 as $data_pesanan) {
+                    // Ambil nomor terakhir untuk kode_detailakun yang ada di database
+                    $lastDetail = Detail_pengeluaran::where('kode_detailakun', 'like', 'KKA%')->orderBy('id', 'desc')->first();
+                    $lastNum = 0;
+                    // return $lastDetail;
+                    $currentMonth = date('m'); // Ambil bulan saat ini
+
+                    // Jika tidak ada kode terakhir atau bulan saat ini berbeda dari bulan kode terakhir
+                    if (!$lastDetail || $currentMonth != date('m', strtotime($lastDetail->created_at))) {
+                        $lastNum = 0; // Mulai dari 0 jika bulan berbeda
+                    } else {
+                        // Ambil nomor terakhir dari kode terakhir
+                        $lastCode = substr($lastDetail->kode_detailakun, -6);
+                        $lastNum = (int)$lastCode; // Ubah menjadi integer
+                    }
+
+                    foreach ($data_pembelians4 as $index => $data_pesanan) {
                         $detailMemotambahan = Detail_memotambahan::create([
                             'memotambahan_id' => $cetakpdf->id,
                             'keterangan_tambahan' => $data_pesanan['keterangan_tambahan'],
@@ -733,9 +748,28 @@ class MemoekspedisiController extends Controller
                             'nominal_tambahan' =>  str_replace(',', '.', str_replace('.', '', $data_pesanan['nominal_tambahan'])),
 
                         ]);
+                        // Cek apakah bulan berbeda dari kode terakhir
+                        if (!$lastDetail || $currentMonth != date('m', strtotime($lastDetail->created_at))) {
+                            $lastNum = 0; // Mulai dari 0 jika bulan berbeda atau tidak ada detail terakhir
+                        } else {
+                            // Ambil nomor terakhir dari kode terakhir
+                            $lastCode = substr($lastDetail->kode_detailakun, -6);
+                            $lastNum = (int)$lastCode; // Ubah menjadi integer
+                        }
+
+                        $num = $lastNum + $index + 1; // Tambahkan index untuk menghasilkan nomor unik
+                        $formattedNum = sprintf("%06s", $num);
+
+                        // Awalan untuk kode baru
+                        $prefix = 'KKA';
+                        $tahun = date('y');
+                        $tanggal = date('dm');
+
+                        // Buat kode baru dengan menggabungkan awalan, tanggal, tahun, dan nomor yang diformat
+                        $newCode = $prefix . "/" . $tanggal . $tahun . "/" . $formattedNum;
                         // Use the $detailMemotambahan->id in the creation of Detail_pengeluaran
                         $detail_pengeluaran = Detail_pengeluaran::create([
-                            'kode_detailakun' => $this->kodeakuns(),
+                            'kode_detailakun' => $newCode,
                             'detail_memotambahan_id' => $detailMemotambahan->id,
                             'memotambahan_id' => $cetakpdf->id,
                             'barangakun_id' => 25,
