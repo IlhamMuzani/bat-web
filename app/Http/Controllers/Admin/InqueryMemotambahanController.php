@@ -297,7 +297,6 @@ class InqueryMemotambahanController extends Controller
                         'hargasatuan' => $data_pesanan['hargasatuan'],
                         'nominal' =>  str_replace(',', '.', str_replace('.', '', $data_pesanan['nominal_tambahan'])),
                     ]);
-
                     $allKeterangan .= $data_pesanan['keterangan_tambahan'] . ', ';
                 }
             }
