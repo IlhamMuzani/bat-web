@@ -519,21 +519,21 @@
         </p>
     </a>
     <ul class="nav nav-treeview">
-        @if (auth()->check() && auth()->user()->menu['kasbon karyawan'])
-            <li class="nav-item">
-                <a href="{{ url('admin/kasbon_karyawan') }}"
-                    class="nav-link {{ request()->is('admin/kasbon_karyawan*') ? 'active' : '' }}">
-                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
-                    <p style="font-size: 14px;">Memo Hutang Karyawan</p>
-                </a>
-            </li>
-        @endif
         @if (auth()->check() && auth()->user()->menu['perhitungan gaji'])
             <li class="nav-item">
                 <a href="{{ url('admin/perhitungan_gaji') }}"
                     class="nav-link {{ request()->is('admin/perhitungan_gaji*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
                     <p style="font-size: 14px;">Perhitungan Gaji Karyawan</p>
+                </a>
+            </li>
+        @endif
+        @if (auth()->check() && auth()->user()->menu['kasbon karyawan'])
+            <li class="nav-item">
+                <a href="{{ url('admin/kasbon_karyawan') }}"
+                    class="nav-link {{ request()->is('admin/kasbon_karyawan*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 14px;">Memo Hutang Karyawan</p>
                 </a>
             </li>
         @endif

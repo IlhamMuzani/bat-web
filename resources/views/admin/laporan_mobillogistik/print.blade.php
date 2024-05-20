@@ -114,7 +114,7 @@
             </td>
             <td class="td" style="text-align: left; padding: 5px; font-weight:bold; font-size: 11px; width:30%">
                 Pelanggan</td>
-            <td class="td" style="text-align: center; padding: 5px; font-weight:bold; font-size: 11px; width:35%">No
+            <td class="td" style="text-align: center; padding: 5px; font-weight:bold; font-size: 11px; width:39%">No
                 Polisi
             </td>
             <td class="td" style="text-align: right; padding: 5px; font-weight:bold; font-size: 11px; width:15% ">
@@ -152,7 +152,7 @@
                         @endif
                     </td>
                     <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
-                        {{ number_format($faktur->grand_total, 0, ',', '.') }}
+                        {{ number_format($faktur->grand_total, 2, ',', '.') }}
                     </td>
                 </tr>
                 @foreach ($faktur->detail_faktur as $memo)
@@ -169,21 +169,21 @@
                         <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
                             <span style="margin-right:30px">
                                 @if ($memo->memo_ekspedisi)
-                                    {{ number_format($memo->memo_ekspedisi->uang_jalan, 0, ',', '.') }}
+                                    {{ number_format($memo->memo_ekspedisi->uang_jalan, 2, ',', '.') }}
                                 @else
                                     tidak ada
                                 @endif
                             </span>
                             <span style="margin-right:30px">
                                 @if ($memo->memo_ekspedisi)
-                                    {{ number_format($memo->memo_ekspedisi->biaya_tambahan, 0, ',', '.') }}
+                                    {{ number_format($memo->memo_ekspedisi->biaya_tambahan, 2, ',', '.') }}
                                 @else
                                     tidak ada
                                 @endif
                             </span>
                             <span>
                                 @if ($memo->memo_ekspedisi)
-                                    {{ number_format($memo->memo_ekspedisi->deposit_driver, 0, ',', '.') }}
+                                    {{ number_format($memo->memo_ekspedisi->deposit_driver, 2, ',', '.') }}
                                 @else
                                     tidak ada
                                 @endif
@@ -191,9 +191,9 @@
                         </td>
                         <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
                             @if ($memo->memo_ekspedisi)
-                                {{ number_format($memo->memo_ekspedisi->hasil_jumlah, 0, ',', '.') }}
+                                {{ number_format($memo->memo_ekspedisi->hasil_jumlah, 2, ',', '.') }}
                             @elseif($memo->memo_ekspedisi && $memo->memotambahan)
-                                {{ number_format($memo->memotambahan->grand_total, 0, ',', '.') }}
+                                {{ number_format($memo->memotambahan->grand_total, 2, ',', '.') }}
                             @else
                                 <!-- Handle kondisi ketika tidak memenuhi kedua kondisi di atas -->
                             @endif
@@ -215,13 +215,13 @@
                                     {{ $memoTambahan->memo_ekspedisi->nama_rute }} </td>
                                 <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
                                     <span style="margin-right:34px">
-                                        {{ number_format($memoTambahan->grand_total, 0, ',', '.') }}
+                                        {{ number_format($memoTambahan->grand_total, 2, ',', '.') }}
                                     </span>
-                                    <span style="margin-right:62px">0</span>
-                                    <span style="margin-right:5px">0</span>
+                                    <span style="margin-right:10px">0,00</span>
+                                    <span style="margin-right:4px">0,00</span>
                                 </td>
                                 <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
-                                    {{ number_format($memoTambahan->grand_total, 0, ',', '.') }}
+                                    {{ number_format($memoTambahan->grand_total, 2, ',', '.') }}
                                 </td>
                             </tr>
                         @endforeach
@@ -278,13 +278,13 @@
                         <td colspan="5" style="text-align: left; padding-left: 0px; font-size: 11px;">
                             Total Faktur</td>
                         <td class="td" style="text-align: right; font-size: 11px;">
-                            {{ number_format($totalGrandTotal, 0, ',', '.') }} </td>
+                            {{ number_format($totalGrandTotal, 2, ',', '.') }} </td>
                     </tr>
                     <tr>
                         <td colspan="5" style="text-align: left; padding-left: 0px; font-size: 11px;">Total Memo
                         </td>
                         <td class="td" style="text-align: right; font-size: 11px;">
-                            {{ number_format($totalMemo + $totalMemoTambahan, 0, ',', '.') }}</td>
+                            {{ number_format($totalMemo + $totalMemoTambahan, 2, ',', '.') }}</td>
                     </tr>
                     <tr>
                         <td colspan="6" style="padding: 0px;">
@@ -297,7 +297,7 @@
                         <td colspan="5" style="text-align: left; padding-left: 0px; font-size: 11px;">Selisih
                         </td>
                         <td class="td" style="text-align: right; padding-right: 5px; font-size: 11px;">
-                            {{ number_format($selisih, 0, ',', '.') }}</td>
+                            {{ number_format($selisih, 2, ',', '.') }}</td>
                     </tr>
                     <tr>
                         <br>
@@ -311,7 +311,7 @@
                                 $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
                                         return $kendaraan->detail_pengeluaran->where('barangakun_id', 29)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
                                     })->sum() ?? 0,
-                                0,
+                                2,
                                 ',',
                                 '.',
                             ) }}
@@ -327,7 +327,7 @@
                                 $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
                                         return $kendaraan->detail_pengeluaran->where('barangakun_id', 5)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
                                     })->sum() ?? 0,
-                                0,
+                                2,
                                 ',',
                                 '.',
                             ) }}
@@ -353,7 +353,7 @@
                                     $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
                                             return $kendaraan->detail_pengeluaran->where('barangakun_id', 5)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
                                         })->sum(),
-                                0,
+                                2,
                                 ',',
                                 '.',
                             ) }}

@@ -52,6 +52,18 @@
                                 </select>
                             </div>
                             <div class="col-md-2 mb-3">
+                                <label for="created_at">Status</label>
+                                <select class="custom-select form-control" id="kategoris" name="kategoris">
+                                    <option value="">- Semua Status -</option>
+                                    <option value="memo" {{ Request::get('kategoris') == 'memo' ? 'selected' : '' }}>
+                                        MEMO
+                                    </option>
+                                    <option value="non memo"
+                                        {{ Request::get('kategoris') == 'non memo' ? 'selected' : '' }}>
+                                        NON MEMO</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
                                 <label for="created_at">Kendaraan</label>
                                 <select class="select2bs4 select2-hidden-accessible" name="kendaraan_id"
                                     data-placeholder="Cari Kendaraan.." style="width: 100%;" data-select2-id="23"
@@ -65,12 +77,12 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-2 mb-3">
                                 <label for="created_at">Tanggal Awal</label>
                                 <input class="form-control" id="created_at" name="created_at" type="date"
                                     value="{{ Request::get('created_at') }}" max="{{ date('Y-m-d') }}" />
                             </div>
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-2 mb-3">
                                 <label for="tanggal_akhir">Tanggal Akhir</label>
                                 <input class="form-control" id="tanggal_akhir" name="tanggal_akhir" type="date"
                                     value="{{ Request::get('tanggal_akhir') }}" max="{{ date('Y-m-d') }}" />
@@ -121,7 +133,7 @@
                                     <td>{{ $faktur->created_at }}</td>
                                     <td>{{ $faktur->nama_pelanggan }}</td>
                                     <td>{{ $faktur->kendaraan ? $faktur->kendaraan->no_kabin : 'Tidak ada' }}</td>
-                                    <td class="text-right">{{ number_format($faktur->grand_total, 0, ',', '.') }}</td>
+                                    <td class="text-right">{{ number_format($faktur->grand_total, 2, ',', '.') }}</td>
                                     <td>
                                         <!-- Tombol untuk Menampilkan/Menyembunyikan Detail -->
                                         <button class="btn btn-info" data-toggle="collapse"
@@ -150,10 +162,10 @@
                                                             <td>{{ $memo->created_at }}</td>
                                                             <td>{{ $memo->nama_rute }}</td>
                                                             <td class="text-right">
-                                                                {{ $memo->memo_ekspedisi ? number_format($memo->memo_ekspedisi->uang_jalan, 0, ',', '.') : 'Tidak ada' }}
+                                                                {{ $memo->memo_ekspedisi ? number_format($memo->memo_ekspedisi->uang_jalan, 2, ',', '.') : 'Tidak ada' }}
                                                             </td>
                                                             <td class="text-right">
-                                                                {{ $memo->memo_ekspedisi ? number_format($memo->memo_ekspedisi->hasil_jumlah, 0, ',', '.') : 'Tidak ada' }}
+                                                                {{ $memo->memo_ekspedisi ? number_format($memo->memo_ekspedisi->hasil_jumlah, 2, ',', '.') : 'Tidak ada' }}
                                                             </td>
                                                         </tr>
 
@@ -165,10 +177,10 @@
                                                                     <td>{{ $memoTambahan->created_at }}</td>
                                                                     <td>{{ $memoTambahan->memo_ekspedisi->nama_rute }}</td>
                                                                     <td class="text-right">
-                                                                        {{ number_format($memoTambahan->grand_total, 0, ',', '.') }}
+                                                                        {{ number_format($memoTambahan->grand_total, 2, ',', '.') }}
                                                                     </td>
                                                                     <td class="text-right">
-                                                                        {{ number_format($memoTambahan->grand_total, 0, ',', '.') }}
+                                                                        {{ number_format($memoTambahan->grand_total, 2, ',', '.') }}
                                                                     </td>
                                                                 </tr>
                                                             @endforeach
@@ -225,7 +237,7 @@
                                         <div class="col-md-6">
                                             <input style="text-align: end; font-size:14px;" type="text"
                                                 class="form-control"
-                                                value="{{ number_format($totalGrandTotal, 0, ',', '.') }}" readonly>
+                                                value="{{ number_format($totalGrandTotal, 2, ',', '.') }}" readonly>
                                         </div>
                                     </div>
 
@@ -237,7 +249,7 @@
                                         <div class="col-md-6">
                                             <input style="text-align: end; font-size:14px;" type="text"
                                                 class="form-control"
-                                                value="{{ number_format($totalMemo + $totalMemoTambahan, 0, ',', '.') }}"
+                                                value="{{ number_format($totalMemo + $totalMemoTambahan, 2, ',', '.') }}"
                                                 readonly>
                                         </div>
                                     </div>
@@ -256,7 +268,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <input style="text-align: end; font-size:14px;" type="text"
-                                                class="form-control" value="{{ number_format($selisih, 0, ',', '.') }}"
+                                                class="form-control" value="{{ number_format($selisih, 2, ',', '.') }}"
                                                 readonly>
                                         </div>
                                     </div>
@@ -272,7 +284,7 @@
                                                     $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
                                                             return $kendaraan->detail_pengeluaran->where('barangakun_id', 29)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
                                                         })->sum() ?? 0,
-                                                    0,
+                                                    2,
                                                     ',',
                                                     '.',
                                                 ) }}">
@@ -291,7 +303,7 @@
                                                     $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
                                                             return $kendaraan->detail_pengeluaran->where('barangakun_id', 5)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
                                                         })->sum() ?? 0,
-                                                    0,
+                                                    2,
                                                     ',',
                                                     '.',
                                                 ) }}">
@@ -312,11 +324,20 @@
                                         </div>
                                         <div class="col-md-6">
                                             <input style="text-align: end; font-size:14px;" type="text"
-                                                class="form-control" value="{{ number_format($selisih - $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
-                                                            return $kendaraan->detail_pengeluaran->where('barangakun_id', 29)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
-                                                        })->sum() - $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
-                                                            return $kendaraan->detail_pengeluaran->where('barangakun_id', 5)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
-                                                        })->sum(), 0, ',', '.') }}" readonly>
+                                                class="form-control"
+                                                value="{{ number_format(
+                                                    $selisih -
+                                                        $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
+                                                                return $kendaraan->detail_pengeluaran->where('barangakun_id', 29)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
+                                                            })->sum() -
+                                                        $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
+                                                                return $kendaraan->detail_pengeluaran->where('barangakun_id', 5)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
+                                                            })->sum(),
+                                                    2,
+                                                    ',',
+                                                    '.',
+                                                ) }}"
+                                                readonly>
                                         </div>
                                     </div>
                                 </div>

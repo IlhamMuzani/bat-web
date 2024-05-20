@@ -179,8 +179,8 @@ Route::middleware('admin')->prefix('admin')->group(function () {
 
 
     Route::get('inquery_km', [\App\Http\Controllers\Admin\InqueryUpdateKMController::class, 'index']);
-    Route::get('unpostkm/{id}', [\App\Http\Controllers\Admin\InqueryUpdateKMController::class, 'unpostkm'])->name('unpostkm');
-    Route::get('postingkm/{id}', [\App\Http\Controllers\Admin\InqueryUpdateKMController::class, 'postingkm'])->name('postingkm');
+    Route::get('inquery_updatekm/unpostkm/{id}', [\App\Http\Controllers\Admin\InqueryUpdateKMController::class, 'unpostkm']);
+    Route::get('inquery_updatekm/postingkm/{id}', [\App\Http\Controllers\Admin\InqueryUpdateKMController::class, 'postingkm']);
     Route::get('hapuskm/{id}', [\App\Http\Controllers\Admin\InqueryUpdateKMController::class, 'hapuskm'])->name('hapuskm');
     Route::get('deletekm/{id}', [\App\Http\Controllers\Admin\InqueryUpdateKMController::class, 'deletekm'])->name('deletekm');
     Route::get('laporan_updatekm', [\App\Http\Controllers\Admin\LaporanUpdateKM::class, 'index']);

@@ -118,7 +118,8 @@
                     </td>
                     <td style="width: 95%; text-align: left;">
                         <div style="text-align: center; margin-top:20px">
-                            <span style="font-weight: bold; font-size: 15px;">REKAP GAJI KARYAWAN BINA ANUGERAH TRANSINDO (
+                            <span style="font-weight: bold; font-size: 15px;">REKAP GAJI KARYAWAN BINA ANUGERAH
+                                TRANSINDO (
                                 {{ \Carbon\Carbon::parse($cetakpdf->tanggal_awal)->locale('id')->isoFormat('D MMMM YYYY') }})</span>
                             <div class="text">
                                 <p style="font-size: 13px">Periode:{{ $cetakpdf->periode_awal }}s/d

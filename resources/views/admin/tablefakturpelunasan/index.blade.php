@@ -52,9 +52,8 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-
-                    <table id="example1" class="table table-bordered table-striped" style="font-size: 13px">
-                        <thead>
+                    <table id="datatables66" class="table table-bordered table-striped table-hover" style="font-size: 13px">
+                        <thead class="thead-dark">
                             <tr>
                                 <th class="text-center">No</th>
                                 <th>No Faktur</th>
@@ -111,7 +110,7 @@
                                                     <strong>{{ $fakturpelunasan->kode_pelunasan }}</strong>
                                                 </p>
                                                 @if ($fakturpelunasan->status == 'unpost')
-                                                    {{-- @if (auth()->check() && auth()->user()->fitur['inquery pelunasan ekspedisi delete']) --}}
+                                                    @if (auth()->check() && auth()->user()->fitur['inquery pelunasan ekspedisi delete'])
                                                         <form method="GET"
                                                             action="{{ route('hapuspelunasan', ['id' => $fakturpelunasan->id]) }}">
                                                             <button type="submit"
@@ -119,20 +118,20 @@
                                                                 <i class="fas fa-trash-alt"></i> Delete
                                                             </button>
                                                         </form>
-                                                    {{-- @endif --}}
-                                                    {{-- @if (auth()->check() && auth()->user()->fitur['inquery pelunasan ekspedisi show']) --}}
+                                                    @endif
+                                                    @if (auth()->check() && auth()->user()->fitur['inquery pelunasan ekspedisi show'])
                                                         <a href="{{ url('admin/inquery_fakturpelunasan/' . $fakturpelunasan->id) }}"
                                                             type="button" class="btn btn-outline-info btn-block">
                                                             <i class="fas fa-eye"></i> Show
                                                         </a>
-                                                    {{-- @endif --}}
-                                                    {{-- @if (auth()->check() && auth()->user()->fitur['inquery pelunasan ekspedisi update']) --}}
+                                                    @endif
+                                                    @if (auth()->check() && auth()->user()->fitur['inquery pelunasan ekspedisi update'])
                                                         <a href="{{ url('admin/inquery_fakturpelunasan/' . $fakturpelunasan->id . '/edit') }}"
                                                             type="button" class="btn btn-outline-warning btn-block">
                                                             <i class="fas fa-edit"></i> Update
                                                         </a>
-                                                    {{-- @endif --}}
-                                                    {{-- @if (auth()->check() && auth()->user()->fitur['inquery pelunasan ekspedisi posting']) --}}
+                                                    @endif
+                                                    @if (auth()->check() && auth()->user()->fitur['inquery pelunasan ekspedisi posting'])
                                                         <form method="GET"
                                                             action="{{ route('postingpelunasan', ['id' => $fakturpelunasan->id]) }}">
                                                             <button type="submit"
@@ -140,16 +139,16 @@
                                                                 <i class="fas fa-check"></i> Posting
                                                             </button>
                                                         </form>
-                                                    {{-- @endif --}}
+                                                    @endif
                                                 @endif
                                                 @if ($fakturpelunasan->status == 'posting')
-                                                    {{-- @if (auth()->check() && auth()->user()->fitur['inquery pelunasan ekspedisi show']) --}}
+                                                    @if (auth()->check() && auth()->user()->fitur['inquery pelunasan ekspedisi show'])
                                                         <a href="{{ url('admin/inquery_fakturpelunasan/' . $fakturpelunasan->id) }}"
                                                             type="button" class="btn btn-outline-info btn-block">
                                                             <i class="fas fa-eye"></i> Show
                                                         </a>
-                                                    {{-- @endif --}}
-                                                    {{-- @if (auth()->check() && auth()->user()->fitur['inquery pelunasan ekspedisi unpost']) --}}
+                                                    @endif
+                                                    @if (auth()->check() && auth()->user()->fitur['inquery pelunasan ekspedisi unpost'])
                                                         <form method="GET"
                                                             action="{{ route('unpostpelunasan', ['id' => $fakturpelunasan->id]) }}">
                                                             <button type="submit"
@@ -157,7 +156,7 @@
                                                                 <i class="fas fa-check"></i> Unpost
                                                             </button>
                                                         </form>
-                                                    {{-- @endif --}}
+                                                    @endif
                                                 @endif
                                             </div>
                                         </div>

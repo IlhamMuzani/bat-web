@@ -160,6 +160,7 @@ class UserController extends Controller
                     'penerimaan kas kecil' => false,
                     'pengambilan kas kecil' => false,
                     'deposit sopir' => false,
+                    'list administrasi' => false,
                     'inquery penerimaan kas kecil' => false,
                     'inquery pengambilan kas kecil' => false,
                     'inquery deposit sopir' => false,
@@ -201,7 +202,6 @@ class UserController extends Controller
                     'laporan pelunasan ekspedisi' => false,
                     'laporan pelunasan pembelian ban' => false,
                     'laporan pelunasan pembelian part' => false,
-                    'list administrasi' => false,
                     'gaji karyawan' => false,
                     'perhitungan gaji' => false,
                     'inquery perhitungan gaji' => false,
@@ -695,14 +695,6 @@ class UserController extends Controller
                     // laporan kasbon karyawan 
                     'laporan kasbon karyawan cari' => false,
                     'laporan kasbon karyawan cetak' => false,
-
-                    'posting memo perjalanan continue' => false,
-                    'posting memo borong continue' => false,
-                    'posting memo tambahan continue' => false,
-
-                    'unpost memo perjalanan continue' => false,
-                    'unpost memo borong continue' => false,
-                    'unpost memo tambahan continue' => false,
                 ]
             ]
         ));
