@@ -1379,6 +1379,9 @@
             });
 
             updateUrutan();
+
+            updateGrandTotal();
+            updateHarga();
         }
 
         function itemPembelians(identifier, key, value = null) {
