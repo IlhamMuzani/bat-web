@@ -188,28 +188,7 @@
         <br>
     </div>
     <hr style="border-top: 0.5px solid black; margin: 3px 0;">
-    {{-- <table width="100%">
-                <tr>
-                    <td>
-                        <span class="info-item" style="font-size: 13px;">No. Kabin:{{ $kendaraan->no_kabin }}</span>
-                        <br>
-                    </td>
-                    <td>
-                        <span class="info-item" style="font-size: 13px;">Jenis
-                            Kendaraan:{{ $kendaraan->no_kabin }}</span>
-                        <br>
-                    </td>
-                    <td>
-                        <span class="info-item" style="font-size: 13px;">Total Ban:{{ $kendaraan->no_kabin }}</span>
-                        <br>
-                    </td>
-                    <td>
-                        <span class="info-item"
-                            style="font-size: 13px;">Tanggal:{{ $pasang_ban->tanggal }}</span>
-                        <br>
-                    </td>
-                </tr>
-            </table> --}}
+
     <table style="width: 100%;" cellpadding="2" cellspacing="0">
         <tr>
             <td class="td" style="text-align: center; padding: 0px; font-size: 14px;">No.
@@ -219,7 +198,7 @@
             <td class="td" style="text-align: center; padding: 0px; font-size: 14px;">Total
                 Ban:{{ $kendaraan->jenis_kendaraan->total_ban }}</td>
             <td class="td" style="text-align: center; padding: 0px; font-size: 14px;">
-                Tanggal:{{ Carbon\Carbon::now()->translatedFormat('d M Y') }}</td>
+                Tanggal:{{ $pemasangan_ban->tanggal }}</td>
         </tr>
     </table>
     </div>
@@ -233,6 +212,7 @@
             <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">Ukuran</td>
             <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">Merek</td>
             <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">Kondisi</td>
+            <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">Km Pemasangan</td>
         </tr>
         <tr style="border-bottom: 1px solid black;">
             <td colspan="7" style="padding: 0px;">
@@ -254,7 +234,10 @@
                 <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">
                     {{ $item->merek->nama_merek }}</td>
                 <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">
-                    {{ $item->kondisi_ban }}
+                    {{ number_format($item->jumlah_km, 0, ',', '.') }} km
+                </td>
+                <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">
+                    {{ number_format($item->km_pemasangan, 0, ',', '.') }} km
                 </td>
             </tr>
         @endforeach

@@ -44,6 +44,14 @@
             text-overflow: ellipsis;
         }
 
+
+        .info-catatan2 {
+            font-weight: bold;
+            margin-right: 5px;
+            min-width: 120px;
+            /* Menetapkan lebar minimum untuk kolom pertama */
+        }
+
         .alamat,
         .nama-pt {
             color: black;
@@ -90,7 +98,7 @@
             <td class="td" style="text-align: center; padding: 3px; font-size: 14px;">Total
                 Ban:{{ $kendaraan->jenis_kendaraan->total_ban }}</td>
             <td class="td" style="text-align: center; padding: 3px; font-size: 14px;">
-                Tanggal:{{ Carbon\Carbon::now()->translatedFormat('d M Y') }}</td>
+                Tanggal:{{ $pasang_ban->tanggal }}</td>
         </tr>
     </table>
     </div>
@@ -126,10 +134,10 @@
                 <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">
                     {{ $item->merek->nama_merek }}</td>
                 <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">
-                    {{ $item->kondisi_ban }}
+                    {{ number_format($item->jumlah_km, 0, ',', '.') }} km
                 </td>
                 <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">
-                    {{ number_format($item->km_pemasangan, 0, ',', '.') }}
+                    {{ number_format($item->km_pemasangan, 0, ',', '.') }} km
                 </td>
             </tr>
         @endforeach
@@ -225,11 +233,9 @@
             </td>
         </tr>
     </table>
-
     <div style="text-align: right; font-size:12px; margin-top:25px">
         <span style="font-style: italic;">Printed Date {{ \Carbon\Carbon::now()->format('Y-m-d H:i:s') }}</span>
     </div>
-
 </body>
 
 </html>
