@@ -1034,6 +1034,26 @@
                 </a>
             </li>
         @endif
+        @if (auth()->check() && auth()->user()->menu['akses'])
+            <li class="nav-item">
+                <a href="{{ url('admin/bukti_potongpajak') }}"
+                    class="nav-link {{ request()->is('admin/bukti_potongpajak*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 13px;">Bukti Potong Pajak
+                    </p>
+                </a>
+            </li>
+        @endif
+        @if (auth()->check() && auth()->user()->menu['akses'])
+            <li class="nav-item">
+                <a href="{{ url('admin/inquery_buktipotongpajak') }}"
+                    class="nav-link {{ request()->is('admin/inquery_buktipotongpajak*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 13px;">Inquery Bukti Potong Pajak
+                    </p>
+                </a>
+            </li>
+        @endif
     </ul>
 </li>
 <li
