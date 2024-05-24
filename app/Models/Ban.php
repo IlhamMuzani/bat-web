@@ -28,6 +28,7 @@ class Ban extends Model
         'typeban_id',
         'harga',
         'umur_ban',
+        'km_umur',
         'km_pemasangan',
         'jumlah_km',
         'km_pelepasan',

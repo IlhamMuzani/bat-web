@@ -187,6 +187,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('print_updatekm', [\App\Http\Controllers\Admin\LaporanUpdateKM::class, 'print_updatekm']);
     Route::get('lihat_kendaraan/{id}', [\App\Http\Controllers\Admin\InqueryUpdateKMController::class, 'lihat_kendaraan'])->name('lihat_kendaraan');
     Route::get('edit_kendaraan/{id}', [\App\Http\Controllers\Admin\InqueryUpdateKMController::class, 'edit_kendaraan'])->name('edit_kendaraan');
+    Route::get('hapuspemasanganban/{id}', [\App\Http\Controllers\Admin\InqueryPemasanganbanController::class, 'hapuspemasanganban'])->name('hapuspemasanganban');
 
     Route::get('inquery_pemasanganban', [\App\Http\Controllers\Admin\InqueryPemasanganbanController::class, 'index']);
     Route::get('unpostpemasangan/{id}', [\App\Http\Controllers\Admin\InqueryPemasanganbanController::class, 'unpostpemasangan'])->name('unpostpemasangan');
