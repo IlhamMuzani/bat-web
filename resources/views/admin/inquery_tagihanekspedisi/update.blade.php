@@ -721,9 +721,9 @@
             }
 
             // urutan 
-            var item_pembelian = '<tr id="pembelian-' + key + '">';
-            item_pembelian += '<td style="width: 70px; font-size:14px" class="text-center" id="urutan">' + key + '</td>';
-
+            var item_pembelian = '<tr id="pembelian-' + urutan + '">';
+            item_pembelian += '<td style="width: 70px; font-size:14px" class="text-center" id="urutan">' + urutan +
+                '</td>';
             // faktur_ekspedisi_id 
             item_pembelian += '<td hidden>';
             item_pembelian += '<div class="form-group">'
@@ -951,7 +951,7 @@
             var kategori = document.getElementById("kategori").value;
 
             // Loop through all elements with name "nominal_tambahan[]"
-           $('input[name^="total"]').each(function() {
+            $('input[name^="total"]').each(function() {
                 var nominalValue = $(this).val().replace(/\./g, '').replace(',',
                     '.'); // Replace dots and convert comma to dot
                 grandTotal += parseFloat(nominalValue) || 0; // Convert to float and sum

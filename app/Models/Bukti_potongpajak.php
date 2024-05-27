@@ -9,7 +9,7 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Tagihan_ekspedisi extends Model
+class Bukti_potongpajak extends Model
 {
     use HasFactory;
     use LogsActivity;
@@ -17,26 +17,15 @@ class Tagihan_ekspedisi extends Model
     protected $fillable =
     [
         'user_id',
-        'kode_tagihan',
+        'kode_bukti',
+        'nomor_faktur',
         'kategori',
-        'qrcode_tagihan',
-        'pelanggan_id',
-        'kode_pelanggan',
-        'nama_pelanggan',
-        'alamat_pelanggan',
-        'telp_pelanggan',
-        'keterangan',
-        'sub_total',
-        'pph',
-        'sisa',
+        'kategoris',
         'grand_total',
-        'tanggal',
+        'periode_awal',
         'tanggal_awal',
         'tanggal_akhir',
         'status',
-        'status_terpakai',
-        'periode_awal',
-        'periode_akhir',
         'status_notif',
     ];
 
@@ -50,9 +39,9 @@ class Tagihan_ekspedisi extends Model
             ->logFillable('*');
     }
 
-    public function pelanggan()
+    public function detail_bukti()
     {
-        return $this->belongsTo(Pelanggan::class);
+        return $this->hasMany(Detail_tagihan::class);
     }
 
     public function user()
@@ -62,11 +51,6 @@ class Tagihan_ekspedisi extends Model
 
     public static function getId()
     {
-        return $getId = DB::table('tagihan_ekspedisis')->orderBy('id', 'DESC')->take(1)->get();
-    }
-
-    public function detail_tagihan()
-    {
-        return $this->hasMany(Detail_tagihan::class);
+        return $getId = DB::table('bukti_potongpajaks')->orderBy('id', 'DESC')->take(1)->get();
     }
 }

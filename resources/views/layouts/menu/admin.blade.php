@@ -703,6 +703,8 @@
     request()->is('admin/inquery_penerimaankaskecil*') ||
     request()->is('admin/inquery_potonganpenjualan*') ||
     request()->is('admin/inqueryklaim_ban*') ||
+    request()->is('admin/bukti_potongpajak*') ||
+    request()->is('admin/inquery_buktipotongpajak*') ||
     request()->is('admin/inquery_pengeluarankaskecil*')
         ? 'menu-open'
         : '' }}">
@@ -735,6 +737,8 @@
         request()->is('admin/inquery_penerimaankaskecil*') ||
         request()->is('admin/inquery_potonganpenjualan*') ||
         request()->is('admin/inqueryklaim_ban*') ||
+        request()->is('admin/bukti_potongpajak*') ||
+        request()->is('admin/inquery_buktipotongpajak*') ||
         request()->is('admin/inquery_pengeluarankaskecil*')
             ? 'active'
             : '' }}">
@@ -1034,7 +1038,7 @@
                 </a>
             </li>
         @endif
-        @if (auth()->check() && auth()->user()->menu['akses'])
+        @if (auth()->check() && auth()->user()->menu['faktur pelunasan ekspedisi'])
             <li class="nav-item">
                 <a href="{{ url('admin/bukti_potongpajak') }}"
                     class="nav-link {{ request()->is('admin/bukti_potongpajak*') ? 'active' : '' }}">
@@ -1044,7 +1048,7 @@
                 </a>
             </li>
         @endif
-        @if (auth()->check() && auth()->user()->menu['akses'])
+        @if (auth()->check() && auth()->user()->menu['faktur pelunasan ekspedisi'])
             <li class="nav-item">
                 <a href="{{ url('admin/inquery_buktipotongpajak') }}"
                     class="nav-link {{ request()->is('admin/inquery_buktipotongpajak*') ? 'active' : '' }}">
@@ -1077,6 +1081,7 @@
     request()->is('admin/laporan_penggantianoli*') ||
     request()->is('admin/laporan_updatekm*') ||
     request()->is('admin/laporan_statusperjalanan*') ||
+    request()->is('admin/laporan_buktipotongpajak*') ||
     request()->is('admin/laporan_pengeluaranujs*')
         ? 'menu-open'
         : '' }}">
@@ -1101,6 +1106,7 @@
         request()->is('admin/laporan_penggantianoli*') ||
         request()->is('admin/laporan_updatekm*') ||
         request()->is('admin/laporan_statusperjalanan*') ||
+        request()->is('admin/laporan_buktipotongpajak*') ||
         request()->is('admin/laporan_pengeluaranujs*')
             ? 'active'
             : '' }}">
@@ -1343,6 +1349,16 @@
                     class="nav-link {{ request()->is('admin/laporan_pengeluaranujs*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
                     <p style="font-size: 14px;">Laporan Pengambilan UJS
+                    </p>
+                </a>
+            </li>
+        @endif
+        @if (auth()->check() && auth()->user()->menu['laporan pelunasan ekspedisi'])
+            <li class="nav-item">
+                <a href="{{ url('admin/laporan_buktipotongpajak') }}"
+                    class="nav-link {{ request()->is('admin/laporan_buktipotongpajak*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 14px;">Laporan Bukti Potong Pajak
                     </p>
                 </a>
             </li>
