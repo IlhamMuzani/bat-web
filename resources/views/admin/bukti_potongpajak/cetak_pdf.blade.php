@@ -263,7 +263,7 @@
                 Grand Total :
             </td>
             <td class="td" style="text-align: right; font-size: 13px; font-weight:bold">
-                {{ number_format($cetakpdf->grand_total, 2, ',', '.') }}
+                {{ number_format($totalRuteSum, 2, ',', '.') }}
 
             </td>
         </tr>
@@ -304,7 +304,7 @@
     ?>
     <div style="font-size: 13px">
         Terbilang : <span style="font-weight: bold; font-style: italic; margin-right:250px ">
-            ({{ terbilang($cetakpdf->grand_total) }}
+            ({{ terbilang($totalRuteSum) }}
             Rupiah)
         </span>
     </div>

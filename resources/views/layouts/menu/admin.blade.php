@@ -1028,16 +1028,6 @@
                 </a>
             </li>
         @endif
-        @if (auth()->check() && auth()->user()->menu['inquery pengambilan kas kecil'])
-            <li class="nav-item">
-                <a href="{{ url('admin/inquery_pengeluarankaskecil') }}"
-                    class="nav-link {{ request()->is('admin/inquery_pengeluarankaskecil*') ? 'active' : '' }}">
-                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
-                    <p style="font-size: 13px;">Inquery Pengambilan Kas Kecil
-                    </p>
-                </a>
-            </li>
-        @endif
         @if (auth()->check() && auth()->user()->menu['faktur pelunasan ekspedisi'])
             <li class="nav-item">
                 <a href="{{ url('admin/bukti_potongpajak') }}"
@@ -1054,6 +1044,16 @@
                     class="nav-link {{ request()->is('admin/inquery_buktipotongpajak*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
                     <p style="font-size: 13px;">Inquery Bukti Potong Pajak
+                    </p>
+                </a>
+            </li>
+        @endif
+        @if (auth()->check() && auth()->user()->menu['inquery pengambilan kas kecil'])
+            <li class="nav-item">
+                <a href="{{ url('admin/inquery_pengeluarankaskecil') }}"
+                    class="nav-link {{ request()->is('admin/inquery_pengeluarankaskecil*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 13px;">Inquery Pengambilan Kas Kecil
                     </p>
                 </a>
             </li>
