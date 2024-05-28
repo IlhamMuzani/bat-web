@@ -631,7 +631,7 @@
 
             console.log(kategori);
             // urutan 
-            var item_pembelian = '<tr id="pembelian-' + key + '">';
+            var item_pembelian = '<tr id="pembelian-' + urut + '">';
             item_pembelian += '<td class="text-center" id="urutan">' + key + '</td>';
 
             // kategori 
