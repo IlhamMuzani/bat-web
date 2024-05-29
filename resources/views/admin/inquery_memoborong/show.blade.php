@@ -1,646 +1,458 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('title', 'Inquery Memo Borong')
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Memo Ekspedisi</title>
+    <style>
+        html,
+        body {
+            font-family: 'DOSVGA', monospace;
+            color: black;
+            /* Gunakan Arial atau font sans-serif lainnya yang mudah dibaca */
+            margin: 40px;
+        }
 
-@section('content')
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Inquery Memo Borong</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item active">Inquery Memo Borong</li>
-                    </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+        .container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 7rem;
+        }
+
+        .blue-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            top: 50%;
+            border-radius: 5px;
+            transform: translateY(-50%);
+        }
+
+        .info-column {
+            padding-left: 5px;
+        }
+
+        .info-titik {
+            vertical-align: top;
+        }
+
+        /* tanda tangan  */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .separator {
+            padding-top: 14px;
+            text-align: center;
+        }
+
+        .separator span {
+            display: inline-block;
+            border-top: 1px solid black;
+            width: 100%;
+            position: relative;
+            top: -8px;
+        }
+    </style>
+</head>
+
+<body style="margin: 0; padding: 0;">
+    <table width="100%">
+
+        <tr>
+            <!-- First column (Nama PT) -->
+            <td style="width:0%;">
+            </td>
+            <td style="width: 70%; text-align: right;">
+            </td>
+        </tr>
+    </table>
+    <div style="text-align: center;">
+        <span style="font-weight: bold; font-size: 25px;">PT JAVA LINE LOGISTICS</span>
+        <br>
+        <span style=" font-size: 15px;">JL. HOS COKRO AMINOTO NO 5 SLAWI TEGAL
+            {{-- <br>Tegal 52411 --}}
+        </span>
+        <br>
+        <span style=" font-size: 15px;">Telp / Fax, 02836195328 02838195187</span>
     </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
-            @if (session('success'))
-                <div class="alert alert-success alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <h5>
-                        <i class="icon fas fa-check"></i> Success!
-                    </h5>
-                    {{ session('success') }}
-                </div>
-            @endif
-            @if (session('error'))
-                <div class="alert alert-danger alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <h5>
-                        <i class="icon fas fa-ban"></i> Error!
-                    </h5>
-                    {{ session('error') }}
-                </div>
-            @endif
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Data Inquery Memo Borong</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <form method="GET" id="form-action">
-                        <div class="row">
-                            <div class="col-md-2 mb-3">
-                                <select class="custom-select form-control" id="kategori" name="kategori">
-                                    <option value="">- Semua Status -</option>
-                                    <option value="Memo Perjalanan"
-                                        {{ Request::get('kategori') == 'Memo Perjalanan' ? 'selected' : '' }}>
-                                        Memo Perjalanan
-                                    </option>
-                                    <option value="Memo Borong"
-                                        {{ Request::get('kategori') == 'Memo Borong' ? 'selected' : '' }}>
-                                        Memo Borong</option>
-                                    <option value="Memo Tambahan"
-                                        {{ Request::get('') == 'Memo Tambahan' ? 'selected' : '' }}>
-                                        Memo Tambahan</option>
-                                </select>
-                                <label for="status">(Pilih Status)</label>
-                            </div>
-                            <div class="col-md-2 mb-3">
-                                <select class="custom-select form-control" id="status" name="status">
-                                    <option value="">- Semua Status -</option>
-                                    <option value="posting" {{ Request::get('status') == 'posting' ? 'selected' : '' }}>
-                                        Posting
-                                    </option>
-                                    <option value="unpost" {{ Request::get('status') == 'unpost' ? 'selected' : '' }}>
-                                        Unpost</option>
-                                </select>
-                                <label for="status">(Pilih Status)</label>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <input class="form-control" id="tanggal_awal" name="tanggal_awal" type="date"
-                                    value="{{ Request::get('tanggal_awal') }}" max="{{ date('Y-m-d') }}" />
-                                <label for="tanggal_awal">(Tanggal Awal)</label>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <input class="form-control" id="tanggal_akhir" name="tanggal_akhir" type="date"
-                                    value="{{ Request::get('tanggal_akhir') }}" max="{{ date('Y-m-d') }}" />
-                                <label for="tanggal_awal">(Tanggal Akhir)</label>
-                            </div>
-                            <div class="col-md-2 mb-3">
-                                <button type="button" class="btn btn-outline-primary btn-block" onclick="cari()">
-                                    <i class="fas fa-search"></i> Cari
-                                </button>
-                                <input type="hidden" name="ids" id="selectedIds" value="">
-                                <button type="button" class="btn btn-primary btn-block mt-1" id="checkfilter"
-                                    onclick="printSelectedData()" target="_blank">
-                                    <i class="fas fa-print"></i> Cetak Filter
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    @if (auth()->user()->id == 1 || auth()->user()->id == 4 || auth()->user()->id == 31)
-                        <form method="GET" id="form-action">
-                            <div class="row">
-                                <div class="col-md-2 mb-3">
-                                    <input type="hidden" name="ids" id="selectedIds" value="">
-                                    <button type="button" class="btn btn-success btn-block mt-1" id="postingfilter"
-                                        onclick="postingSelectedData()">
-                                        <i class="fas fa-check-square"></i> Posting Filter
-                                    </button>
-
-                                </div>
-                                <div class="col-md-2 mb-3">
-                                    <input type="hidden" name="ids" id="selectedIdss" value="">
-                                    <button type="button" class="btn btn-warning btn-block mt-1" id="unpostfilter"
-                                        onclick="unpostSelectedData()">
-                                        <i class="fas fa-times-circle"></i> Unpost Filter
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    @endif
-                    <table id="datatables66" class="table table-bordered table-striped table-hover"
-                        style="font-size: 13px">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th> <input type="checkbox" name="" id="select_all_ids"></th>
-                                <th class="text-center">No</th>
-                                <th>No Memo</th>
-                                <th>Tanggal</th>
-                                <th>Sopir</th>
-                                <th>No Kabin</th>
-                                <th>Rute</th>
-                                <th style="text-align: center">Harga</th>
-                                <th style="text-align: center">qty</th>
-                                <th style="text-align: center">Total</th>
-                                <th style="text-align: center">PPH</th>
-                                {{-- <th style="text-align: center">Adm</th> --}}
-                                <th style="text-align: center">Deposit Sopir</th>
-                                <th style="text-align: center">Grand Total</th>
-                                <th style="text-align: center" hidden>Hasil Jumlah</th>
-                                <th>Opsi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($inquery as $memoborong)
-                                <tr class="dropdown"{{ $memoborong->id }}>
-                                    <td><input type="checkbox" name="selectedIds[]" class="checkbox_ids"
-                                            value="{{ $memoborong->id }}">
-                                    </td>
-                                    <td class="text-center">{{ $loop->iteration }}</td>
-                                    <td>
-                                        {{ $memoborong->kode_memo }}</td>
-                                    <td>
-                                        {{ $memoborong->tanggal_awal }}</td>
-                                    <td>
-                                        {{ substr($memoborong->nama_driver, 0, 7) }} ..
-                                    </td>
-                                    <td>
-                                        {{ $memoborong->no_kabin }}
-                                    </td>
-                                    <td>
-                                        @if ($memoborong->nama_rute == null)
-                                            {{ $memoborong->detail_memo->first()->nama_rutes }}
-                                        @else
-                                            {{ $memoborong->nama_rute }}
-                                        @endif
-                                    </td>
-                                    <td style="text-align: end">
-                                        {{ number_format($memoborong->harga_rute, 0, ',', '.') }}
-                                    </td>
-                                    <td style="text-align: end">
-                                        {{ $memoborong->jumlah }}
-                                    </td>
-                                    <td style="text-align: end">
-                                        @if ($memoborong->totalrute == null)
-                                            0
-                                        @else
-                                            {{ number_format($memoborong->totalrute, 0, ',', '.') }}
-                                        @endif
-                                    </td>
-                                    <td style="text-align: end">
-                                        {{ number_format($memoborong->pphs, 0, ',', '.') }}
-                                    </td>
-                                    {{-- <td style="text-align: end">
-                                        {{ number_format($memoborong->uang_jaminans, 0, ',', '.') }}
-                                    </td> --}}
-                                    <td style="text-align: end">
-                                        {{ number_format($memoborong->deposit_drivers, 0, ',', '.') }}
-                                    </td>
-                                    <td style="text-align: end">
-                                        {{ number_format($memoborong->sub_total, 0, ',', '.') }}
-                                    </td>
-                                    <td hidden style="text-align: end">
-                                        {{ number_format($memoborong->hasil_jumlah, 0, ',', '.') }}
-                                    </td>
-                                    <td class="text-center">
-                                        @if ($memoborong->status == 'posting')
-                                            <button type="button" class="btn btn-success btn-sm">
-                                                <i class="fas fa-check"></i>
-                                            </button>
-                                        @endif
-                                        @if ($memoborong->status == 'selesai')
-                                            <img src="{{ asset('storage/uploads/indikator/faktur.png') }}" height="40"
-                                                width="40" alt="Faktur">
-                                        @endif
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            @if ($memoborong->status == 'unpost')
-                                                @if ($saldoTerakhir->sisa_saldo < $memoborong->hasil_jumlah)
-                                                    <a class="dropdown-item">Saldo tidak cukup</a>
-                                                @else
-                                                    @if (auth()->check() && auth()->user()->fitur['inquery memo borong posting'])
-                                                        <a class="dropdown-item posting-btn"
-                                                            data-memo-id="{{ $memoborong->id }}">Posting</a>
-                                                    @endif
-                                                @endif
-                                                @if (auth()->check() && auth()->user()->fitur['inquery memo borong update'])
-                                                    <a class="dropdown-item"
-                                                        href="{{ url('admin/inquery_memoborong/' . $memoborong->id . '/edit') }}">Update</a>
-                                                @endif
-                                                @if (auth()->check() && auth()->user()->fitur['inquery memo borong show'])
-                                                    <a class="dropdown-item"
-                                                        href="{{ url('admin/inquery_memoborong/' . $memoborong->id) }}">Show</a>
-                                                @endif
-                                                @if (auth()->check() && auth()->user()->fitur['inquery memo borong delete'])
-                                                    <form style="margin-top:5px" method="GET"
-                                                        action="{{ route('hapusmemo', ['id' => $memoborong->id]) }}">
-                                                        <button type="submit"
-                                                            class="dropdown-item btn btn-outline-danger btn-block mt-2">
-                                                            </i> Delete
-                                                        </button>
-                                                    </form>
-                                                @endif
-                                            @endif
-                                            @if ($memoborong->status == 'posting')
-                                                @if (auth()->check() && auth()->user()->fitur['inquery memo borong unpost'])
-                                                    <a class="dropdown-item unpost-btn"
-                                                        data-memo-id="{{ $memoborong->id }}">Unpost</a>
-                                                @endif
-                                                @if (auth()->check() && auth()->user()->fitur['inquery memo borong show'])
-                                                    <a class="dropdown-item"
-                                                        href="{{ url('admin/inquery_memoborong/' . $memoborong->id) }}">Show</a>
-                                                @endif
-                                            @endif
-                                            @if ($memoborong->status == 'selesai')
-                                                @if (auth()->check() && auth()->user()->fitur['inquery memo borong show'])
-                                                    <a class="dropdown-item"
-                                                        href="{{ url('admin/inquery_memoborong/' . $memoborong->id) }}">Show</a>
-                                                @endif
-                                            @endif
-                                            @if ($memoborong->detail_faktur->first())
-                                                <p style="margin-left:15px; margin-right:15px">Digunakan Oleh Faktur
-                                                    Ekspedisi
-                                                    <strong>{{ $memoborong->detail_faktur->first()->faktur_ekspedisi->kode_faktur }}</strong>
-                                                </p>
-                                            @else
-                                                <!-- Kode yang ingin Anda jalankan jika kondisi tidak terpenuhi -->
-                                            @endif
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    <!-- Modal Loading -->
-                    <div class="modal fade" id="modal-loading" tabindex="-1" role="dialog"
-                        aria-labelledby="modal-loading-label" aria-hidden="true" data-backdrop="static">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-body text-center">
-                                    <i class="fas fa-spinner fa-spin fa-3x text-primary"></i>
-                                    <h4 class="mt-2">Sedang Menyimpan...</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- validasi gagal  --}}
-                    <div class="modal fade" id="validationModal" tabindex="-1" role="dialog"
-                        aria-labelledby="validationModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="validationModalLabel">Validasi Gagal</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true"><i class="fas fa-times"></i></span>
-                                    </button>
-                                </div>
-                                <div class="modal-body text-center">
-                                    <i class="fas fa-times-circle fa-3x text-danger"></i>
-                                    <h4 class="mt-2">Validasi Gagal!</h4>
-                                    <p id="validationMessage"></p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.card-body -->
-            </div>
+    <hr style="border: 1px solid;">
+    @if ($cetakpdf->kategori == 'Memo Borong')
+        <div style="text-align: center;">
+            <span style="font-weight: bold; font-size: 20px;">MEMO BORONG</span>
         </div>
-    </section>
+        <table width="100%">
+            <tr>
 
-    {{-- unpost memo  --}}
-    <script>
-        $(document).ready(function() {
-            $('.unpost-btn').click(function() {
-                var memoId = $(this).data('memo-id');
+                <td style="width: 40%; text-align: left;">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="width: 40%;">
+                                <span class="info-item"
+                                    style="font-size: 15px; text-align: left; display: inline-block;">No Kabin</span>
+                            </td>
+                            <td style="width: 60%;">
+                                <span class="info-item"
+                                    style="font-size: 15px; text-align: left; display: inline-block;">:
+                                    {{ $cetakpdf->no_kabin }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 40%;">
+                                <span class="info-item"
+                                    style="font-size: 15px; text-align: left; display: inline-block;">Tanggal</span>
+                            </td>
+                            <td style="width: 60%;">
+                                <span class="info-item"
+                                    style="font-size: 15px; text-align: left; display: inline-block;">:
+                                    {{ \Carbon\Carbon::parse($cetakpdf->tanggal)->locale('id')->isoFormat('D MMMM YYYY') }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 40%;">
+                                <span class="info-item"
+                                    style="font-size: 15px; text-align: left; display: inline-block;">No. Memo</span>
+                            </td>
+                            <td style="width: 60%;">
+                                <span class="info-item"
+                                    style="font-size: 15px; text-align: left; display: inline-block;">:
+                                    {{ $cetakpdf->kode_memo }}</span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="width: 40%; text-align: left;">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="width: 40%;">
+                                <span class="info-item"
+                                    style="font-size: 15px; text-align: left; display: inline-block;">Kode Sopir</span>
+                            </td>
+                            <td style="width: 60%;">
+                                <span class="info-item"
+                                    style="font-size: 15px; text-align: left; display: inline-block;">:
+                                    {{ $cetakpdf->kode_driver }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 40%;">
+                                <span class="info-item"
+                                    style="font-size: 15px; text-align: left; display: inline-block;">Nama
+                                    Sopir</span>
+                            </td>
+                            <td style="width: 60%;">
+                                <span class="info-item"
+                                    style="font-size: 15px; text-align: left; display: inline-block;">:
+                                    {{ $cetakpdf->nama_driver }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 40%;">
+                                <span class="info-item"
+                                    style="font-size: 15px; text-align: left; display: inline-block;">No. Telp</span>
+                            </td>
+                            <td style="width: 60%;">
+                                <span class="info-item"
+                                    style="font-size: 15px; text-align: left; display: inline-block;">:
+                                    {{ $cetakpdf->telp }}</span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="width: 40%; text-align: left;">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="width: 40%;">
+                                <span class="info-item"
+                                    style="font-size: 15px; text-align: left; display: inline-block;">Nama Bank</span>
+                            </td>
+                            <td style="width: 60%;">
+                                <span class="info-item"
+                                    style="font-size: 15px; text-align: left; display: inline-block;">:
+                                    @if ($cetakpdf->user->karyawan->nama_bank != null)
+                                        {{ $cetakpdf->user->karyawan->nama_bank }}
+                                    @else
+                                    @endif
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 40%;">
+                                <span class="info-item"
+                                    style="font-size: 15px; text-align: left; display: inline-block;">No
+                                    Rekening</span>
+                            </td>
+                            <td style="width: 60%;">
+                                <span class="info-item"
+                                    style="font-size: 15px; text-align: left; display: inline-block;">:
+                                    @if ($cetakpdf->user->karyawan->norek != null)
+                                        {{ $cetakpdf->user->karyawan->norek }}
+                                    @else
+                                    @endif
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 40%;">
+                                <span class="info-item"
+                                    style="font-size: 15px; text-align: left; display: inline-block;">Atas Nama</span>
+                            </td>
+                            <td style="width: 60%;">
+                                <span class="info-item"
+                                    style="font-size: 15px; text-align: left; display: inline-block;">:
+                                    @if ($cetakpdf->user->karyawan->atas_nama != null)
+                                        {{ $cetakpdf->user->karyawan->atas_nama }}
+                                    @else
+                                    @endif
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <hr style="border: 1px solid;">
 
-                // Tampilkan modal loading saat permintaan AJAX diproses
-                $('#modal-loading').modal('show');
-
-                // Kirim permintaan AJAX untuk melakukan unpost
-                $.ajax({
-                    url: "{{ url('admin/inquery_memoborong/unpostmemoborong/') }}/" + memoId,
-                    type: 'GET',
-                    data: {
-                        id: memoId
-                    },
-                    success: function(response) {
-                        // Sembunyikan modal loading setelah permintaan selesai
-                        $('#modal-loading').modal('hide');
-
-                        // Tampilkan pesan sukses atau lakukan tindakan lain sesuai kebutuhan
-                        console.log(response);
-
-                        // Tutup modal setelah berhasil unpost
-                        $('#modal-posting-' + memoId).modal('hide');
-
-                        // Reload the page to refresh the table
-                        location.reload();
-                    },
-                    error: function(error) {
-                        // Sembunyikan modal loading setelah permintaan selesai
-                        $('#modal-loading').modal('hide');
-
-                        // Tampilkan pesan error atau lakukan tindakan lain sesuai kebutuhan
-                        console.log(error);
-                    }
-                });
-            });
-        });
-    </script>
-    {{-- posting memo --}}
-    <script>
-        $(document).ready(function() {
-            $('.posting-btn').click(function() {
-                var memoId = $(this).data('memo-id');
-
-                // Kirim permintaan AJAX untuk melakukan posting
-                $.ajax({
-                    url: "{{ url('admin/inquery_memoborong/postingmemoborong/') }}/" + memoId,
-                    type: 'GET',
-                    success: function(response) {
-                        // Periksa apakah ada pesan success dalam respons
-                        if (response.success) {
-                            // Tampilkan modal loading saat permintaan AJAX berhasil
-                            $('#modal-loading').modal('show');
-
-                            // Tutup modal setelah berhasil posting
-                            $('#modal-posting-' + memoId).modal('hide');
-
-                            // Muat ulang halaman untuk menyegarkan tabel
-                            location.reload();
-                        } else if (response.error) {
-                            // Tampilkan modal validasi gagal dengan pesan error
-                            $('#validationMessage').text(response.error);
-                            $('#validationModal').modal('show');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        // Tampilkan pesan error yang dihasilkan oleh AJAX
-                        alert("Terjadi kesalahan: " + xhr.responseText);
-                    },
-                    complete: function() {
-                        // Sembunyikan modal loading setelah permintaan AJAX selesai
-                        $('#modal-loading').modal('hide');
-                    }
-                });
-            });
-        });
-    </script>
-
-    <!-- /.card -->
-    <script>
-        var tanggalAwal = document.getElementById('tanggal_awal');
-        var tanggalAkhir = document.getElementById('tanggal_akhir');
-
-        if (tanggalAwal.value == "") {
-            tanggalAkhir.readOnly = true;
-        }
-
-        tanggalAwal.addEventListener('change', function() {
-            if (this.value == "") {
-                tanggalAkhir.readOnly = true;
-            } else {
-                tanggalAkhir.readOnly = false;
-            }
-
-            tanggalAkhir.value = "";
-            var today = new Date().toISOString().split('T')[0];
-            tanggalAkhir.value = today;
-            tanggalAkhir.setAttribute('min', this.value);
-        });
-
-        var form = document.getElementById('form-action');
-
-        function cari() {
-            form.action = "{{ url('admin/inquery_memoborong') }}";
-            form.submit();
-        }
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            // Detect the change event on the 'status' dropdown
-            $('#statusx').on('change', function() {
-                // Get the selected value
-                var selectedValue = $(this).val();
-
-                // Check the selected value and redirect accordingly
-                switch (selectedValue) {
-                    case 'memo_perjalanan':
-                        window.location.href = "{{ url('admin/inquery_memoekspedisi') }}";
-                        break;
-                    case 'memo_borong':
-                        window.location.href = "{{ url('admin/inquery_memoborong') }}";
-                        break;
-                    case 'memo_tambahan':
-                        window.location.href = "{{ url('admin/inquery_memotambahan') }}";
-                        break;
-                    default:
-                        // Handle other cases or do nothing
-                        break;
-                }
-            });
-        });
-    </script>
-
-
-    <script>
-        $(function(e) {
-            $("#select_all_ids").click(function() {
-                $('.checkbox_ids').prop('checked', $(this).prop('checked'))
-            })
-        });
-
-        function printSelectedData() {
-            var selectedIds = document.querySelectorAll(".checkbox_ids:checked");
-            if (selectedIds.length === 0) {
-                $('#validationMessage').text('Harap centang setidaknya satu item sebelum mencetak.');
-                $('#validationModal').modal('show');
-            } else {
-                var selectedCheckboxes = document.querySelectorAll('.checkbox_ids:checked');
-                var selectedIds = [];
-                selectedCheckboxes.forEach(function(checkbox) {
-                    selectedIds.push(checkbox.value);
-                });
-                document.getElementById('selectedIds').value = selectedIds.join(',');
-                var selectedIdsString = selectedIds.join(',');
-                window.location.href = "{{ url('admin/cetak_memoborongfilter') }}?ids=" + selectedIdsString;
-                // var url = "{{ url('admin/ban/cetak_pdffilter') }}?ids=" + selectedIdsString;
-            }
-        }
-    </script>
-
-    <script>
-        $(function(e) {
-            $("#select_all_ids").click(function() {
-                $('.checkbox_ids').prop('checked', $(this).prop('checked'))
-            })
-        });
-
-        function getTotalGrandTotal() {
-            var totalGrandTotal = 0;
-            var selectedCheckboxes = document.querySelectorAll('.checkbox_ids:checked');
-
-            selectedCheckboxes.forEach(function(checkbox) {
-                var grandTotal = parseFloat(checkbox.closest('tr').querySelector('td:nth-child(14)').textContent
-                    .replace(/\D/g, ''));
-                totalGrandTotal += grandTotal;
-            });
-
-            return totalGrandTotal;
-        }
-
-
-        function postingSelectedData() {
-            var totalGrandTotal = getTotalGrandTotal();
-            var saldoTerakhir = parseFloat("{{ $saldoTerakhir->sisa_saldo }}");
-
-            console.log(totalGrandTotal);
-
-            if (totalGrandTotal > saldoTerakhir) {
-                $('#validationMessage').text('Saldo tidak mencukupi untuk melakukan posting.');
-                $('#validationModal').modal('show');
-            } else {
-                var selectedCheckboxes = document.querySelectorAll('.checkbox_ids:checked');
-                if (selectedCheckboxes.length === 0) {
-                    $('#validationMessage').text('Harap centang setidaknya satu item sebelum posting.');
-                    $('#validationModal').modal('show');
-                } else {
-                    var selectedIds = [];
-                    selectedCheckboxes.forEach(function(checkbox) {
-                        selectedIds.push(checkbox.value);
-                    });
-                    document.getElementById('postingfilter').value = selectedIds.join(',');
-                    var selectedIdsString = selectedIds.join(',');
-
-                    // Tampilkan modal loading sebelum mengirim permintaan AJAX
-                    $('#modal-loading').modal('show');
-
-                    $.ajax({
-                        url: "{{ url('admin/postingmemoborongfilter') }}?ids=" + selectedIdsString,
-                        type: 'GET',
-                        success: function(response) {
-                            // Sembunyikan modal loading setelah permintaan selesai
-                            $('#modal-loading').modal('hide');
-
-                            // Tampilkan pesan sukses atau lakukan tindakan lain sesuai kebutuhan
-                            console.log(response);
-
-                            // Reload the page to refresh the table
-                            location.reload();
-                        },
-                        error: function(error) {
-                            // Sembunyikan modal loading setelah permintaan selesai
-                            $('#modal-loading').modal('hide');
-
-                            // Tampilkan pesan error atau lakukan tindakan lain sesuai kebutuhan
-                            console.log(error);
-                        }
-                    });
-                }
-            }
-        }
-    </script>
-
-    <script>
-        $(function(e) {
-            $("#select_all_ids").click(function() {
-                $('.checkbox_ids').prop('checked', $(this).prop('checked'))
-            })
-        });
-
-        function unpostSelectedData() {
-            var selectedIds = document.querySelectorAll(".checkbox_ids:checked");
-            if (selectedIds.length === 0) {
-                $('#validationMessage').text('Harap centang setidaknya satu item sebelum unpost.');
-                $('#validationModal').modal('show');
-            } else {
-                var selectedCheckboxes = document.querySelectorAll('.checkbox_ids:checked');
-                var selectedIds = [];
-                selectedCheckboxes.forEach(function(checkbox) {
-                    selectedIds.push(checkbox.value);
-                });
-                document.getElementById('unpostfilter').value = selectedIds.join(',');
-                var selectedIdsString = selectedIds.join(',');
-
-                // Tampilkan modal loading sebelum mengirim permintaan AJAX
-                $('#modal-loading').modal('show');
-
-                $.ajax({
-                    url: "{{ url('admin/unpostmemoborongfilter') }}?ids=" + selectedIdsString,
-                    type: 'GET',
-                    success: function(response) {
-                        // Sembunyikan modal loading setelah permintaan selesai
-                        $('#modal-loading').modal('hide');
-
-                        // Tampilkan pesan sukses atau lakukan tindakan lain sesuai kebutuhan
-                        console.log(response);
-
-                        // Reload the page to refresh the table
-                        location.reload();
-                    },
-                    error: function(error) {
-                        // Sembunyikan modal loading setelah permintaan selesai
-                        $('#modal-loading').modal('hide');
-
-                        // Tampilkan pesan error atau lakukan tindakan lain sesuai kebutuhan
-                        console.log(error);
-                    }
-                });
-            }
-        }
-    </script>
+        <table style="width: 100%;" cellpadding="2" cellspacing="0">
+            <tr>
+                <td class="td" style="text-align: center; padding: 0px; font-size: 15px;">No.</td>
+                <td class="td" style="text-align: center; padding: 0px; font-size: 15px;">Kode Rute</td>
+                <td class="td" style="text-align: center; padding: 0px; font-size: 15px;">Nama Rute</td>
+                <td class="td" style="text-align: center; padding: 0px; font-size: 15px;">harga</td>
+                <td class="td" style="text-align: right; padding: 0px; font-size: 15px;">Qty</td>
+                <td class="td" style="text-align: right; padding-right: 23px; font-size: 15px;">Total</td>
+            </tr>
+            <!-- Add horizontal line below this row -->
+            <tr>
+                <td colspan="6" style="padding: 0px;">
+                    <hr style="border-top: 1px solid black; margin: 5px 0;">
+                </td>
+            </tr>
+            @php
+                $totalRuteSum = 0;
+            @endphp
+            {{-- @foreach ($detail_memo as $item) --}}
+            <tr>
+                <td class="td" style="text-align: center; padding: 0px; font-size: 15px;">
+                    1
+                </td>
+                <td class="td" style="text-align: center; padding: 0px; font-size: 15px;">
+                    {{ $cetakpdf->kode_rute }}
+                </td>
+                <td class="td" style="text-align: center; padding: 0px; font-size: 15px;">
+                    {{ $cetakpdf->nama_rute }}</td>
+                <td class="td" style="text-align: center; padding: 0px; font-size: 15px;">
+                    {{ number_format($cetakpdf->harga_rute, 2, ',', '.') }}
+                </td>
+                <td class="td" style="text-align: right; padding: 2px; font-size: 15px;">
+                    {{ $cetakpdf->jumlah }}
+                </td>
+                <td class="td" style="text-align: right; padding-right: 23px; font-size: 15px;">
+                    {{ number_format($cetakpdf->totalrute, 2, ',', '.') }}
+                </td>
+            </tr>
+            {{-- @php
+                    $totalRuteSum += $item->totalrute;
+                @endphp --}}
+            {{-- @endforeach --}}
+            <tr>
+            </tr>
+        </table>
+        <td colspan="6" style="padding: 0px; position: relative;">
+            <hr
+                style="border-top: 1px solid black; margin: 3px 0; display: inline-block; width: calc(100% - 25px); vertical-align: middle;">
+            <span>
+                +
+            </span>
+        </td>
+        <table style="width: 100%; margin-bottom:0px;">
+            <tr>
+                <td style="width: 40%; text-align: left; padding-right: 20px;">
+                    <span class="info-item" style="font-size: 15px; display: block; word-wrap: break-word;">
+                        {{ $cetakpdf->keterangan }}
+                    </span>
+                </td>
+                <td style="text-align: right; padding: 0px;">
+                    <span class="info-item" style="font-size: 15px; padding-right:20px">
+                        {{ number_format($cetakpdf->totalrute, 2, ',', '.') }}
+                    </span>
+                </td>
+            </tr>
+        </table>
 
 
-    <script>
-        $(document).ready(function() {
-            $('tbody tr.dropdown').click(function(e) {
-                // Memeriksa apakah yang diklik adalah checkbox
-                if ($(e.target).is('input[type="checkbox"]')) {
-                    return; // Jika ya, hentikan eksekusi
-                }
+        <table style="width: 100%;" cellpadding="2" cellspacing="0">
+            <tr>
+                <td colspan="5" style="text-align: right; padding: 0px; font-size: 15px;">PPH 2 %</td>
+                <td class="td" style="text-align: right; padding-right: 20px; font-size: 15px;">
+                    {{ number_format($cetakpdf->pphs, 2, ',', '.') }}
 
-                // Menghapus kelas 'selected' dan mengembalikan warna latar belakang ke warna default dari semua baris
-                $('tr.dropdown').removeClass('selected').css('background-color', '');
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" style="padding: 0px;"></td>
+                <td style="padding: 0px;">
+                    <hr
+                        style="border-top: 1px solid black; margin: 3px 0; display: inline-block; width: calc(100% - 25px); vertical-align: middle;">
+                    <span>
+                        -
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" style="text-align: right; padding: 0px; font-size: 15px;"></td>
+                <td class="td" style="text-align: right; padding-right: 20px; font-size: 15px;">
+                    {{ number_format($cetakpdf->totalrute - $cetakpdf->pphs, 2, ',', '.') }}
 
-                // Menambahkan kelas 'selected' ke baris yang dipilih dan mengubah warna latar belakangnya
-                $(this).addClass('selected').css('background-color', '#b0b0b0');
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" style="text-align: right; padding: 0px; font-size: 15px;">Borong 50 %</td>
+                <td class="td" style="text-align: right; padding-right: 20px; font-size: 15px;">
+                    {{ number_format(($cetakpdf->totalrute - $cetakpdf->pphs) / 2, 2, ',', '.') }}
 
-                // Menyembunyikan dropdown pada baris lain yang tidak dipilih
-                $('tbody tr.dropdown').not(this).find('.dropdown-menu').hide();
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" style="text-align: right; padding: 0px; font-size: 15px;">Biaya Tambahan</td>
+                <td class="td" style="text-align: right; padding-right: 20px; font-size: 15px;">
+                    {{ number_format($cetakpdf->biaya_tambahan, 2, ',', '.') }}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" style="padding: 0px;"></td>
+                <td style="padding: 0px;">
+                    <hr
+                        style="border-top: 1px solid black; margin: 3px 0; display: inline-block; width: calc(100% - 25px); vertical-align: middle;">
+                    <span>
+                        +
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" style="text-align: right; padding: 0px; font-size: 15px; color:white">Sub Total
+                </td>
+                <td class="td" style="text-align: right; padding-right: 20px; font-size: 15px;">
+                    {{ number_format(($cetakpdf->totalrute - $cetakpdf->pphs) / 2 + $cetakpdf->biaya_tambahan, 2, ',', '.') }}
 
-                // Mencegah event klik menyebar ke atas (misalnya, saat mengklik dropdown)
-                e.stopPropagation();
-            });
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" style="text-align: right; padding-left: 78px; font-size: 15px;">Administrasi (1%)
+                </td>
+                <td class="td" style="text-align: right; padding-right: 20px; font-size: 15px;">
+                    {{ number_format($cetakpdf->uang_jaminans, 2, ',', '.') }}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" style="text-align: right; padding: 0px; font-size: 15px;">Deposit Supir</td>
+                <td class="td" style="text-align: right; padding-right: 20px; font-size: 15px;">
+                    {{ number_format($cetakpdf->deposit_driver, 2, ',', '.') }}
+                </td>
+            </tr>
+        </table>
+        <td colspan="5" style="padding: 0px;"></td>
+        <td style="padding: 0px;">
+            <hr
+                style="border-top: 1px solid black; margin: 3px 0; display: inline-block; width: calc(100% - 25px); vertical-align: middle;">
+            <span>
+                -
+            </span>
+        </td>
+        <table style="width: 100%;" cellpadding="2" cellspacing="0">
+            <tr>
+                <td class="td"
+                    style="text-align: left; padding: 0px; font-size: 15px; white-space: nowrap; width: 60%;">
+                    Saldo Deposit Sopir :
+                    {{ number_format($cetakpdf->saldo_deposit, 2, ',', '.') }}
+                </td>
+                <td class="td" style="text-align: center; padding-right: 250px; font-size: 15px; width: 35%;">
+                    Grand Total
+                </td>
+                <td class="td" style="text-align: right; padding-right: 20px; font-size: 15px;">
+                    {{ number_format($cetakpdf->sub_total, 2, ',', '.') }}
+                </td>
+            </tr>
+        </table>
+    @endif
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 
-            $('tbody tr.dropdown').contextmenu(function(e) {
-                // Memeriksa apakah baris ini memiliki kelas 'selected'
-                if ($(this).hasClass('selected')) {
-                    // Menampilkan dropdown saat klik kanan
-                    var dropdownMenu = $(this).find('.dropdown-menu');
-                    dropdownMenu.show();
+    <table class="tdd" cellpadding="10" cellspacing="0" style="margin: 0 auto;">
+        <tr>
+            <td style="text-align: center;">
+                <table style="margin: 0 auto;">
+                    <tr style="text-align: center;">
+                        <td class="label">
+                            {{ $cetakpdf->nama_driver }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="separator" colspan="2"><span></span></td>
+                    </tr>
+                    <tr style="text-align: center;">
+                        <td class="label">Sopir</td>
+                    </tr>
+                </table>
+            </td>
+            <td style="text-align: center;">
+                <table style="margin: 0 auto;">
+                    <tr style="text-align: center;">
+                        <td class="label">
+                            DJOHAN WAHYUDI
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="separator" colspan="2"><span></span></td>
+                    </tr>
+                    <tr style="text-align: center;">
+                        <td class="label">Finance</td>
+                    </tr>
+                </table>
+            </td>
+            <td style="text-align: center;">
+                <table style="margin: 0 auto;">
+                    <tr style="text-align: center;">
+                        <td class="label">
+                            {{-- @if ($cetakpdf->user)
+                                {{ $cetakpdf->user->karyawan->nama_lengkap }}
+                            @else
+                                user tidak ada
+                            @endif --}}
+                            {{ auth()->user()->karyawan->nama_lengkap }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="separator" colspan="2"><span></span></td>
+                    </tr>
+                    <tr style="text-align: center;">
+                        <td class="label">Admin</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <br>
+</body>
 
-                    // Mendapatkan posisi td yang diklik
-                    var clickedTd = $(e.target).closest('td');
-                    var tdPosition = clickedTd.position();
+<div class="container">
+    <a href="{{ url('admin/tablememo') }}" class="blue-button">Kembali</a>
+    <a href="{{ url('admin/memo_ekspedisi/cetak-pdf/' . $cetakpdf->id) }}" class="blue-button">Cetak</a>
+</div>
 
-                    // Menyusun posisi dropdown relatif terhadap td yang di klik
-                    dropdownMenu.css({
-                        'position': 'absolute',
-                        'top': tdPosition.top + clickedTd
-                            .height(), // Menempatkan dropdown sedikit di bawah td yang di klik
-                        'left': tdPosition
-                            .left // Menempatkan dropdown di sebelah kiri td yang di klik
-                    });
 
-                    // Mencegah event klik kanan menyebar ke atas (misalnya, saat mengklik dropdown)
-                    e.stopPropagation();
-                    e.preventDefault(); // Mencegah munculnya konteks menu bawaan browser
-                }
-            });
-
-            // Menyembunyikan dropdown saat klik di tempat lain
-            $(document).click(function() {
-                $('.dropdown-menu').hide();
-                $('tr.dropdown').removeClass('selected').css('background-color',
-                    ''); // Menghapus warna latar belakang dari semua baris saat menutup dropdown
-            });
-        });
-    </script>
-
-@endsection
+</html>
