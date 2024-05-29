@@ -275,7 +275,7 @@
                     </tr>
                 </table>
 
-                <div style=" margin-top:13px; margin-bottom:{{ $j % 2 != 0 && $j != 0 ? 100 : 23 }}px">
+                <div style=" margin-top:13px; margin-bottom:{{ $j % 2 != 0 && $j != 0 ? 50 : 0 }}px">
 
                     <table class="tdd" cellpadding="10" cellspacing="0" style="margin: 0 auto;">
                         <tr>
