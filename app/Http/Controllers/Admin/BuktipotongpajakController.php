@@ -30,10 +30,12 @@ class BuktipotongpajakController extends Controller
 
     public function create()
     {
-        $tagihanEkspedisis = Tagihan_ekspedisi::where(['kategori' => 'PPH', 'status' => 'posting', 'status_terpakai' => null])->get();
-        return view('admin.bukti_potongpajak.create', compact(
-            'tagihanEkspedisis'
-        ));
+        $tagihanEkspedisis = Tagihan_ekspedisi::where(function ($query) {
+            $query->where('status', 'posting')
+                ->orWhere('status', 'selesai');
+        })->where(['kategori' => 'PPH', 'status_terpakai' => null])->get();
+
+        return view('admin.bukti_potongpajak.create', compact('tagihanEkspedisis'));
     }
 
     public function store(Request $request)
@@ -157,11 +159,11 @@ class BuktipotongpajakController extends Controller
         $lastMonth = $lastBarang ? date('m', strtotime($lastBarang->created_at)) : null;
         $currentMonth = date('m');
         if (!$lastBarang || $currentMonth != $lastMonth) {
-            $num = 1; 
+            $num = 1;
         } else {
             $lastCode = $lastBarang->kode_bukti;
             $parts = explode('/', $lastCode);
-            $lastNum = end($parts); 
+            $lastNum = end($parts);
             $num = (int) $lastNum + 1;
         }
         $formattedNum = sprintf("%03s", $num);
@@ -197,5 +199,4 @@ class BuktipotongpajakController extends Controller
         $barang = Tagihan_ekspedisi::where('id', $id)->first();
         return $barang;
     }
-    
 }
