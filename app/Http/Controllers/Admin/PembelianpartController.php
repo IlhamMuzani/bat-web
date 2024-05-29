@@ -153,6 +153,7 @@ class PembelianpartController extends Controller
             for ($i = 0; $i < count($request->kategori); $i++) {
                 $validasi_produk = Validator::make($request->all(), [
                     'kategori.' . $i => 'required',
+                    'sparepart_id.' . $i => 'required',
                     'kode_partdetail.' . $i => 'required',
                     'nama_barang.' . $i => 'required',
                     'satuan.' . $i => 'required',
@@ -162,11 +163,12 @@ class PembelianpartController extends Controller
                 ]);
 
                 if ($validasi_produk->fails()) {
-                    array_push($error_pesanans, "Pembelian ban nomor " . $i + 1 . " belum dilengkapi!");
+                    array_push($error_pesanans, "Pembelian Part nomor " . $i + 1 . " belum dilengkapi!");
                 }
 
 
                 $kategori = is_null($request->kategori[$i]) ? '' : $request->kategori[$i];
+                $sparepart_id = is_null($request->sparepart_id[$i]) ? '' : $request->sparepart_id[$i];
                 $kode_partdetail = is_null($request->kode_partdetail[$i]) ? '' : $request->kode_partdetail[$i];
                 $nama_barang = is_null($request->nama_barang[$i]) ? '' : $request->nama_barang[$i];
                 $satuan = is_null($request->satuan[$i]) ? '' : $request->satuan[$i];
@@ -176,6 +178,7 @@ class PembelianpartController extends Controller
 
                 $data_pembelians->push([
                     'kategori' => $kategori,
+                    'sparepart_id' => $sparepart_id,
                     'kode_partdetail' => $kode_partdetail,
                     'nama_barang' => $nama_barang,
                     'satuan' => $satuan,
@@ -198,27 +201,14 @@ class PembelianpartController extends Controller
         // format tanggal indo
         $tanggal1 = Carbon::now('Asia/Jakarta');
         $format_tanggal = $tanggal1->format('d F Y');
+
         $tanggal = Carbon::now()->format('Y-m-d');
-
-        $grandTotal = 0;
-
-        // Loop melalui array harga dari permintaan
-        if ($request->has('harga')) {
-            foreach ($request->harga as $harga) {
-                // Ubah format harga (hapus titik sebagai pemisah ribuan)
-                $hargaNumeric = (float) str_replace('.', '', $harga);
-
-                // Tambahkan harga ke grand total
-                $grandTotal += $hargaNumeric;
-            }
-        }
         $transaksi = Pembelian_part::create([
             'user_id' => auth()->user()->id,
             'kode_pembelianpart' => $this->kode(),
             'supplier_id' => $request->supplier_id,
             'tanggal' => $format_tanggal,
             'tanggal_awal' => $tanggal,
-            'grand_total' => $grandTotal,
             'status' => 'posting',
             'status_notif' => false,
         ]);
@@ -227,55 +217,22 @@ class PembelianpartController extends Controller
 
         if ($transaksi) {
             foreach ($data_pembelians as $data_pesanan) {
-                if (array_key_exists('kode_partdetail', $data_pesanan)) {
-                    $kodePembelianPart = $data_pesanan['kode_partdetail'];
+                // Create a new Detailpembelian
+                Detail_pembelianpart::create([
+                    'pembelian_part_id' => $transaksi->id,
+                    'sparepart_id' => $data_pesanan['sparepart_id'],
+                    'tanggal_awal' => Carbon::now('Asia/Jakarta'),
+                    'kategori' => $data_pesanan['kategori'],
+                    'kode_partdetail' => $data_pesanan['kode_partdetail'],
+                    'nama_barang' => $data_pesanan['nama_barang'],
+                    'jumlah' => $data_pesanan['jumlah'],
+                    'satuan' => $data_pesanan['satuan'],
+                    'hargasatuan' => $data_pesanan['hargasatuan'],
+                    'harga' => $data_pesanan['harga'],
+                ]);
 
-                    $spareparts = Sparepart::where('kode_partdetail', $kodePembelianPart)->get();
-
-                    if ($spareparts->count() > 0) {
-                        foreach ($spareparts as $sparepart) {
-                            $jumlahLama = $sparepart->jumlah;
-
-                            $jumlahBaru = $data_pesanan['jumlah'];
-
-                            $jumlahTotal = $jumlahLama + $jumlahBaru;
-
-                            $sparepart->update([
-                                'pembelian_part_id' => $transaksi->id,
-                                'jumlah' => $jumlahTotal,
-                                'harga' => $data_pesanan['harga'],
-                            ]);
-                        }
-                    }
-                }
-            }
-        }
-
-
-        if ($transaksi) {
-            foreach ($data_pembelians as $data_pesanan) {
-                if (array_key_exists('kode_partdetail', $data_pesanan)) {
-                    $kodePembelianPart = $data_pesanan['kode_partdetail'];
-
-                    // Cari Sparepart yang memiliki kode_partdetail yang sesuai
-                    $sparepart = Sparepart::where('kode_partdetail', $kodePembelianPart)->first();
-
-                    if ($sparepart) {
-                        // Buat Detail_pembelianpart dan hubungkan dengan Sparepart yang sesuai
-                        Detail_pembelianpart::create([
-                            'pembelian_part_id' => $transaksi->id,
-                            'sparepart_id' => $sparepart->id, // Mengambil sparepart_id dari hasil pencarian di atas
-                            'tanggal_awal' => Carbon::now('Asia/Jakarta'),
-                            'kategori' => $data_pesanan['kategori'],
-                            'kode_partdetail' => $data_pesanan['kode_partdetail'],
-                            'nama_barang' => $data_pesanan['nama_barang'],
-                            'jumlah' => $data_pesanan['jumlah'],
-                            'satuan' => $data_pesanan['satuan'],
-                            'hargasatuan' => $data_pesanan['hargasatuan'],
-                            'harga' => $data_pesanan['harga'],
-                        ]);
-                    }
-                }
+                // Increment the quantity of the barang
+                Sparepart::where('id', $data_pesanan['sparepart_id'])->increment('jumlah', $data_pesanan['jumlah']);
             }
         }
 
@@ -286,39 +243,23 @@ class PembelianpartController extends Controller
         return view('admin.pembelian_part.show', compact('parts', 'pembelians'));
     }
 
-    // public function kode()
-    // {
-    //     $pembelian_part = Pembelian_part::all();
-    //     if ($pembelian_part->isEmpty()) {
-    //         $num = "000001";
-    //     } else {
-    //         $id = Pembelian_part::getId();
-    //         foreach ($id as $value);
-    //         $idlm = $value->id;
-    //         $idbr = $idlm + 1;
-    //         $num = sprintf("%06s", $idbr);
-    //     }
-
-    //     $data = 'FS';
-    //     $kode_pembelian_part = $data . $num;
-    //     return $kode_pembelian_part;
-    // }
-
     public function kode()
     {
-        $lastBarang = Pembelian_part::latest()->first();
-        if (!$lastBarang) {
-            $num = 1;
+        $pembelian_part = Pembelian_part::all();
+        if ($pembelian_part->isEmpty()) {
+            $num = "000001";
         } else {
-            $lastCode = $lastBarang->kode_pembelianpart;
-            $num = (int) substr($lastCode, strlen('FS')) + 1;
+            $id = Pembelian_part::getId();
+            foreach ($id as $value);
+            $idlm = $value->id;
+            $idbr = $idlm + 1;
+            $num = sprintf("%06s", $idbr);
         }
-        $formattedNum = sprintf("%06s", $num);
-        $prefix = 'FS';
-        $newCode = $prefix . $formattedNum;
-        return $newCode;
-    }
 
+        $data = 'FS';
+        $kode_pembelian_part = $data . $num;
+        return $kode_pembelian_part;
+    }
 
     public function tambah_sparepart(Request $request)
     {
