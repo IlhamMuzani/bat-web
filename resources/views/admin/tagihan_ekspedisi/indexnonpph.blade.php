@@ -75,9 +75,9 @@
                             <label style="font-size:14px" class="form-label" for="kategori">Pilih Kategori</label>
                             <select style="font-size:14px" class="form-control" id="kategori" name="kategori">
                                 <option value="">- Pilih -</option>
-                                <option value="PPH" {{ old('kategori') == 'PPH' ? 'selected' : null }} selected>
+                                <option value="PPH" {{ old('kategori') == 'PPH' ? 'selected' : null }}>
                                     PPH</option>
-                                <option value="NON PPH" {{ old('kategori') == 'NON PPH' ? 'selected' : null }}>
+                                <option value="NON PPH" {{ old('kategori') == 'NON PPH' ? 'selected' : null }} selected>
                                     NON PPH</option>
                             </select>
                         </div>

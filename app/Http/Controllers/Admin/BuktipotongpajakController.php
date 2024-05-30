@@ -79,7 +79,7 @@ class BuktipotongpajakController extends Controller
                     'tanggal' => $barang->tanggal,
                     'nama_pelanggan' => $barang->nama_pelanggan,
                     'pph' => $barang->pph,
-                    'total' => $barang->grand_total,
+                    'total' => $barang->sub_total,
                 ]);
             }
         }
@@ -122,7 +122,7 @@ class BuktipotongpajakController extends Controller
                     'tanggal' => $barang->tanggal,
                     'nama_pelanggan' => $barang->nama_pelanggan,
                     'pph' => $barang->pph,
-                    'total' => $barang->grand_total,
+                    'total' => $barang->sub_total,
                 ]);
                 Tagihan_ekspedisi::where('id', $detailBukti->tagihan_ekspedisi_id)->update(['status_terpakai' => 'digunakan']);
             }
@@ -181,6 +181,14 @@ class BuktipotongpajakController extends Controller
         $pemasukan->delete();
 
         return redirect('admin/pemasukan')->with('success', 'Berhasil menghapus pemasukan');
+    }
+
+    public function show($id)
+    {
+        $cetakpdf = Bukti_potongpajak::where('id', $id)->first();
+        $details = Detail_bukti::where('bukti_potongpajak_id', $id)->get();
+
+        return view('admin.bukti_potongpajak.show', compact('cetakpdf', 'details'));
     }
 
     public function cetakpdf($id)

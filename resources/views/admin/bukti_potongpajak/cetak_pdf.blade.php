@@ -114,7 +114,7 @@
         <br>
         <br>
     </div>
-    <table style="border-top: 1px solid black; margin:0;" cellpadding="2" cellspacing="0">
+    <table cellpadding="2" cellspacing="0">
         <tr>
             <td class="text-align: left" style="font-size: 13px; display: block;">Kode Bukti</td>
             <td style="text-align: left; font-size: 13px;">
@@ -157,12 +157,12 @@
                 Tanggal</td>
             <td class="td" style="text-align: left; padding: 0px; font-size: 13px;  font-weight:bold; ">
                 Nama Pelanggan</td>
-            <td class="td" style="text-align: right; font-size: 13px;  font-weight:bold;">Pph</td>
+            {{-- <td class="td" style="text-align: right; font-size: 13px;  font-weight:bold;">Pph</td> --}}
             <td class="td" style="text-align: right; font-size: 13px;  font-weight:bold;">Total</td>
         </tr>
         <!-- Add horizontal line below this row -->
         <tr>
-            <td colspan="6" style="padding: 0px;">
+            <td colspan="5" style="padding: 0px;">
                 <hr style="border: 0.5px solid; margin-top:3px; margin-bottom: 1px; padding: 0;">
                 <hr style="border: 0.5px solid; margin-top:1px; margin-bottom: 1px; padding: 0;">
             </td>
@@ -184,9 +184,9 @@
                 <td class="td" style="text-align: left; padding: 0px; font-size: 13px;">
                     {{ $item->nama_pelanggan }}
                 </td>
-                <td class="td" style="text-align: right; font-size: 13px;">
+                {{-- <td class="td" style="text-align: right; font-size: 13px;">
                     {{ number_format($item->pph, 2, ',', '.') }}
-                </td>
+                </td> --}}
                 <td class="td" style="text-align: right; font-size: 13px;">
                     {{ number_format($item->total, 2, ',', '.') }}
                 </td>
@@ -241,6 +241,49 @@
             </td>
         </tr>
 
+        <tr>
+            <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">
+
+            </td>
+            <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">
+
+            </td>
+            <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">
+
+            </td>
+            <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">
+
+            </td>
+            <td class="td" style="text-align: right; padding: 2px; font-size: 13px;">
+                Dasar Pengenaan Pajak (DPP) :
+            </td>
+            <td class="td" style="text-align: right; font-size: 13px;  font-weight:bold">
+                {{ number_format($totalRuteSum, 2, ',', '.') }}
+            </td>
+        </tr>
+
+        <tr>
+            <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">
+
+            </td>
+            <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">
+
+            </td>
+            <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">
+
+            </td>
+            <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">
+
+            </td>
+            <td class="td" style="text-align: right; padding: 2px; font-size: 13px;">
+                PPH23 = 2% * Dasar Pengenaan Pajak :
+            </td>
+            <td class="td" style="text-align: right; font-size: 13px;  font-weight:bold">
+                {{ number_format($totalRuteSum * 0.02, 2, ',', '.') }}
+            </td>
+        </tr>
+
+        <br>
 
         </tr>
         <tr style="border-bottom: 1px solid black;">
@@ -263,7 +306,7 @@
                 Grand Total :
             </td>
             <td class="td" style="text-align: right; font-size: 13px; font-weight:bold">
-                {{ number_format($totalRuteSum, 2, ',', '.') }}
+                {{ number_format($totalRuteSum - $totalRuteSum * 0.02, 2, ',', '.') }}
 
             </td>
         </tr>

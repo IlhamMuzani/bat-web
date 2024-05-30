@@ -388,6 +388,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('cetak_depositdriver', [\App\Http\Controllers\Admin\LaporanDepositdriverController::class, 'cetak_depositdriver']);
     Route::get('kasbon_karyawan/cetak-pdf/{id}', [\App\Http\Controllers\Admin\KasbonkaryawanController::class, 'cetakpdf']);
     Route::get('print_buktipotongpajak', [\App\Http\Controllers\Admin\LaporanBuktipotongpajakController::class, 'print_buktipotongpajak']);
+    Route::get('indexnon', [\App\Http\Controllers\Admin\TagihanekspedisiController::class, 'indexnonpph']);
 
     Route::get('postingtagihan/{id}', [\App\Http\Controllers\Admin\InqueryTagihanekspedisiController::class, 'postingtagihan'])->name('postingtagihan');
     Route::get('unposttagihan/{id}', [\App\Http\Controllers\Admin\InqueryTagihanekspedisiController::class, 'unposttagihan'])->name('unposttagihan');

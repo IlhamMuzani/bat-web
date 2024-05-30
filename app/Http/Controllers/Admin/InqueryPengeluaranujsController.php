@@ -116,7 +116,7 @@ class InqueryPengeluaranujsController extends Controller
             'keterangan' => $request->keterangan,
             'saldo_masuk' => $request->saldo_masuk,
             'grand_total' => $cleanedSubTotal,
-            'status' => 'posting',
+            'status' => 'unpost',
         ]);
 
         Total_ujs::create([

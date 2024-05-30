@@ -45,6 +45,9 @@ class PengambilanujsController extends Controller
         $subTotalInput = $request->input('grand_total');
         $cleanedSubTotal = (int) str_replace(['Rp', '.'], '', $subTotalInput);
 
+        // Ubah koma menjadi titik
+        $cleanedSubTotal = str_replace(',', '.', $cleanedSubTotal);
+
         $saldoTerakhir = Total_ujs::latest()->first();
         $saldo = $saldoTerakhir->id;
         $tanggal1 = Carbon::now('Asia/Jakarta');
@@ -59,7 +62,7 @@ class PengambilanujsController extends Controller
                 'total_ujs_id' => $saldo,
                 'nominal' => $request->nominal ? str_replace('.', '', $request->nominal) : null,
                 'grand_total' => $cleanedSubTotal,
-                'qr_code_pengeluran' => 'https:///javaline.id/pengambilanujs/' . $kode,
+                'qr_code_pengeluran' => 'https:///batlink.id/pengambilanujs/' . $kode,
                 'tanggaljam' => Carbon::now('Asia/Jakarta'),
                 'jam' => $tanggal1->format('H:i:s'),
                 'tanggal' =>  $format_tanggal,
@@ -79,7 +82,7 @@ class PengambilanujsController extends Controller
             'jam' => $tanggal1->format('H:i:s'),
             'tanggal' => Carbon::now('Asia/Jakarta'),
             'sisa_ujs' => $cleanedSubTotal,
-            'status' => 'saldo masuk',
+            'status' => 'saldo keluar',
         ]);
 
         $cetakpdf = Pengeluaran_ujs::find($penerimaans);

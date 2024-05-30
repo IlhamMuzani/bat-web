@@ -24,6 +24,15 @@ class TagihanekspedisiController extends Controller
         return view('admin.tagihan_ekspedisi.index', compact('fakturs', 'tarifs'));
     }
 
+    public function indexnonpph()
+    {
+        // $pelanggans = Pelanggan::all();
+        $fakturs = Faktur_ekspedisi::where(['status_tagihan' => null, 'status' => 'posting', 'kategori' => 'NON PPH'])->get();
+        $tarifs = Tarif::all();
+
+        return view('admin.tagihan_ekspedisi.indexnonpph', compact('fakturs', 'tarifs'));
+    }
+
     public function store(Request $request)
     {
         $validasi_pelanggan = Validator::make(
