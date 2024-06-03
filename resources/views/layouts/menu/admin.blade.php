@@ -671,7 +671,7 @@
                 <a href="{{ url('admin/buktipotong') }}"
                     class="nav-link {{ request()->is('admin/buktipotong*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
-                    <p style="font-size: 14px;">Bukti Potong</p>
+                    <p style="font-size: 14px;">Bukti Potong Pajak</p>
                 </a>
             </li>
         @endif

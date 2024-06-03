@@ -119,7 +119,7 @@
                     {{-- <button type="button" class="btn btn-secondary btn-sm" onclick="geserTabelKeKanan()">
                         <i class="fas fa-arrow-right"></i>
                     </button> --}}
-                    <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search..">
+                    <input type="text" id="searchInputgaji" onkeyup="searchTable()" placeholder="Search..">
                     <div class="table-responsive">
                         <!-- Hapus class "overflow-x-auto" -->
                         <table class="table table-bordered table-striped">
@@ -1127,7 +1127,7 @@
         function searchTable() {
             // Declare variables
             var input, filter, table, tr, td, i, j, txtValue;
-            input = document.getElementById("searchInput");
+            input = document.getElementById("searchInputgaji");
             filter = input.value.toLowerCase();
             table = document.querySelector(".table.table-bordered.table-striped");
             tr = table.getElementsByTagName("tr");
