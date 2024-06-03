@@ -68,6 +68,10 @@
         request()->is('admin/indexnon*') ||
         request()->is('admin/inquery_buktipotongpajak*') ||
         request()->is('admin/bukti_potongpajak*') ||
+        request()->is('admin/perhitungan_gaji*') ||
+        request()->is('admin/perhitungan_gajibulanan*') ||
+        request()->is('admin/inquery_perhitungangaji*') ||
+        request()->is('admin/inquery_perhitungangajibulanan*') ||
         request()->is('admin/laporan_memotambahan*')) sidebar-open sidebar-collapse @endif">
     <div class="wrapper">
 

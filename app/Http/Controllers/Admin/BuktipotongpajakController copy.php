@@ -15,16 +15,27 @@ class BuktipotongpajakController extends Controller
 {
     public function index()
     {
-        $buktipotongpajaks = Bukti_potongpajak::get();
+        $today = Carbon::today();
+
+        $buktipotongpajaks = Bukti_potongpajak::whereDate('created_at', $today)
+            ->orWhere(function ($query) use ($today) {
+                $query->where('status', 'unpost')
+                    ->whereDate('created_at', '<', $today);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         return view('admin.bukti_potongpajak.index', compact('buktipotongpajaks'));
     }
 
     public function create()
     {
-        $tagihanEkspedisis = Tagihan_ekspedisi::where(['status' => 'posting', 'status_terpakai' => null])->get();
-        return view('admin.bukti_potongpajak.create', compact(
-            'tagihanEkspedisis'
-        ));
+        $tagihanEkspedisis = Tagihan_ekspedisi::where(function ($query) {
+            $query->where('status', 'posting')
+                ->orWhere('status', 'selesai');
+        })->where(['kategori' => 'PPH', 'status_terpakai' => null])->get();
+
+        return view('admin.bukti_potongpajak.create', compact('tagihanEkspedisis'));
     }
 
     public function store(Request $request)
@@ -52,33 +63,23 @@ class BuktipotongpajakController extends Controller
         $error_pesanans = array();
         $data_pembelians = collect();
 
-        if ($request->has('tagihan_ekspedisi_id') || $request->has('kode_tagihan') || $request->has('tanggal') || $request->has('nama_pelanggan') || $request->has('total')) {
-            for ($i = 0; $i < count($request->tagihan_ekspedisi_id); $i++) {
-                // Check if either 'keterangan_tambahan' or 'nominal_tambahan' has input
-                if (empty($request->tagihan_ekspedisi_id[$i]) && empty($request->kode_tagihan[$i]) && empty($request->tanggal[$i]) && empty($request->nama_pelanggan[$i]) && empty($request->total[$i])) {
-                    continue; // Skip validation if both are empty
+        if ($request->has('id')) {
+            foreach ($request->id as $key => $id) {
+                $validator_produk = Validator::make($request->all(), []);
+
+                if ($validator_produk->fails()) {
+                    $error_pesanans[] = "Invoice nomor " . ($key + 1) . " belum dilengkapi!";
                 }
 
-                $validasi_produk = Validator::make($request->all(), [
-                    'tagihan_ekspedisi_id.' . $i => 'required',
-                ]);
-
-                if ($validasi_produk->fails()) {
-                    array_push($error_pesanans, "Invoice nomor " . ($i + 1) . " belum dilengkapi!");
-                }
-
-                $tagihan_ekspedisi_id = $request->tagihan_ekspedisi_id[$i] ?? '';
-                $kode_tagihan = $request->kode_tagihan[$i] ?? '';
-                $tanggal = $request->tanggal[$i] ?? '';
-                $nama_pelanggan = $request->nama_pelanggan[$i] ?? '';
-                $total = $request->total[$i] ?? '';
+                $barang = Tagihan_ekspedisi::where('id', $id)->first();
 
                 $data_pembelians->push([
-                    'tagihan_ekspedisi_id' => $tagihan_ekspedisi_id,
-                    'kode_tagihan' => $kode_tagihan,
-                    'tanggal' => $tanggal,
-                    'nama_pelanggan' => $nama_pelanggan,
-                    'total' => $total
+                    'id' => $id,
+                    'kode_tagihan' => $barang->kode_tagihan,
+                    'tanggal' => $barang->tanggal,
+                    'nama_pelanggan' => $barang->nama_pelanggan,
+                    'pph' => $barang->pph,
+                    'total' => $barang->sub_total,
                 ]);
             }
         }
@@ -98,174 +99,79 @@ class BuktipotongpajakController extends Controller
         $format_tanggal = $tanggal1->format('d F Y');
         $tanggal = Carbon::now()->format('Y-m-d');
 
-        $pemasukan = Bukti_potongpajak::create([
+        $cetakpdf = Bukti_potongpajak::create([
             'user_id' => auth()->user()->id,
             'kategori' => $request->kategori,
             'kategoris' => $request->kategoris,
             'nomor_faktur' => $request->nomor_faktur,
-            'tanggal' => $request->tanggal,
-            'grand_total' =>  str_replace('.', '', $request->grand_total),
+            'periode_awal' => $request->periode_awal,
+            'grand_total' => str_replace(',', '.', str_replace('.', '', $request->grand_total)),
             'kode_bukti' => $kode,
             'tanggal' => $format_tanggal,
             'tanggal_awal' => $tanggal,
             'status' => 'posting',
         ]);
 
-        if ($pemasukan) {
+        if ($cetakpdf) {
             foreach ($data_pembelians as $data_pesanan) {
-                Detail_bukti::create([
-                    'bukti_potongpajak_id' => $pemasukan->id,
-                    'tagihan_ekspedisi_id' => $data_pesanan['tagihan_ekspedisi_id'],
-                    'kode_tagihan' => $data_pesanan['kode_tagihan'],
-                    'tanggal' => $data_pesanan['tanggal'],
-                    'nama_pelanggan' => $data_pesanan['nama_pelanggan'],
-                    'total' => $data_pesanan['total'],
+                $barang = Tagihan_ekspedisi::where('id', $data_pesanan['id'])->first();
+                $detailBukti = Detail_bukti::create([
+                    'bukti_potongpajak_id' => $cetakpdf->id,
+                    'tagihan_ekspedisi_id' => $barang->id,
+                    'kode_tagihan' => $barang->kode_tagihan,
+                    'tanggal' => $barang->tanggal,
+                    'nama_pelanggan' => $barang->nama_pelanggan,
+                    'pph' => $barang->pph,
+                    'total' => $barang->sub_total,
                 ]);
+                Tagihan_ekspedisi::where('id', $detailBukti->tagihan_ekspedisi_id)->update(['status_terpakai' => 'digunakan']);
             }
         }
 
-        return redirect('admin/bukti_potongpajak')->with('success', 'Berhasil menambah pemasukan');
+        $details = Detail_bukti::where('bukti_potongpajak_id', $cetakpdf->id)->get();
+
+        return view('admin.bukti_potongpajak.show', compact('cetakpdf', 'details'));
     }
 
-    public function edit($id)
-    {
-        $pemasukan = Bukti_potongpajak::where('id', $id)->first();
-        $details = Detail_bukti::where('pemasukan_id', $id)
-            ->select(
-                'id as detail_id',
-                'barang_id as id',
-                'nama_barang',
-                'harga_pcs',
-                'harga_dus',
-                'harga_renceng',
-                'harga_pack',
-                'satuan',
-                'jumlah',
-                'total',
-            )
-            ->get();
-        $detail_id_data = Detail_bukti::where('pemasukan_id', $id)->pluck('id', 'barang_id')->toArray();
-        $barangs = Tagihan_ekspedisi::get();
+    // public function kode()
+    // {
+    //     $item = Bukti_potongpajak::all();
+    //     if ($item->isEmpty()) {
+    //         $num = "000001";
+    //     } else {
+    //         $id = Bukti_potongpajak::getId();
+    //         foreach ($id as $value);
+    //         $idlm = $value->id;
+    //         $idbr = $idlm + 1;
+    //         $num = sprintf("%06s", $idbr);
+    //     }
+    //     $tahun = date('y');
+    //     $data = 'BPP';
+    //     $tanggal = date('dm');
+    //     $kode_item = $data . "/" . $tanggal . $tahun . "/" . $num;
 
-        return view('admin.pemasukan.update', compact('details', 'detail_id_data', 'pemasukan', 'barangs'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $validasi_pelanggan = Validator::make($request->all(), [
-            'supplier_id' => 'required',
-            'user_id' => 'required',
-        ], [
-            'supplier_id.required' => 'Pilih nama supplier!',
-            'user_id.required' => 'Pilih nama sales!',
-        ]);
-
-        $error_pelanggans = array();
-        $error_pesanans = array();
-        $data_pembelians = collect();
-
-        if ($validasi_pelanggan->fails()) {
-            array_push($error_pelanggans, $validasi_pelanggan->errors()->all()[0]);
-        }
-
-        if ($request->has('id')) {
-            foreach ($request->id as $key => $barang_id) {
-                $validator_produk = Validator::make($request->all(), [
-                    'harga.' . $barang_id => 'required',
-                    'jumlah.' . $barang_id => 'required',
-                ]);
-
-                if ($validator_produk->fails()) {
-                    $error_pesanans[] = "Tagihan_ekspedisi nomor " . ($key + 1) . " belum dilengkapi!";
-                }
-
-                $harga = $request->harga[$barang_id] ?? '';
-                $satuan = $request->satuan[$barang_id] ?? '';
-                $jumlah = $request->jumlah[$barang_id] ?? '';
-                $total = $request->total[$barang_id] ?? '';
-
-                $barang = Tagihan_ekspedisi::where('id', $barang_id)->first();
-
-                $data_pembelians->push([
-                    'id' => $barang_id,
-                    'nama_barang' => $barang->nama_barang,
-                    'harga_pcs' => $barang->harga_pcs,
-                    'harga_dus' => $barang->harga_dus,
-                    'harga_renceng' => $barang->harga_renceng,
-                    'harga_pack' => $barang->harga_pack,
-                    'harga' => $harga,
-                    'satuan' => $satuan,
-                    'jumlah' => $jumlah,
-                    'total' => $total,
-                ]);
-            }
-        }
-
-        if ($validasi_pelanggan->fails() || $error_pesanans) {
-            return back()
-                ->withInput()
-                ->with('error_pelanggans', $error_pelanggans)
-                ->with('error_pesanans', $error_pesanans)
-                ->with('data_pembelians', $data_pembelians);
-        }
-
-        Bukti_potongpajak::where('id', $id)->update([
-            'grand_total' => $request->grand_total
-        ]);
-
-        foreach ($request->id as $barang_id) {
-            $detail = Detail_bukti::where([
-                ['pemasukan_id', $id],
-                ['barang_id', $barang_id]
-            ])->exists();
-            if ($detail) {
-                Detail_bukti::where([
-                    ['pemasukan_id', $id],
-                    ['barang_id', $barang_id]
-                ])->update([
-                    'satuan' => $request->satuan[$barang_id],
-                    'jumlah' => $request->jumlah[$barang_id],
-                    'total' => $request->total[$barang_id]
-                ]);
-            } else {
-                $barang = Tagihan_ekspedisi::where('id', $barang_id)->first();
-                Detail_bukti::create([
-                    'pemasukan_id' => $id,
-                    'barang_id' => $barang->id,
-                    'kode_barang' => $barang->kode_barang,
-                    'nama_barang' => $barang->nama_barang,
-                    'harga_pcs' => $barang->harga_pcs,
-                    'harga_dus' => $barang->harga_dus,
-                    'harga_renceng' => $barang->harga_renceng,
-                    'harga_pack' => $barang->harga_pack,
-                    'satuan' => $request->satuan[$barang_id],
-                    'jumlah' => $request->jumlah[$barang_id],
-                    'total' => $request->total[$barang_id],
-                ]);
-            }
-        }
-
-        return redirect('admin/pemasukan')->with('success', 'Berhasil memperbarui pemasukan');
-    }
+    //     return $kode_item;
+    // }
 
     public function kode()
     {
-        $item = Bukti_potongpajak::all();
-        if ($item->isEmpty()) {
-            $num = "000001";
+        $lastBarang = Bukti_potongpajak::where('kode_bukti', 'like', 'BPP%')->latest()->first();
+        $lastMonth = $lastBarang ? date('m', strtotime($lastBarang->created_at)) : null;
+        $currentMonth = date('m');
+        if (!$lastBarang || $currentMonth != $lastMonth) {
+            $num = 1;
         } else {
-            $id = Bukti_potongpajak::getId();
-            foreach ($id as $value);
-            $idlm = $value->id;
-            $idbr = $idlm + 1;
-            $num = sprintf("%06s", $idbr);
+            $lastCode = $lastBarang->kode_bukti;
+            $parts = explode('/', $lastCode);
+            $lastNum = end($parts);
+            $num = (int) $lastNum + 1;
         }
+        $formattedNum = sprintf("%03s", $num);
+        $prefix = 'BPP';
         $tahun = date('y');
-        $data = 'AP';
         $tanggal = date('dm');
-        $kode_item = $data . "/" . $tanggal . $tahun . "/" . $num;
-
-        return $kode_item;
+        $newCode = $prefix . "/" . $tanggal . $tahun . "/" . $formattedNum;
+        return $newCode;
     }
 
     public function destroy($id)
@@ -277,15 +183,23 @@ class BuktipotongpajakController extends Controller
         return redirect('admin/pemasukan')->with('success', 'Berhasil menghapus pemasukan');
     }
 
+    public function show($id)
+    {
+        $cetakpdf = Bukti_potongpajak::where('id', $id)->first();
+        $details = Detail_bukti::where('bukti_potongpajak_id', $id)->get();
+
+        return view('admin.bukti_potongpajak.show', compact('cetakpdf', 'details'));
+    }
+
     public function cetakpdf($id)
     {
-        $pemasukan = Bukti_potongpajak::find($id);
-        $details = Detail_bukti::where('pemasukan_id', $pemasukan->id)->get();
+        $cetakpdf = Bukti_potongpajak::find($id);
+        $details = Detail_bukti::where('bukti_potongpajak_id', $cetakpdf->id)->get();
 
-        $pdf = PDF::loadView('admin.pemasukan.cetak_pdf', compact('details', 'pemasukan'));
+        $pdf = PDF::loadView('admin.bukti_potongpajak.cetak_pdf', compact('details', 'cetakpdf'));
         $pdf->setPaper('letter', 'portrait');
 
-        return $pdf->stream('Pemasukan_barang.pdf');
+        return $pdf->stream('Bukti_Potong_pajak.pdf');
     }
 
     public function get_item($id)
@@ -293,14 +207,4 @@ class BuktipotongpajakController extends Controller
         $barang = Tagihan_ekspedisi::where('id', $id)->first();
         return $barang;
     }
-
-    // public function delete_item($id)
-    // {
-    //     $detail = Detail_bukti::where('id', $id);
-    //     if ($detail->exists()) {
-    //         $detail->delete();
-    //     }
-
-    //     return true;
-    // }
 }

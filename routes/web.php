@@ -340,7 +340,8 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('pengambilan_ujs/cetak-pdf/{id}', [\App\Http\Controllers\Admin\PengambilanujsController::class, 'cetakpdf']);
     Route::delete('inquery_kasbonkaryawan/deletedetailcicilan/{id}', [\App\Http\Controllers\Admin\InqueryKasbonkaryawanController::class, 'deletedetailcicilan']);
 
-    Route::get('bukti_potongpajak/cetak-pdf/{id}', [\App\Http\Controllers\Admin\BuktipotongpajakController::class, 'cetakpdf']);
+    // Route::get('bukti_potongpajak/cetak-pdf/{id}', [\App\Http\Controllers\Admin\BuktipotongpajakController::class, 'cetakpdf']);
+    Route::get('bukti_potongpajak/cetak-pdf/{id}', [\App\Http\Controllers\Admin\BuktipotongController::class, 'cetakpdf']);
 
     Route::get('penerimaan_kaskecil/cetak-pdf/{id}', [\App\Http\Controllers\Admin\PenerimaankaskecilController::class, 'cetakpdf']);
     Route::get('laporan_penerimaankaskecil', [\App\Http\Controllers\Admin\LaporanPenerimaankaskecilController::class, 'index']);
@@ -391,6 +392,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('indexnon', [\App\Http\Controllers\Admin\TagihanekspedisiController::class, 'indexnonpph']);
     Route::get('inquery_tagihanekspedisi/editnonpph/{id}', [\App\Http\Controllers\Admin\InqueryTagihanekspedisiController::class, 'editnonpph']);
 
+    
     Route::get('postingtagihan/{id}', [\App\Http\Controllers\Admin\InqueryTagihanekspedisiController::class, 'postingtagihan'])->name('postingtagihan');
     Route::get('unposttagihan/{id}', [\App\Http\Controllers\Admin\InqueryTagihanekspedisiController::class, 'unposttagihan'])->name('unposttagihan');
     Route::get('inquery_tagihanekspedisi/unposttagihan/{id}', [\App\Http\Controllers\Admin\InqueryTagihanekspedisiController::class, 'unposttagihan']);
@@ -402,6 +404,9 @@ Route::middleware('admin')->prefix('admin')->group(function () {
 
     Route::get('laporan_pengeluaranujs', [\App\Http\Controllers\Admin\LaporanPengambilanujsController::class, 'index']);
     Route::get('print_pengeluaranujs', [\App\Http\Controllers\Admin\LaporanPengambilanujsController::class, 'print_pengeluaranujs']);
+
+    Route::resource('buktipotong', \App\Http\Controllers\Admin\BuktipotongController::class);
+    Route::post('updatebuktitagihan/{id}', [\App\Http\Controllers\Admin\BuktipotongController::class, 'updatebuktitagihan'])->name('updatebuktitagihan');
 
     // Route::get('unpostfakturselesai/{id}', [\App\Http\Controllers\Admin\InqueryFakturekspedisiController::class, 'unpostfakturselesai'])->name('unpostfakturselesai');
     Route::get('unpostfaktur/{id}', [\App\Http\Controllers\Admin\InqueryFakturekspedisiController::class, 'unpostfaktur'])->name('unpostfaktur');
@@ -659,7 +664,8 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::resource('inquery_penambahansaldokasbon', \App\Http\Controllers\Admin\InqueryPenambahansaldokasbonController::class);
     Route::resource('klaim_ban', \App\Http\Controllers\Admin\KlaimbanController::class);
     Route::resource('inqueryklaim_ban', \App\Http\Controllers\Admin\InqueryKlaimbanController::class);
-    Route::resource('bukti_potongpajak', \App\Http\Controllers\Admin\BuktipotongpajakController::class);
+    Route::resource('bukti_potongpajak', \App\Http\Controllers\Admin\BuktipotongController::class);
+    // Route::resource('bukti_potongpajak', \App\Http\Controllers\Admin\BuktipotongpajakController::class);
     Route::resource('inquery_buktipotongpajak', \App\Http\Controllers\Admin\InqueryBuktipotongpajakController::class);
     Route::resource('laporan_buktipotongpajak', \App\Http\Controllers\Admin\LaporanBuktipotongpajakController::class);
 });

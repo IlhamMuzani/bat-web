@@ -486,6 +486,7 @@
     request()->is('admin/pilih_deposit*') ||
     request()->is('admin/klaim_ban*') ||
     request()->is('admin/indexnon*') ||
+    request()->is('admin/buktipotong*') ||
     request()->is('admin/pembelian_part*')
         ? 'menu-open'
         : '' }}">
@@ -511,6 +512,7 @@
         request()->is('admin/pilih_deposit*') ||
         request()->is('admin/klaim_ban*') ||
         request()->is('admin/indexnon*') ||
+        request()->is('admin/buktipotong*') ||
         request()->is('admin/pembelian_part*')
             ? 'active'
             : '' }}">
@@ -664,6 +666,15 @@
                 </a>
             </li>
         @endif
+        @if (auth()->check() && auth()->user()->menu['faktur pelunasan ekspedisi'])
+            <li class="nav-item">
+                <a href="{{ url('admin/buktipotong') }}"
+                    class="nav-link {{ request()->is('admin/buktipotong*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 14px;">Bukti Potong</p>
+                </a>
+            </li>
+        @endif
         @if (auth()->check() && auth()->user()->menu['pengambilan kas kecil'])
             <li class="nav-item">
                 <a href="{{ url('admin/tablepengeluaran') }}"
@@ -705,8 +716,8 @@
     request()->is('admin/inquery_penerimaankaskecil*') ||
     request()->is('admin/inquery_potonganpenjualan*') ||
     request()->is('admin/inqueryklaim_ban*') ||
-    request()->is('admin/bukti_potongpajak*') ||
-    request()->is('admin/inquery_buktipotongpajak*') ||
+    // request()->is('admin/bukti_potongpajak*') ||
+    // request()->is('admin/inquery_buktipotongpajak*') ||
     request()->is('admin/inquery_pengeluarankaskecil*')
         ? 'menu-open'
         : '' }}">
@@ -739,8 +750,8 @@
         request()->is('admin/inquery_penerimaankaskecil*') ||
         request()->is('admin/inquery_potonganpenjualan*') ||
         request()->is('admin/inqueryklaim_ban*') ||
-        request()->is('admin/bukti_potongpajak*') ||
-        request()->is('admin/inquery_buktipotongpajak*') ||
+        // request()->is('admin/bukti_potongpajak*') ||
+        // request()->is('admin/inquery_buktipotongpajak*') ||
         request()->is('admin/inquery_pengeluarankaskecil*')
             ? 'active'
             : '' }}">
@@ -1030,7 +1041,7 @@
                 </a>
             </li>
         @endif
-        @if (auth()->check() && auth()->user()->menu['faktur pelunasan ekspedisi'])
+        {{-- @if (auth()->check() && auth()->user()->menu['faktur pelunasan ekspedisi'])
             <li class="nav-item">
                 <a href="{{ url('admin/bukti_potongpajak') }}"
                     class="nav-link {{ request()->is('admin/bukti_potongpajak*') ? 'active' : '' }}">
@@ -1040,6 +1051,16 @@
                 </a>
             </li>
         @endif
+        @if (auth()->check() && auth()->user()->menu['faktur pelunasan ekspedisi'])
+            <li class="nav-item">
+                <a href="{{ url('admin/inquery_buktipotongpajak') }}"
+                    class="nav-link {{ request()->is('admin/inquery_buktipotongpajak*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 13px;">Inquery Bukti Potong Pajak
+                    </p>
+                </a>
+            </li>
+        @endif --}}
         @if (auth()->check() && auth()->user()->menu['faktur pelunasan ekspedisi'])
             <li class="nav-item">
                 <a href="{{ url('admin/inquery_buktipotongpajak') }}"
