@@ -41,12 +41,17 @@ class Bukti_potongpajak extends Model
 
     public function detail_bukti()
     {
-        return $this->hasMany(Detail_tagihan::class);
+        return $this->hasMany(Detail_bukti::class);
     }
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function tagihan_ekspedisi()
+    {
+        return $this->belongsTo(Tagihan_ekspedisi::class);
     }
 
     public static function getId()

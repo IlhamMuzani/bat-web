@@ -90,6 +90,7 @@
                                 <th>Kode Bukti</th>
                                 <th>Tanggal</th>
                                 <th>Bag.inp</th>
+                                <th>Nama Pelanggan</th>
                                 <th>Status</th>
                                 <th>Kategori</th>
                                 <th>Total</th>
@@ -114,6 +115,13 @@
                                     <td>
                                         @if ($buktipotongpajak->user)
                                             {{ $buktipotongpajak->user->karyawan->nama_lengkap }}
+                                        @else
+                                            tidak ada
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($buktipotongpajak->detail_bukti->first())
+                                            {{ $buktipotongpajak->detail_bukti->first()->tagihan_ekspedisi->nama_pelanggan }}
                                         @else
                                             tidak ada
                                         @endif
