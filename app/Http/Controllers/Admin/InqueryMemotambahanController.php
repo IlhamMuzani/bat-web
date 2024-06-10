@@ -271,7 +271,7 @@ class InqueryMemotambahanController extends Controller
                         'hargasatuan' => $data_pesanan['hargasatuan'],
                         'nominal_tambahan' =>  str_replace(',', '.', str_replace('.', '', $data_pesanan['nominal_tambahan'])),
                     ]);
-                    
+
                     // Tambahkan index untuk menghasilkan nomor unik
                     $num = $lastNum + 1;
                     $formattedNum = sprintf("%06s", $num);
@@ -322,7 +322,7 @@ class InqueryMemotambahanController extends Controller
                 Memo_ekspedisi::where('id', $previousMemoEkspedisiId)->update(['status_memotambahan' => null]);
             }
         }
-        
+
         $detail_memo = Detail_memotambahan::where('memotambahan_id', $cetakpdf->id)->get();
 
         return view('admin.inquery_memotambahan.show', compact('cetakpdf', 'detail_memo'));

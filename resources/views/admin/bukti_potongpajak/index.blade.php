@@ -159,7 +159,8 @@
                                                                         <input type="text" class="form-control"
                                                                             id="nomor_buktitagihan"
                                                                             name="nomor_buktitagihan"
-                                                                            value="{{ old('nomor_buktitagihan', $faktur->nomor_buktitagihan) }}">
+                                                                            value="{{ old('nomor_buktitagihan', $faktur->nomor_buktitagihan) }}"
+                                                                            maxlength="10">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-6">
@@ -185,7 +186,8 @@
                                                                                 id="nomor_buktifaktur"
                                                                                 name="nomor_buktifaktur[{{ $item->id }}]"
                                                                                 placeholder=""
-                                                                                value="{{ $item->nomor_buktifaktur }}">
+                                                                                value="{{ $item->nomor_buktifaktur }}"
+                                                                                maxlength="10">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6">
