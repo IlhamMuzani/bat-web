@@ -1123,7 +1123,7 @@
             }
         });
     </script>
- <script>
+    <script>
         function searchTable() {
             // Declare variables
             var input, filter, table, tr, td, i, j, txtValue;
