@@ -89,159 +89,167 @@
                         </div>
                     </form>
                     <!-- Tabel Faktur Utama -->
-                    <table class="table table-bordered table-striped table-hover" style="font-size: 13px">
-                        <thead>
-                            <tr>
-                                <th>Kode Invoice</th>
-                                <th>Tanggal</th>
-                                <th>Pelanggan</th>
-                                <th>DPP</th>
-                                <th>PPH23</th>
-                                <th class="text-center" style="width:12%">Actions</th>
-                                <!-- Tambahkan kolom aksi untuk collapse/expand -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($inquery as $index => $faktur)
-                                <!-- Gunakan index untuk ID unik -->
-                                <!-- Baris Faktur Utama -->
-                                <tr data-target="#faktur-{{ $index }}"
-                                    class="accordion-toggle" style="background: rgb(156, 156, 156)">
-                                    <td>{{ $faktur->kode_tagihan }}</td>
-                                    <td>{{ $faktur->created_at }}</td>
-                                    <td>{{ $faktur->nama_pelanggan }}</td>
-                                    <td class="text-right">{{ number_format($faktur->sub_total, 2, ',', '.') }}</td>
-                                    <td class="text-right">{{ number_format($faktur->pph, 2, ',', '.') }}</td>
-                                    <td class="text-center">
-                                        <button class="btn btn-info btn-sm" data-toggle="collapse"
-                                            data-target="#faktur-{{ $index }}"><i
-                                                class="fas fa-eye"></i></button>
-                                        <button class="btn btn-primary ml-2 btn-sm" data-toggle="modal"
-                                            data-target="#modal-add-{{ $faktur->id }}"><i
-                                                class="fas fa-plus"></i></button>
-                                    </td>
+
+                    <div class="container mt-5">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <input type="text" id="searchInput" class="form-control" placeholder="Search...">
+                            </div>
+                        </div>
+
+                        <table id="invoiceTable" class="table table-bordered table-striped table-hover"
+                            style="font-size: 13px">
+                            <thead>
+                                <tr>
+                                    <th>Kode Invoice</th>
+                                    <th>Tanggal</th>
+                                    <th>Pelanggan</th>
+                                    <th>DPP</th>
+                                    <th>PPH23</th>
+                                    <th class="text-center" style="width:12%">Actions</th>
                                 </tr>
-                                <div class="modal fade" id="modal-add-{{ $faktur->id }}">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Masukkan Nomor Bukti</h4>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div style="text-align: left;">
-                                                    <form action="{{ url('admin/updatebuktitagihan/' . $faktur->id) }}"
-                                                        method="POST" enctype="multipart/form-data" autocomplete="off">
-                                                        @csrf
-                                                        <div class="card-body">
-                                                            <h2>Invoice</h2>
-                                                            <div class="row">
-                                                                <div class="col-lg-6">
-                                                                    <div class="form-group">
-                                                                        <label for="nomor invoice">Invoice
-                                                                            {{ $faktur->kode_tagihan }}</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="nomor_buktitagihan"
-                                                                            name="nomor_buktitagihan"
-                                                                            value="{{ old('nomor_buktitagihan', $faktur->nomor_buktitagihan) }}">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-6">
-                                                                    <div class="form-group">
-                                                                        <label for="nomor invoice">Tanggal Bukti</label>
-                                                                        <input type="date" class="form-control"
-                                                                            id="tanggal_nomortagihan"
-                                                                            name="tanggal_nomortagihan"
-                                                                            value="{{ old('tanggal_nomortagihan', $faktur->tanggal_nomortagihan) }}">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <br>
-                                                            <br>
-                                                            <h2>Faktur</h2>
-                                                            @foreach ($faktur->detail_tagihan as $item)
+                            </thead>
+                            <tbody>
+                                @foreach ($inquery as $index => $faktur)
+                                    <tr data-target="#faktur-{{ $index }}" class="accordion-toggle"
+                                        style="background: rgb(156, 156, 156)">
+                                        <td>{{ $faktur->kode_tagihan }}</td>
+                                        <td>{{ $faktur->created_at }}</td>
+                                        <td>{{ $faktur->nama_pelanggan }}</td>
+                                        <td class="text-right">{{ number_format($faktur->sub_total, 2, ',', '.') }}</td>
+                                        <td class="text-right">{{ number_format($faktur->pph, 2, ',', '.') }}</td>
+                                        <td class="text-center">
+                                            <button class="btn btn-info btn-sm" data-toggle="collapse"
+                                                data-target="#faktur-{{ $index }}"><i
+                                                    class="fas fa-eye"></i></button>
+                                            <button class="btn btn-primary ml-2 btn-sm" data-toggle="modal"
+                                                data-target="#modal-add-{{ $faktur->id }}"><i
+                                                    class="fas fa-plus"></i></button>
+                                        </td>
+                                    </tr>
+                                    <div class="modal fade" id="modal-add-{{ $faktur->id }}">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Masukkan Nomor Bukti</h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div style="text-align: left;">
+                                                        <form action="{{ url('admin/updatebuktitagihan/' . $faktur->id) }}"
+                                                            method="POST" enctype="multipart/form-data" autocomplete="off">
+                                                            @csrf
+                                                            <div class="card-body">
+                                                                <h2>Invoice</h2>
                                                                 <div class="row">
                                                                     <div class="col-lg-6">
                                                                         <div class="form-group">
-                                                                            <label for="nomor faktur">Faktur
-                                                                                {{ $item->kode_faktur }}</label>
+                                                                            <label for="nomor invoice">Invoice
+                                                                                {{ $faktur->kode_tagihan }}</label>
                                                                             <input type="text" class="form-control"
-                                                                                id="nomor_buktifaktur"
-                                                                                name="nomor_buktifaktur[{{ $item->id }}]"
-                                                                                placeholder=""
-                                                                                value="{{ $item->nomor_buktifaktur }}">
+                                                                                id="nomor_buktitagihan"
+                                                                                name="nomor_buktitagihan"
+                                                                                value="{{ old('nomor_buktitagihan', $faktur->nomor_buktitagihan) }}">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6">
                                                                         <div class="form-group">
-                                                                            <label for="nomor faktur">Tanggal
-                                                                                {{ $item->kode_faktur }}</label>
-                                                                            <input type="date" id="tanggal_nomorfaktur"
-                                                                                name="tanggal_nomorfaktur[{{ $item->id }}]"
-                                                                                placeholder="d M Y"
-                                                                                value="{{ old('tanggal_nomorfaktur.' . $item->id, $item->tanggal_nomorfaktur) }}"
-                                                                                class="form-control">
+                                                                            <label for="nomor invoice">Tanggal
+                                                                                Bukti</label>
+                                                                            <input type="date" class="form-control"
+                                                                                id="tanggal_nomortagihan"
+                                                                                name="tanggal_nomortagihan"
+                                                                                value="{{ old('tanggal_nomortagihan', $faktur->tanggal_nomortagihan) }}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            @endforeach
-                                                        </div>
-                                                        <div class="card-footer text-right">
-                                                            <button type="reset"
-                                                                class="btn btn-secondary">Reset</button>
-                                                            <button type="submit" class="btn btn-primary">Simpan</button>
-                                                        </div>
-                                                    </form>
+                                                                <br>
+                                                                <br>
+                                                                <h2>Faktur</h2>
+                                                                @foreach ($faktur->detail_tagihan as $item)
+                                                                    <div class="row">
+                                                                        <div class="col-lg-6">
+                                                                            <div class="form-group">
+                                                                                <label for="nomor faktur">Faktur
+                                                                                    {{ $item->kode_faktur }}</label>
+                                                                                <input type="text" class="form-control"
+                                                                                    id="nomor_buktifaktur"
+                                                                                    name="nomor_buktifaktur[{{ $item->id }}]"
+                                                                                    placeholder=""
+                                                                                    value="{{ $item->nomor_buktifaktur }}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <div class="form-group">
+                                                                                <label for="nomor faktur">Tanggal
+                                                                                    {{ $item->kode_faktur }}</label>
+                                                                                <input type="date"
+                                                                                    id="tanggal_nomorfaktur"
+                                                                                    name="tanggal_nomorfaktur[{{ $item->id }}]"
+                                                                                    placeholder="d M Y"
+                                                                                    value="{{ old('tanggal_nomorfaktur.' . $item->id, $item->tanggal_nomorfaktur) }}"
+                                                                                    class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                @endforeach
+                                                            </div>
+                                                            <div class="card-footer text-right">
+                                                                <button type="reset"
+                                                                    class="btn btn-secondary">Reset</button>
+                                                                <button type="submit"
+                                                                    class="btn btn-primary">Simpan</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <!-- Baris Detail Faktur -->
-                                <tr>
-                                    <td colspan="6"> <!-- Gabungkan kolom untuk detail -->
-                                        <div id="faktur-{{ $index }}" class="collapse">
-                                            <table class="table table-sm" style="margin: 0;">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Kode Faktur</th>
-                                                        <th>Tanggal</th>
-                                                        <th>Nama Pelanggan</th>
-                                                        <th>DPP</th>
-                                                        <th>PPH23</th>
-                                                        <th>Nomor Bukti</th>
-                                                        <th>Tanggal Bukti</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($faktur->detail_tagihan as $faktur)
+                                    <tr>
+                                        <td colspan="6">
+                                            <div id="faktur-{{ $index }}" class="collapse">
+                                                <table class="table table-sm" style="margin: 0;">
+                                                    <thead>
                                                         <tr>
-                                                            <td>{{ $faktur->kode_faktur }}</td>
-                                                            <td>{{ $faktur->created_at }}</td>
-                                                            <td>{{ $faktur->nama_rute }}</td>
-                                                            <td class="text-right">
-                                                                {{ number_format($faktur->faktur_ekspedisi->pph, 2, ',', '.') }}
-                                                            </td>
-                                                            <td class="text-right">
-                                                                {{ number_format($faktur->faktur_ekspedisi->harga_tarif, 2, ',', '.') }}
-                                                            </td>
-                                                            <td>{{ $faktur->nomor_buktifaktur }}</td>
-                                                            <td>{{ $faktur->tanggal_nomorfaktur }}</td>
-
+                                                            <th>Kode Faktur</th>
+                                                            <th>Tanggal</th>
+                                                            <th>Nama Pelanggan</th>
+                                                            <th>DPP</th>
+                                                            <th>PPH23</th>
+                                                            <th>Nomor Bukti</th>
+                                                            <th>Tanggal Bukti</th>
                                                         </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($faktur->detail_tagihan as $faktur)
+                                                            <tr>
+                                                                <td>{{ $faktur->kode_faktur }}</td>
+                                                                <td>{{ $faktur->created_at }}</td>
+                                                                <td>{{ $faktur->nama_rute }}</td>
+                                                                <td class="text-right">
+                                                                    {{ number_format($faktur->faktur_ekspedisi->pph, 2, ',', '.') }}
+                                                                </td>
+                                                                <td class="text-right">
+                                                                    {{ number_format($faktur->faktur_ekspedisi->harga_tarif, 2, ',', '.') }}
+                                                                </td>
+                                                                <td>{{ $faktur->nomor_buktifaktur }}</td>
+                                                                <td>{{ $faktur->tanggal_nomorfaktur }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -356,4 +364,37 @@
             });
         });
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const table = document.getElementById('invoiceTable');
+        const rows = table.getElementsByTagName('tr');
+
+        searchInput.addEventListener('keyup', function() {
+            const filter = searchInput.value.toLowerCase();
+
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let match = false;
+
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j]) {
+                        const cellText = cells[j].innerText.toLowerCase();
+                        if (cellText.indexOf(filter) > -1) {
+                            match = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (match) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        });
+    });
+</script>
 @endsection
