@@ -11,10 +11,12 @@
                     <h1 class="m-0">Memo Ekspedisi</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('admin/memo_ekspedisi') }}">Memo Ekspedisi</a></li>
-                        <li class="breadcrumb-item active">Tambah</li>
-                    </ol>
+                    <div class="float-sm-right">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tambahSPKModal">Tambah
+                            SPK</button>
+                    </div>
+                    <!-- Memuat modal -->
+                    @include('admin.memo_ekspedisispk.tambah_spk_modal')
                 </div>
             </div>
         </div>
@@ -44,6 +46,15 @@
                 </div>
             @endif
 
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h5>
+                        <i class="icon fas fa-check"></i> Success!
+                    </h5>
+                    {{ session('success') }}
+                </div>
+            @endif
             @if (session('error_pelanggans') || session('error_pesanans'))
                 <div class="alert alert-danger alert-dismissible">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -62,7 +73,7 @@
                     @endif
                 </div>
             @endif
-            <form action="{{ url('admin/memo_ekspedisi') }}" method="POST" enctype="multipart/form-data"
+            <form action="{{ url('admin/memo_ekspedisispk') }}" method="POST" enctype="multipart/form-data"
                 autocomplete="off">
                 @csrf
                 <div class="card">
@@ -73,13 +84,26 @@
                     <div class="card-body">
                         <div class="form-group" style="flex: 8;">
                             <div class="col-md-0 mb-3">
-                                <label>Status</label>
+                                <label>Kategori</label>
                                 <select class="custom-select form-control" id="kategoris" name="kategoris">
-                                    <option value="">- Pilih Status -</option>
-                                    <option value="spk" selected>Non SPK</option>
-                                    <option value="non_spk">SPK</option>
+                                    <option value="">- Pilih Kategori -</option>
+                                    <option value="spk">Non SPK</option>
+                                    <option value="non_spk" selected>SPK</option>
                                 </select>
                             </div>
+                        </div>
+
+                        <label style="font-size:14px" class="form-label" for="spk_id">No. Spk</label>
+                        <div class="form-group d-flex">
+                            <input hidden onclick="showSpk(this.value)" class="form-control" id="spk_id" name="spk_id"
+                                type="text" placeholder="" value="{{ old('spk_id') }}" readonly
+                                style="margin-right: 10px; font-size:14px" />
+                            <input onclick="showSpk(this.value)" class="form-control" id="kode_spk" name="kode_spk"
+                                type="text" placeholder="" value="{{ old('kode_spk') }}" readonly
+                                style="margin-right: 10px; font-size:14px" />
+                            <button class="btn btn-primary" type="button" onclick="showSpk(this.value)">
+                                <i class="fas fa-search"></i>
+                            </button>
                         </div>
                         <div class="form-group">
                             <label style="font-size:14px" class="form-label" for="kategori">Pilih Kategori</label>
@@ -94,11 +118,6 @@
                                     Memo Tambahan</option>
                             </select>
                         </div>
-                        {{-- <div class="form-group">
-                            <label style="font-size:14px" for="kode_memo">Kode Memo</label>
-                            <input style="font-size:14px" type="text" class="form-control" id="kode_memo"
-                                name="kode_memo" placeholder="" value="{{ old('kode_memo') }}">
-                        </div> --}}
                         <div id="formmemotambahans" class="form-group" style="flex: 8;">
                             <div class="mb-3 mt-4">
                                 <button class="btn btn-primary btn-sm" type="button" onclick="ShowMemo(this.value)">
@@ -107,22 +126,22 @@
                             </div>
                             <div class="form-group" hidden>
                                 <label for="nopol">Id Memo</label>
-                                <input type="text" class="form-control" id="memo_ekspedisi_id" name="memo_ekspedisi_id"
-                                    onclick="ShowMemo(this.value)" value="{{ old('memo_ekspedisi_id') }}" readonly
-                                    placeholder="">
+                                <input type="text" class="form-control" id="memo_ekspedisi_id"
+                                    name="memo_ekspedisi_id" onclick="ShowMemo(this.value)"
+                                    value="{{ old('memo_ekspedisi_id') }}" readonly placeholder="">
                             </div>
 
                             <div class="form-group">
                                 <label style="font-size:14px" for="nopol">No Memo</label>
-                                <input style="font-size:14px" type="text" class="form-control" readonly id="kode_memosa"
-                                    onclick="ShowMemo(this.value)" name="kode_memosa" placeholder=""
+                                <input style="font-size:14px" type="text" class="form-control" readonly
+                                    id="kode_memosa" onclick="ShowMemo(this.value)" name="kode_memosa" placeholder=""
                                     value="{{ old('kode_memosa') }}">
                             </div>
                             <div class="form-group">
                                 <label style="font-size:14px" for="nopol">Nama Sopir</label>
                                 <input style="font-size:14px" type="text" class="form-control" readonly
-                                    onclick="ShowMemo(this.value)" name="nama_driversa" id="nama_driversa" placeholder=""
-                                    value="{{ old('nama_driversa') }}">
+                                    onclick="ShowMemo(this.value)" name="nama_driversa" id="nama_driversa"
+                                    placeholder="" value="{{ old('nama_driversa') }}">
                             </div>
                             <div class="form-group" hidden>
                                 <label style="font-size:14px" for="nopol">Telp</label>
@@ -178,26 +197,25 @@
                                         </div>
                                         <label style="font-size:14px" class="form-label" for="no_kabin">No. Kabin</label>
                                         <div class="form-group d-flex">
-                                            <input onclick="showCategoryModalkendaraan(this.value)" class="form-control"
-                                                id="no_kabin" name="no_kabin" type="text" placeholder=""
-                                                value="{{ old('no_kabin') }}" readonly
-                                                style="margin-right: 10px; font-size:14px" />
-                                            <button class="btn btn-primary" type="button"
+                                            <input class="form-control" id="no_kabin" name="no_kabin" type="text"
+                                                placeholder="" value="{{ old('no_kabin') }}" readonly
+                                                style="margin-right: 0px; font-size:14px" />
+                                            {{-- <button class="btn btn-primary" type="button"
                                                 onclick="showCategoryModalkendaraan(this.value)">
                                                 <i class="fas fa-search"></i>
-                                            </button>
+                                            </button> --}}
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size:14px" for="golongan">Gol. Kendaraan</label>
-                                            <input onclick="showCategoryModalkendaraan(this.value)" style="font-size:14px"
-                                                type="text" class="form-control" id="golongan" readonly
-                                                name="golongan" placeholder="" value="{{ old('golongan') }}">
+                                            <input style="font-size:14px" type="text" class="form-control"
+                                                id="golongan" readonly name="golongan" placeholder=""
+                                                value="{{ old('golongan') }}">
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size:14px" for="km">KM Awal</label>
-                                            <input onclick="showCategoryModalkendaraan(this.value)" style="font-size:14px"
-                                                type="text" class="form-control" id="km" readonly
-                                                name="km_awal" placeholder="" value="{{ old('km_awal') }}">
+                                            <input style="font-size:14px" type="text" class="form-control"
+                                                id="km" readonly name="km_awal" placeholder=""
+                                                value="{{ old('km_awal') }}">
                                         </div>
                                         <div class="form-check" style="color:white">
                                             <label class="form-check-label">
@@ -227,26 +245,25 @@
                                         <label style="font-size:14px" class="form-label" for="nama_driver">Nama
                                             Sopir</label>
                                         <div class="form-group d-flex">
-                                            <input onclick="showCategoryModaldriver(this.value)" class="form-control"
-                                                id="nama_driver" name="nama_driver" type="text" placeholder=""
-                                                value="{{ old('nama_driver') }}" readonly
-                                                style="margin-right: 10px;font-size:14px" />
-                                            <button class="btn btn-primary" type="button"
+                                            <input class="form-control" id="nama_driver" name="nama_driver"
+                                                type="text" placeholder="" value="{{ old('nama_driver') }}" readonly
+                                                style="margin-right: 0px;font-size:14px" />
+                                            {{-- <button class="btn btn-primary" type="button"
                                                 onclick="showCategoryModaldriver(this.value)">
                                                 <i class="fas fa-search"></i>
-                                            </button>
+                                            </button> --}}
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size:14px" for="telp">No. Telp</label>
-                                            <input onclick="showCategoryModaldriver(this.value)" style="font-size:14px"
-                                                type="tex" class="form-control" id="telp" readonly
-                                                name="telp" placeholder="" value="{{ old('telp') }}">
+                                            <input style="font-size:14px" type="tex" class="form-control"
+                                                id="telp" readonly name="telp" placeholder=""
+                                                value="{{ old('telp') }}">
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size:14px" for="saldo_deposit">Saldo Deposit</label>
-                                            <input onclick="showCategoryModaldriver(this.value)" style="font-size:14px"
-                                                type="text" class="form-control" id="saldo_deposit" readonly
-                                                name="saldo_deposit" placeholder="" value="{{ old('saldo_deposit') }}">
+                                            <input style="font-size:14px" type="text" class="form-control"
+                                                id="saldo_deposit" readonly name="saldo_deposit" placeholder=""
+                                                value="{{ old('saldo_deposit') }}">
                                         </div>
                                         <div class="form-check" style="color:white">
                                             <label class="form-check-label">
@@ -274,26 +291,25 @@
                                         <label style="font-size:14px" class="form-label" for="kode_rute">Kode
                                             Rute</label>
                                         <div class="form-group d-flex">
-                                            <input onclick="showCategoryModalrute(this.value)" class="form-control"
-                                                id="kode_rute" name="kode_rute" type="text" placeholder=""
-                                                value="{{ old('kode_rute') }}" readonly
-                                                style="margin-right: 10px; font-size:14px" />
-                                            <button class="btn btn-primary" type="button"
+                                            <input class="form-control" id="kode_rute" name="kode_rute" type="text"
+                                                placeholder="" value="{{ old('kode_rute') }}" readonly
+                                                style="margin-right: 0px; font-size:14px" />
+                                            {{-- <button class="btn btn-primary" type="button"
                                                 onclick="showCategoryModalrute(this.value)">
                                                 <i class="fas fa-search"></i>
-                                            </button>
+                                            </button> --}}
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size:14px" for="rute_perjalanan">Rute Perjalanan</label>
-                                            <input onclick="showCategoryModalrute(this.value)" style="font-size:14px"
-                                                type="text" class="form-control" id="rute_perjalanan" readonly
-                                                name="nama_rute" placeholder="" value="{{ old('nama_rute') }}">
+                                            <input style="font-size:14px" type="text" class="form-control"
+                                                id="rute_perjalanan" readonly name="nama_rute" placeholder=""
+                                                value="{{ old('nama_rute') }}">
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size:14px" for="biaya">Uang Jalan</label>
-                                            <input onclick="showCategoryModalrute(this.value)" style="font-size:14px"
-                                                type="text" class="form-control" id="biaya" readonly
-                                                name="uang_jalan" placeholder="" value="{{ old('uang_jalan') }}">
+                                            <input style="font-size:14px" type="text" class="form-control"
+                                                id="biaya" readonly name="uang_jalan" placeholder=""
+                                                value="{{ old('uang_jalan') }}">
                                         </div>
                                         <div class="form-check" style="color:white">
                                             <label class="form-check-label">
@@ -405,7 +421,7 @@
                                             <th style="font-size:14px">Qty</th>
                                             <th style="font-size:14px">Satuan</th>
                                             <th style="font-size:14px">Total</th>
-                                            <th style="font-size:14px">Opsi</th>
+                                            {{-- <th style="font-size:14px">Opsi</th> --}}
                                         </tr>
                                     </thead>
                                     <tbody id="tabel-rute">
@@ -421,8 +437,7 @@
 
                                             <td>
                                                 <div class="form-group">
-                                                    <input onclick="showCategoryModalRuts(this.value)"
-                                                        style="font-size:14px" type="text" class="form-control"
+                                                    <input style="font-size:14px" type="text" class="form-control"
                                                         readonly id="kode_rutes" name="kode_rutes"
                                                         value="{{ old('kode_rutes') }}">
                                                 </div>
@@ -430,8 +445,7 @@
 
                                             <td>
                                                 <div class="form-group">
-                                                    <input onclick="showCategoryModalRuts(this.value)"
-                                                        style="font-size:14px" type="text" class="form-control"
+                                                    <input style="font-size:14px" type="text" class="form-control"
                                                         readonly id="nama_rutes" name="nama_rutes"
                                                         value="{{ old('nama_rutes') }}">
                                                 </div>
@@ -439,8 +453,7 @@
 
                                             <td>
                                                 <div class="form-group">
-                                                    <input onclick="showCategoryModalRuts(this.value)"
-                                                        style="font-size:14px" type="text"
+                                                    <input style="font-size:14px" type="text"
                                                         class="form-control harga_rute" readonly id="harga_rute"
                                                         value="{{ old('harga_rute') }}" name="harga_rute"
                                                         data-row-id="0">
@@ -480,13 +493,12 @@
 
                                             <td>
                                                 <div class="form-group">
-                                                    <input onclick="showCategoryModalRuts(this.value)"
-                                                        style="font-size:14px" type="text"
+                                                    <input style="font-size:14px" type="text"
                                                         class="form-control totalrute" readonly id="totalrute"
                                                         name="totalrute" value="{{ old('totalrute') }}">
                                                 </div>
                                             </td>
-                                            <td style="width: 100px">
+                                            {{-- <td style="width: 100px">
                                                 <button style="margin-left:5px" type="button"
                                                     class="btn btn-danger btn-sm" onclick="removeBorong()">
                                                     <i class="fas fa-trash"></i>
@@ -496,7 +508,7 @@
                                                     <i class="fas fa-plus"></i>
                                                 </button>
 
-                                            </td>
+                                            </td> --}}
                                         </tr>
                                     </tbody>
                                 </table>
@@ -1184,6 +1196,67 @@
                 </div>
             </form>
 
+            <div class="modal fade" id="tableSpk" data-backdrop="static">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Data Spk</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive scrollbar m-2">
+                                <table id="datatables7" class="table table-bordered table-striped">
+                                    <thead class="bg-200 text-900">
+                                        <tr>
+                                            <th class="text-center">No</th>
+                                            <th>No. Spk</th>
+                                            <th>Tanggal</th>
+                                            <th>Pelanggan</th>
+                                            <th>No Kabin</th>
+                                            <th>Golongan</th>
+                                            <th>Opsi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($spks as $spk)
+                                            <tr
+                                                onclick="getSelectedDataspk('{{ $spk->id }}',
+                                                    '{{ $spk->kode_spk }}','{{ $spk->kendaraan_id }}', '{{ $spk->no_kabin }}', '{{ $spk->no_pol }}', '{{ $spk->golongan }}', '{{ $spk->km_awal }}',
+                                                    '{{ $spk->user_id }}', '{{ $spk->user->karyawan->kode_karyawan }}', '{{ $spk->user->karyawan->nama_lengkap }}', '{{ $spk->user->karyawan->telp }}',
+                                                    '{{ $spk->user->karyawan->tabungan }}','{{ $spk->rute_perjalanan_id }}', '{{ $spk->rute_perjalanan->kode_rute }}', '{{ $spk->rute_perjalanan->nama_rute }}',
+                                                    '{{ $spk->rute_perjalanan->golongan }}' , '{{ $spk->rute_perjalanan->golongan2 }}', '{{ $spk->rute_perjalanan->golongan3 }}', '{{ $spk->rute_perjalanan->golongan4 }}',
+                                                    '{{ $spk->rute_perjalanan->golongan5 }}', '{{ $spk->rute_perjalanan->golongan6 }}', '{{ $spk->rute_perjalanan->golongan7 }}', '{{ $spk->rute_perjalanan->golongan8 }}',
+                                                    '{{ $spk->rute_perjalanan->golongan9 }}', '{{ $spk->rute_perjalanan->golongan10 }}')">
+                                                <td class="text-center">{{ $loop->iteration }}</td>
+                                                <td>{{ $spk->kode_spk }}</td>
+                                                <td>{{ $spk->tanggal_awal }}</td>
+                                                <td>{{ $spk->nama_pelanggan }}</td>
+                                                <td>{{ $spk->no_kabin }}</td>
+                                                <td>{{ $spk->golongan }}</td>
+                                                <td class="text-center">
+                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                        onclick="getSelectedDataspk('{{ $spk->id }}',
+                                                    '{{ $spk->kode_spk }}','{{ $spk->kendaraan_id }}', '{{ $spk->no_kabin }}', '{{ $spk->no_pol }}', '{{ $spk->golongan }}', '{{ $spk->km_awal }}',
+                                                    '{{ $spk->user_id }}', '{{ $spk->user->karyawan->kode_karyawan }}', '{{ $spk->user->karyawan->nama_lengkap }}', '{{ $spk->user->karyawan->telp }}',
+                                                    '{{ $spk->user->karyawan->tabungan }}','{{ $spk->rute_perjalanan_id }}', '{{ $spk->rute_perjalanan->kode_rute }}', '{{ $spk->rute_perjalanan->nama_rute }}',
+                                                    '{{ $spk->rute_perjalanan->golongan }}' , '{{ $spk->rute_perjalanan->golongan2 }}', '{{ $spk->rute_perjalanan->golongan3 }}', '{{ $spk->rute_perjalanan->golongan4 }}',
+                                                    '{{ $spk->rute_perjalanan->golongan5 }}', '{{ $spk->rute_perjalanan->golongan6 }}', '{{ $spk->rute_perjalanan->golongan7 }}', '{{ $spk->rute_perjalanan->golongan8 }}',
+                                                    '{{ $spk->rute_perjalanan->golongan9 }}', '{{ $spk->rute_perjalanan->golongan10 }}')">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="modal fade" id="tableMemo" data-backdrop="static">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -1195,7 +1268,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="table-responsive scrollbar m-2">
-                                <table id="datatables7" class="table table-bordered table-striped">
+                                <table id="example1" class="table table-bordered table-striped">
                                     <thead class="bg-200 text-900">
                                         <tr>
                                             <th class="text-center">No</th>
@@ -1248,6 +1321,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="modal fade" id="tablePelanggan" data-backdrop="static">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -2137,6 +2211,246 @@
             // Close the modal (if needed)
             $('#tableMemo').modal('hide');
         }
+
+        function showSpk(selectedCategory) {
+            $('#tableSpk').modal('show');
+        }
+
+        function getSelectedDataspk(Spk_id, KodeSpk, Kendaraan_id, NoKabin, Nopol, Golongan, KmAwal, User_id, KodeDriver,
+            NamaDriver, Telp, SaldoDP, Rute_id, KodeRute, NamaRute, Golongan1, Golongan2, Golongan3, Golongan4, Golongan5,
+            Golongan6, Golongan7, Golongan8, Golongan9, Golongan10) {
+            // Set the values in the form fields
+            document.getElementById('spk_id').value = Spk_id;
+            document.getElementById('kode_spk').value = KodeSpk;
+            document.getElementById('kendaraan_id').value = Kendaraan_id;
+            document.getElementById('no_kabin').value = NoKabin;
+            document.getElementById('no_pol').value = NoKabin;
+            document.getElementById('golongan').value = Golongan;
+            document.getElementById('km').value = KmAwal;
+            document.getElementById('user_id').value = User_id;
+            document.getElementById('kode_driver').value = KodeDriver;
+            document.getElementById('nama_driver').value = NamaDriver;
+            document.getElementById('telp').value = Telp;
+            var kategori = $('#kategori').val(); // Get the value of the 'kategori' select element
+            // Format SaldoDP to display properly
+            var formattedNominal = parseFloat(SaldoDP).toLocaleString('id-ID');
+            document.getElementById('saldo_deposit').value = formattedNominal;
+
+
+            var Golongan = document.getElementById("golongan").value;
+
+            document.getElementById('rute_perjalanan_id').value = Rute_id;
+            document.getElementById('kode_rute').value = KodeRute;
+            document.getElementById('rute_perjalanan').value = NamaRute;
+
+            document.getElementById('rute_id').value = Rute_id;
+            document.getElementById('kode_rutes').value = KodeRute;
+            document.getElementById('nama_rutes').value = NamaRute;
+
+            if (Golongan === 'Golongan 1') {
+                var Golongan1Value = parseFloat(Golongan1);
+                document.getElementById('biaya').value = Golongan1Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan1Value.toLocaleString('id-ID');
+                document.getElementById('harga_rute').value = Golongan1Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 2') {
+                var Golongan2Value = parseFloat(Golongan2);
+                document.getElementById('biaya').value = Golongan2Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan2Value.toLocaleString('id-ID');
+                document.getElementById('harga_rute').value = Golongan2Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 3') {
+                var Golongan3Value = parseFloat(Golongan3);
+                document.getElementById('biaya').value = Golongan3Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan3Value.toLocaleString('id-ID');
+                document.getElementById('harga_rute').value = Golongan3Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 4') {
+                var Golongan4Value = parseFloat(Golongan4);
+                document.getElementById('biaya').value = Golongan4Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan4Value.toLocaleString('id-ID');
+                document.getElementById('harga_rute').value = Golongan4Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 5') {
+                var Golongan5Value = parseFloat(Golongan5);
+                document.getElementById('biaya').value = Golongan5Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan5Value.toLocaleString('id-ID');
+                document.getElementById('harga_rute').value = Golongan5Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 6') {
+                var Golongan6Value = parseFloat(Golongan6);
+                document.getElementById('biaya').value = Golongan6Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan6Value.toLocaleString('id-ID');
+                document.getElementById('harga_rute').value = Golongan6Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 7') {
+                var Golongan7Value = parseFloat(Golongan7);
+                document.getElementById('biaya').value = Golongan7Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan7Value.toLocaleString('id-ID');
+                document.getElementById('harga_rute').value = Golongan7Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 8') {
+                var Golongan8Value = parseFloat(Golongan8);
+                document.getElementById('biaya').value = Golongan8Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan8Value.toLocaleString('id-ID');
+                document.getElementById('harga_rute').value = Golongan8Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 9') {
+                var Golongan9Value = parseFloat(Golongan9);
+                document.getElementById('biaya').value = Golongan9Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan9Value.toLocaleString('id-ID');
+                document.getElementById('harga_rute').value = Golongan9Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 10') {
+                var Golongan10Value = parseFloat(Golongan10);
+                document.getElementById('biaya').value = Golongan10Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan10Value.toLocaleString('id-ID');
+                document.getElementById('harga_rute').value = Golongan10Value.toLocaleString('id-ID');
+
+            }
+
+
+            // Close the modal
+            $('#tableSpk').modal('hide');
+
+            // Check the value of 'kategori' and call the appropriate function
+            if (kategori === 'Memo Perjalanan') {
+                // Set deposit_driver value based on SaldoDP
+                if (parseFloat(SaldoDP) < 0) {
+                    document.getElementById('deposit_driver').value = 100000;
+                    document.getElementById('depositsdriverss').value = (100000).toLocaleString('id-ID');
+                }
+                updateSubTotals();
+            } else if (kategori === 'Memo Borong') {
+                // document.getElementById('depositsopir').value = 100000;
+                // document.getElementById('depositsopir2').value = (100000).toLocaleString('id-ID');
+                // // depositsopir
+                // updateSubTotal();
+                if (parseFloat(SaldoDP) < 0) {
+                    document.getElementById('depositsopir').value = 100000;
+                    document.getElementById('depositsopir2').value = (100000).toLocaleString('id-ID');
+                    // depositsopir
+                }
+                updateSubTotal();
+            }
+            updateSubTotals();
+            updateSubTotal();
+
+        }
+
+
+        var Golongan = document.getElementById("golongan").value;
+        // Set the values in the form fields
+
+        // document.getElementById('harga_rute').value = HargaRute;
+
+        // if (Golongan === 'Golongan 1') {
+        //     var Golongan1Value = parseFloat(Golongan1);
+        //     document.getElementById('harga_rute').value = Golongan1Value.toLocaleString('id-ID');
+        // } else if (Golongan === 'Golongan 2') {
+        //     var Golongan2Value = parseFloat(Golongan2);
+        //     document.getElementById('harga_rute').value = Golongan2Value.toLocaleString('id-ID');
+        // } else if (Golongan === 'Golongan 3') {
+        //     var Golongan3Value = parseFloat(Golongan3);
+        //     document.getElementById('harga_rute').value = Golongan3Value.toLocaleString('id-ID');
+        // } else if (Golongan === 'Golongan 4') {
+        //     var Golongan4Value = parseFloat(Golongan4);
+        //     document.getElementById('harga_rute').value = Golongan4Value.toLocaleString('id-ID');
+        // } else if (Golongan === 'Golongan 5') {
+        //     var Golongan5Value = parseFloat(Golongan5);
+        //     document.getElementById('harga_rute').value = Golongan5Value.toLocaleString('id-ID');
+        // } else if (Golongan === 'Golongan 6') {
+        //     var Golongan6Value = parseFloat(Golongan6);
+        //     document.getElementById('harga_rute').value = Golongan6Value.toLocaleString('id-ID');
+        // } else if (Golongan === 'Golongan 7') {
+        //     var Golongan7Value = parseFloat(Golongan7);
+        //     document.getElementById('harga_rute').value = Golongan7Value.toLocaleString('id-ID');
+        // } else if (Golongan === 'Golongan 8') {
+        //     var Golongan8Value = parseFloat(Golongan8);
+        //     document.getElementById('harga_rute').value = Golongan8Value.toLocaleString('id-ID');
+        // } else if (Golongan === 'Golongan 9') {
+        //     var Golongan9Value = parseFloat(Golongan9);
+        //     document.getElementById('harga_rute').value = Golongan9Value.toLocaleString('id-ID');
+        // } else if (Golongan === 'Golongan 10') {
+        //     var Golongan10Value = parseFloat(Golongan10);
+        //     document.getElementById('harga_rute').value = Golongan10Value.toLocaleString('id-ID');
+        // }
+
+        $(document).ready(function() {
+            // Tambahkan event click pada setiap baris dengan class 'selectable-row'
+            $('.selectable-row').on('click', function() {
+                // Dapatkan nilai-nilai yang diperlukan dari elemen-elemen dalam baris
+                var Rute_id = $(this).find('td:eq(0)').text().trim();
+                var KodeRute = $(this).find('td:eq(1)').text().trim();
+                var NamaRute = $(this).find('td:eq(2)').text().trim();
+                var Golongan1 = $(this).find('td:eq(3)').text().trim();
+                var Golongan2 = $(this).find('td:eq(4)').text().trim();
+                var Golongan3 = $(this).find('td:eq(5)').text().trim();
+                var Golongan4 = $(this).find('td:eq(6)').text().trim();
+                var Golongan5 = $(this).find('td:eq(7)').text().trim();
+                var Golongan6 = $(this).find('td:eq(8)').text().trim();
+                var Golongan7 = $(this).find('td:eq(9)').text().trim();
+                var Golongan8 = $(this).find('td:eq(10)').text().trim();
+                var Golongan9 = $(this).find('td:eq(11)').text().trim();
+                var Golongan10 = $(this).find('td:eq(12)').text().trim();
+
+                // Panggil fungsi dengan nilai-nilai yang telah Anda dapatkan
+                getSelectedDatarute(Rute_id, KodeRute, NamaRute, Golongan1, Golongan2, Golongan3, Golongan4,
+                    Golongan5,
+                    Golongan6, Golongan7, Golongan8, Golongan9, Golongan10);
+            });
+        });
+
+        function getSelectedDatarute(Rute_id, KodeRute, NamaRute, Golongan1, Golongan2, Golongan3, Golongan4, Golongan5,
+            Golongan6, Golongan7, Golongan8, Golongan9, Golongan10) {
+
+            var Golongan = document.getElementById("golongan").value;
+
+            document.getElementById('rute_perjalanan_id').value = Rute_id;
+            document.getElementById('kode_rute').value = KodeRute;
+            document.getElementById('rute_perjalanan').value = NamaRute;
+
+            if (Golongan === 'Golongan 1') {
+                var Golongan1Value = parseFloat(Golongan1);
+                document.getElementById('biaya').value = Golongan1Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan1Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 2') {
+                var Golongan2Value = parseFloat(Golongan2);
+                document.getElementById('biaya').value = Golongan2Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan2Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 3') {
+                var Golongan3Value = parseFloat(Golongan3);
+                document.getElementById('biaya').value = Golongan3Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan3Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 4') {
+                var Golongan4Value = parseFloat(Golongan4);
+                document.getElementById('biaya').value = Golongan4Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan4Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 5') {
+                var Golongan5Value = parseFloat(Golongan5);
+                document.getElementById('biaya').value = Golongan5Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan5Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 6') {
+                var Golongan6Value = parseFloat(Golongan6);
+                document.getElementById('biaya').value = Golongan6Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan6Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 7') {
+                var Golongan7Value = parseFloat(Golongan7);
+                document.getElementById('biaya').value = Golongan7Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan7Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 8') {
+                var Golongan8Value = parseFloat(Golongan8);
+                document.getElementById('biaya').value = Golongan8Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan8Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 9') {
+                var Golongan9Value = parseFloat(Golongan9);
+                document.getElementById('biaya').value = Golongan9Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan9Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 10') {
+                var Golongan10Value = parseFloat(Golongan10);
+                document.getElementById('biaya').value = Golongan10Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan10Value.toLocaleString('id-ID');
+
+            }
+
+            // Close the modal (if needed)
+            $('#tableRute').modal('hide');
+
+            updateSubTotals();
+        }
+
+
 
         function showCategoryModalPelanggan(selectedCategory) {
             $('#tablePelanggan').modal('show');
@@ -3077,5 +3391,4 @@
             });
         });
     </script>
-
 @endsection

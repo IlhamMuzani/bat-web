@@ -213,17 +213,17 @@
                                                     @endif
                                                 @endif
                                                 @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan update'])
-                                                    @if ($memoekspedisi->spk_id == null)
+                                                    @if ($memo->spk_id == null)
                                                         <a class="dropdown-item"
-                                                            href="{{ url('admin/inquery_memoekspedisi/' . $memoekspedisi->id . '/edit') }}">Update</a>
+                                                            href="{{ url('admin/inquery_memoekspedisi/' . $memo->id . '/edit') }}">Update</a>
                                                     @else
                                                         <a class="dropdown-item"
-                                                            href="{{ url('admin/inquery_memoekspedisispk/' . $memoekspedisi->id . '/edit') }}">Update</a>
+                                                            href="{{ url('admin/inquery_memoekspedisispk/' . $memo->id . '/edit') }}">Update</a>
                                                     @endif
                                                 @endif
                                                 @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan show'])
                                                     <a class="dropdown-item"
-                                                        href="{{ url('admin/inquery_memoekspedisi/' . $memoekspedisi->id) }}">Show</a>
+                                                        href="{{ url('admin/inquery_memoekspedisispk/' . $memoekspedisi->id) }}">Show</a>
                                                 @endif
                                                 @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan delete'])
                                                     <form style="margin-top:5px" method="GET"
@@ -242,13 +242,13 @@
                                                 @endif
                                                 @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan show'])
                                                     <a class="dropdown-item"
-                                                        href="{{ url('admin/inquery_memoekspedisi/' . $memoekspedisi->id) }}">Show</a>
+                                                        href="{{ url('admin/inquery_memoekspedisispk/' . $memoekspedisi->id) }}">Show</a>
                                                 @endif
                                             @endif
                                             @if ($memoekspedisi->status == 'selesai')
                                                 @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan show'])
                                                     <a class="dropdown-item"
-                                                        href="{{ url('admin/inquery_memoekspedisi/' . $memoekspedisi->id) }}">Show</a>
+                                                        href="{{ url('admin/inquery_memoekspedisispk/' . $memoekspedisi->id) }}">Show</a>
                                                 @endif
                                             @endif
                                             @if ($memoekspedisi->detail_faktur->first())
@@ -319,7 +319,7 @@
 
                 // Kirim permintaan AJAX untuk melakukan unpost
                 $.ajax({
-                    url: "{{ url('admin/inquery_memoekspedisi/unpostmemo/') }}/" + memoId,
+                    url: "{{ url('admin/inquery_memoekspedisispk/unpostmemo/') }}/" + memoId,
                     type: 'GET',
                     data: {
                         id: memoId
@@ -357,7 +357,7 @@
 
                 // Kirim permintaan AJAX untuk melakukan posting
                 $.ajax({
-                    url: "{{ url('admin/inquery_memoekspedisi/postingmemo/') }}/" + memoId,
+                    url: "{{ url('admin/inquery_memoekspedisispk/postingmemo/') }}/" + memoId,
                     type: 'GET',
                     success: function(response) {
                         // Periksa apakah ada pesan success dalam respons
@@ -416,7 +416,7 @@
         var form = document.getElementById('form-action');
 
         function cari() {
-            form.action = "{{ url('admin/inquery_memoekspedisi') }}";
+            form.action = "{{ url('admin/inquery_memoekspedisispk') }}";
             form.submit();
         }
     </script>
@@ -431,7 +431,7 @@
                 // Check the selected value and redirect accordingly
                 switch (selectedValue) {
                     case 'memo_perjalanan':
-                        window.location.href = "{{ url('admin/inquery_memoekspedisi') }}";
+                        window.location.href = "{{ url('admin/inquery_memoekspedisispk') }}";
                         break;
                     case 'memo_borong':
                         window.location.href = "{{ url('admin/inquery_memoborong') }}";

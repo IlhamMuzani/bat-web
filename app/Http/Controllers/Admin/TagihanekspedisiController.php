@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Detail_tagihan;
 use App\Models\Faktur_ekspedisi;
-use App\Models\Pelanggan;
+use App\Models\Spk;
 use App\Models\Tagihan_ekspedisi;
 use App\Models\Tarif;
 use Illuminate\Support\Facades\Validator;
@@ -174,7 +174,17 @@ class TagihanekspedisiController extends Controller
 
                 ]);
 
-                Faktur_ekspedisi::where('id', $detailTagihan->faktur_ekspedisi_id)->update(['status_tagihan' =>'aktif', 'status' => 'selesai']);
+                // Update status faktur
+                $faktur = Faktur_ekspedisi::find($detailTagihan->faktur_ekspedisi_id);
+                if ($faktur) {
+                    $faktur->update(['status_tagihan' => 'aktif', 'status' => 'selesai']);
+
+                    // Update status spk
+                    $spk = Spk::find($faktur->spk_id);
+                    if ($spk) {
+                        $spk->update(['status_spk' => 'invoice']);
+                    }
+                }
             }
         }
 
@@ -191,7 +201,7 @@ class TagihanekspedisiController extends Controller
 
         // Mendapatkan tagihan terbaru dengan kode pelanggan yang sama
         $lastBarang = Tagihan_ekspedisi::where('kode_tagihan', 'like', 'IF%')
-        ->where('kode_pelanggan', $kodePelanggan)
+            ->where('kode_pelanggan', $kodePelanggan)
             ->latest()
             ->first();
 

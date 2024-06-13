@@ -17,6 +17,7 @@ use App\Models\Nota_return;
 use App\Models\Potongan_penjualan;
 use App\Models\Return_ekspedisi;
 use App\Models\Satuan;
+use App\Models\Spk;
 use App\Models\Tagihan_ekspedisi;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -261,7 +262,8 @@ class InqueryFakturpelunasanController extends Controller
         $detailIds = $request->input('detail_idss');
         $detailIds = $request->input('detail_ids');
 
-        $updatedFakturEkspedisiIds = []; // Simpan ID faktur ekspedisi yang diperbarui atau ditambahkan
+        $updatedFakturEkspedisiIds = [];
+
         foreach ($data_pembelians1 as $data_pesanan) {
             $detailPelunasan = Detail_pelunasan::updateOrCreate(
                 ['faktur_ekspedisi_id' => $data_pesanan['faktur_ekspedisi_id']], // Kriteria pencarian
@@ -277,13 +279,42 @@ class InqueryFakturpelunasanController extends Controller
             // Simpan ID faktur ekspedisi yang diperbarui atau ditambahkan
             $updatedFakturEkspedisiIds[] = $detailPelunasan->faktur_ekspedisi_id;
         }
+
         // Hapus detail pelunasan yang tidak terkait dengan faktur ekspedisi yang diperbarui
         Detail_pelunasan::whereNotIn('faktur_ekspedisi_id', $updatedFakturEkspedisiIds)->delete();
+
         // Perbarui status pelunasan menjadi aktif untuk faktur yang dipanggil di detail pelunasan
         Faktur_ekspedisi::whereIn('id', $updatedFakturEkspedisiIds)->update(['status_pelunasan' => 'aktif']);
+
+        // Perbarui status spk yang terkait dengan faktur yang diperbarui
+        foreach ($updatedFakturEkspedisiIds as $fakturId) {
+            $faktur = Faktur_ekspedisi::find($fakturId);
+            if ($faktur) {
+                $spk = Spk::find($faktur->spk_id);
+                if ($spk) {
+                    $spk->update(['status_spk' => 'pelunasan']);
+                }
+            }
+        }
+
+        // Ambil ID faktur ekspedisi yang detail pelunasannya dihapus
+        $deletedFakturEkspedisiIds = Faktur_ekspedisi::whereNotIn('id', $updatedFakturEkspedisiIds)
+            ->pluck('id');
+
         // Perbarui status pelunasan menjadi null untuk faktur yang detail pelunasannya dihapus
-        Faktur_ekspedisi::whereNotIn('id', $updatedFakturEkspedisiIds)
+        Faktur_ekspedisi::whereIn('id', $deletedFakturEkspedisiIds)
             ->update(['status_pelunasan' => null]);
+
+        // Perbarui status spk yang terkait dengan faktur yang pelunasannya dihapus
+        foreach ($deletedFakturEkspedisiIds as $fakturId) {
+            $faktur = Faktur_ekspedisi::find($fakturId);
+            if ($faktur) {
+                $spk = Spk::find($faktur->spk_id);
+                if ($spk) {
+                    $spk->update(['status_spk' => 'invoice']);
+                }
+            }
+        }
 
         foreach ($data_pembelians2 as $data_pesanan) {
             $detailId = $data_pesanan['detail_id'];
@@ -396,6 +427,10 @@ class InqueryFakturpelunasanController extends Controller
                 // Jika Faktur_ekspedisi ditemukan dan status_pelunasan == 'YA', perbarui status_pelunasan menjadi null
                 if ($fakturEkspedisi && $fakturEkspedisi->status_pelunasan == 'aktif') {
                     $fakturEkspedisi->update(['status_pelunasan' => null]);
+                    $spk = Spk::find($fakturEkspedisi->spk_id);
+                    if ($spk) {
+                        $spk->update(['status_spk' => 'invoice']);
+                    }
                 }
             }
         }
@@ -458,6 +493,12 @@ class InqueryFakturpelunasanController extends Controller
                 // Jika Faktur_ekspedisi ditemukan dan status_pelunasan == null, perbarui status_pelunasan menjadi null
                 if ($fakturEkspedisi && $fakturEkspedisi->status_pelunasan == null) {
                     $fakturEkspedisi->update(['status_pelunasan' => 'aktif']);
+
+                    // Update status_spk hanya jika fakturEkspedisi diupdate
+                    $spk = Spk::find($fakturEkspedisi->spk_id);
+                    if ($spk) {
+                        $spk->update(['status_spk' => 'pelunasan']);
+                    }
                 }
             }
         }

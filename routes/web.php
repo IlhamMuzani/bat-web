@@ -177,6 +177,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('laporan_pembelianpart', [\App\Http\Controllers\Admin\LaporanPembelianPart::class, 'index']);
     Route::get('print_part', [\App\Http\Controllers\Admin\LaporanPembelianPart::class, 'print_part']);
     Route::delete('inquery_fakturekspedisi/delettariftambahan/{id}', [\App\Http\Controllers\Admin\InqueryFakturekspedisiController::class, 'delettariftambahan']);
+    Route::delete('inquery_fakturekspedisispk/delettariftambahan/{id}', [\App\Http\Controllers\Admin\InqueryFakturekspedisispkController::class, 'delettariftambahan']);
 
 
     Route::get('inquery_km', [\App\Http\Controllers\Admin\InqueryUpdateKMController::class, 'index']);
@@ -267,6 +268,8 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::delete('inquery_pemasanganpart/deletepartdetail/{id}', [\App\Http\Controllers\Admin\InqueryPemasanganpartController::class, 'deletepart']);
     Route::get('inquery_memoekspedisi/unpostmemo/{id}', [\App\Http\Controllers\Admin\InqueryMemoekspedisiController::class, 'unpostmemo']);
     Route::get('inquery_memoekspedisi/postingmemo/{id}', [\App\Http\Controllers\Admin\InqueryMemoekspedisiController::class, 'postingmemo']);
+    Route::get('inquery_memoekspedisispk/unpostmemo/{id}', [\App\Http\Controllers\Admin\InqueryMemoekspedisispkController::class, 'unpostmemo']);
+    Route::get('inquery_memoekspedisispk/postingmemo/{id}', [\App\Http\Controllers\Admin\InqueryMemoekspedisispkController::class, 'postingmemo']);
     Route::get('inquery_memotambahan/unpostmemotambahan/{id}', [\App\Http\Controllers\Admin\InqueryMemotambahanController::class, 'unpostmemotambahan']);
     Route::get('inquery_memotambahan/postingmemotambahan/{id}', [\App\Http\Controllers\Admin\InqueryMemotambahanController::class, 'postingmemotambahan']);
     Route::get('inquery_memoborong/unpostmemoborong/{id}', [\App\Http\Controllers\Admin\InqueryMemoborongController::class, 'unpostmemoborong']);
@@ -392,7 +395,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('indexnon', [\App\Http\Controllers\Admin\TagihanekspedisiController::class, 'indexnonpph']);
     Route::get('inquery_tagihanekspedisi/editnonpph/{id}', [\App\Http\Controllers\Admin\InqueryTagihanekspedisiController::class, 'editnonpph']);
 
-    
+
     Route::get('postingtagihan/{id}', [\App\Http\Controllers\Admin\InqueryTagihanekspedisiController::class, 'postingtagihan'])->name('postingtagihan');
     Route::get('unposttagihan/{id}', [\App\Http\Controllers\Admin\InqueryTagihanekspedisiController::class, 'unposttagihan'])->name('unposttagihan');
     Route::get('inquery_tagihanekspedisi/unposttagihan/{id}', [\App\Http\Controllers\Admin\InqueryTagihanekspedisiController::class, 'unposttagihan']);
@@ -422,6 +425,13 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('laporan_tagihanekspedisi', [\App\Http\Controllers\Admin\LaporanTagihanekspedisiController::class, 'index']);
     Route::get('tagihan_ekspedisi/cetak-pdf/{id}', [\App\Http\Controllers\Admin\TagihanekspedisiController::class, 'cetakpdf']);
     Route::get('inquery_fakturekspedisi', [\App\Http\Controllers\Admin\InqueryFakturekspedisiController::class, 'index']);
+    Route::get('inquery_fakturekspedisispk', [\App\Http\Controllers\Admin\InqueryFakturekspedisispkController::class, 'index']);
+
+    Route::delete('inquery_memoekspedisi/deletedetailbiayatambahan/{id}', [\App\Http\Controllers\Admin\InqueryMemoekspedisiController::class, 'deletedetailbiayatambahan']);
+    Route::delete('inquery_memoekspedisi/deletedetailbiayapotongan/{id}', [\App\Http\Controllers\Admin\InqueryMemoekspedisiController::class, 'deletedetailbiayapotongan']);
+
+    Route::delete('inquery_memoekspedisispk/deletedetailbiayatambahan/{id}', [\App\Http\Controllers\Admin\InqueryMemoekspedisispkController::class, 'deletedetailbiayatambahan']);
+    Route::delete('inquery_memoekspedisispk/deletedetailbiayapotongan/{id}', [\App\Http\Controllers\Admin\InqueryMemoekspedisispkController::class, 'deletedetailbiayapotongan']);
 
     Route::get('unpostreturn/{id}', [\App\Http\Controllers\Admin\InqueryReturnekspedisiController::class, 'unpostreturn'])->name('unpostreturn');
     Route::get('postingreturn/{id}', [\App\Http\Controllers\Admin\InqueryReturnekspedisiController::class, 'postingreturn'])->name('postingreturn');
@@ -496,6 +506,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('print_mobillogistikglobal', [\App\Http\Controllers\Admin\LaporanMobillogistikglobalController::class, 'print_mobillogistikglobal']);
     Route::delete('inquery_pengeluarankaskecil/deletedetailpengeluaran/{id}', [\App\Http\Controllers\Admin\InqueryPengeluarankaskecilController::class, 'deletedetailpengeluaran']);
 
+    Route::delete('inquery_fakturekspedisispk/deletedetailfaktur/{id}', [\App\Http\Controllers\Admin\InqueryFakturekspedisispkController::class, 'deletedetailfaktur']);
     Route::delete('inquery_fakturekspedisi/deletedetailfaktur/{id}', [\App\Http\Controllers\Admin\InqueryFakturekspedisiController::class, 'deletedetailfaktur']);
     Route::delete('inquery_memotambahan/deletedetailtambahan/{id}', [\App\Http\Controllers\Admin\InqueryMemotambahanController::class, 'deletedetailtambahan']);
     Route::delete('inquery_fakturpenjualanreturn/dell/{id}', [\App\Http\Controllers\Admin\InqueryFakturpenjualanreturnController::class, 'dell']);
@@ -599,7 +610,9 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::resource('inquery_penerimaankaskecil', \App\Http\Controllers\Admin\InqueryPenerimaankaskecilController::class);
     Route::resource('rute_perjalanan', \App\Http\Controllers\Admin\RuteperjalananController::class);
     Route::resource('memo_ekspedisi', \App\Http\Controllers\Admin\MemoekspedisiController::class);
+    Route::resource('memo_ekspedisispk', \App\Http\Controllers\Admin\MemoekspedisispkController::class);
     Route::resource('inquery_memoekspedisi', \App\Http\Controllers\Admin\InqueryMemoekspedisiController::class);
+    Route::resource('inquery_memoekspedisispk', \App\Http\Controllers\Admin\InqueryMemoekspedisispkController::class);
     Route::resource('inquery_memoborong', \App\Http\Controllers\Admin\InqueryMemoborongController::class);
     Route::resource('inquery_memotambahan', \App\Http\Controllers\Admin\InqueryMemotambahanController::class);
     Route::resource('biaya_tambahan', \App\Http\Controllers\Admin\BiayatambahanController::class);
@@ -611,7 +624,9 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::resource('laporan_depositdriver', \App\Http\Controllers\Admin\LaporanDepositdriverController::class);
     Route::resource('tarif', \App\Http\Controllers\Admin\TarifController::class);
     Route::resource('faktur_ekspedisi', \App\Http\Controllers\Admin\FakturekspedisiController::class);
+    Route::resource('faktur_ekspedisispk', \App\Http\Controllers\Admin\FakturekspedisispkController::class);
     Route::resource('inquery_fakturekspedisi', \App\Http\Controllers\Admin\InqueryFakturekspedisiController::class);
+    Route::resource('inquery_fakturekspedisispk', \App\Http\Controllers\Admin\InqueryFakturekspedisispkController::class);
     Route::resource('tagihan_ekspedisi', \App\Http\Controllers\Admin\TagihanekspedisiController::class);
     Route::resource('inquery_tagihanekspedisi', \App\Http\Controllers\Admin\InqueryTagihanekspedisiController::class);
     Route::resource('satuan', \App\Http\Controllers\Admin\SatuanController::class);
@@ -669,4 +684,16 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     // Route::resource('bukti_potongpajak', \App\Http\Controllers\Admin\BuktipotongpajakController::class);
     Route::resource('inquery_buktipotongpajak', \App\Http\Controllers\Admin\InqueryBuktipotongpajakController::class);
     Route::resource('laporan_buktipotongpajak', \App\Http\Controllers\Admin\LaporanBuktipotongpajakController::class);
+
+    Route::resource('status_spk', \App\Http\Controllers\Admin\StatusSpkController::class);
+    Route::resource('spk', \App\Http\Controllers\Admin\SpkController::class);
+    Route::resource('inquery_spk', \App\Http\Controllers\Admin\InquerySpkController::class);
+    Route::resource('status_spk', \App\Http\Controllers\Admin\StatusSpkController::class);
+    Route::resource('penerimaan_sj', \App\Http\Controllers\Admin\PenerimaansjController::class);
+    Route::post('tambah_spk', [\App\Http\Controllers\Admin\MemoekspedisispkController::class, 'tambah_spk']);
+    Route::get('inquery_spk/unpostspk/{id}', [\App\Http\Controllers\Admin\InquerySpkController::class, 'unpostspk']);
+    Route::get('inquery_spk/postingspk/{id}', [\App\Http\Controllers\Admin\InquerySpkController::class, 'postingspk']);
+    Route::get('penerimaan_sj/unpostspkpenerimaan/{id}', [\App\Http\Controllers\Admin\PenerimaansjController::class, 'unpostspkpenerimaan']);
+    Route::get('penerimaan_sj/postingspkpenerimaan/{id}', [\App\Http\Controllers\Admin\PenerimaansjController::class, 'postingspkpenerimaan']);
+    
 });

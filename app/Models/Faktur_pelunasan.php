@@ -17,6 +17,8 @@ class Faktur_pelunasan extends Model
     protected $fillable =
     [
         'user_id',
+        'spk_id',
+        'kode_spk',
         'tagihan_ekspedisi_id',
         'kode_tagihan',
         'kode_pelunasan',

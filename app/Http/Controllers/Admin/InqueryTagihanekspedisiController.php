@@ -25,6 +25,7 @@ use App\Models\Penerimaan_kaskecil;
 use App\Models\Potongan_memo;
 use App\Models\Rute_perjalanan;
 use App\Models\Saldo;
+use App\Models\Spk;
 use App\Models\Tagihan_ekspedisi;
 use App\Models\Tarif;
 use App\Models\User;
@@ -225,7 +226,17 @@ class InqueryTagihanekspedisiController extends Controller
                     'harga' =>  str_replace(',', '.', str_replace('.', '', $data_pesanan['harga'])),
                     'total' =>  str_replace(',', '.', str_replace('.', '', $data_pesanan['total'])),
                 ]);
-                Faktur_ekspedisi::where('id', $existingDetail->faktur_ekspedisi_id)->update(['status_tagihan' => 'aktif', 'status' => 'selesai']);
+
+                $faktur = Faktur_ekspedisi::find($existingDetail->faktur_ekspedisi_id);
+                if ($faktur) {
+                    $faktur->update(['status_tagihan' => 'aktif', 'status' => 'selesai']);
+
+                    // Update status spk
+                    $spk = Spk::find($faktur->spk_id);
+                    if ($spk) {
+                        $spk->update(['status_spk' => 'invoice']);
+                    }
+                }
             } else {
                 $existingDetail = Detail_tagihan::where([
                     'tagihan_ekspedisi_id' => $cetakpdf->id,
@@ -265,8 +276,15 @@ class InqueryTagihanekspedisiController extends Controller
                         'harga' =>  str_replace(',', '.', str_replace('.', '', $data_pesanan['harga'])),
                         'total' =>  str_replace(',', '.', str_replace('.', '', $data_pesanan['total'])),
                     ]);
-
-                    Faktur_ekspedisi::where('id', $detailTagihan->faktur_ekspedisi_id)->update(['status_tagihan' => 'aktif', 'status' => 'selesai']);
+                    $faktur = Faktur_ekspedisi::find($detailTagihan->faktur_ekspedisi_id);
+                    if ($faktur) {
+                        $faktur->update(['status_tagihan' => 'aktif', 'status' => 'selesai']);
+                        // Update status spk
+                        $spk = Spk::find($faktur->spk_id);
+                        if ($spk) {
+                            $spk->update(['status_spk' => 'invoice']);
+                        }
+                    }
                 }
             }
         }
@@ -290,7 +308,16 @@ class InqueryTagihanekspedisiController extends Controller
 
         // Memperbarui status faktur ekspedisi untuk setiap detail yang sesuai
         foreach ($details as $detail) {
-            Faktur_ekspedisi::where(['id' => $detail->faktur_ekspedisi_id, 'status' => 'selesai'])->update(['status_tagihan' => null, 'status' => 'posting']);
+            $faktur = Faktur_ekspedisi::where(['id' => $detail->faktur_ekspedisi_id, 'status' => 'selesai'])->first();
+            if ($faktur) {
+                $faktur->update(['status_tagihan' => null, 'status' => 'posting']);
+
+                // Update status spk
+                $spk = Spk::find($faktur->spk_id);
+                if ($spk) {
+                    $spk->update(['status_spk' => 'faktur']);
+                }
+            }
         }
 
         // Memperbarui status tagihan ekspedisi menjadi 'posting'
@@ -308,7 +335,16 @@ class InqueryTagihanekspedisiController extends Controller
 
         // Memperbarui status faktur ekspedisi untuk setiap detail yang sesuai
         foreach ($details as $detail) {
-            Faktur_ekspedisi::where(['id' => $detail->faktur_ekspedisi_id, 'status' => 'posting'])->update(['status_tagihan' => 'aktif', 'status' => 'selesai']);
+            $faktur = Faktur_ekspedisi::where(['id' => $detail->faktur_ekspedisi_id, 'status' => 'posting'])->first();
+            if ($faktur) {
+                $faktur->update(['status_tagihan' => 'aktif', 'status' => 'selesai']);
+
+                // Update status spk
+                $spk = Spk::find($faktur->spk_id);
+                if ($spk) {
+                    $spk->update(['status_spk' => 'invoice']);
+                }
+            }
         }
 
         // Memperbarui status tagihan ekspedisi menjadi 'posting'

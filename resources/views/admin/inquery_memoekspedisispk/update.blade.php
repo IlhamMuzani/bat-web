@@ -12,7 +12,7 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('admin/inquery_memoekspedisispk') }}">Memo Ekspedisi</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('admin/inquery_memoekspedisi') }}">Memo Ekspedisi</a></li>
                         <li class="breadcrumb-item active">Tambah</li>
                     </ol>
                 </div>
@@ -62,7 +62,7 @@
                     @endif
                 </div>
             @endif
-            <form action="{{ url('admin/inquery_memoekspedisispk/' . $inquery->id) }}" method="POST"
+            <form action="{{ url('admin/inquery_memoekspedisi/' . $inquery->id) }}" method="POST"
                 enctype="multipart/form-data" autocomplete="off">
                 @csrf
                 @method('put')
@@ -72,6 +72,18 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
+                        <label style="font-size:14px" class="form-label" for="spk_id">No. Spk</label>
+                        <div class="form-group d-flex">
+                            <input hidden onclick="showSpk(this.value)" class="form-control" id="spk_id" name="spk_id"
+                                type="text" placeholder="" value="{{ old('spk_id', $inquery->spk->id) }}" readonly
+                                style="margin-right: 10px; font-size:14px" />
+                            <input onclick="showSpk(this.value)" class="form-control" id="kode_spk" name="kode_spk"
+                                type="text" placeholder="" value="{{ old('kode_spk', $inquery->spk->kode_spk) }}"
+                                readonly style="margin-right: 10px; font-size:14px" />
+                            <button class="btn btn-primary" type="button" onclick="showSpk(this.value)">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
                         <div class="form-group">
                             <label style="font-size:14px" for="kategori">Kategori</label>
                             <input style="font-size:14px" type="text" class="form-control" id="kategori" readonly
@@ -106,7 +118,8 @@
                                         <div class="form-group" hidden>
                                             <label for="no_pol">No pol</label>
                                             <input type="text" class="form-control" id="no_pol" readonly
-                                                name="no_pol" placeholder="" value="{{ old('no_pol', $inquery->no_pol) }}">
+                                                name="no_pol" placeholder=""
+                                                value="{{ old('no_pol', $inquery->no_pol) }}">
                                         </div>
                                         <label style="font-size:14px" class="form-label" for="no_kabin">No. Kabin</label>
                                         <div class="form-group d-flex">
@@ -122,8 +135,9 @@
                                         <div class="form-group">
                                             <label style="font-size:14px" for="golongan">Gol. Kendaraan</label>
                                             <input onclick="showCategoryModalkendaraan(this.value)" style="font-size:14px"
-                                                type="text" class="form-control" id="golongan" readonly name="golongan"
-                                                placeholder="" value="{{ old('golongan', $inquery->golongan) }}">
+                                                type="text" class="form-control" id="golongan" readonly
+                                                name="golongan" placeholder=""
+                                                value="{{ old('golongan', $inquery->golongan) }}">
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size:14px" for="km">KM Awal</label>
@@ -704,6 +718,57 @@
         </div>
         </form>
 
+        <div class="modal fade" id="tableSpk" data-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Data Spk</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive scrollbar m-2">
+                            <table id="datatables7" class="table table-bordered table-striped">
+                                <thead class="bg-200 text-900">
+                                    <tr>
+                                        <th class="text-center">No</th>
+                                        <th>No. Spk</th>
+                                        <th>Tanggal</th>
+                                        <th>Opsi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($spks as $spk)
+                                        <tr
+                                            onclick="getSelectedDataspk('{{ $spk->id }}',
+                                                    '{{ $spk->kode_spk }}','{{ $spk->kendaraan_id }}', '{{ $spk->no_kabin }}', '{{ $spk->no_pol }}', '{{ $spk->golongan }}', '{{ $spk->km_awal }}',
+                                                    '{{ $spk->user_id }}', '{{ $spk->user->karyawan->kode_karyawan }}', '{{ $spk->user->karyawan->nama_lengkap }}', '{{ $spk->user->karyawan->telp }}',
+                                                    '{{ $spk->user->karyawan->tabungan }}','{{ $spk->rute_perjalanan_id }}', '{{ $spk->rute_perjalanan->kode_rute }}', '{{ $spk->rute_perjalanan->nama_rute }}',
+                                                    '{{ $spk->rute_perjalanan->golongan }}' , '{{ $spk->rute_perjalanan->golongan2 }}', '{{ $spk->rute_perjalanan->golongan3 }}', '{{ $spk->rute_perjalanan->golongan4 }}',
+                                                    '{{ $spk->rute_perjalanan->golongan5 }}', '{{ $spk->rute_perjalanan->golongan6 }}', '{{ $spk->rute_perjalanan->golongan7 }}', '{{ $spk->rute_perjalanan->golongan8 }}',
+                                                    '{{ $spk->rute_perjalanan->golongan9 }}', '{{ $spk->rute_perjalanan->golongan10 }}')">
+                                            <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td>{{ $spk->kode_spk }}</td>
+                                            <td>{{ $spk->tanggal_awal }}</td>
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-primary btn-sm"
+                                                    onclick="getSelectedDataspk('{{ $spk->id }}',
+                                                    '{{ $spk->kode_spk }}'
+                                                    )">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="modal fade" id="tableBiaya" data-backdrop="static">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -1019,6 +1084,85 @@
     </section>
 
     <script>
+        function showSpk(selectedCategory) {
+            $('#tableSpk').modal('show');
+        }
+
+        function getSelectedDataspk(Spk_id, KodeSpk, Kendaraan_id, NoKabin, Nopol, Golongan, KmAwal, User_id, KodeDriver,
+            NamaDriver, Telp, SaldoDP, Rute_id, KodeRute, NamaRute, Golongan1, Golongan2, Golongan3, Golongan4, Golongan5,
+            Golongan6, Golongan7, Golongan8, Golongan9, Golongan10) {
+            // Set the values in the form fields
+            document.getElementById('spk_id').value = Spk_id;
+            document.getElementById('kode_spk').value = KodeSpk;
+            document.getElementById('kendaraan_id').value = Kendaraan_id;
+            document.getElementById('no_kabin').value = NoKabin;
+            document.getElementById('no_pol').value = NoKabin;
+            document.getElementById('golongan').value = Golongan;
+            document.getElementById('km').value = KmAwal;
+            document.getElementById('user_id').value = User_id;
+            document.getElementById('kode_driver').value = KodeDriver;
+            document.getElementById('nama_driver').value = NamaDriver;
+            document.getElementById('telp').value = Telp;
+            var kategori = $('#kategori').val(); // Get the value of the 'kategori' select element
+            // Format SaldoDP to display properly
+            var formattedNominal = parseFloat(SaldoDP).toLocaleString('id-ID');
+            document.getElementById('saldo_deposit').value = formattedNominal;
+
+
+            var Golongan = document.getElementById("golongan").value;
+
+            document.getElementById('rute_perjalanan_id').value = Rute_id;
+            document.getElementById('kode_rute').value = KodeRute;
+            document.getElementById('rute_perjalanan').value = NamaRute;
+
+            if (Golongan === 'Golongan 1') {
+                var Golongan1Value = parseFloat(Golongan1);
+                document.getElementById('biaya').value = Golongan1Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan1Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 2') {
+                var Golongan2Value = parseFloat(Golongan2);
+                document.getElementById('biaya').value = Golongan2Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan2Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 3') {
+                var Golongan3Value = parseFloat(Golongan3);
+                document.getElementById('biaya').value = Golongan3Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan3Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 4') {
+                var Golongan4Value = parseFloat(Golongan4);
+                document.getElementById('biaya').value = Golongan4Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan4Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 5') {
+                var Golongan5Value = parseFloat(Golongan5);
+                document.getElementById('biaya').value = Golongan5Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan5Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 6') {
+                var Golongan6Value = parseFloat(Golongan6);
+                document.getElementById('biaya').value = Golongan6Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan6Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 7') {
+                var Golongan7Value = parseFloat(Golongan7);
+                document.getElementById('biaya').value = Golongan7Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan7Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 8') {
+                var Golongan8Value = parseFloat(Golongan8);
+                document.getElementById('biaya').value = Golongan8Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan8Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 9') {
+                var Golongan9Value = parseFloat(Golongan9);
+                document.getElementById('biaya').value = Golongan9Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan9Value.toLocaleString('id-ID');
+            } else if (Golongan === 'Golongan 10') {
+                var Golongan10Value = parseFloat(Golongan10);
+                document.getElementById('biaya').value = Golongan10Value.toLocaleString('id-ID');
+                document.getElementById('uangjalans').value = Golongan10Value.toLocaleString('id-ID');
+            }
+
+
+            // Close the modal
+            $('#tableSpk').modal('hide');
+            updateSubTotals();
+        }
+
         // filter rute 
         function filterTable() {
             var input, filter, table, tr, td, i, txtValue;
@@ -1491,7 +1635,7 @@
 
             console.log(detailId);
             $.ajax({
-                url: "{{ url('admin/inquery_memoekspedisispk/deletedetailbiayatambahan/') }}/" + detailId,
+                url: "{{ url('admin/inquery_memoekspedisi/deletedetailbiayatambahan/') }}/" + detailId,
                 type: "POST",
                 data: {
                     _method: 'DELETE',
@@ -1641,7 +1785,7 @@
 
             console.log(detailId);
             $.ajax({
-                url: "{{ url('admin/inquery_memoekspedisispk/deletedetailbiayapotongan/') }}/" + detailId,
+                url: "{{ url('admin/inquery_memoekspedisi/deletedetailbiayapotongan/') }}/" + detailId,
                 type: "POST",
                 data: {
                     _method: 'DELETE',

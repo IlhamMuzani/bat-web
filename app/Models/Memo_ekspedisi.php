@@ -17,6 +17,7 @@ class Memo_ekspedisi extends Model
     protected $fillable =
     [
         'memotambahan_id',
+        'spk_id',
         'admin',
         'kode_memo',
         'kategori',
@@ -91,6 +92,12 @@ class Memo_ekspedisi extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function spk()
+    {
+        return $this->belongsTo(Spk::class);
+    }
+
 
     public function kendaraan()
     {

@@ -193,8 +193,13 @@
                                                             href="{{ url('admin/inquery_memoekspedisi/' . $memo->id) }}">Show</a>
                                                     @endif
                                                     @if (auth()->check() && auth()->user()->fitur['update memo ekspedisi'])
-                                                        <a class="dropdown-item"
-                                                            href="{{ url('admin/inquery_memoekspedisi/' . $memo->id . '/edit') }}">Update</a>
+                                                        @if ($memo->spk_id == null)
+                                                            <a class="dropdown-item"
+                                                                href="{{ url('admin/inquery_memoekspedisi/' . $memo->id . '/edit') }}">Update</a>
+                                                        @else
+                                                            <a class="dropdown-item"
+                                                                href="{{ url('admin/inquery_memoekspedisispk/' . $memo->id . '/edit') }}">Update</a>
+                                                        @endif
                                                     @endif
                                                     @if (auth()->check() && auth()->user()->fitur['delete memo ekspedisi'])
                                                         <form style="margin-top:5px" method="GET"

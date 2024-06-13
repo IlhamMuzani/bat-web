@@ -18,6 +18,7 @@ use App\Models\Nota_return;
 use App\Models\Pelanggan;
 use App\Models\Potongan_penjualan;
 use App\Models\Return_ekspedisi;
+use App\Models\Spk;
 use App\Models\Tagihan_ekspedisi;
 use App\Models\Tarif;
 use Illuminate\Support\Facades\Validator;
@@ -213,7 +214,7 @@ class FakturpelunasanController extends Controller
         ]);
 
         Tagihan_ekspedisi::where('id', $request->tagihan_ekspedisi_id)->update([
-            'status'=> 'selesai',
+            'status' => 'selesai',
         ]);
 
         $transaksi_id = $cetakpdf->id;
@@ -228,7 +229,19 @@ class FakturpelunasanController extends Controller
                 'status' => 'posting',
             ]);
 
-            Faktur_ekspedisi::where('id', $detailPelunasan->faktur_ekspedisi_id)->update(['status_pelunasan' => 'aktif']);
+            // Ambil objek faktur ekspedisi
+            $faktur = Faktur_ekspedisi::find($detailPelunasan->faktur_ekspedisi_id);
+
+            if ($faktur) {
+                // Update status faktur
+                $faktur->update(['status_pelunasan' => 'aktif']);
+
+                // Update status spk
+                $spk = Spk::find($faktur->spk_id);
+                if ($spk) {
+                    $spk->update(['status_spk' => 'pelunasan']);
+                }
+            }
         }
 
         foreach ($data_pembelians2 as $data_pesanan) {

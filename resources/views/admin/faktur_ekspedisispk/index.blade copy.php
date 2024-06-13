@@ -72,16 +72,6 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div class="form-group" style="flex: 8;">
-                            <div class="form-group" style="flex: 8;">
-                                <div class="col-md-0 mb-3">
-                                    <label>Status</label>
-                                    <select class="custom-select form-control" id="status" name="status">
-                                        <option value="">- Pilih Status -</option>
-                                        <option value="spk" selected>Non SPK</option>
-                                        <option value="non_spk">SPK</option>
-                                    </select>
-                                </div>
-                            </div>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -113,6 +103,16 @@
                                 </div>
                             </div>
                             <div class="row">
+                                {{-- <div class="mb-3 mt-4">
+                                <button class="btn btn-primary btn-sm" type="button" onclick="ShowMemo(this.value)">
+                                    <i class="fas fa-plus mr-2"></i> Pilih Pelanggan
+                                </button>
+                            </div> --}}
+                                {{-- <div class="form-group">
+                                    <label for="kode_faktur">Kode Fkatur</label>
+                                    <input type="text" class="form-control" id="kode_faktur" name="kode_faktur"
+                                        placeholder="" value="{{ old('kode_faktur') }}">
+                                </div> --}}
                                 <div hidden class="form-group">
                                     <label for="pelanggan_id">pelanggan Id</label>
                                     <input type="text" class="form-control" id="pelanggan_id" readonly
@@ -499,8 +499,6 @@
                                                     <th style="font-size:14px" class="text-center">No</th>
                                                     <th style="font-size:14px">Keterangan</th>
                                                     <th style="font-size:14px">Nominal</th>
-                                                    <th style="font-size:14px">Qty</th>
-                                                    <th style="font-size:14px">Satuan</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="tabel-memotambahan">
@@ -521,49 +519,6 @@
                                                                 class="form-control" id="nominal_tambahan-0"
                                                                 name="nominal_tambahan[]">
                                                         </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <input style="font-size:14px" type="number"
-                                                                class="form-control" id="qty_tambahan-0"
-                                                                name="qty_tambahan[]">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <select style="font-size:14px" class="form-control"
-                                                            id="satuan_tambahan-0" name="satuan_tambahan[]">
-                                                            <option value="">- Pilih -</option>
-                                                            <option value="M3"
-                                                                {{ old('satuan_tambahan') == 'M3' ? 'selected' : null }}>
-                                                                M&sup3;</option>
-                                                            <option value="ton"
-                                                                {{ old('satuan_tambahan') == 'ton' ? 'selected' : null }}>
-                                                                ton</option>
-                                                            <option value="krtn"
-                                                                {{ old('satuan_tambahan') == 'krtn' ? 'selected' : null }}>
-                                                                krtn</option>
-                                                            <option value="dus"
-                                                                {{ old('satuan_tambahan') == 'dus' ? 'selected' : null }}>
-                                                                dus</option>
-                                                            <option value="rit"
-                                                                {{ old('satuan_tambahan') == 'rit' ? 'selected' : null }}>
-                                                                rit</option>
-                                                            <option value="kg"
-                                                                {{ old('satuan_tambahan') == 'kg' ? 'selected' : null }}>
-                                                                kg</option>
-                                                            <option value="ltr"
-                                                                {{ old('satuan_tambahan') == 'ltr' ? 'selected' : null }}>
-                                                                ltr</option>
-                                                            <option value="pcs"
-                                                                {{ old('satuan_tambahan') == 'pcs' ? 'selected' : null }}>
-                                                                pcs</option>
-                                                            <option value="hr"
-                                                                {{ old('satuan_tambahan') == 'hr' ? 'selected' : null }}>
-                                                                hr</option>
-                                                            <option value="ZAK"
-                                                                {{ old('satuan_tambahan') == 'ZAK' ? 'selected' : null }}>
-                                                                ZAK</option>
-                                                        </select>
                                                     </td>
                                                     <td style="width: 50px">
                                                         <button style="margin-left:5px" type="button"
@@ -1281,22 +1236,15 @@
                     urutan[i].innerText = i + 1;
                 }
             }
-
-            updateGrandTotal();
-            updateHarga();
         }
 
         function itemPembelians(urutan, key, value = null) {
             var keterangan_tambahan = '';
             var nominal_tambahan = '';
-            var qty_tambahan = '';
-            var satuan_tambahan = '';
 
             if (value !== null) {
                 keterangan_tambahan = value.keterangan_tambahan;
                 nominal_tambahan = value.nominal_tambahan;
-                qty_tambahan = value.qty_tambahan;
-                satuan_tambahan = value.satuan_tambahan;
             }
 
             // urutan 
@@ -1320,45 +1268,6 @@
             item_pembelian += '<input type="text" class="form-control" style="font-size:14px" id="nominal_tambahan-' +
                 urutan +
                 '" name="nominal_tambahan[]" value="' + nominal_tambahan + '" ';
-            item_pembelian += '</div>';
-            item_pembelian += '</td>';
-
-            // qty_tambahan 
-            item_pembelian += '<td>';
-            item_pembelian += '<div class="form-group">'
-            item_pembelian += '<input type="number" class="form-control" style="font-size:14px" id="nominal_tambahan-' +
-                urutan +
-                '" name="qty_tambahan[]" value="' + qty_tambahan + '" ';
-            item_pembelian += '</div>';
-            item_pembelian += '</td>';
-
-
-            // satuan_tambahan
-            item_pembelian += '<td>';
-            item_pembelian += '<div class="form-group">';
-            item_pembelian += '<select style="font-size:14px" class="form-control" id="satuan_tambahan-' + key +
-                '" name="satuan_tambahan[]">';
-            item_pembelian += '<option value="">- Pilih -</option>';
-            item_pembelian += '<option value="M3"' + (satuan_tambahan === 'M3' ? ' selected' : '') +
-                '>M&sup3;</option>';
-            item_pembelian += '<option value="ton"' + (satuan_tambahan === 'ton' ? ' selected' : '') +
-                '>ton</option>';
-            item_pembelian += '<option value="krtn"' + (satuan_tambahan === 'krtn' ? ' selected' : '') +
-                '>krtn</option>';
-            item_pembelian += '<option value="dus"' + (satuan_tambahan === 'dus' ? ' selected' : '') +
-                '>dus</option>';
-            item_pembelian += '<option value="rit"' + (satuan_tambahan === 'rit' ? ' selected' : '') +
-                '>rit</option>';
-            item_pembelian += '<option value="kg"' + (satuan_tambahan === 'kg' ? ' selected' : '') +
-                '>kg</option>';
-            item_pembelian += '<option value="ltr"' + (satuan_tambahan === 'ltr' ? ' selected' : '') +
-                '>ltr</option>';
-            item_pembelian += '<option value="pcs"' + (satuan_tambahan === 'pcs' ? ' selected' : '') + '>pcs</option>';
-            item_pembelian += '<option value="hr"' + (satuan_tambahan === 'hr' ? ' selected' : '') +
-                '>hr</option>';
-            item_pembelian += '<option value="ZAK"' + (satuan_tambahan === 'ZAK' ? ' selected' : '') +
-                '>ZAK</option>';
-            item_pembelian += '</select>';
             item_pembelian += '</div>';
             item_pembelian += '</td>';
 
@@ -1635,7 +1544,7 @@
                 // Jika kategori NON PPH, tidak kurangkan 2%
                 $(".pph2").val(0);
                 $(".sisa").val(harga.toLocaleString('id-ID'));
-                var Subtotal = harga;
+                var Subtotal = harga + biaya_tambahan;
                 $(".sub_total").val(Subtotal.toLocaleString('id-ID'));
             }
         }
@@ -1699,7 +1608,6 @@
         }
     </script>
 
-
     <script>
         function toggleLabels() {
             var kategori = document.getElementById('kategoris');
@@ -1746,29 +1654,6 @@
                 $('#no_kabins').val('');
                 $('#no_pols').val('');
                 $('#nama_sopir').val('');
-            });
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            // Detect the change event on the 'status' dropdown
-            $('#status').on('change', function() {
-                // Get the selected value
-                var selectedValue = $(this).val();
-
-                // Check the selected value and redirect accordingly
-                switch (selectedValue) {
-                    case 'spk':
-                        window.location.href = "{{ url('admin/faktur_ekspedisi') }}";
-                        break;
-                    case 'non_spk':
-                        window.location.href = "{{ url('admin/faktur_ekspedisispk') }}";
-                        break;
-                    default:
-                        // Handle other cases or do nothing
-                        break;
-                }
             });
         });
     </script>

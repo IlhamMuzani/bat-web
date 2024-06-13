@@ -355,7 +355,7 @@
                 </div>
             @endif
             {{-- <br> --}}
-            <div style=" margin-top:13px; margin-bottom:{{ $j % 2 != 0 && $j != 0 ? 150 : 27 }}px">
+            <div style=" margin-top:13px; margin-bottom:{{ $j % 2 != 0 && $j != 0 ? 150 : 12 }}px">
                 <table class="tdd" cellpadding="10" cellspacing="0" style="margin: 0 auto;">
                     <tr>
                         <td style="text-align: center;">

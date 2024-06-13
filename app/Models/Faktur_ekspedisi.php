@@ -17,6 +17,8 @@ class Faktur_ekspedisi extends Model
     protected $fillable =
     [
         'user_id',
+        'spk_id',
+        'kode_spk',
         'kode_faktur',
         'kategori',
         'kategoris',
