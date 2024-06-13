@@ -621,7 +621,7 @@
                 </a>
             </li>
         @endif
-        @if (auth()->check() && auth()->user()->menu['memo ekspedisi'])
+        @if (auth()->check() && auth()->user()->menu['faktur ekspedisi'])
             <li class="nav-item">
                 <a href="{{ url('admin/penerimaan_sj') }}"
                     class="nav-link {{ request()->is('admin/penerimaan_sj*') ? 'active' : '' }}">
