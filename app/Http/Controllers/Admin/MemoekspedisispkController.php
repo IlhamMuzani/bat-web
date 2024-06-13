@@ -40,7 +40,15 @@ class MemoekspedisispkController extends Controller
 {
     public function index()
     {
-        $spks = Spk::where('voucher', '<', 2)->get();
+        // $spks = Spk::where('voucher', '<', 2)->get();
+        $spks = Spk::where('voucher', '<', 2)
+            ->where(function ($query) {
+                $query->where('status_spk', '!=', 'faktur')
+                    ->where('status_spk', '!=', 'invoice')
+                    ->where('status_spk', '!=', 'pelunasan')
+                    ->orWhereNull('status_spk');
+            })
+            ->get();
         $kendaraans = Kendaraan::all();
         $drivers = User::whereHas('karyawan', function ($query) {
             $query->where('departemen_id', '2');
