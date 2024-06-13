@@ -139,9 +139,7 @@
                                             <img src="{{ asset('storage/uploads/indikator/faktur.png') }}" height="40"
                                                 width="40" alt="Document">
                                         @endif
-                                        @if ($buktipotongpajak->status_spk == '')
-                                            <img src="{{ asset('storage/uploads/indikator/faktur.png') }}" height="40"
-                                                width="40" alt="Document">
+                                        @if ($buktipotongpajak->status_spk == null)
                                         @endif
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             @if ($buktipotongpajak->status_spk == 'memo')
@@ -152,6 +150,7 @@
                                                 <a class="dropdown-item unpost-btn"
                                                     data-memo-id="{{ $buktipotongpajak->id }}">Unpost</a>
                                             @endif
+
                                         </div>
                                     </td>
                                 </tr>
