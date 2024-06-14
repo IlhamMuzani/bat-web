@@ -142,4 +142,12 @@ class InquerySpkController extends Controller
 
         return response()->json(['success' => 'Berhasil unpost spk']);
     }
+
+    public function hapusspk($id)
+    {
+        $memo = Spk::where('id', $id)->first();
+        $memo->delete();
+        return back()->with('success', 'Berhasil');
+    }
+
 }
