@@ -745,17 +745,17 @@
                                                     '{{ $spk->kode_spk }}','{{ $spk->kendaraan_id }}', '{{ $spk->no_kabin }}', '{{ $spk->no_pol }}', '{{ $spk->golongan }}', '{{ $spk->km_awal }}',
                                                     '{{ $spk->user_id }}', '{{ $spk->user->karyawan->kode_karyawan }}', '{{ $spk->user->karyawan->nama_lengkap }}', '{{ $spk->user->karyawan->telp }}',
                                                     '{{ $spk->user->karyawan->tabungan }}','{{ $spk->rute_perjalanan_id }}', '{{ $spk->rute_perjalanan->kode_rute }}', '{{ $spk->rute_perjalanan->nama_rute }}',
-                                                    '{{ $spk->rute_perjalanan->golongan }}' , '{{ $spk->rute_perjalanan->golongan2 }}', '{{ $spk->rute_perjalanan->golongan3 }}', '{{ $spk->rute_perjalanan->golongan4 }}',
-                                                    '{{ $spk->rute_perjalanan->golongan5 }}', '{{ $spk->rute_perjalanan->golongan6 }}', '{{ $spk->rute_perjalanan->golongan7 }}', '{{ $spk->rute_perjalanan->golongan8 }}',
-                                                    '{{ $spk->rute_perjalanan->golongan9 }}', '{{ $spk->rute_perjalanan->golongan10 }}')">
+                                                    '{{ $spk->uang_jalan }}')">
                                             <td class="text-center">{{ $loop->iteration }}</td>
                                             <td>{{ $spk->kode_spk }}</td>
                                             <td>{{ $spk->tanggal_awal }}</td>
                                             <td class="text-center">
                                                 <button type="button" class="btn btn-primary btn-sm"
                                                     onclick="getSelectedDataspk('{{ $spk->id }}',
-                                                    '{{ $spk->kode_spk }}'
-                                                    )">
+                                                    '{{ $spk->kode_spk }}','{{ $spk->kendaraan_id }}', '{{ $spk->no_kabin }}', '{{ $spk->no_pol }}', '{{ $spk->golongan }}', '{{ $spk->km_awal }}',
+                                                    '{{ $spk->user_id }}', '{{ $spk->user->karyawan->kode_karyawan }}', '{{ $spk->user->karyawan->nama_lengkap }}', '{{ $spk->user->karyawan->telp }}',
+                                                    '{{ $spk->user->karyawan->tabungan }}','{{ $spk->rute_perjalanan_id }}', '{{ $spk->rute_perjalanan->kode_rute }}', '{{ $spk->rute_perjalanan->nama_rute }}',
+                                                    '{{ $spk->uang_jalan }}')">
                                                     <i class="fas fa-plus"></i>
                                                 </button>
                                             </td>
@@ -1089,8 +1089,7 @@
         }
 
         function getSelectedDataspk(Spk_id, KodeSpk, Kendaraan_id, NoKabin, Nopol, Golongan, KmAwal, User_id, KodeDriver,
-            NamaDriver, Telp, SaldoDP, Rute_id, KodeRute, NamaRute, Golongan1, Golongan2, Golongan3, Golongan4, Golongan5,
-            Golongan6, Golongan7, Golongan8, Golongan9, Golongan10) {
+            NamaDriver, Telp, SaldoDP, Rute_id, KodeRute, NamaRute, UangJalan) {
             // Set the values in the form fields
             document.getElementById('spk_id').value = Spk_id;
             document.getElementById('kode_spk').value = KodeSpk;
@@ -1115,49 +1114,8 @@
             document.getElementById('kode_rute').value = KodeRute;
             document.getElementById('rute_perjalanan').value = NamaRute;
 
-            if (Golongan === 'Golongan 1') {
-                var Golongan1Value = parseFloat(Golongan1);
-                document.getElementById('biaya').value = Golongan1Value.toLocaleString('id-ID');
-                document.getElementById('uangjalans').value = Golongan1Value.toLocaleString('id-ID');
-            } else if (Golongan === 'Golongan 2') {
-                var Golongan2Value = parseFloat(Golongan2);
-                document.getElementById('biaya').value = Golongan2Value.toLocaleString('id-ID');
-                document.getElementById('uangjalans').value = Golongan2Value.toLocaleString('id-ID');
-            } else if (Golongan === 'Golongan 3') {
-                var Golongan3Value = parseFloat(Golongan3);
-                document.getElementById('biaya').value = Golongan3Value.toLocaleString('id-ID');
-                document.getElementById('uangjalans').value = Golongan3Value.toLocaleString('id-ID');
-            } else if (Golongan === 'Golongan 4') {
-                var Golongan4Value = parseFloat(Golongan4);
-                document.getElementById('biaya').value = Golongan4Value.toLocaleString('id-ID');
-                document.getElementById('uangjalans').value = Golongan4Value.toLocaleString('id-ID');
-            } else if (Golongan === 'Golongan 5') {
-                var Golongan5Value = parseFloat(Golongan5);
-                document.getElementById('biaya').value = Golongan5Value.toLocaleString('id-ID');
-                document.getElementById('uangjalans').value = Golongan5Value.toLocaleString('id-ID');
-            } else if (Golongan === 'Golongan 6') {
-                var Golongan6Value = parseFloat(Golongan6);
-                document.getElementById('biaya').value = Golongan6Value.toLocaleString('id-ID');
-                document.getElementById('uangjalans').value = Golongan6Value.toLocaleString('id-ID');
-            } else if (Golongan === 'Golongan 7') {
-                var Golongan7Value = parseFloat(Golongan7);
-                document.getElementById('biaya').value = Golongan7Value.toLocaleString('id-ID');
-                document.getElementById('uangjalans').value = Golongan7Value.toLocaleString('id-ID');
-            } else if (Golongan === 'Golongan 8') {
-                var Golongan8Value = parseFloat(Golongan8);
-                document.getElementById('biaya').value = Golongan8Value.toLocaleString('id-ID');
-                document.getElementById('uangjalans').value = Golongan8Value.toLocaleString('id-ID');
-            } else if (Golongan === 'Golongan 9') {
-                var Golongan9Value = parseFloat(Golongan9);
-                document.getElementById('biaya').value = Golongan9Value.toLocaleString('id-ID');
-                document.getElementById('uangjalans').value = Golongan9Value.toLocaleString('id-ID');
-            } else if (Golongan === 'Golongan 10') {
-                var Golongan10Value = parseFloat(Golongan10);
-                document.getElementById('biaya').value = Golongan10Value.toLocaleString('id-ID');
-                document.getElementById('uangjalans').value = Golongan10Value.toLocaleString('id-ID');
-            }
-
-
+            var formattedNominals = parseFloat(UangJalan).toLocaleString('id-ID');
+            document.getElementById('biaya').value = formattedNominals;
             // Close the modal
             $('#tableSpk').modal('hide');
             updateSubTotals();
