@@ -695,5 +695,8 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('inquery_spk/postingspk/{id}', [\App\Http\Controllers\Admin\InquerySpkController::class, 'postingspk']);
     Route::get('penerimaan_sj/unpostspkpenerimaan/{id}', [\App\Http\Controllers\Admin\PenerimaansjController::class, 'unpostspkpenerimaan']);
     Route::get('penerimaan_sj/postingspkpenerimaan/{id}', [\App\Http\Controllers\Admin\PenerimaansjController::class, 'postingspkpenerimaan']);
-    
+    Route::get('inquery_spk/unpostspk/{id}', [\App\Http\Controllers\Admin\InquerySpkController::class, 'unpostspk']);
+    Route::get('inquery_spk/postingspk/{id}', [\App\Http\Controllers\Admin\InquerySpkController::class, 'postingspk']);
+    Route::resource('inquery_spk', \App\Http\Controllers\Admin\InquerySpkController::class);
+
 });

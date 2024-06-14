@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Surat Pemesanan Kendaraan')
+@section('title', 'Inquery SPK')
 
 @section('content')
     <!-- Content Header (Page header) -->
@@ -8,11 +8,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Surat Pemesanan Kendaraan</h1>
+                    <h1 class="m-0">Inquery SPK</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item active">Surat Pemesanan Kendaraan</li>
+                        <li class="breadcrumb-item active">Inquery SPK</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -44,16 +44,40 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Surat Pemesanan Kendaraan</h3>
-                    <div class="float-right">
-                        {{-- @if (auth()->check() && auth()->user()->fitur['creates buktipotongpajak ekspedisi']) --}}
-                        <a href="{{ url('admin/spk/create') }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus"></i> Tambah
-                        </a>
-                        {{-- @endif --}}
-                    </div>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
+                    <form method="GET" id="form-action">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <select class="custom-select form-control" id="status" name="status">
+                                    <option value="">- Semua Status -</option>
+                                    <option value="posting" {{ Request::get('status') == 'posting' ? 'selected' : '' }}>
+                                        Posting
+                                    </option>
+                                    <option value="unpost" {{ Request::get('status') == 'unpost' ? 'selected' : '' }}>
+                                        Unpost</option>
+                                </select>
+                                <label for="status">(Pilih Status)</label>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <input class="form-control" id="tanggal_awal" name="tanggal_awal" type="date"
+                                    value="{{ Request::get('tanggal_awal') }}" max="{{ date('Y-m-d') }}" />
+                                <label for="tanggal_awal">(Tanggal Awal)</label>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <input class="form-control" id="tanggal_akhir" name="tanggal_akhir" type="date"
+                                    value="{{ Request::get('tanggal_akhir') }}" max="{{ date('Y-m-d') }}" />
+                                <label for="tanggal_awal">(Tanggal Akhir)</label>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <button type="button" class="btn btn-outline-primary btn-block" onclick="cari()">
+                                    <i class="fas fa-search"></i> Cari
+                                </button>
+                                <input type="hidden" name="ids" id="selectedIds" value="">
+                            </div>
+                        </div>
+                    </form>
                     <table id="datatables66" class="table table-bordered table-striped table-hover" style="font-size: 13px">
                         <thead class="thead-dark">
                             <tr>
@@ -109,7 +133,7 @@
                                         @endif
                                         @if ($buktipotongpajak->status == 'selesai')
                                             <img src="{{ asset('storage/uploads/indikator/faktur.png') }}" height="40"
-                                                width="40" alt="Document">
+                                                width="40" alt="Selesai">
                                         @endif
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             @if ($buktipotongpajak->status == 'unpost')
@@ -119,11 +143,11 @@
                                                 {{-- @endif
                                                 @if (auth()->check() && auth()->user()->fitur['updates buktipotongpajak ekspedisi']) --}}
                                                 <a class="dropdown-item"
-                                                    href="{{ url('admin/spks/' . $buktipotongpajak->id . '/edit') }}">Update</a>
+                                                    href="{{ url('admin/inquery_spk/' . $buktipotongpajak->id . '/edit') }}">Update</a>
                                                 {{-- @endif
                                                 @if (auth()->check() && auth()->user()->fitur['shows buktipotongpajak ekspedisi']) --}}
                                                 <a class="dropdown-item"
-                                                    href="{{ url('admin/bukti_potongpajak/' . $buktipotongpajak->id) }}">Show</a>
+                                                    href="{{ url('admin/inquery_spk/' . $buktipotongpajak->id) }}">Show</a>
                                                 {{-- @endif
                                                 @if (auth()->check() && auth()->user()->fitur['deletes buktipotongpajak ekspedisi']) --}}
                                                 <form style="margin-top:5px" method="GET"
@@ -142,13 +166,13 @@
                                                 {{-- @endif
                                                 @if (auth()->check() && auth()->user()->fitur['shows buktipotongpajak ekspedisi']) --}}
                                                 <a class="dropdown-item"
-                                                    href="{{ url('admin/bukti_potongpajak/' . $buktipotongpajak->id) }}">Show</a>
+                                                    href="{{ url('admin/inquery_spk/' . $buktipotongpajak->id) }}">Show</a>
                                                 {{-- @endif --}}
                                             @endif
                                             @if ($buktipotongpajak->status == 'selesai')
                                                 {{-- @if (auth()->check() && auth()->user()->fitur['shows buktipotongpajak ekspedisi']) --}}
                                                 <a class="dropdown-item"
-                                                    href="{{ url('admin/bukti_potongpajak/' . $buktipotongpajak->id) }}">Show</a>
+                                                    href="{{ url('admin/inquery_spk/' . $buktipotongpajak->id) }}">Show</a>
                                                 {{-- @endif --}}
                                             @endif
                                             @if ($buktipotongpajak->memo_ekspedisi->first())
@@ -207,7 +231,7 @@
         var form = document.getElementById('form-action');
 
         function cari() {
-            form.action = "{{ url('admin/spk') }}";
+            form.action = "{{ url('admin/inquery_spk') }}";
             form.submit();
         }
     </script>
