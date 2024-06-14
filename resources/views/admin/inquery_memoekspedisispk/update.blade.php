@@ -1116,6 +1116,7 @@
 
             var formattedNominals = parseFloat(UangJalan).toLocaleString('id-ID');
             document.getElementById('biaya').value = formattedNominals;
+            document.getElementById('uangjalans').value = formattedNominals;
             // Close the modal
             $('#tableSpk').modal('hide');
             updateSubTotals();
