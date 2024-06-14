@@ -127,7 +127,7 @@
                                                 {{-- @endif
                                                 @if (auth()->check() && auth()->user()->fitur['deletes buktipotongpajak ekspedisi']) --}}
                                                 <form style="margin-top:5px" method="GET"
-                                                    action="{{ route('hapusbukti', ['id' => $buktipotongpajak->id]) }}">
+                                                    action="{{ route('hapusspk', ['id' => $buktipotongpajak->id]) }}">
                                                     <button type="submit"
                                                         class="dropdown-item btn btn-outline-danger btn-block mt-2">
                                                         </i> Delete
