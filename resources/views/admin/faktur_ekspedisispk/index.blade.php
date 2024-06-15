@@ -787,7 +787,7 @@
     '{{ $spk->kode_pelanggan }}',
     '{{ $spk->nama_pelanggan }}',
     '{{ $spk->telp }}',
-    '{{ $spk->alamat }}',
+    '{{ $spk->alamat_pelanggan }}',
     '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('id')->get(0) ?? '' }}',
     '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('id')->get(1) ?? '' }}',
     '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('kode_memo')->get(0) ?? '' }}',

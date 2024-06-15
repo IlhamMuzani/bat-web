@@ -119,11 +119,11 @@
                                                 {{-- @endif
                                                 @if (auth()->check() && auth()->user()->fitur['updates buktipotongpajak ekspedisi']) --}}
                                                 <a class="dropdown-item"
-                                                    href="{{ url('admin/spks/' . $buktipotongpajak->id . '/edit') }}">Update</a>
+                                                    href="{{ url('admin/inquery_spk/' . $buktipotongpajak->id . '/edit') }}">Update</a>
                                                 {{-- @endif
                                                 @if (auth()->check() && auth()->user()->fitur['shows buktipotongpajak ekspedisi']) --}}
-                                                <a class="dropdown-item"
-                                                    href="{{ url('admin/bukti_potongpajak/' . $buktipotongpajak->id) }}">Show</a>
+                                                {{-- <a class="dropdown-item"
+                                                    href="{{ url('admin/inquery_spk/' . $buktipotongpajak->id) }}">Show</a> --}}
                                                 {{-- @endif
                                                 @if (auth()->check() && auth()->user()->fitur['deletes buktipotongpajak ekspedisi']) --}}
                                                 <form style="margin-top:5px" method="GET"

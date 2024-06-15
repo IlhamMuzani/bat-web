@@ -110,7 +110,7 @@ class InquerySpkController extends Controller
         $spk->rute_perjalanan_id = $request->rute_perjalanan_id;
         $spk->kode_rute = $request->kode_rute;
         $spk->nama_rute = $request->nama_rute;
-        $spk->status = $request->status;
+        $spk->status = 'posting';
         $spk->saldo_deposit = str_replace(',', '.', str_replace('.', '', $request->saldo_deposit));
         $spk->uang_jalan = str_replace(',', '.', str_replace('.', '', $request->uang_jalan));
 
