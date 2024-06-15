@@ -141,14 +141,14 @@
                                                     data-memo-id="{{ $buktipotongpajak->id }}">Unpost</a>
                                                 {{-- @endif
                                                 @if (auth()->check() && auth()->user()->fitur['shows buktipotongpajak ekspedisi']) --}}
-                                                <a class="dropdown-item"
-                                                    href="{{ url('admin/bukti_potongpajak/' . $buktipotongpajak->id) }}">Show</a>
+                                                {{-- <a class="dropdown-item"
+                                                    href="{{ url('admin/bukti_potongpajak/' . $buktipotongpajak->id) }}">Show</a> --}}
                                                 {{-- @endif --}}
                                             @endif
                                             @if ($buktipotongpajak->status == 'selesai')
                                                 {{-- @if (auth()->check() && auth()->user()->fitur['shows buktipotongpajak ekspedisi']) --}}
-                                                <a class="dropdown-item"
-                                                    href="{{ url('admin/bukti_potongpajak/' . $buktipotongpajak->id) }}">Show</a>
+                                                {{-- <a class="dropdown-item"
+                                                    href="{{ url('admin/bukti_potongpajak/' . $buktipotongpajak->id) }}">Show</a> --}}
                                                 {{-- @endif --}}
                                             @endif
                                             @if ($buktipotongpajak->memo_ekspedisi->first())

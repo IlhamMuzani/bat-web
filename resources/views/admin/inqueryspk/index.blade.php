@@ -146,8 +146,8 @@
                                                     href="{{ url('admin/inquery_spk/' . $buktipotongpajak->id . '/edit') }}">Update</a>
                                                 {{-- @endif
                                                 @if (auth()->check() && auth()->user()->fitur['shows buktipotongpajak ekspedisi']) --}}
-                                                <a class="dropdown-item"
-                                                    href="{{ url('admin/inquery_spk/' . $buktipotongpajak->id) }}">Show</a>
+                                                {{-- <a class="dropdown-item"
+                                                    href="{{ url('admin/inquery_spk/' . $buktipotongpajak->id) }}">Show</a> --}}
                                                 {{-- @endif
                                                 @if (auth()->check() && auth()->user()->fitur['deletes buktipotongpajak ekspedisi']) --}}
                                                 <form style="margin-top:5px" method="GET"
@@ -165,14 +165,14 @@
                                                     data-memo-id="{{ $buktipotongpajak->id }}">Unpost</a>
                                                 {{-- @endif
                                                 @if (auth()->check() && auth()->user()->fitur['shows buktipotongpajak ekspedisi']) --}}
-                                                <a class="dropdown-item"
-                                                    href="{{ url('admin/inquery_spk/' . $buktipotongpajak->id) }}">Show</a>
+                                                {{-- <a class="dropdown-item"
+                                                    href="{{ url('admin/inquery_spk/' . $buktipotongpajak->id) }}">Show</a> --}}
                                                 {{-- @endif --}}
                                             @endif
                                             @if ($buktipotongpajak->status == 'selesai')
                                                 {{-- @if (auth()->check() && auth()->user()->fitur['shows buktipotongpajak ekspedisi']) --}}
-                                                <a class="dropdown-item"
-                                                    href="{{ url('admin/inquery_spk/' . $buktipotongpajak->id) }}">Show</a>
+                                                {{-- <a class="dropdown-item"
+                                                    href="{{ url('admin/inquery_spk/' . $buktipotongpajak->id) }}">Show</a> --}}
                                                 {{-- @endif --}}
                                             @endif
                                             @if ($buktipotongpajak->memo_ekspedisi->first())
