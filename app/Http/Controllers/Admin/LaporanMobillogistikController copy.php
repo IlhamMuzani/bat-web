@@ -61,34 +61,16 @@ class LaporanMobillogistikController extends Controller
 
     public function print_mobillogistik(Request $request)
     {
+        // if (auth()->check() && auth()->user()->menu['laporan penerimaan kas kecil']) {
         $kendaraans = Kendaraan::with(['detail_pengeluaran'])->get();
 
         $kategoris = $request->kategoris;
         $status = $request->status;
         $created_at = $request->created_at;
         $tanggal_akhir = $request->tanggal_akhir;
-        $kendaraan = $request->kendaraan_id;
-
-        // Query for unpost status records first
-        $unpostQuery = Faktur_ekspedisi::orderBy('id', 'DESC')->where('status', 'unpost');
-        if ($kategoris) {
-            if ($kategoris == 'memo') {
-                $unpostQuery->where('kategoris', 'memo');
-            } elseif ($kategoris == 'non memo') {
-                $unpostQuery->where('kategoris', 'non memo');
-            }
-        }
-        if ($created_at && $tanggal_akhir) {
-            $unpostQuery->whereDate('created_at', '>=', $created_at)
-                ->whereDate('created_at', '<=', $tanggal_akhir);
-        }
-        if ($kendaraan) {
-            $unpostQuery->where('kendaraan_id', $kendaraan);
-        }
-        $unpostRecords = $unpostQuery->get();
-
-        // Query for posting and selesai status records
+        $kendaraan = $request->kendaraan_id; // New variable to store kendaraan_id
         $query = Faktur_ekspedisi::orderBy('id', 'DESC');
+
         if ($kategoris) {
             if ($kategoris == 'memo') {
                 $query->where('kategoris', 'memo');
@@ -96,24 +78,30 @@ class LaporanMobillogistikController extends Controller
                 $query->where('kategoris', 'non memo');
             }
         }
+
         if ($status == "posting" || $status == "selesai") {
             $query->where('status', $status);
         } else {
             $query->whereIn('status', ['posting', 'selesai']);
         }
+
         if ($created_at && $tanggal_akhir) {
             $query->whereDate('created_at', '>=', $created_at)
                 ->whereDate('created_at', '<=', $tanggal_akhir);
         }
+
+        // Additional condition for kendaraan_id
         if ($kendaraan) {
             $query->where('kendaraan_id', $kendaraan);
         }
-        $otherRecords = $query->get();
 
-        // Merge unpost records first
-        $inquery = $unpostRecords->merge($otherRecords);
+        $inquery = $query->orderBy('id', 'DESC')->get();
 
         $pdf = PDF::loadView('admin.laporan_mobillogistik.print', compact('inquery', 'kendaraans'));
         return $pdf->stream('Laporan_Pengeluaran_Kas_Kecil.pdf');
+        // } else {
+        //     // tidak memiliki akses
+        //     return back()->with('error', array('Anda tidak memiliki akses'));
+        // }
     }
 }

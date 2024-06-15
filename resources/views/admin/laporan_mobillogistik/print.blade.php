@@ -130,7 +130,33 @@
             $tanggal_akhir = isset($tanggal_akhir) ? $tanggal_akhir : null;
         @endphp
         @foreach ($inquery as $faktur)
-            @if ($faktur->kendaraan_id == $kendaraan)
+            @if ($faktur->status === 'unpost')
+                {{-- For unpost faktur, display detail_faktur only --}}
+                @foreach ($faktur->detail_faktur as $detail)
+                    @if (
+                        $detail->memo_ekspedisi &&
+                            ($detail->memo_ekspedisi->status === 'posting' || $detail->memo_ekspedisi->status === 'selesai'))
+                        <tr>
+                            <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">
+                                {{ $detail->kode_memo }}
+                            </td>
+                            <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">
+                                {{ $detail->created_at }}
+                            </td>
+                            <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">
+                                {{ $detail->nama_rute }}
+                            </td>
+                            <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
+                                <!-- Display relevant details -->
+                            </td>
+                            <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
+                                <!-- Display relevant details -->
+                            </td>
+                        </tr>
+                    @endif
+                @endforeach
+            @else
+                {{-- For posting or selesai faktur, display the entire faktur details --}}
                 <tr style="background:rgb(181, 181, 181)">
                     <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">
                         {{ $faktur->kode_faktur }}
@@ -142,13 +168,10 @@
                         {{ $faktur->nama_pelanggan }}
                     </td>
                     <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
-                        @if ($faktur->detail_faktur->first())
-                            {{ $faktur->detail_faktur->first()->nama_driver }}
-                        @else
-                        @endif
                         @if ($faktur->kendaraan)
                             ({{ $faktur->kendaraan->no_pol }})
                         @else
+                            <!-- Handle no kendaraan -->
                         @endif
                     </td>
                     <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
@@ -167,61 +190,29 @@
                             {{ $memo->nama_rute }}
                         </td>
                         <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
-                            <span style="margin-right:30px">
-                                @if ($memo->memo_ekspedisi)
-                                    {{ number_format($memo->memo_ekspedisi->uang_jalan, 2, ',', '.') }}
-                                @else
-                                    tidak ada
-                                @endif
-                            </span>
-                            <span style="margin-right:30px">
-                                @if ($memo->memo_ekspedisi)
-                                    {{ number_format($memo->memo_ekspedisi->biaya_tambahan, 2, ',', '.') }}
-                                @else
-                                    tidak ada
-                                @endif
-                            </span>
-                            <span>
-                                @if ($memo->memo_ekspedisi)
-                                    {{ number_format($memo->memo_ekspedisi->deposit_driver, 2, ',', '.') }}
-                                @else
-                                    tidak ada
-                                @endif
-                            </span>
+                            <!-- Display relevant details -->
                         </td>
                         <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
-                            @if ($memo->memo_ekspedisi)
-                                {{ number_format($memo->memo_ekspedisi->hasil_jumlah, 2, ',', '.') }}
-                            @elseif($memo->memo_ekspedisi && $memo->memotambahan)
-                                {{ number_format($memo->memotambahan->grand_total, 2, ',', '.') }}
-                            @else
-                                <!-- Handle kondisi ketika tidak memenuhi kedua kondisi di atas -->
-                            @endif
-
+                            <!-- Display relevant details -->
                         </td>
                     </tr>
-
-                    @foreach ($faktur->detail_faktur as $item)
-                    @endforeach
-
                     @if ($memo->memo_ekspedisi && $memo->memo_ekspedisi->memotambahan->isNotEmpty())
                         @foreach ($memo->memo_ekspedisi->memotambahan as $memoTambahan)
                             <tr>
                                 <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">
-                                    {{ $memoTambahan->kode_tambahan }} </td>
+                                    {{ $memoTambahan->kode_tambahan }}
+                                </td>
                                 <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">
-                                    {{ $memoTambahan->created_at }} </td>
+                                    {{ $memoTambahan->created_at }}
+                                </td>
                                 <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">
-                                    {{ $memoTambahan->memo_ekspedisi->nama_rute }} </td>
-                                <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
-                                    <span style="margin-right:34px">
-                                        {{ number_format($memoTambahan->grand_total, 2, ',', '.') }}
-                                    </span>
-                                    <span style="margin-right:10px">0,00</span>
-                                    <span style="margin-right:4px">0,00</span>
+                                    {{ $memoTambahan->memo_ekspedisi->nama_rute }}
                                 </td>
                                 <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
-                                    {{ number_format($memoTambahan->grand_total, 2, ',', '.') }}
+                                    <!-- Display relevant details -->
+                                </td>
+                                <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
+                                    <!-- Display relevant details -->
                                 </td>
                             </tr>
                         @endforeach
@@ -250,14 +241,22 @@
         $totalMemoTambahan = 0;
 
         foreach ($inquery as $faktur) {
-            $totalGrandTotal += $faktur->grand_total; // Total Faktur
+            if ($faktur->status == 'selesai' || $faktur->status == 'posting') {
+                $totalGrandTotal += $faktur->grand_total; // Total Faktur
+            }
 
             foreach ($faktur->detail_faktur as $memo) {
-                $totalMemo += $memo->memo_ekspedisi->hasil_jumlah ?? 0; // Total Memo Ekspedisi
+                // Memeriksa apakah memo_ekspedisi ada dan statusnya "selesai" atau "posting"
+                if (
+                    $memo->memo_ekspedisi &&
+                    ($memo->memo_ekspedisi->status == 'selesai' || $memo->memo_ekspedisi->status == 'posting')
+                ) {
+                    $totalMemo += $memo->memo_ekspedisi->hasil_jumlah ?? 0; // Total Memo Ekspedisi
 
-                if ($memo->memo_ekspedisi && $memo->memo_ekspedisi->memotambahan) {
-                    foreach ($memo->memo_ekspedisi->memotambahan as $memoTambahan) {
-                        $totalMemoTambahan += $memoTambahan->grand_total ?? 0; // Total Memo Tambahan
+                    if ($memo->memo_ekspedisi->memotambahan) {
+                        foreach ($memo->memo_ekspedisi->memotambahan as $memoTambahan) {
+                            $totalMemoTambahan += $memoTambahan->grand_total ?? 0; // Total Memo Tambahan
+                        }
                     }
                 }
             }

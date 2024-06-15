@@ -116,4 +116,5 @@ class LaporanMobillogistikController extends Controller
         $pdf = PDF::loadView('admin.laporan_mobillogistik.print', compact('inquery', 'kendaraans'));
         return $pdf->stream('Laporan_Pengeluaran_Kas_Kecil.pdf');
     }
+
 }
