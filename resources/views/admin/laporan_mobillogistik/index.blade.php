@@ -1,382 +1,462 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-11px">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Faktur Ekspedisi Mobil Logistik</title>
-    <style>
-        html,
-        body {
-            font-family: 'DOSVGA', Arial, Helvetica, sans-serif;
-            color: black;
-        }
+@section('title', 'Laporan Mobil Logistik')
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .td {
-            text-align: center;
-            padding: 5px;
-            font-size: 11px;
-            /* border: 1px solid black; */
-        }
-
-        .container {
-            position: relative;
-            margin-top: 7rem;
-        }
-
-        .info-container {
-            display: flex;
-            justify-content: space-between;
-            font-size: 16px;
-            margin: 5px 0;
-        }
-
-        .info-text {
-            text-align: left;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-
-        .info-catatan2 {
-            font-weight: bold;
-            margin-right: 5px;
-            min-width: 120px;
-            /* Menetapkan lebar minimum untuk kolom pertama */
-        }
-
-        .alamat,
-        .nama-pt {
-            color: black;
-        }
-
-        .separator {
-            padding-top: 11px;
-            text-align: center;
-        }
-
-        .separator span {
-            display: inline-block;
-            border-top: 1px solid black;
-            width: 100%;
-            position: relative;
-            top: -8px;
-        }
-
-        @page {
-            /* size: A4; */
-            margin: 1cm;
-        }
-    </style>
-</head>
-
-<body style="margin: 0; padding: 0;">
-    <div id="logo-container">
-        <img src="{{ public_path('storage/uploads/gambar_logo/Logo.jpg') }}" alt="BAT" width="70" height="35">
+@section('content')
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Laporan Mobil Logistik</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item active">Laporan Mobil Logistik</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
     </div>
-    <div style="font-weight: bold; text-align: center">
-        <span style="font-weight: bold; font-size: 22px;">FAKTUR EKSPEDISI MOBIL LOGISTIK - RANGKUMAN</span>
-        <br>
-        <div class="text">
-            @php
-                $startDate = request()->query('created_at');
-                $endDate = request()->query('tanggal_akhir');
-                $kendaraan = request()->query('kendaraan_id');
+    <!-- /.content-header -->
 
-            @endphp
-            @if ($startDate && $endDate)
-                <p>Periode:{{ $startDate }} s/d {{ $endDate }} {{ $inquery->first()->kendaraan->no_pol }}
-                </p>
-            @else
-                <p>Periode: Tidak ada tanggal awal dan akhir yang diteruskan.</p>
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h5>
+                        <i class="icon fas fa-check"></i> Success!
+                    </h5>
+                    {{ session('success') }}
+                </div>
             @endif
-        </div>
-    </div>
-    {{-- <hr style="border-top: 0.1px solid black; margin: 1px 0;"> --}}
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Data Laporan Mobil Logistik</h3>
 
-    </div>
-    {{-- <hr style="border-top: 0.1px solid black; margin: 1px 0;"> --}}
-    <table style="width: 100%; border-top: 1px solid black;" cellpadding="2" cellspacing="0">
-        <!-- Header row -->
-        <tr>
-            <td class="td" style="text-align: left; padding: 5px; font-weight:bold; font-size: 11px; width:20%">
-                Faktur
-                Ekspedisi</td>
-            <td class="td" style="text-align: left; padding: 5px; font-weight:bold; font-size: 11px; width:15%">
-                Tanggal
-            </td>
-            <td class="td" style="text-align: left; padding: 5px; font-weight:bold; font-size: 11px; width:30%">
-                Pelanggan</td>
-            <td class="td" style="text-align: center; padding: 5px; font-weight:bold; font-size: 11px; width:39%">No
-                Polisi
-            </td>
-            <td class="td" style="text-align: right; padding: 5px; font-weight:bold; font-size: 11px; width:15% ">
-                Sub Total
-            </td>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <form method="GET" id="form-action">
+                        <div class="row">
+                            <div class="col-md-2 mb-3">
+                                <label for="created_at">Kategori</label>
+                                <select class="custom-select form-control" id="statusx" name="statusx">
+                                    <option value="">- Pilih Laporan -</option>
+                                    <option value="laporandetail" selected>Laporan Detail</option>
+                                    <option value="laporanglobal">Laporan Global</option>
+                                    {{-- <option value="akun">Laporan Kas Keluar Group by Akun</option>
+                                    <option value="memo_tambahan">Saldo Kas</option> --}}
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="created_at">Status</label>
+                                <select class="custom-select form-control" id="kategoris" name="kategoris">
+                                    <option value="">- Semua Status -</option>
+                                    <option value="memo" {{ Request::get('kategoris') == 'memo' ? 'selected' : '' }}>
+                                        MEMO
+                                    </option>
+                                    <option value="non memo"
+                                        {{ Request::get('kategoris') == 'non memo' ? 'selected' : '' }}>
+                                        NON MEMO</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="created_at">Kendaraan</label>
+                                <select class="select2bs4 select2-hidden-accessible" name="kendaraan_id"
+                                    data-placeholder="Cari Kendaraan.." style="width: 100%;" data-select2-id="23"
+                                    tabindex="-1" aria-hidden="true" id="kendaraan_id">
+                                    <option value="">- Pilih -</option>
+                                    @foreach ($kendaraans as $kendaraan)
+                                        <option value="{{ $kendaraan->id }}"
+                                            {{ Request::get('kendaraan_id') == $kendaraan->id ? 'selected' : '' }}>
+                                            {{ $kendaraan->no_kabin }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="created_at">Tanggal Awal</label>
+                                <input class="form-control" id="created_at" name="created_at" type="date"
+                                    value="{{ Request::get('created_at') }}" max="{{ date('Y-m-d') }}" />
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="tanggal_akhir">Tanggal Akhir</label>
+                                <input class="form-control" id="tanggal_akhir" name="tanggal_akhir" type="date"
+                                    value="{{ Request::get('tanggal_akhir') }}" max="{{ date('Y-m-d') }}" />
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                {{-- @if (auth()->check() && auth()->user()->fitur['laporan pengambilan kas kecil cari']) --}}
+                                <button type="button" class="btn btn-outline-primary btn-block" onclick="cari()">
+                                    <i class="fas fa-search"></i> Cari
+                                </button>
+                                {{-- @endif
+                                @if (auth()->check() && auth()->user()->fitur['laporan pengambilan kas kecil cetak']) --}}
+                                <button type="button" class="btn btn-primary btn-block" onclick="printReport()"
+                                    target="_blank">
+                                    <i class="fas fa-print"></i> Cetak
+                                </button>
+                                <button id="toggle-all" type="button" class="btn btn-info btn-block">
+                                    All Toggle Detail
+                                </button>
+                                {{-- <button id="toggle-all" class="btn btn-info float-right">Buka Semua Detail</button> --}}
 
-        </tr>
-        <tr style="border-bottom: 1px solid black;">
-            <td colspan="5" style="padding: 0px;"></td>
-        </tr>
-        @php
-            $created_at = isset($created_at) ? $created_at : null;
-            $tanggal_akhir = isset($tanggal_akhir) ? $tanggal_akhir : null;
-        @endphp
-        @foreach ($inquery as $faktur)
-            @if ($faktur->status === 'unpost')
-                {{-- For unpost faktur, display detail_faktur only --}}
-                @foreach ($faktur->detail_faktur as $detail)
-                    @if (
-                        $detail->memo_ekspedisi &&
-                            ($detail->memo_ekspedisi->status === 'posting' || $detail->memo_ekspedisi->status === 'selesai'))
-                        <tr>
-                            <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">
-                                {{ $detail->kode_memo }}
-                            </td>
-                            <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">
-                                {{ $detail->created_at }}
-                            </td>
-                            <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">
-                                {{ $detail->nama_rute }}
-                            </td>
-                            <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
-                                <!-- Display relevant details -->
-                            </td>
-                            <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
-                                <!-- Display relevant details -->
-                            </td>
-                        </tr>
-                    @endif
-                @endforeach
-            @else
-                {{-- For posting or selesai faktur, display the entire faktur details --}}
-                <tr style="background:rgb(181, 181, 181)">
-                    <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">
-                        {{ $faktur->kode_faktur }}
-                    </td>
-                    <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">
-                        {{ $faktur->created_at }}
-                    </td>
-                    <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">
-                        {{ $faktur->nama_pelanggan }}
-                    </td>
-                    <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
-                        @if ($faktur->kendaraan)
-                            ({{ $faktur->kendaraan->no_pol }})
-                        @else
-                            <!-- Handle no kendaraan -->
-                        @endif
-                    </td>
-                    <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
-                        {{ number_format($faktur->grand_total, 2, ',', '.') }}
-                    </td>
-                </tr>
-                @foreach ($faktur->detail_faktur as $memo)
-                    <tr>
-                        <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">
-                            {{ $memo->kode_memo }}
-                        </td>
-                        <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">
-                            {{ $memo->created_at }}
-                        </td>
-                        <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">
-                            {{ $memo->nama_rute }}
-                        </td>
-                        <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
-                            <!-- Display relevant details -->
-                        </td>
-                        <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
-                            <!-- Display relevant details -->
-                        </td>
-                    </tr>
-                    @if ($memo->memo_ekspedisi && $memo->memo_ekspedisi->memotambahan->isNotEmpty())
-                        @foreach ($memo->memo_ekspedisi->memotambahan as $memoTambahan)
+                                {{-- @endif --}}
+                            </div>
+                        </div>
+                    </form>
+                    <!-- Tabel Faktur Utama -->
+                    <table class="table table-bordered table-striped table-hover" style="font-size: 13px">
+                        <thead>
                             <tr>
-                                <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">
-                                    {{ $memoTambahan->kode_tambahan }}
-                                </td>
-                                <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">
-                                    {{ $memoTambahan->created_at }}
-                                </td>
-                                <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">
-                                    {{ $memoTambahan->memo_ekspedisi->nama_rute }}
-                                </td>
-                                <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
-                                    <!-- Display relevant details -->
-                                </td>
-                                <td class="td" style="text-align: right; padding: 5px; font-size: 11px;">
-                                    <!-- Display relevant details -->
-                                </td>
+                                <th>Kode Faktur</th>
+                                <th>Tanggal</th>
+                                <th>Pelanggan</th>
+                                <th>No Polisi</th>
+                                <th>Grand Total</th>
+                                <th>Actions</th> <!-- Tambahkan kolom aksi untuk collapse/expand -->
                             </tr>
-                        @endforeach
-                    @endif
-                @endforeach
-            @endif
-        @endforeach
+                        </thead>
+                        <tbody>
+                            @php
+                                $created_at = isset($created_at) ? $created_at : null;
+                                $tanggal_akhir = isset($tanggal_akhir) ? $tanggal_akhir : null;
+                            @endphp
+                            @foreach ($inquery as $index => $faktur)
+                                <!-- Gunakan index untuk ID unik -->
+                                <!-- Baris Faktur Utama -->
+                                <tr data-toggle="collapse" data-target="#faktur-{{ $index }}"
+                                    class="accordion-toggle" style="background: rgb(156, 156, 156)">
+                                    <td>{{ $faktur->kode_faktur }}</td>
+                                    <td>{{ $faktur->created_at }}</td>
+                                    <td>{{ $faktur->nama_pelanggan }}</td>
+                                    <td>{{ $faktur->kendaraan ? $faktur->kendaraan->no_kabin : 'Tidak ada' }}</td>
+                                    <td class="text-right">{{ number_format($faktur->grand_total, 2, ',', '.') }}</td>
+                                    <td>
+                                        <!-- Tombol untuk Menampilkan/Menyembunyikan Detail -->
+                                        <button class="btn btn-info" data-toggle="collapse"
+                                            data-target="#faktur-{{ $index }}">Toggle Detail</button>
+                                    </td>
+                                </tr>
 
-        <tr style="border-bottom: 1px solid black;">
-            <td colspan="" style="padding: 0px;"></td>
-        </tr>
-        <tr>
-            <td colspan="4" style="text-align: right; font-weight: bold; padding: 5px; font-size: 11px;">
-                {{-- Sub Total --}}
-            </td>
-            <td style="text-align: right; font-weight: bold; padding: 5px; font-size: 11px;">
-                {{-- {{ number_format($total, 0, ',', '.') }} --}}
-            </td>
-        </tr>
-    </table>
+                                <!-- Baris Detail Faktur -->
+                                <tr>
+                                    <td colspan="6"> <!-- Gabungkan kolom untuk detail -->
+                                        <div id="faktur-{{ $index }}" class="collapse">
+                                            <table class="table table-sm" style="margin: 0;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Kode Memo</th>
+                                                        <th>Tanggal</th>
+                                                        <th>Nama Rute</th>
+                                                        <th>Biaya Ekspedisi</th>
+                                                        <th>Jumlah</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($faktur->detail_faktur as $memo)
+                                                        <tr>
+                                                            <td>{{ $memo->kode_memo }}</td>
+                                                            <td>{{ $memo->created_at }}</td>
+                                                            <td>{{ $memo->nama_rute }}</td>
+                                                            <td class="text-right">
+                                                                {{ $memo->memo_ekspedisi ? number_format($memo->memo_ekspedisi->uang_jalan, 2, ',', '.') : 'Tidak ada' }}
+                                                            </td>
+                                                            <td class="text-right">
+                                                                {{ $memo->memo_ekspedisi ? number_format($memo->memo_ekspedisi->hasil_jumlah, 2, ',', '.') : 'Tidak ada' }}
+                                                            </td>
+                                                        </tr>
+
+                                                        <!-- Menampilkan Memo Tambahan, jika ada -->
+                                                        @if ($memo->memo_ekspedisi && $memo->memo_ekspedisi->memotambahan->isNotEmpty())
+                                                            @foreach ($memo->memo_ekspedisi->memotambahan as $memoTambahan)
+                                                                <tr>
+                                                                    <td>{{ $memoTambahan->kode_tambahan }}</td>
+                                                                    <td>{{ $memoTambahan->created_at }}</td>
+                                                                    <td>{{ $memoTambahan->memo_ekspedisi->nama_rute }}</td>
+                                                                    <td class="text-right">
+                                                                        {{ number_format($memoTambahan->grand_total, 2, ',', '.') }}
+                                                                    </td>
+                                                                    <td class="text-right">
+                                                                        {{ number_format($memoTambahan->grand_total, 2, ',', '.') }}
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        @endif
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
 
 
-    @php
-        $totalGrandTotal = 0;
-        $totalMemo = 0;
-        $totalMemoTambahan = 0;
+                    <!-- Perhitungan Nilai Total -->
+                    @php
+                        $totalGrandTotal = 0;
+                        $totalMemo = 0;
+                        $totalMemoTambahan = 0;
 
-        foreach ($inquery as $faktur) {
-            $totalGrandTotal += $faktur->grand_total; // Total Faktur
+                        foreach ($inquery as $faktur) {
+                            $totalGrandTotal += $faktur->grand_total; // Total Faktur
 
-            foreach ($faktur->detail_faktur as $memo) {
-                $totalMemo += $memo->memo_ekspedisi->hasil_jumlah ?? 0; // Total Memo Ekspedisi
+                            foreach ($faktur->detail_faktur as $memo) {
+                                $totalMemo += $memo->memo_ekspedisi->hasil_jumlah ?? 0; // Total Memo Ekspedisi
 
-                if ($memo->memo_ekspedisi && $memo->memo_ekspedisi->memotambahan) {
-                    foreach ($memo->memo_ekspedisi->memotambahan as $memoTambahan) {
-                        $totalMemoTambahan += $memoTambahan->grand_total ?? 0; // Total Memo Tambahan
-                    }
-                }
+                                if ($memo->memo_ekspedisi && $memo->memo_ekspedisi->memotambahan) {
+                                    foreach ($memo->memo_ekspedisi->memotambahan as $memoTambahan) {
+                                        $totalMemoTambahan += $memoTambahan->grand_total ?? 0; // Total Memo Tambahan
+                                    }
+                                }
+                            }
+                        }
+
+                        // Hitung selisih antara total faktur dengan total memo + memo tambahan
+                        $selisih = $totalGrandTotal - ($totalMemo + $totalMemoTambahan);
+                    @endphp
+
+                    <!-- Tampilkan Nilai Total -->
+                    <div class="row mt-4"> <!-- Tambahkan margin-top -->
+                        <div class="col-md-6">
+                            <!-- Ruang kosong atau konten tambahan -->
+                            <div class="card"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <!-- Total Faktur -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label style="font-size:14px;">Total Faktur:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input style="text-align: end; font-size:14px;" type="text"
+                                                class="form-control"
+                                                value="{{ number_format($totalGrandTotal, 2, ',', '.') }}" readonly>
+                                        </div>
+                                    </div>
+
+                                    <!-- Total Memo -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label style="font-size:14px;">Total Memo:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input style="text-align: end; font-size:14px;" type="text"
+                                                class="form-control"
+                                                value="{{ number_format($totalMemo + $totalMemoTambahan, 2, ',', '.') }}"
+                                                readonly>
+                                        </div>
+                                    </div>
+
+                                    <!-- Divider -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-12">
+                                            <hr style="border: 2px solid black;">
+                                        </div>
+                                    </div>
+
+                                    <!-- Selisih -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label style="font-size:14px;">Selisih:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input style="text-align: end; font-size:14px;" type="text"
+                                                class="form-control" value="{{ number_format($selisih, 2, ',', '.') }}"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                    <!-- Biaya Operasional -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label style="font-size:14px;">Biaya Operasional:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input style="text-align: end; font-size:14px;" type="text"
+                                                class="form-control" readonly
+                                                value="{{ number_format(
+                                                    $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
+                                                            return $kendaraan->detail_pengeluaran->where('barangakun_id', 29)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
+                                                        })->sum() ?? 0,
+                                                    2,
+                                                    ',',
+                                                    '.',
+                                                ) }}">
+                                        </div>
+                                    </div>
+
+                                    <!-- Biaya Perbaikan -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label style="font-size:14px;">Biaya Perbaikan:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input style="text-align: end; font-size:14px;" type="text"
+                                                class="form-control" readonly
+                                                value="{{ number_format(
+                                                    $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
+                                                            return $kendaraan->detail_pengeluaran->where('barangakun_id', 5)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
+                                                        })->sum() ?? 0,
+                                                    2,
+                                                    ',',
+                                                    '.',
+                                                ) }}">
+                                        </div>
+                                    </div>
+
+                                    <!-- Divider -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-12">
+                                            <hr style="border: 2px solid black;">
+                                        </div>
+                                    </div>
+
+                                    <!-- Sub Total -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label style="font-size:14px;">Sub Total:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input style="text-align: end; font-size:14px;" type="text"
+                                                class="form-control"
+                                                value="{{ number_format(
+                                                    $selisih -
+                                                        $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
+                                                                return $kendaraan->detail_pengeluaran->where('barangakun_id', 29)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
+                                                            })->sum() -
+                                                        $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
+                                                                return $kendaraan->detail_pengeluaran->where('barangakun_id', 5)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
+                                                            })->sum(),
+                                                    2,
+                                                    ',',
+                                                    '.',
+                                                ) }}"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.card -->
+    <script>
+        var tanggalAwal = document.getElementById('created_at');
+        var tanggalAkhir = document.getElementById('tanggal_akhir');
+        var kendaraanId = document.getElementById('kendaraan_id');
+        var form = document.getElementById('form-action');
+
+        if (tanggalAwal.value == "") {
+            tanggalAkhir.readOnly = true;
+        }
+
+        tanggalAwal.addEventListener('change', function() {
+            if (this.value == "") {
+                tanggalAkhir.readOnly = true;
+            } else {
+                tanggalAkhir.readOnly = false;
+            }
+            tanggalAkhir.value = "";
+            var today = new Date().toISOString().split('T')[0];
+            tanggalAkhir.value = today;
+            tanggalAkhir.setAttribute('min', this.value);
+        });
+
+        function cari() {
+            // Dapatkan nilai tanggal awal dan tanggal akhir
+            var startDate = tanggalAwal.value;
+            var endDate = tanggalAkhir.value;
+            var Kendaraanid = kendaraanId.value;
+
+            // Cek apakah tanggal awal dan tanggal akhir telah diisi
+            if (startDate && endDate && Kendaraanid) {
+                form.action = "{{ url('admin/laporan_mobillogistik') }}";
+                form.submit();
+            } else {
+                alert("Silakan pilih kendaraan dan isi kedua tanggal sebelum mencetak.");
             }
         }
 
-        // Hitung selisih antara total faktur dengan total memo + memo tambahan
-        $selisih = $totalGrandTotal - ($totalMemo + $totalMemoTambahan);
-    @endphp
 
-    <table width="100%" style="border-collapse: collapse;">
-        <tr>
-            <td style="width:100%;">
+        function printReport() {
+            var startDate = tanggalAwal.value;
+            var endDate = tanggalAkhir.value;
 
-            </td>
-            <td style="width: 70%;">
-                <table style="width: 100%;" cellpadding="2" cellspacing="0">
-                    <tr>
-                        <td colspan="5" style="text-align: left; padding-left: 0px; font-size: 11px;">
-                            Total Faktur</td>
-                        <td class="td" style="text-align: right; font-size: 11px;">
-                            {{ number_format($totalGrandTotal, 2, ',', '.') }} </td>
-                    </tr>
-                    <tr>
-                        <td colspan="5" style="text-align: left; padding-left: 0px; font-size: 11px;">Total Memo
-                        </td>
-                        <td class="td" style="text-align: right; font-size: 11px;">
-                            {{ number_format($totalMemo + $totalMemoTambahan, 2, ',', '.') }}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="6" style="padding: 0px;">
-                            <hr style="border-top: 0.1px solid black; margin: 5px 0;">
-                            {{-- <span
-                                    style="position: absolute; top: 50%; transform: translateY(-50%); background-color: white; padding: 0 5px; font-size: 12px;">+</span> --}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="5" style="text-align: left; padding-left: 0px; font-size: 11px;">Selisih
-                        </td>
-                        <td class="td" style="text-align: right; padding-right: 5px; font-size: 11px;">
-                            {{ number_format($selisih, 2, ',', '.') }}</td>
-                    </tr>
-                    <tr>
-                        <br>
-                    </tr>
-                    <tr>
-                        <td colspan="5" style="text-align: left; padding-left: 0px; font-size: 11px;">
-                            Biaya Operasional
-                        </td>
-                        <td class="td" style="text-align: right; font-size: 11px;">
-                            {{ number_format(
-                                $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
-                                        return $kendaraan->detail_pengeluaran->where('barangakun_id', 29)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
-                                    })->sum() ?? 0,
-                                2,
-                                ',',
-                                '.',
-                            ) }}
-                        </td>
-                    </tr>
+            if (startDate && endDate) {
+                form.action = "{{ url('admin/print_mobillogistik') }}" + "?start_date=" + startDate + "&end_date=" +
+                    endDate;
+                form.submit();
+            } else {
+                alert("Silakan isi kedua tanggal sebelum mencetak.");
+            }
+        }
+    </script>
 
-                    <tr>
-                        <td colspan="5" style="text-align: left; padding-left: 0px; font-size: 11px;">Biaya
-                            Perbaikan
-                        </td>
-                        <td class="td" style="text-align: right; font-size: 11px;">
-                            {{ number_format(
-                                $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
-                                        return $kendaraan->detail_pengeluaran->where('barangakun_id', 5)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
-                                    })->sum() ?? 0,
-                                2,
-                                ',',
-                                '.',
-                            ) }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="6" style="padding: 0px;">
-                            <hr style="border-top: 0.1px solid black; margin: 5px 0;">
-                            {{-- <span
-                                    style="position: absolute; top: 50%; transform: translateY(-50%); background-color: white; padding: 0 5px; font-size: 12px;">+</span> --}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="5" style="text-align: left; padding-left: 0px; font-size: 11px;">
-                            Sub Total
-                        </td>
-                        <td class="td" style="text-align: right; font-size: 11px;">
-                            {{ number_format(
-                                $selisih -
-                                    $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
-                                            return $kendaraan->detail_pengeluaran->where('barangakun_id', 29)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
-                                        })->sum() -
-                                    $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
-                                            return $kendaraan->detail_pengeluaran->where('barangakun_id', 5)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
-                                        })->sum(),
-                                2,
-                                ',',
-                                '.',
-                            ) }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <br><br><br>
-                    </tr>
-                    <tr>
-                        <td colspan="5" style="text-align: left; padding-left: 120px; font-size: 11px;">
-                            Admin
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+    <script>
+        $(document).ready(function() {
+            // Detect the change event on the 'status' dropdown
+            $('#statusx').on('change', function() {
+                // Get the selected value
+                var selectedValue = $(this).val();
 
+                // Check the selected value and redirect accordingly
+                switch (selectedValue) {
+                    case 'laporandetail':
+                        window.location.href = "{{ url('admin/laporan_mobillogistik') }}";
+                        break;
+                    case 'laporanglobal':
+                        window.location.href = "{{ url('admin/laporan_mobillogistikglobal') }}";
+                        break;
+                        // case 'akun':
+                        //     window.location.href = "{{ url('admin/laporan_pengeluarankaskecilakun') }}";
+                        //     break;
+                        // case 'memo_tambahan':
+                        //     window.location.href = "{{ url('admin/laporan_saldokas') }}";
+                        //     break;
+                    default:
+                        // Handle other cases or do nothing
+                        break;
+                }
+            });
+        });
+    </script>
 
-    <br>
+    <script>
+        $(document).ready(function() {
+            var toggleAll = $("#toggle-all");
+            var isExpanded = false; // Status untuk melacak apakah semua detail telah dibuka
 
-    <!-- Tampilkan sub-total di bawah tabel -->
-    {{-- <div style="text-align: right;">
-        <strong>Sub Total: Rp. {{ number_format($total, 0, ',', '.') }}</strong>
-    </div> --}}
+            toggleAll.click(function() {
+                if (isExpanded) {
+                    $(".collapse").collapse("hide");
+                    toggleAll.text("All Toggle Detail");
+                    isExpanded = false;
+                } else {
+                    $(".collapse").collapse("show");
+                    toggleAll.text("All Close Detail");
+                    isExpanded = true;
+                }
+            });
 
-
-    {{-- <br> --}}
-
-    <br>
-    <br>
-
-</body>
-
-</html>
+            // Event listener untuk mengubah status jika ada interaksi manual
+            $(".accordion-toggle").click(function() {
+                var target = $(this).data("target");
+                if ($("#" + target).hasClass("show")) {
+                    $("#" + target).collapse("hide");
+                } else {
+                    $("#" + target).collapse("show");
+                }
+            });
+        });
+    </script>
+@endsection
