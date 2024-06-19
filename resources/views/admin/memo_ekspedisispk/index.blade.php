@@ -92,19 +92,6 @@
                                 </select>
                             </div>
                         </div>
-
-                        <label style="font-size:14px" class="form-label" for="spk_id">No. Spk</label>
-                        <div class="form-group d-flex">
-                            <input hidden onclick="showSpk(this.value)" class="form-control" id="spk_id" name="spk_id"
-                                type="text" placeholder="" value="{{ old('spk_id') }}" readonly
-                                style="margin-right: 10px; font-size:14px" />
-                            <input onclick="showSpk(this.value)" class="form-control" id="kode_spk" name="kode_spk"
-                                type="text" placeholder="" value="{{ old('kode_spk') }}" readonly
-                                style="margin-right: 10px; font-size:14px" />
-                            <button class="btn btn-primary" type="button" onclick="showSpk(this.value)">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
                         <div class="form-group">
                             <label style="font-size:14px" class="form-label" for="kategori">Pilih Kategori</label>
                             <select style="font-size:14px" class="form-control" id="kategori" name="kategori">
@@ -117,6 +104,20 @@
                                 <option value="Memo Tambahan" {{ old('kategori') == 'Memo Tambahan' ? 'selected' : null }}>
                                     Memo Tambahan</option>
                             </select>
+                        </div>
+                        <div id="form_spk">
+                            <label style="font-size:14px" class="form-label" for="spk_id">No. Spk</label>
+                            <div class="form-group d-flex">
+                                <input hidden onclick="showSpk(this.value)" class="form-control" id="spk_id"
+                                    name="spk_id" type="text" placeholder="" value="{{ old('spk_id') }}" readonly
+                                    style="margin-right: 10px; font-size:14px" />
+                                <input onclick="showSpk(this.value)" class="form-control" id="kode_spk" name="kode_spk"
+                                    type="text" placeholder="" value="{{ old('kode_spk') }}" readonly
+                                    style="margin-right: 10px; font-size:14px" />
+                                <button class="btn btn-primary" type="button" onclick="showSpk(this.value)">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
                         </div>
                         <div id="formmemotambahans" class="form-group" style="flex: 8;">
                             <div class="mb-3 mt-4">
@@ -2000,6 +2001,7 @@
             var MemoPerjalananBorong = document.getElementById("memoperjalananborong");
             var Memotambahanns = document.getElementById("memotambahanss");
             var FormMemotambahan = document.getElementById("formmemotambahans");
+            var form_spk = document.getElementById("form_spk");
             var sub_total = document.getElementById("sub_total");
             var sub_totalborong = document.getElementById("sub_totalborong");
 
@@ -2034,6 +2036,7 @@
                     BorongPPh.style.display = "none";
                     FormPotongan.style.display = "none";
                     FormPelanggan.style.display = "none";
+                    form_spk.style.display = "none";
                     FormRute.style.display = "block";
                     MemoPerjalananBorong.style.display = "none";
                     Memotambahanns.style.display = "block";
@@ -2050,6 +2053,7 @@
                     FormRute.style.display = "block";
                     Memoperjlan.style.display = "block";
                     FormPotongan.style.display = "block";
+                    form_spk.style.display = "block";
                     MemoPerjalananBorong.style.display = "block";
                     Memotambahanns.style.display = "none";
                     FormMemotambahan.style.display = "none";
@@ -2092,6 +2096,7 @@
                     MemoPerjalananBorong.style.display = "block";
                     Memotambahanns.style.display = "none";
                     FormMemotambahan.style.display = "none";
+                    form_spk.style.display = "block";
                     Perjalananss.style.display = "none";
                     sub_totalborong.style.display = "block";
                     sub_total.style.display = "none";
