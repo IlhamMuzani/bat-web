@@ -12,7 +12,7 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('admin/inquery_memoekspedisi') }}">Memo Ekspedisi</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('admin/inquery_memoekspedisispk') }}">Memo Ekspedisi</a></li>
                         <li class="breadcrumb-item active">Tambah</li>
                     </ol>
                 </div>
@@ -62,7 +62,7 @@
                     @endif
                 </div>
             @endif
-            <form action="{{ url('admin/inquery_memoekspedisi/' . $inquery->id) }}" method="POST"
+            <form action="{{ url('admin/inquery_memoekspedisispk/' . $inquery->id) }}" method="POST"
                 enctype="multipart/form-data" autocomplete="off">
                 @csrf
                 @method('put')
@@ -72,6 +72,11 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
+                        <div class="form-group">
+                            <label style="font-size:14px" for="kategori">Kategori</label>
+                            <input style="font-size:14px" type="text" class="form-control" id="kategori" readonly
+                                name="kategori" placeholder="" value="{{ old('kategori', $inquery->kategori) }}">
+                        </div>
                         <label style="font-size:14px" class="form-label" for="spk_id">No. Spk</label>
                         <div class="form-group d-flex">
                             <input hidden onclick="showSpk(this.value)" class="form-control" id="spk_id" name="spk_id"
@@ -83,11 +88,6 @@
                             <button class="btn btn-primary" type="button" onclick="showSpk(this.value)">
                                 <i class="fas fa-search"></i>
                             </button>
-                        </div>
-                        <div class="form-group">
-                            <label style="font-size:14px" for="kategori">Kategori</label>
-                            <input style="font-size:14px" type="text" class="form-control" id="kategori" readonly
-                                name="kategori" placeholder="" value="{{ old('kategori', $inquery->kategori) }}">
                         </div>
                     </div>
                 </div>
@@ -1594,7 +1594,7 @@
 
             console.log(detailId);
             $.ajax({
-                url: "{{ url('admin/inquery_memoekspedisi/deletedetailbiayatambahan/') }}/" + detailId,
+                url: "{{ url('admin/inquery_memoekspedisispk/deletedetailbiayatambahan/') }}/" + detailId,
                 type: "POST",
                 data: {
                     _method: 'DELETE',
@@ -1744,7 +1744,7 @@
 
             console.log(detailId);
             $.ajax({
-                url: "{{ url('admin/inquery_memoekspedisi/deletedetailbiayapotongan/') }}/" + detailId,
+                url: "{{ url('admin/inquery_memoekspedisispk/deletedetailbiayapotongan/') }}/" + detailId,
                 type: "POST",
                 data: {
                     _method: 'DELETE',
