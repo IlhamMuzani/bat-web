@@ -3065,10 +3065,10 @@
                 // Check the selected value and redirect accordingly
                 switch (selectedValue) {
                     case 'spk':
-                        window.location.href = "{{ url('admin/memo_ekspedisi') }}";
+                        window.location.href = "{{ url('admin/memo_ekspedisispk') }}";
                         break;
                     case 'non_spk':
-                        window.location.href = "{{ url('admin/memo_ekspedisispk') }}";
+                        window.location.href = "{{ url('admin/memo_ekspedisi') }}";
                         break;
                     default:
                         // Handle other cases or do nothing
