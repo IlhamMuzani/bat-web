@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Kendaraan;
+use App\Models\Memo_ekspedisi;
 use App\Models\Pelanggan;
 use App\Models\Rute_perjalanan;
 use App\Models\Spk;
@@ -27,11 +28,10 @@ class SpkController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-
         return view('admin.spk.index', compact('spks'));
     }
 
-    
+
     public function create()
     {
         $today = Carbon::today();

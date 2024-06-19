@@ -82,6 +82,7 @@
                             <tr>
                                 <th class="text-center">No</th>
                                 <th>No Surat Return</th>
+                                <th>No Surat Jalan</th>
                                 <th>Tanggal</th>
                                 <th>Admin</th>
                                 <th>Pelanggan</th>
@@ -94,6 +95,7 @@
                                     data-target="#modal-posting-{{ $returnekspedisi->id }}" style="cursor: pointer;">
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <td>{{ $returnekspedisi->kode_return }}</td>
+                                    <td>{{ $returnekspedisi->nomor_suratjalan }}</td>
                                     <td>{{ $returnekspedisi->tanggal_awal }}</td>
                                     <td>
                                         {{ $returnekspedisi->admin }}

@@ -565,7 +565,6 @@ class InqueryFakturekspedisiController extends Controller
         return back()->with('success', 'Berhasil');
     }
 
-
     public function postingfaktur($id)
     {
         $faktur = Faktur_ekspedisi::where('id', $id)->first();
@@ -676,6 +675,46 @@ class InqueryFakturekspedisiController extends Controller
             // Handle the case where the Faktur_ekspedisi with the given ID is not found
             return back()->with('error', 'Faktur Ekspedisi tidak ditemukan');
         }
+    }
+
+    public function deletefakturfilter(Request $request)
+    {
+        $selectedIds = explode(',', $request->input('ids'));
+
+        // Mengambil faktur berdasarkan id yang dipilih
+        $fakturs = Faktur_ekspedisi::whereIn('id', $selectedIds)->orderBy('id', 'DESC')->get();
+
+        foreach ($fakturs as $faktur) {
+            // Pastikan faktur memiliki status 'unpost' sebelum dihapus
+            if ($faktur && $faktur->status == 'unpost') {
+                // Check if the category is 'PPH' before attempting to delete Pph
+                if ($faktur->kategori === 'PPH') {
+                    $pph = Pph::where('faktur_ekspedisi_id', $faktur->id)->first();
+
+                    // Check if the PPH record exists before deleting
+                    if ($pph) {
+                        $pph->delete();
+                    }
+                }
+
+                // Retrieve related Detail_faktur instances
+                $detailfakturs = Detail_faktur::where('faktur_ekspedisi_id', $faktur->id)->get();
+
+                // Loop through each Detail_faktur and update associated Memo_ekspedisi records
+                foreach ($detailfakturs as $detail) {
+                    if ($detail->memo_ekspedisi_id) {
+                        Memo_ekspedisi::where('id', $detail->memo_ekspedisi_id)->update(['status_terpakai' => null]);
+                    }
+                    // Delete each Detail_faktur
+                    $detail->delete();
+                }
+
+                // Delete the main Faktur_ekspedisi instance
+                $faktur->delete();
+            }
+        }
+
+        return back()->with('success', 'Berhasil menghapus Faktur Ekspedisi');
     }
     public function deletedetailfaktur($id)
     {

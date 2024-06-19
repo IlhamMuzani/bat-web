@@ -100,6 +100,7 @@ class NotareturnController extends Controller
             'admin' => auth()->user()->karyawan->nama_lengkap,
             'kode_nota' => $this->kode(),
             'return_ekspedisi_id' => $request->return_ekspedisi_id,
+            'nomor_suratjalan' => $request->nomor_suratjalan,
             'kode_return' => $request->kode_return,
             'pelanggan_id' => $request->pelanggan_id,
             'kode_pelanggan' => $request->kode_pelanggan,
@@ -137,7 +138,6 @@ class NotareturnController extends Controller
                     'total' =>  str_replace(',', '.', str_replace('.', '', $data_pesanan['total'])),
                 ]);
                 Barang::where('id', $data_pesanan['barang_id'])->increment('jumlah', $data_pesanan['jumlah']);
-
             }
         }
 

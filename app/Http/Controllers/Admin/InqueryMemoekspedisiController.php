@@ -611,7 +611,7 @@ class InqueryMemoekspedisiController extends Controller
             ]);
 
             Spk::where('id', $item->spk_id)->update(['status_spk' => null, 'status' => 'posting']);
-
+            
             // Update the Memo_ekspedisi status
             $item->update([
                 'status' => 'unpost'

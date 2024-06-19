@@ -1292,28 +1292,6 @@
                 </a>
             </li>
         @endif
-        {{-- @if (auth()->check() && auth()->user()->menu['laporan penerimaan kas kecil'])
-            <li class="nav-item">
-                <a href="{{ url('admin/laporan_penerimaankaskecil') }}"
-                    class="nav-link {{ request()->is('admin/laporan_penerimaankaskecil*') ? 'active' : '' }}">
-                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
-                    <p style="font-size: 14px;">Laporan Penerimaan -<br>
-                        <span style="margin-left: 32px">Kas Kecil</span>
-                    </p>
-                </a>
-            </li>
-        @endif --}}
-        {{-- @if (auth()->check() && auth()->user()->menu['laporan pengambilan kas kecil']) --}}
-        {{-- <li class="nav-item">
-            <a href="{{ url('admin/laporan_pengeluarankaskecil') }}"
-                class="nav-link {{ request()->is('admin/laporan_pengeluarankaskecil*') ? 'active' : '' }}">
-                <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
-                <p style="font-size: 14px;">Laporan Pengambilan -<br>
-                    <span style="margin-left: 32px">Kas Kecil</span>
-                </p>
-            </a>
-        </li> --}}
-        {{-- @endif --}}
         @if (auth()->check() && auth()->user()->menu['laporan deposit sopir'])
             <li class="nav-item">
                 <a href="{{ url('admin/laporan_depositdriver') }}"
