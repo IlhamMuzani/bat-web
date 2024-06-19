@@ -2270,8 +2270,8 @@
                 }
                 updateSubTotal();
             }
-            updateSubTotals();
-            updateSubTotal();
+            // updateSubTotals();
+            // updateSubTotal();
 
         }
 
