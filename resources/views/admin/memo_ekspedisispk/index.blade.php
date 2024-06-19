@@ -87,8 +87,8 @@
                                 <label>Kategori</label>
                                 <select class="custom-select form-control" id="kategoris" name="kategoris">
                                     <option value="">- Pilih Kategori -</option>
-                                    <option value="spk">Non SPK</option>
-                                    <option value="non_spk" selected>SPK</option>
+                                    <option value="spk">SPK</option>
+                                    <option value="non_spk"selected>NON SPK</option>
                                 </select>
                             </div>
                         </div>

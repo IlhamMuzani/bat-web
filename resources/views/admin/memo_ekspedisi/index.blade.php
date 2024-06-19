@@ -76,8 +76,8 @@
                                 <label>Status</label>
                                 <select class="custom-select form-control" id="kategoris" name="kategoris">
                                     <option value="">- Pilih Status -</option>
-                                    <option value="spk" selected>Non SPK</option>
-                                    <option value="non_spk">SPK</option>
+                                    <option value="spk" selected>SPK</option>
+                                    <option value="non_spk">NON SPK</option>
                                 </select>
                             </div>
                         </div>
