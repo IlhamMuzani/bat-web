@@ -46,7 +46,7 @@
                     <h3 class="card-title">Data Memo Ekspedisi</h3>
                     <div class="float-right">
                         @if (auth()->check() && auth()->user()->fitur['create memo ekspedisi'])
-                            <a href="{{ url('admin/memo_ekspedisi') }}" class="btn btn-primary btn-sm">
+                            <a href="{{ url('admin/memo_ekspedisispk') }}" class="btn btn-primary btn-sm">
                                 <i class="fas fa-plus"></i> Tambah
                             </a>
                         @endif

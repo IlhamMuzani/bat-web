@@ -48,7 +48,9 @@ class MemoekspedisispkController extends Controller
                     ->where('status_spk', '!=', 'pelunasan')
                     ->orWhereNull('status_spk');
             })
+            ->orderBy('created_at', 'desc') // Change 'created_at' to the appropriate timestamp column
             ->get();
+
         $kendaraans = Kendaraan::all();
         $drivers = User::whereHas('karyawan', function ($query) {
             $query->where('departemen_id', '2');
@@ -1148,7 +1150,7 @@ class MemoekspedisispkController extends Controller
             return back()->withInput()->with('error', $errors);
         }
 
-        $kode = $this->kode();
+        $kodespk = $this->kodespk();
         // tgl indo
         $tanggal = Carbon::now()->format('Y-m-d');
         $tanggal1 = Carbon::now('Asia/Jakarta');
@@ -1157,7 +1159,7 @@ class MemoekspedisispkController extends Controller
             $request->all(),
             [
                 'admin' => auth()->user()->karyawan->nama_lengkap,
-                'kode_spk' => $this->kode(),
+                'kode_spk' => $this->kodespk(),
                 'voucher' => '0',
                 'pelanggan_id' => $request->pelanggan_id,
                 'kendaraan_id' => $request->kendaraan_id,
@@ -1175,12 +1177,33 @@ class MemoekspedisispkController extends Controller
                 'saldo_deposit' => str_replace(',', '.', str_replace('.', '', $request->saldo_deposit)),
                 'uang_jalan' => str_replace(',', '.', str_replace('.', '', $request->uang_jalan)),
                 'kode_spk' => $this->kode(),
-                'qrcode_spk' => 'https:///batlink.id/spk/' . $kode,
+                'qrcode_spk' => 'https:///batlink.id/spk/' . $kodespk,
                 'tanggal' => $format_tanggal,
                 'tanggal_awal' => $tanggal,
                 'status' => 'posting',
             ]
         ));
         return redirect()->back()->with('success', 'Berhasil menambahkan spk');
+    }
+
+    public function kodespk()
+    {
+        $lastBarang = Spk::where('kode_spk', 'like', 'SPK%')->latest()->first();
+        $lastMonth = $lastBarang ? date('m', strtotime($lastBarang->created_at)) : null;
+        $currentMonth = date('m');
+        if (!$lastBarang || $currentMonth != $lastMonth) {
+            $num = 1;
+        } else {
+            $lastCode = $lastBarang->kode_spk;
+            $parts = explode('/', $lastCode);
+            $lastNum = end($parts);
+            $num = (int) $lastNum + 1;
+        }
+        $formattedNum = sprintf("%03s", $num);
+        $prefix = 'SPK';
+        $tahun = date('y');
+        $tanggal = date('dm');
+        $newCode = $prefix . "/" . $tanggal . $tahun . "/" . $formattedNum;
+        return $newCode;
     }
 }

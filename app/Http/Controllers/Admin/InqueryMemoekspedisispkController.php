@@ -119,17 +119,14 @@ class InqueryMemoekspedisispkController extends Controller
         $inquery = Memo_ekspedisi::where('id', $id)->first();
 
         // $spks = Spk::where('voucher', '<', 2)->get();
-        $spks = Spk::where(
-            'voucher',
-            '<',
-            2
-        )
+        $spks = Spk::where('voucher', '<', 2)
             ->where(function ($query) {
                 $query->where('status_spk', '!=', 'faktur')
                     ->where('status_spk', '!=', 'invoice')
                     ->where('status_spk', '!=', 'pelunasan')
                     ->orWhereNull('status_spk');
             })
+            ->orderBy('created_at', 'desc') // Change 'created_at' to the appropriate timestamp column
             ->get();
         $kendaraans = Kendaraan::all();
         $drivers = User::whereHas('karyawan', function ($query) {
