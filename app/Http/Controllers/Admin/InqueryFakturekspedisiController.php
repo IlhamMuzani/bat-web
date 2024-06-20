@@ -565,6 +565,7 @@ class InqueryFakturekspedisiController extends Controller
         return back()->with('success', 'Berhasil');
     }
 
+
     public function postingfaktur($id)
     {
         $faktur = Faktur_ekspedisi::where('id', $id)->first();
@@ -598,30 +599,6 @@ class InqueryFakturekspedisiController extends Controller
                 }
             }
         }
-
-        // if ($detail_faktur) {
-        //     $detailfakturs = Detail_faktur::where('faktur_ekspedisi_id', $id)->get();
-        //     foreach ($detailfakturs as $detail) {
-        //         if ($detail->memo_ekspedisi_id) {
-        //             // Retrieve the memo first
-        //             $memo = Memo_ekspedisi::where(['id' => $detail->memo_ekspedisi_id, 'status' => 'posting'])->first();
-
-        //             if ($memo) {
-        //                 // Update status memo ekspedisi
-        //                 $memo->update(['status_memo' => 'aktif', 'status' => 'selesai']);
-
-        //                 // Update status spk
-        //                 Spk::where('id', $memo->spk_id)->update(['status_spk' => 'sj']);
-
-        //                 // Update status memotambahan
-        //                 $memotambahans = Memotambahan::where(['memo_ekspedisi_id' => $detail->memo_ekspedisi_id, 'status' => 'selesai'])->get();
-        //                 foreach ($memotambahans as $memotambahan) {
-        //                     $memotambahan->update(['status_memo' => 'aktif', 'status' => 'selesai']);
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
 
         $pph = Pph::where('faktur_ekspedisi_id', $id)->first();
 
