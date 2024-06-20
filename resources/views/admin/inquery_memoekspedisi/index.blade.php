@@ -22,7 +22,7 @@
             display: none;
         }
     </style>
-    @if (auth()->user()->id == 1)
+    @if (auth()->user()->id == 49)
         <div id="loadingSpinner">
             <img src="{{ asset('storage/uploads/user/cute1.gif') }}" alt="Loading...">
         </div>
@@ -38,7 +38,7 @@
     @endif
 
     <!-- Content Header (Page header) -->
-    @if (auth()->user()->id == 1)
+    @if (auth()->user()->id == 49)
         <div class="content-header" style="display: none;" id="mainContent">
         @else
             <div class="content-header">
@@ -59,7 +59,7 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
-    @if (auth()->user()->id == 1)
+    @if (auth()->user()->id == 49)
         <section class="content" style="display: none;" id="mainContentSection">
         @else
             <section class="content">
