@@ -2,308 +2,348 @@
 
 @section('title', 'Inquery Memo Perjalanan')
 
+
 @section('content')
+    <style>
+        #loadingSpinner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #loadingSpinner img {
+            width: 250px;
+            /* Adjust size as needed */
+        }
+
+        #mainContent,
+        #mainContentSection {
+            display: none;
+        }
+    </style>
+    @if (auth()->user()->id == 1)
+        <div id="loadingSpinner">
+            <img src="{{ asset('storage/uploads/user/cute1.gif') }}" alt="Loading...">
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                setTimeout(function() {
+                    document.getElementById("loadingSpinner").style.display = "none";
+                    document.getElementById("mainContent").style.display = "block";
+                    document.getElementById("mainContentSection").style.display = "block";
+                }, 1000); // Adjust the delay time as needed
+            });
+        </script>
+    @endif
+
     <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Inquery Memo Perjalanan</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item active">Inquery Memo Perjalanan</li>
-                    </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+    @if (auth()->user()->id == 1)
+        <div class="content-header" style="display: none;" id="mainContent">
+        @else
+            <div class="content-header">
+    @endif
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Inquery Memo Perjalanan</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">Inquery Memo Perjalanan</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
 
     <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
-            @if (session('success'))
-                <div class="alert alert-success alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <h5>
-                        <i class="icon fas fa-check"></i> Success!
-                    </h5>
-                    {{ session('success') }}
-                </div>
-            @endif
-            @if (session('error'))
-                <div class="alert alert-danger alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <h5>
-                        <i class="icon fas fa-ban"></i> Error!
-                    </h5>
-                    {{ session('error') }}
-                </div>
-            @endif
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Data Inquery Memo Perjalanan</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <form method="GET" id="form-action">
-                        <div class="row">
-                            <div class="col-md-2 mb-3">
-                                <select class="custom-select form-control" id="kategori" name="kategori">
-                                    <option value="">- Semua Status -</option>
-                                    <option value="Memo Perjalanan"
-                                        {{ Request::get('kategori') == 'Memo Perjalanan' ? 'selected' : '' }}>
-                                        Memo Perjalanan
-                                    </option>
-                                    <option value="Memo Borong"
-                                        {{ Request::get('kategori') == 'Memo Borong' ? 'selected' : '' }}>
-                                        Memo Borong</option>
-                                    <option value="Memo Tambahan"
-                                        {{ Request::get('') == 'Memo Tambahan' ? 'selected' : '' }}>
-                                        Memo Tambahan</option>
-                                </select>
-                                <label for="status">(Pilih Status)</label>
-                            </div>
-                            <div class="col-md-2 mb-3">
-                                <select class="custom-select form-control" id="status" name="status">
-                                    <option value="">- Semua Status -</option>
-                                    <option value="posting" {{ Request::get('status') == 'posting' ? 'selected' : '' }}>
-                                        Posting
-                                    </option>
-                                    <option value="unpost" {{ Request::get('status') == 'unpost' ? 'selected' : '' }}>
-                                        Unpost</option>
-                                </select>
-                                <label for="status">(Pilih Status)</label>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <input class="form-control" id="tanggal_awal" name="tanggal_awal" type="date"
-                                    value="{{ Request::get('tanggal_awal') }}" max="{{ date('Y-m-d') }}" />
-                                <label for="tanggal_awal">(Tanggal Awal)</label>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <input class="form-control" id="tanggal_akhir" name="tanggal_akhir" type="date"
-                                    value="{{ Request::get('tanggal_akhir') }}" max="{{ date('Y-m-d') }}" />
-                                <label for="tanggal_awal">(Tanggal Akhir)</label>
-                            </div>
-                            {{-- <div class="col-md-2 mb-3">
+    @if (auth()->user()->id == 1)
+        <section class="content" style="display: none;" id="mainContentSection">
+        @else
+            <section class="content">
+    @endif
+    <div class="container-fluid">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h5>
+                    <i class="icon fas fa-check"></i> Success!
+                </h5>
+                {{ session('success') }}
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h5>
+                    <i class="icon fas fa-ban"></i> Error!
+                </h5>
+                {{ session('error') }}
+            </div>
+        @endif
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Data Inquery Memo Perjalanan</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <form method="GET" id="form-action">
+                    <div class="row">
+                        <div class="col-md-2 mb-3">
+                            <select class="custom-select form-control" id="kategori" name="kategori">
+                                <option value="">- Semua Status -</option>
+                                <option value="Memo Perjalanan"
+                                    {{ Request::get('kategori') == 'Memo Perjalanan' ? 'selected' : '' }}>
+                                    Memo Perjalanan
+                                </option>
+                                <option value="Memo Borong"
+                                    {{ Request::get('kategori') == 'Memo Borong' ? 'selected' : '' }}>
+                                    Memo Borong</option>
+                                <option value="Memo Tambahan" {{ Request::get('') == 'Memo Tambahan' ? 'selected' : '' }}>
+                                    Memo Tambahan</option>
+                            </select>
+                            <label for="status">(Pilih Status)</label>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <select class="custom-select form-control" id="status" name="status">
+                                <option value="">- Semua Status -</option>
+                                <option value="posting" {{ Request::get('status') == 'posting' ? 'selected' : '' }}>
+                                    Posting
+                                </option>
+                                <option value="unpost" {{ Request::get('status') == 'unpost' ? 'selected' : '' }}>
+                                    Unpost</option>
+                            </select>
+                            <label for="status">(Pilih Status)</label>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <input class="form-control" id="tanggal_awal" name="tanggal_awal" type="date"
+                                value="{{ Request::get('tanggal_awal') }}" max="{{ date('Y-m-d') }}" />
+                            <label for="tanggal_awal">(Tanggal Awal)</label>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <input class="form-control" id="tanggal_akhir" name="tanggal_akhir" type="date"
+                                value="{{ Request::get('tanggal_akhir') }}" max="{{ date('Y-m-d') }}" />
+                            <label for="tanggal_awal">(Tanggal Akhir)</label>
+                        </div>
+                        {{-- <div class="col-md-2 mb-3">
                                 <button type="button" class="btn btn-outline-primary mr-2" onclick="cari()">
                                     <i class="fas fa-search"></i> Cari
                                 </button>
                             </div> --}}
-                            <div class="col-md-2 mb-3">
-                                <button type="button" class="btn btn-outline-primary btn-block" onclick="cari()">
-                                    <i class="fas fa-search"></i> Cari
-                                </button>
-                                <input type="hidden" name="ids" id="selectedIds" value="">
-                                <button type="button" class="btn btn-primary btn-block mt-1" id="checkfilter"
-                                    onclick="printSelectedData()" target="_blank">
-                                    <i class="fas fa-print"></i> Cetak Filter
-                                </button>
+                        <div class="col-md-2 mb-3">
+                            <button type="button" class="btn btn-outline-primary btn-block" onclick="cari()">
+                                <i class="fas fa-search"></i> Cari
+                            </button>
+                            <input type="hidden" name="ids" id="selectedIds" value="">
+                            <button type="button" class="btn btn-primary btn-block mt-1" id="checkfilter"
+                                onclick="printSelectedData()" target="_blank">
+                                <i class="fas fa-print"></i> Cetak Filter
+                            </button>
 
-                            </div>
-                        </div>
-                    </form>
-                    {{-- @if (auth()->user()->id == 1 || auth()->user()->id == 46 || auth()->user()->id == 49) --}}
-                    {{-- @if (Request::get('kategori') == 'Memo Perjalanan') --}}
-                    <form method="GET" id="form-action">
-                        <div class="row">
-                            @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan posting'])
-                                <div class="col-md-2 mb-3">
-                                    <input type="hidden" name="ids" id="selectedIds" value="">
-                                    <button type="button" class="btn btn-success btn-block mt-1" id="postingfilter"
-                                        onclick="postingSelectedData()">
-                                        <i class="fas fa-check-square"></i> Posting Filter
-                                    </button>
-                                </div>
-                            @endif
-                            @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan unpost'])
-                                <div class="col-md-2 mb-3">
-                                    <input type="hidden" name="ids" id="selectedIdss" value="">
-                                    <button type="button" class="btn btn-warning btn-block mt-1" id="unpostfilter"
-                                        onclick="unpostSelectedData()">
-                                        <i class="fas fa-times-circle"></i> Unpost Filter
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </form>
-                    {{-- @endif --}}
-                    <table id="datatables66" class="table table-bordered table-striped table-hover"
-                        style="font-size: 13px">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th> <input type="checkbox" name="" id="select_all_ids"></th>
-                                <th class="text-center">No</th>
-                                <th>No Memo</th>
-                                <th>Tanggal</th>
-                                <th>Sopir</th>
-                                <th>No Kabin</th>
-                                <th>Rute</th>
-                                <th>U. Jalan</th>
-                                <th>U. Tambah</th>
-                                <th>Deposit</th>
-                                {{-- <th>Adm</th> --}}
-                                <th>Total</th>
-                                <th>Opsi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($inquery as $memoekspedisi)
-                                <tr class="dropdown"{{ $memoekspedisi->id }}>
-                                    <td><input type="checkbox" name="selectedIds[]" class="checkbox_ids"
-                                            value="{{ $memoekspedisi->id }}">
-                                    </td>
-                                    <td class="text-center">{{ $loop->iteration }}</td>
-                                    <td>
-                                        {{ $memoekspedisi->kode_memo }}</td>
-                                    <td>
-                                        {{ $memoekspedisi->tanggal_awal }}</td>
-                                    <td>
-                                        {{ substr($memoekspedisi->nama_driver, 0, 10) }} ..
-                                    </td>
-                                    <td>
-                                        {{ $memoekspedisi->no_kabin }}
-                                    </td>
-                                    <td>
-                                        @if ($memoekspedisi->nama_rute == null)
-                                            rute tidak ada
-                                        @else
-                                            {{ $memoekspedisi->nama_rute }}
-                                        @endif
-                                    </td>
-                                    <td class="text-right">
-                                        {{ number_format($memoekspedisi->uang_jalan, 0, ',', '.') }}
-                                    </td>
-                                    <td class="text-right">
-                                        @if ($memoekspedisi->biaya_tambahan == null)
-                                            0
-                                        @else
-                                            {{ number_format($memoekspedisi->biaya_tambahan, 0, ',', '.') }}
-                                        @endif
-                                    </td>
-                                    <td class="text-right">
-                                        @if ($memoekspedisi->deposit_driver == null)
-                                            0
-                                        @else
-                                            {{ number_format($memoekspedisi->deposit_driver, 0, ',', '.') }}
-                                        @endif
-                                    </td>
-                                    <td class="text-right">
-                                        {{ number_format($memoekspedisi->sub_total, 0, ',', '.') }}
-                                    </td>
-                                    <td class="text-center">
-                                        @if ($memoekspedisi->status == 'posting')
-                                            <button type="button" class="btn btn-success btn-sm">
-                                                <i class="fas fa-check"></i>
-                                            </button>
-                                        @endif
-                                        @if ($memoekspedisi->status == 'selesai')
-                                            <img src="{{ asset('storage/uploads/indikator/faktur.png') }}" height="40"
-                                                width="40" alt="faktur">
-                                        @endif
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            @if ($memoekspedisi->status == 'unpost')
-                                                @if ($saldoTerakhir->sisa_saldo < $memoekspedisi->uang_jalan)
-                                                    <a class="dropdown-item">Saldo tidak cukup</a>
-                                                @else
-                                                    @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan posting'])
-                                                        <a class="dropdown-item posting-btn"
-                                                            data-memo-id="{{ $memoekspedisi->id }}">Posting</a>
-                                                    @endif
-                                                @endif
-                                                @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan update'])
-                                                    @if ($memoekspedisi->spk_id == null)
-                                                        <a class="dropdown-item"
-                                                            href="{{ url('admin/inquery_memoekspedisi/' . $memoekspedisi->id . '/edit') }}">Update</a>
-                                                    @else
-                                                        <a class="dropdown-item"
-                                                            href="{{ url('admin/inquery_memoekspedisispk/' . $memoekspedisi->id . '/edit') }}">Update</a>
-                                                    @endif
-                                                @endif
-                                                @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan show'])
-                                                    <a class="dropdown-item"
-                                                        href="{{ url('admin/inquery_memoekspedisi/' . $memoekspedisi->id) }}">Show</a>
-                                                @endif
-                                                @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan delete'])
-                                                    <form style="margin-top:5px" method="GET"
-                                                        action="{{ route('hapusmemo', ['id' => $memoekspedisi->id]) }}">
-                                                        <button type="submit"
-                                                            class="dropdown-item btn btn-outline-danger btn-block mt-2">
-                                                            </i> Delete
-                                                        </button>
-                                                    </form>
-                                                @endif
-                                            @endif
-                                            @if ($memoekspedisi->status == 'posting')
-                                                @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan unpost'])
-                                                    <a class="dropdown-item unpost-btn"
-                                                        data-memo-id="{{ $memoekspedisi->id }}">Unpost</a>
-                                                @endif
-                                                @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan show'])
-                                                    <a class="dropdown-item"
-                                                        href="{{ url('admin/inquery_memoekspedisi/' . $memoekspedisi->id) }}">Show</a>
-                                                @endif
-                                            @endif
-                                            @if ($memoekspedisi->status == 'selesai')
-                                                @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan show'])
-                                                    <a class="dropdown-item"
-                                                        href="{{ url('admin/inquery_memoekspedisi/' . $memoekspedisi->id) }}">Show</a>
-                                                @endif
-                                            @endif
-                                            @if ($memoekspedisi->detail_faktur->first())
-                                                <p style="margin-left:15px; margin-right:15px">Digunakan Oleh Faktur
-                                                    Ekspedisi
-                                                    <strong>{{ $memoekspedisi->detail_faktur->first()->faktur_ekspedisi->kode_faktur }}</strong>
-                                                </p>
-                                            @else
-                                                <!-- Kode yang ingin Anda jalankan jika kondisi tidak terpenuhi -->
-                                            @endif
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    <!-- Modal Loading -->
-                    <div class="modal fade" id="modal-loading" tabindex="-1" role="dialog"
-                        aria-labelledby="modal-loading-label" aria-hidden="true" data-backdrop="static">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-body text-center">
-                                    <i class="fas fa-spinner fa-spin fa-3x text-primary"></i>
-                                    <h4 class="mt-2">Sedang Menyimpan...</h4>
-                                </div>
-                            </div>
                         </div>
                     </div>
-
-                    {{-- validasi gagal  --}}
-                    <div class="modal fade" id="validationModal" tabindex="-1" role="dialog"
-                        aria-labelledby="validationModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="validationModalLabel">Validasi Gagal</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true"><i class="fas fa-times"></i></span>
-                                    </button>
-                                </div>
-                                <div class="modal-body text-center">
-                                    <i class="fas fa-times-circle fa-3x text-danger"></i>
-                                    <h4 class="mt-2">Validasi Gagal!</h4>
-                                    <p id="validationMessage"></p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                                </div>
+                </form>
+                {{-- @if (auth()->user()->id == 1 || auth()->user()->id == 46 || auth()->user()->id == 49) --}}
+                {{-- @if (Request::get('kategori') == 'Memo Perjalanan') --}}
+                <form method="GET" id="form-action">
+                    <div class="row">
+                        @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan posting'])
+                            <div class="col-md-2 mb-3">
+                                <input type="hidden" name="ids" id="selectedIds" value="">
+                                <button type="button" class="btn btn-success btn-block mt-1" id="postingfilter"
+                                    onclick="postingSelectedData()">
+                                    <i class="fas fa-check-square"></i> Posting Filter
+                                </button>
+                            </div>
+                        @endif
+                        @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan unpost'])
+                            <div class="col-md-2 mb-3">
+                                <input type="hidden" name="ids" id="selectedIdss" value="">
+                                <button type="button" class="btn btn-warning btn-block mt-1" id="unpostfilter"
+                                    onclick="unpostSelectedData()">
+                                    <i class="fas fa-times-circle"></i> Unpost Filter
+                                </button>
+                            </div>
+                        @endif
+                    </div>
+                </form>
+                {{-- @endif --}}
+                <table id="datatables66" class="table table-bordered table-striped table-hover" style="font-size: 13px">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th> <input type="checkbox" name="" id="select_all_ids"></th>
+                            <th class="text-center">No</th>
+                            <th>No Memo</th>
+                            <th>Tanggal</th>
+                            <th>Sopir</th>
+                            <th>No Kabin</th>
+                            <th>Rute</th>
+                            <th>U. Jalan</th>
+                            <th>U. Tambah</th>
+                            <th>Deposit</th>
+                            {{-- <th>Adm</th> --}}
+                            <th>Total</th>
+                            <th>Opsi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($inquery as $memoekspedisi)
+                            <tr class="dropdown"{{ $memoekspedisi->id }}>
+                                <td><input type="checkbox" name="selectedIds[]" class="checkbox_ids"
+                                        value="{{ $memoekspedisi->id }}">
+                                </td>
+                                <td class="text-center">{{ $loop->iteration }}</td>
+                                <td>
+                                    {{ $memoekspedisi->kode_memo }}</td>
+                                <td>
+                                    {{ $memoekspedisi->tanggal_awal }}</td>
+                                <td>
+                                    {{ substr($memoekspedisi->nama_driver, 0, 10) }} ..
+                                </td>
+                                <td>
+                                    {{ $memoekspedisi->no_kabin }}
+                                </td>
+                                <td>
+                                    @if ($memoekspedisi->nama_rute == null)
+                                        rute tidak ada
+                                    @else
+                                        {{ $memoekspedisi->nama_rute }}
+                                    @endif
+                                </td>
+                                <td class="text-right">
+                                    {{ number_format($memoekspedisi->uang_jalan, 0, ',', '.') }}
+                                </td>
+                                <td class="text-right">
+                                    @if ($memoekspedisi->biaya_tambahan == null)
+                                        0
+                                    @else
+                                        {{ number_format($memoekspedisi->biaya_tambahan, 0, ',', '.') }}
+                                    @endif
+                                </td>
+                                <td class="text-right">
+                                    @if ($memoekspedisi->deposit_driver == null)
+                                        0
+                                    @else
+                                        {{ number_format($memoekspedisi->deposit_driver, 0, ',', '.') }}
+                                    @endif
+                                </td>
+                                <td class="text-right">
+                                    {{ number_format($memoekspedisi->sub_total, 0, ',', '.') }}
+                                </td>
+                                <td class="text-center">
+                                    @if ($memoekspedisi->status == 'posting')
+                                        <button type="button" class="btn btn-success btn-sm">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    @endif
+                                    @if ($memoekspedisi->status == 'selesai')
+                                        <img src="{{ asset('storage/uploads/indikator/faktur.png') }}" height="40"
+                                            width="40" alt="faktur">
+                                    @endif
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        @if ($memoekspedisi->status == 'unpost')
+                                            @if ($saldoTerakhir->sisa_saldo < $memoekspedisi->uang_jalan)
+                                                <a class="dropdown-item">Saldo tidak cukup</a>
+                                            @else
+                                                @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan posting'])
+                                                    <a class="dropdown-item posting-btn"
+                                                        data-memo-id="{{ $memoekspedisi->id }}">Posting</a>
+                                                @endif
+                                            @endif
+                                            @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan update'])
+                                                @if ($memoekspedisi->spk_id == null)
+                                                    <a class="dropdown-item"
+                                                        href="{{ url('admin/inquery_memoekspedisi/' . $memoekspedisi->id . '/edit') }}">Update</a>
+                                                @else
+                                                    <a class="dropdown-item"
+                                                        href="{{ url('admin/inquery_memoekspedisispk/' . $memoekspedisi->id . '/edit') }}">Update</a>
+                                                @endif
+                                            @endif
+                                            @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan show'])
+                                                <a class="dropdown-item"
+                                                    href="{{ url('admin/inquery_memoekspedisi/' . $memoekspedisi->id) }}">Show</a>
+                                            @endif
+                                            @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan delete'])
+                                                <form style="margin-top:5px" method="GET"
+                                                    action="{{ route('hapusmemo', ['id' => $memoekspedisi->id]) }}">
+                                                    <button type="submit"
+                                                        class="dropdown-item btn btn-outline-danger btn-block mt-2">
+                                                        </i> Delete
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        @endif
+                                        @if ($memoekspedisi->status == 'posting')
+                                            @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan unpost'])
+                                                <a class="dropdown-item unpost-btn"
+                                                    data-memo-id="{{ $memoekspedisi->id }}">Unpost</a>
+                                            @endif
+                                            @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan show'])
+                                                <a class="dropdown-item"
+                                                    href="{{ url('admin/inquery_memoekspedisi/' . $memoekspedisi->id) }}">Show</a>
+                                            @endif
+                                        @endif
+                                        @if ($memoekspedisi->status == 'selesai')
+                                            @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan show'])
+                                                <a class="dropdown-item"
+                                                    href="{{ url('admin/inquery_memoekspedisi/' . $memoekspedisi->id) }}">Show</a>
+                                            @endif
+                                        @endif
+                                        @if ($memoekspedisi->detail_faktur->first())
+                                            <p style="margin-left:15px; margin-right:15px">Digunakan Oleh Faktur
+                                                Ekspedisi
+                                                <strong>{{ $memoekspedisi->detail_faktur->first()->faktur_ekspedisi->kode_faktur }}</strong>
+                                            </p>
+                                        @else
+                                            <!-- Kode yang ingin Anda jalankan jika kondisi tidak terpenuhi -->
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <!-- Modal Loading -->
+                <div class="modal fade" id="modal-loading" tabindex="-1" role="dialog"
+                    aria-labelledby="modal-loading-label" aria-hidden="true" data-backdrop="static">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <i class="fas fa-spinner fa-spin fa-3x text-primary"></i>
+                                <h4 class="mt-2">Sedang Menyimpan...</h4>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- /.card-body -->
+
+                {{-- validasi gagal  --}}
+                <div class="modal fade" id="validationModal" tabindex="-1" role="dialog"
+                    aria-labelledby="validationModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="validationModalLabel">Validasi Gagal</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true"><i class="fas fa-times"></i></span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <i class="fas fa-times-circle fa-3x text-danger"></i>
+                                <h4 class="mt-2">Validasi Gagal!</h4>
+                                <p id="validationMessage"></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <!-- /.card-body -->
         </div>
+    </div>
     </section>
 
 
