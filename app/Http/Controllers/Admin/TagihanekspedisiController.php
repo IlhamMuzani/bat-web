@@ -18,7 +18,7 @@ class TagihanekspedisiController extends Controller
     public function index()
     {
         // $pelanggans = Pelanggan::all();
-        $fakturs = Faktur_ekspedisi::where(['status_tagihan' => null, 'status' => 'posting'])->get();
+        $fakturs = Faktur_ekspedisi::where(['status_tagihan' => null, 'status' => 'posting', 'kategori' => 'PPH'])->get();
         $tarifs = Tarif::all();
 
         return view('admin.tagihan_ekspedisi.index', compact('fakturs', 'tarifs'));
@@ -33,6 +33,25 @@ class TagihanekspedisiController extends Controller
         return view('admin.tagihan_ekspedisi.indexnonpph', compact('fakturs', 'tarifs'));
     }
 
+    public function get_fakturtagihan($pelanggan_id)
+    {
+        $fakturs = Faktur_ekspedisi::where(['status_tagihan' => null, 'status' => 'posting', 'kategori' => 'PPH', 'pelanggan_id' => $pelanggan_id])
+            ->with('pelanggan')
+            ->with('detail_faktur')
+            ->get();
+        return response()->json($fakturs);
+    }
+
+    public function get_fakturtagihannonpph($pelanggan_id)
+    {
+        $fakturs = Faktur_ekspedisi::where(['status_tagihan' => null, 'status' => 'posting', 'kategori' => 'NON PPH', 'pelanggan_id' => $pelanggan_id])
+            ->with('pelanggan')
+            ->with('detail_faktur')
+            ->get();
+        return response()->json($fakturs);
+    }
+
+    
     public function store(Request $request)
     {
         $validasi_pelanggan = Validator::make(

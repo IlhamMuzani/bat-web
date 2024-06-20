@@ -565,7 +565,6 @@ class InqueryFakturekspedisiController extends Controller
         return back()->with('success', 'Berhasil');
     }
 
-
     public function postingfaktur($id)
     {
         $faktur = Faktur_ekspedisi::where('id', $id)->first();
