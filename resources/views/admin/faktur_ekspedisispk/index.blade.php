@@ -77,8 +77,8 @@
                                     <label>Status</label>
                                     <select class="custom-select form-control" id="status" name="status">
                                         <option value="">- Pilih Status -</option>
-                                        <option value="spk">Non SPK</option>
-                                        <option value="non_spk"selected>SPK</option>
+                                        <option value="spk" selected>SPK</option>
+                                        <option value="non_spk">NON SPK</option>
                                     </select>
                                 </div>
                             </div>
@@ -1710,10 +1710,10 @@
                 // Check the selected value and redirect accordingly
                 switch (selectedValue) {
                     case 'spk':
-                        window.location.href = "{{ url('admin/faktur_ekspedisi') }}";
+                        window.location.href = "{{ url('admin/faktur_ekspedisispk') }}";
                         break;
                     case 'non_spk':
-                        window.location.href = "{{ url('admin/faktur_ekspedisispk') }}";
+                        window.location.href = "{{ url('admin/faktur_ekspedisi') }}";
                         break;
                     default:
                         // Handle other cases or do nothing
