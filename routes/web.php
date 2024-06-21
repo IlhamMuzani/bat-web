@@ -218,6 +218,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('pelanggan/cetak-pdf/{id}', [\App\Http\Controllers\Admin\PelangganController::class, 'cetakpdf']);
     Route::get('kendaraan/cetak-pdf/{id}', [\App\Http\Controllers\Admin\KendaraanController::class, 'cetakpdf']);
     Route::get('kendaraan/cetak-pdfsolar/{id}', [\App\Http\Controllers\Admin\KendaraanController::class, 'cetakpdfsolar']);
+    Route::get('kendaraan/cetak-pdfstnk/{id}', [\App\Http\Controllers\Admin\KendaraanController::class, 'cetakpdfstnk']);
     Route::get('ban/cetak-pdf/{id}', [\App\Http\Controllers\Admin\BanController::class, 'cetakpdf']);
     Route::get('divisi/cetak-pdf/{id}', [\App\Http\Controllers\Admin\DivisiController::class, 'cetakpdf']);
     Route::get('jenis-kendaraan/cetak-pdf/{id}', [\App\Http\Controllers\Admin\Jenis_kendaraanController::class, 'cetakpdf']);

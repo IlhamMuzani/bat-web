@@ -111,6 +111,15 @@ class KendaraanController extends Controller
             $namaGambar = null;
         }
 
+        if ($request->gambar_stnk) {
+            $gambar = str_replace(' ', '', $request->gambar_stnk->getClientOriginalName());
+            $namaGambarstnk = 'gambar_stnk/' . date('mYdHs') . rand(1, 10) . '_' . $gambar;
+            $request->gambar_stnk->storeAs('public/uploads/', $namaGambarstnk);
+        } else {
+            $namaGambarstnk = null;
+        }
+
+
         $kode = $this->kode();
 
         $tanggal = Carbon::now()->format('Y-m-d');
@@ -118,6 +127,7 @@ class KendaraanController extends Controller
             $request->all(),
             [
                 'gambar_barcodesolar' => $namaGambar,
+                'gambar_stnk' => $namaGambarstnk,
                 'kode_kendaraan' => $this->kode(),
                 'status' => 'truk',
                 'timer' => '0 00:00',
@@ -167,6 +177,28 @@ class KendaraanController extends Controller
         $pdf->setPaper('letter', 'portrait');
         return $pdf->stream('Barcode_Solar.pdf');
     }
+
+    public function cetakpdfstnk($id)
+    {
+        $cetakpdf = Kendaraan::where('id', $id)->first();
+
+        // If Memo_ekspedisi is not found, try fetching Memotambahan
+        if (!$cetakpdf) {
+            $cetakpdf = Kendaraan::where('id', $id)->first();
+
+            // If Memotambahan is not found, handle the error
+            if (!$cetakpdf) {
+                abort(404, 'Memo not found');
+            }
+            $pdf = PDF::loadView('admin.kendaraan.cetak_pdfstnk', compact('cetakpdf'));
+            $pdf->setPaper('letter', 'portrait');
+            return $pdf->stream('Foto_Stnk.pdf');
+        }
+        $pdf = PDF::loadView('admin.kendaraan.cetak_pdfstnk', compact('cetakpdf'));
+        $pdf->setPaper('letter', 'portrait');
+        return $pdf->stream('Foto_Stnk.pdf');
+    }
+
 
     // public function kode()
     // {
@@ -278,6 +310,15 @@ class KendaraanController extends Controller
             $namaGambar = $kendaraan->gambar_barcodesolar;
         }
 
+        if ($request->gambar_stnk) {
+            Storage::disk('local')->delete('public/uploads/' . $kendaraan->gambar_stnk);
+            $gambar = str_replace(' ', '', $request->gambar_stnk->getClientOriginalName());
+            $namaGambarstnk = 'gambar_stnk/' . date('mYdHs') . rand(1, 10) . '_' . $gambar;
+            $request->gambar_stnk->storeAs('public/uploads/', $namaGambarstnk);
+        } else {
+            $namaGambarstnk = $kendaraan->gambar_stnk;
+        }
+
         $kendaraan->no_kabin = $request->no_kabin;
         $kendaraan->no_pol = $request->no_pol;
         $kendaraan->no_rangka = $request->no_rangka;
@@ -291,6 +332,7 @@ class KendaraanController extends Controller
         $kendaraan->user_id = $request->user_id;
         $kendaraan->km = $request->km;
         $kendaraan->gambar_barcodesolar = $namaGambar;
+        $kendaraan->gambar_stnk = $namaGambarstnk;
         $kendaraan->tanggal = Carbon::now('Asia/Jakarta');
         $kendaraan->tanggal_awal = Carbon::now()->format('Y-m-d');
 
