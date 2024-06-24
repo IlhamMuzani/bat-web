@@ -3,8 +3,55 @@
 @section('title', 'Inquery Memo Tambahan')
 
 @section('content')
+    <style>
+        #loadingSpinner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #loadingSpinner img {
+            width: 250px;
+            /* Adjust size as needed */
+        }
+
+        #mainContent,
+        #mainContentSection {
+            display: none;
+        }
+    </style>
+    @if (auth()->user()->id == 49 || auth()->user()->id == 3 || auth()->user()->id == 50 || auth()->user()->id == 2)
+        <div id="loadingSpinner">
+            <img src="{{ asset('storage/uploads/user/cute1.gif') }}" alt="Loading...">
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                setTimeout(function() {
+                    document.getElementById("loadingSpinner").style.display = "none";
+                    document.getElementById("mainContent").style.display = "block";
+                    document.getElementById("mainContentSection").style.display = "block";
+                }, 500); // Adjust the delay time as needed
+            });
+        </script>
+    @else
+        <div id="loadingSpinners" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
+            <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                setTimeout(function() {
+                    document.getElementById("loadingSpinners").style.display = "none";
+                    document.getElementById("mainContent").style.display = "block";
+                    document.getElementById("mainContentSection").style.display = "block";
+                }, 100); // Adjust the delay time as needed
+            });
+        </script>
+    @endif
+
     <!-- Content Header (Page header) -->
-    <div class="content-header">
+    <div class="content-header" style="display: none;" id="mainContent">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
@@ -21,7 +68,7 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content" style="display: none;" id="mainContentSection">
         <div class="container-fluid">
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible">

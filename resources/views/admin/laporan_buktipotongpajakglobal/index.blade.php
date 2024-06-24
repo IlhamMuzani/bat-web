@@ -4,7 +4,22 @@
 
 @section('content')
     <!-- Content Header (Page header) -->
-    <div class="content-header">
+    <div id="loadingSpinner" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
+        <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(function() {
+                document.getElementById("loadingSpinner").style.display = "none";
+                document.getElementById("mainContent").style.display = "block";
+                document.getElementById("mainContentSection").style.display = "block";
+            }, 100); // Adjust the delay time as needed
+        });
+    </script>
+
+    <!-- Content Header (Page header) -->
+    <div class="content-header" style="display: none;" id="mainContent">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
@@ -21,7 +36,7 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content" style="display: none;" id="mainContentSection">
         <div class="container-fluid">
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible">
@@ -41,59 +56,78 @@
                     <form method="GET" id="form-action">
                         <div class="row">
                             <div class="col-md-3 mb-3">
-                                <label for="created_at">Kategori</label>
+                                <label for="created_at">Jenis Laporan</label>
                                 <select class="custom-select form-control" id="status" name="status">
                                     <option value="">- Pilih Laporan -</option>
                                     <option value="buktipotong">Laporan Bukti Potong Pajak</option>
                                     <option value="buktipotongglobal" selected>Laporan Bukti Potong Pajak Global</option>
                                 </select>
+                                <label style="margin-top:7px" for="status">Cari Pelanggan</label>
+                                <select class="select2bs4 select2-hidden-accessible" name="pelanggan_id"
+                                    data-placeholder="Cari Pelanggan.." style="width: 100%;" data-select2-id="23"
+                                    tabindex="-1" aria-hidden="true" id="pelanggan_id">
+                                    <option value="">- Pilih -</option>
+                                    @foreach ($pelanggans as $pelanggan)
+                                        <option value="{{ $pelanggan->id }}"
+                                            {{ Request::get('pelanggan_id') == $pelanggan->id ? 'selected' : '' }}>
+                                            {{ $pelanggan->nama_pell }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
-                            <div class="col-md-2 mb-3">
-                                <label for="created_at">Kategori</label>
+                            <div class="col-md-3 mb-3">
+                                <label for="created_at">Status</label>
+                                <select class="custom-select form-control" id="status" name="status">
+                                    <option value="">- Semua Status -</option>
+                                    <option value="selesai" {{ Request::get('status') == 'selesai' ? 'selected' : '' }}>
+                                        Lunas
+                                    </option>
+                                    <option value="posting" {{ Request::get('status') == 'posting' ? 'selected' : '' }}>
+                                        Belum Lunas</option>
+                                </select>
+                                <label style="margin-top:7px" for="created_at">Kategori</label>
                                 <select class="custom-select form-control" id="status_terpakai" name="status_terpakai">
                                     <option value="">- Semua Status -</option>
                                     <option value="digunakan"
                                         {{ Request::get('status_terpakai') == 'digunakan' ? 'selected' : '' }}>
-                                        Lunas
+                                        Sudah Ada Bukti Potong
                                     </option>
                                     <option value="" {{ Request::get('status_terpakai') == null ? 'selected' : '' }}>
-                                        Belum Lunas</option>
+                                        Belum Ada Bukti Potong</option>
                                 </select>
-
                             </div>
-                            <div class="col-md-2 mb-3">
+                            <div class="col-md-3 mb-3">
                                 <label for="tanggal_awal">Tanggal Awal</label>
                                 <input class="form-control" id="tanggal_awal" name="tanggal_awal" type="date"
                                     value="{{ Request::get('tanggal_awal') }}" max="{{ date('Y-m-d') }}" />
-                            </div>
-                            <div class="col-md-2 mb-3">
-                                <label for="tanggal_akhir">Tanggal Akhir</label>
+                                <label style="margin-top:7px" for="tanggal_akhir">Tanggal Akhir</label>
                                 <input class="form-control" id="tanggal_akhir" name="tanggal_akhir" type="date"
                                     value="{{ Request::get('tanggal_akhir') }}" max="{{ date('Y-m-d') }}" />
+
                             </div>
                             <div class="col-md-3 mb-3">
-                                {{-- @if (auth()->check() && auth()->user()->fitur['laporan penerimaan kas kecil cari']) --}}
+                                <label style="color: white" for="tanggal_akhir">.</label>
+
                                 <button type="button" class="btn btn-outline-primary btn-block" onclick="cari()">
                                     <i class="fas fa-search"></i> Cari
                                 </button>
                                 {{-- @endif --}}
                                 {{-- @if (auth()->check() && auth()->user()->fitur['laporan penerimaan kas kecil cetak']) --}}
+                                <label style="margin-top:7px; color:white" for="tanggal_akhir">.</label>
                                 <button type="button" class="btn btn-primary btn-block" onclick="printReport()"
                                     target="_blank">
                                     <i class="fas fa-print"></i> Cetak
                                 </button>
-                                {{-- @endif --}}
                             </div>
+
                         </div>
                     </form>
                     <table id="datatables66" class="table table-bordered table-striped table-hover" style="font-size: 13px">
                         <thead class="thead-dark">
                             <tr>
                                 <th class="text-center">No</th>
-                                <th>No Faktur</th>
+                                <th>No Invoice</th>
                                 <th>Tanggal</th>
-                                <th>Kategori</th>
-                                <th>Admin</th>
                                 <th>Pelanggan</th>
                                 <th>DPP</th>
                                 <th>PPH</th>
@@ -105,10 +139,6 @@
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <td>{{ $tagihanekspedisi->kode_tagihan }}</td>
                                     <td>{{ $tagihanekspedisi->tanggal_awal }}</td>
-                                    <td>{{ $tagihanekspedisi->kategori }}</td>
-                                    <td>
-                                        {{ $tagihanekspedisi->user->karyawan->nama_lengkap }}
-                                    </td>
                                     <td>
                                         {{ $tagihanekspedisi->nama_pelanggan }}
                                     </td>
@@ -157,7 +187,8 @@
             var endDate = tanggalAkhir.value;
 
             if (startDate && endDate) {
-                form.action = "{{ url('admin/print_buktipotongpajakglobal') }}" + "?start_date=" + startDate + "&end_date=" +
+                form.action = "{{ url('admin/print_buktipotongpajakglobal') }}" + "?start_date=" + startDate +
+                    "&end_date=" +
                     endDate;
                 form.submit();
             } else {

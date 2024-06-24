@@ -58,6 +58,7 @@ class BarangController extends Controller
             $request->all(),
             [
                 'kode_barang' => $this->kode(),
+                'jumlah' => '0',
                 // 'qrcode_rute' => 'https://batlink.id/rute_perjalanan/' . $kode,
                 'tanggal_awal' => Carbon::now('Asia/Jakarta'),
             ],

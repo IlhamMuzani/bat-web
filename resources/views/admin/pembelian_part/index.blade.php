@@ -14,7 +14,7 @@
                 document.getElementById("loadingSpinner").style.display = "none";
                 document.getElementById("mainContent").style.display = "block";
                 document.getElementById("mainContentSection").style.display = "block";
-            }, 2000); // Adjust the delay time as needed
+            }, 500); // Adjust the delay time as needed
         });
     </script>
     <!-- Content Header (Page header) -->

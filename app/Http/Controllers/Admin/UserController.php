@@ -43,9 +43,9 @@ class UserController extends Controller
     {
         if (auth()->check() && auth()->user()->menu['user']) {
 
-            $departemens = Departemen::all();
-            $karyawans = Karyawan::where(['status' => 'null'])->get();
-            return view('admin/user.create', compact('departemens', 'karyawans'));
+            $karyawans = Karyawan::with('departemen')
+                ->select('id', 'kode_karyawan')->where(['status' => 'null'])->get();
+            return view('admin/user.create', compact('karyawans'));
         } else {
             // tidak memiliki akses
             return back()->with('error', array('Anda tidak memiliki akses'));

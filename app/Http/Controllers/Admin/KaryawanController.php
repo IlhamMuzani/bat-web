@@ -55,7 +55,7 @@ class KaryawanController extends Controller
     public function create()
     {
         if (auth()->check() && auth()->user()->menu['karyawan']) {
-            $departemens = Departemen::all();
+            $departemens = Departemen::select('id', 'nama')->get();
             return view('admin/karyawan.create', compact('departemens'));
         } else {
             // tidak memiliki akses
@@ -150,64 +150,7 @@ class KaryawanController extends Controller
 
         return redirect('admin/karyawan')->with('success', 'Berhasil menambahkan karyawan');
     }
-
-    // public function kodedriver()
-    // {
-    //     $id = Karyawan::getId();
-    //     foreach ($id as $value);
-    //     $idlm = $value->id;
-    //     $idbr = $idlm + 1;
-    //     $num = sprintf("%06s", $idbr);
-    //     $data = 'AD';
-    //     $kode_karyawan = $data . $num;
-
-    //     return $kode_karyawan;
-    // }
-
-
-    // public function kode()
-    // {
-    //     $id = Karyawan::getId();
-    //     foreach ($id as $value);
-    //     $idlm = $value->id;
-    //     $idbr = $idlm + 1;
-    //     $num = sprintf("%06s", $idbr);
-    //     $data = 'AA';
-    //     $kode_karyawan = $data . $num;
-
-    //     return $kode_karyawan;
-    // }
-
-    // public function kode()
-    // {
-    //     $lastBarang = Karyawan::latest()->first();
-    //     if (!$lastBarang) {
-    //         $num = 1;
-    //     } else {
-    //         $lastCode = $lastBarang->kode_karyawan;
-    //         $num = (int) substr($lastCode, strlen('AA')) + 1;
-    //     }
-    //     $formattedNum = sprintf("%06s", $num);
-    //     $prefix = 'AA';
-    //     $newCode = $prefix . $formattedNum;
-    //     return $newCode;
-    // }
-
-    // public function kodedriver()
-    // {
-    //     $lastBarang = Karyawan::latest()->first();
-    //     if (!$lastBarang) {
-    //         $num = 1;
-    //     } else {
-    //         $lastCode = $lastBarang->kode_karyawan;
-    //         $num = (int) substr($lastCode, strlen('AD')) + 1;
-    //     }
-    //     $formattedNum = sprintf("%06s", $num);
-    //     $prefix = 'AD';
-    //     $newCode = $prefix . $formattedNum;
-    //     return $newCode;
-    // }
-
+    
     public function kode()
     {
         $lastBarang = Karyawan::latest()->first();
@@ -255,14 +198,22 @@ class KaryawanController extends Controller
     public function show($id)
     {
         if (auth()->check() && auth()->user()->menu['karyawan']) {
+            $karyawan = Karyawan::with('departemen')
+            ->select('id', 'kode_karyawan', 'nama_lengkap', 'no_ktp', 'no_sim', 'alamat', 'tanggal_lahir', 'tanggal_gabung', 'telp', 'departemen_id', 'qrcode_karyawan')
+            ->where('id', $id)
+                ->first();
 
-            $karyawan = Karyawan::where('id', $id)->first();
-            return view('admin/karyawan.show', compact('karyawan'));
+            if (!$karyawan) {
+                return back()->with('error', 'Karyawan tidak ditemukan');
+            }
+
+            return view('admin.karyawan.show', compact('karyawan'));
         } else {
             // tidak memiliki akses
-            return back()->with('error', array('Anda tidak memiliki akses'));
+            return back()->with('error', 'Anda tidak memiliki akses');
         }
     }
+
 
     public function edit($id)
     {
@@ -276,7 +227,6 @@ class KaryawanController extends Controller
             return back()->with('error', array('Anda tidak memiliki akses'));
         }
     }
-
     public function update(Request $request, $id)
     {
         $validator = Validator::make(

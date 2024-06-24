@@ -4,7 +4,22 @@
 
 @section('content')
     <!-- Content Header (Page header) -->
-    <div class="content-header">
+    <div id="loadingSpinner" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
+        <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(function() {
+                document.getElementById("loadingSpinner").style.display = "none";
+                document.getElementById("mainContent").style.display = "block";
+                document.getElementById("mainContentSection").style.display = "block";
+            }, 100); // Adjust the delay time as needed
+        });
+    </script>
+
+    <!-- Content Header (Page header) -->
+    <div class="content-header" style="display: none;" id="mainContent">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
@@ -21,7 +36,7 @@
     </div>
     <!-- /.content-header -->
 
-    <section class="content">
+    <section class="content" style="display: none;" id="mainContentSection">
         <div class="container-fluid">
             @if (session('error_pelanggans') || session('error_pesanans'))
                 <div class="alert alert-danger alert-dismissible">
@@ -191,7 +206,8 @@
                                     </td>
                                     <td>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" id="harga-0" name="harga[]" onkeypress="return /[0-9,]/.test(event.key)">
+                                            <input type="text" class="form-control" id="harga-0" name="harga[]"
+                                                onkeypress="return /[0-9,]/.test(event.key)">
                                         </div>
                                     </td>
                                     <td>
@@ -534,7 +550,9 @@
             // harga
             item_pembelian += '<td>';
             item_pembelian += '<div class="form-group">'
-            item_pembelian += '<input type="text" class="form-control" onkeypress="return /[0-9,]/.test(event.key)" id="harga-' + key + '" name="harga[]" value="' +
+            item_pembelian +=
+                '<input type="text" class="form-control" onkeypress="return /[0-9,]/.test(event.key)" id="harga-' + key +
+                '" name="harga[]" value="' +
                 harga +
                 '" ';
             item_pembelian += '</div>';
