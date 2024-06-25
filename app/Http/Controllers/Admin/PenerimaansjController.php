@@ -43,7 +43,7 @@ class PenerimaansjController extends Controller
 
         return view('admin.penerimaan_sj.index', compact('spks'));
     }
-    
+
     public function postingspkpenerimaan($id)
     {
         $ban = Spk::where('id', $id)->first();
@@ -64,5 +64,53 @@ class PenerimaansjController extends Controller
         ]);
 
         return response()->json(['success' => 'Berhasil unpost penerimaan']);
+    }
+
+    public function postingfilterpenerimaansj(Request $request)
+    {
+        $selectedIds = array_reverse(explode(',', $request->input('ids')));
+
+        try {
+            // Update transactions and memo statuses
+            foreach ($selectedIds as $id) {
+                $item = Spk::findOrFail($id);
+
+                if ($item->status_spk === 'memo') {
+                    $item->update([
+                        'status_spk' => 'sj'
+                    ]);
+                }
+            }
+
+            return back()->with('success', 'Berhasil memposting surat penerimaan sj yang dipilih');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return back()->with('error', 'Terdapat surat penerimaan sj yang tidak ditemukan');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan saat memposting surat penerimaan sj: ' . $e->getMessage());
+        }
+    }
+
+    public function unpostfilterpenerimaansj(Request $request)
+    {
+        $selectedIds = array_reverse(explode(',', $request->input('ids')));
+
+        try {
+            // Update transactions and memo statuses
+            foreach ($selectedIds as $id) {
+                $item = Spk::findOrFail($id);
+
+                if ($item->status_spk === 'sj') {
+                    $item->update([
+                        'status_spk' => 'memo'
+                    ]);
+                }
+            }
+
+            return back()->with('success', 'Berhasil mengunpost surat penerimaan sj yang dipilih');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return back()->with('error', 'Terdapat surat penerimaan sj yang tidak ditemukan');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan saat mengunpost surat penerimaan sj: ' . $e->getMessage());
+        }
     }
 }

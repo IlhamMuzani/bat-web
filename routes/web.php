@@ -518,6 +518,8 @@ Route::middleware('admin')->prefix('admin')->group(function () {
 
     Route::get('postingfilter', [\App\Http\Controllers\Admin\InqueryMemoekspedisiController::class, 'postingfilter']);
     Route::get('unpostfilter', [\App\Http\Controllers\Admin\InqueryMemoekspedisiController::class, 'unpostfilter']);
+    Route::get('postingfilterpenerimaansj', [\App\Http\Controllers\Admin\PenerimaansjController::class, 'postingfilterpenerimaansj']);
+    Route::get('unpostfilterpenerimaansj', [\App\Http\Controllers\Admin\PenerimaansjController::class, 'unpostfilterpenerimaansj']);
 
     Route::get('postingmemoborongfilter', [\App\Http\Controllers\Admin\InqueryMemoborongController::class, 'postingmemoborongfilter']);
     Route::get('unpostmemoborongfilter', [\App\Http\Controllers\Admin\InqueryMemoborongController::class, 'unpostmemoborongfilter']);
