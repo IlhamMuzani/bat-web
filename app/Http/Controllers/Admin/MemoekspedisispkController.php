@@ -237,11 +237,11 @@ class MemoekspedisispkController extends Controller
                     ->count();
 
                 // Jika jumlahnya sudah mencapai atau melebihi 3, lewati memo ekspedisi ini
-                if (
-                    $postedCount >= 3
-                ) {
-                    return back()->with('erorrss', 'Memo telah mencapai batas maksimal untuk driver: ' . $nama_driver . ' ' . 'buat faktur terlebih dahulu untuk memo yang sudah di posting');
-                }
+                // if (
+                //     $postedCount >= 3
+                // ) {
+                //     return back()->with('erorrss', 'Memo telah mencapai batas maksimal untuk driver: ' . $nama_driver . ' ' . 'buat faktur terlebih dahulu untuk memo yang sudah di posting');
+                // }
 
                 $error_pelanggans = array();
 
