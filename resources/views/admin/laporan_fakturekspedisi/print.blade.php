@@ -137,7 +137,7 @@
             <tr style="background:rgb(181, 181, 181)">
                 <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">{{ $faktur->kode_faktur }}
                 </td>
-                <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">{{ $faktur->created_at }}
+                <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">{{ $faktur->tanggal_awal }}
                 </td>
                 <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">
                     {{ $faktur->nama_pelanggan }}

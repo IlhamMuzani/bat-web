@@ -761,9 +761,9 @@ class InqueryMemoekspedisiController extends Controller
                     ->count();
 
                 // Jika jumlahnya sudah mencapai atau melebihi 3 dan memo ekspedisi ini belum diposting, lewati memo ekspedisi ini
-                if ($postedCount >= 3 && $item->status !== 'posting') {
-                    continue;
-                }
+                // if ($postedCount >= 3 && $item->status !== 'posting') {
+                //     continue;
+                // }
 
                 if ($item->status === 'unpost' && $item->kategori === 'Memo Perjalanan') {
                     $user = $item->user;
