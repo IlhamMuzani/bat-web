@@ -308,11 +308,13 @@ class InqueryFakturekspedisispkController extends Controller
 
 
         if ($request->kategoris == "memo") {
-            // Langkah 1: Simpan ID detail faktur yang diperbarui
             $updatedDetailIds = [];
 
             // Langkah 2: Dapatkan semua ID detail faktur yang diterima dari request
             $detailIds = $request->detail_ids ?? [];
+
+            // Dapatkan semua ID detail faktur yang terkait dengan faktur_ekspedisi_id tertentu sebelum update
+            $existingDetailIds = Detail_faktur::where('faktur_ekspedisi_id', $cetakpdf->id)->pluck('id')->toArray();
 
             // Step 6: Update existing Detail_faktur entries jika ada detail
             if (is_array($detailIds) && count($detailIds) > 0) {
@@ -360,8 +362,8 @@ class InqueryFakturekspedisispkController extends Controller
                     }
                 }
 
-                // Langkah 3: Hapus detail faktur yang tidak terpanggil
-                Detail_faktur::whereNotIn('id', $updatedDetailIds)->delete();
+                $detailsToDelete = array_diff($existingDetailIds, $updatedDetailIds);
+                Detail_faktur::whereIn('id', $detailsToDelete)->delete();
             }
 
             // Step 7: Create new Detail_faktur entries if needed
@@ -410,257 +412,6 @@ class InqueryFakturekspedisispkController extends Controller
                 }
             }
         }
-
-
-        // sudah benar hanya update sebelum non memo menjadi memo 
-        // if ($request->kategoris == "memo") {
-        //     // Langkah 1: Simpan ID detail faktur yang diperbarui
-        //     $updatedDetailIds = [];
-
-        //     // Step 6: Update existing Detail_faktur entries
-        //     foreach ($detailIds as $i => $detailId) {
-        //         $detailFaktur = Detail_faktur::find($detailId);
-
-        //         if ($detailFaktur) {
-        //             $detailFaktur->update([
-        //                 'memo_ekspedisi_id' => $request->memo_ekspedisi_id[$i] ?? '',
-        //                 'kode_memo' => $request->kode_memo[$i] ?? null,
-        //                 'tanggal_memo' => $request->tanggal_memo[$i] ?? null,
-        //                 'nama_driver' => $request->nama_driver[$i] ?? null,
-        //                 'telp_driver' => $request->telp_driver[$i] ?? null,
-        //                 'nama_rute' => $request->nama_rute[$i] ?? null,
-        //                 'kendaraan_id' => $request->kendaraan_id[$i] ?? null,
-        //                 'no_kabin' => $request->no_kabin[$i] ?? null,
-        //                 'no_pol' => $request->no_pol[$i] ?? null,
-        //                 'memotambahan_id' => $request->memotambahan_id[$i] ?? null,
-        //                 'kode_memotambahan' => $request->kode_memotambahan[$i] ?? null,
-        //                 'tanggal_memotambahan' => $request->tanggal_memotambahan[$i] ?? null,
-        //                 'nama_drivertambahan' => $request->nama_drivertambahan[$i] ?? null,
-        //                 'nama_rutetambahan' => $request->nama_rutetambahan[$i] ?? null
-        //             ]);
-
-        //             // Tambahkan ID detail faktur yang diperbarui ke dalam array
-        //             $updatedDetailIds[] = $detailId;
-
-        //             // Update memo_ekspedisi status
-        //             $memo = Memo_ekspedisi::find($request->memo_ekspedisi_id[$i]);
-        //             if ($memo) {
-        //                 $memo->update(['status_memo' => 'aktif', 'status' => 'selesai', 'status_terpakai' => 'digunakan']);
-        //                 if ($memo->spk) {
-        //                     $memo->spk->update(['status_spk' => 'faktur']);
-        //                 }
-        //             }
-
-        //             if ($request->memo_ekspedisi_id[$i]) {
-        //                 $memoTambahan = Memotambahan::where('memo_ekspedisi_id', $request->memo_ekspedisi_id[$i])->get();
-        //                 foreach ($memoTambahan as $memo) {
-        //                     if ($memo->status == 'posting') {
-        //                         $memo->update(['status_memo' => 'aktif', 'status' => 'selesai']);
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-
-        //     // Langkah 2: Dapatkan semua ID detail faktur yang diterima dari request
-        //     $requestDetailIds = $request->detail_ids ?? [];
-
-        //     // Langkah 3: Hapus detail faktur yang tidak terpanggil
-        //     Detail_faktur::whereNotIn('id', $updatedDetailIds)->delete();
-
-        //     // Step 7: Create new Detail_faktur entries if needed
-        //     foreach ($data_pembelians as $data_pembelian) {
-        //         if (!isset($data_pembelian['detail_id'])) {
-        //             Detail_faktur::create([
-        //                 'faktur_ekspedisi_id' => $cetakpdf->id,
-        //                 'memo_ekspedisi_id' => $data_pembelian['memo_ekspedisi_id'],
-        //                 'kode_memo' => $data_pembelian['kode_memo'],
-        //                 'tanggal_memo' => $data_pembelian['tanggal_memo'],
-        //                 'nama_driver' => $data_pembelian['nama_driver'],
-        //                 'telp_driver' => $data_pembelian['telp_driver'],
-        //                 'nama_rute' => $data_pembelian['nama_rute'],
-        //                 'kendaraan_id' => $data_pembelian['kendaraan_id'],
-        //                 'no_kabin' => $data_pembelian['no_kabin'],
-        //                 'no_pol' => $data_pembelian['no_pol'],
-        //                 'memotambahan_id' => $data_pembelian['memotambahan_id'] ? $data_pembelian['memotambahan_id'] : null,
-        //                 'kode_memotambahan' => $data_pembelian['kode_memotambahan'] ? $data_pembelian['kode_memotambahan'] : null,
-        //                 'tanggal_memotambahan' => $data_pembelian['tanggal_memotambahan'] ? $data_pembelian['tanggal_memotambahan'] : null,
-        //                 'nama_drivertambahan' => $data_pembelian['nama_drivertambahan'] ? $data_pembelian['nama_drivertambahan'] : null,
-        //                 'nama_rutetambahan' => $data_pembelian['nama_rutetambahan'] ? $data_pembelian['nama_rutetambahan'] : null,
-        //             ]);
-
-        //             // Update status memo ekspedisi
-        //             $memo = Memo_ekspedisi::find($data_pembelian['memo_ekspedisi_id']);
-        //             $memo->update(['status_memo' => 'aktif', 'status' => 'selesai', 'status_terpakai' => 'digunakan']);
-
-        //             // Update the related SPK status
-        //             if ($memo && $memo->spk) {
-        //                 $memo->spk->update(['status_spk' => 'faktur']);
-        //             }
-
-        //             if ($data_pembelian['memo_ekspedisi_id']) {
-        //                 // Ambil semua memo tambahan yang terkait dengan memo ekspedisi tertentu
-        //                 $memoTambahan = Memotambahan::where('memo_ekspedisi_id', $data_pembelian['memo_ekspedisi_id'])->get();
-
-        //                 // Loop dan perbarui status semua memo tambahan
-        //                 foreach ($memoTambahan as $memo) {
-        //                     // Periksa apakah status memo tambahan adalah 'posting'
-        //                     if ($memo->status == 'posting') {
-        //                         // Jika statusnya 'posting', lakukan pembaruan
-        //                         $memo->update(['status_memo' => 'aktif', 'status' => 'selesai']);
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-
-        // kurang delete detail 
-        // // Step 6: Update existing Detail_faktur entries
-        // $detailIds = $request->detail_ids ?? [];
-        // foreach ($detailIds as $i => $detailId) {
-        //     $detailFaktur = Detail_faktur::find($detailId);
-
-        //     if ($detailFaktur) {
-        //         $detailFaktur->update([
-        //             'memo_ekspedisi_id' => $request->memo_ekspedisi_id[$i] ?? '',
-        //             'kode_memo' => $request->kode_memo[$i] ?? null,
-        //             'tanggal_memo' => $request->tanggal_memo[$i] ?? null,
-        //             'nama_driver' => $request->nama_driver[$i] ?? null,
-        //             'telp_driver' => $request->telp_driver[$i] ?? null,
-        //             'nama_rute' => $request->nama_rute[$i] ?? null,
-        //             'kendaraan_id' => $request->kendaraan_id[$i] ?? null,
-        //             'no_kabin' => $request->no_kabin[$i] ?? null,
-        //             'no_pol' => $request->no_pol[$i] ?? null,
-        //             'memotambahan_id' => $request->memotambahan_id[$i] ?? null,
-        //             'kode_memotambahan' => $request->kode_memotambahan[$i] ?? null,
-        //             'tanggal_memotambahan' => $request->tanggal_memotambahan[$i] ?? null,
-        //             'nama_drivertambahan' => $request->nama_drivertambahan[$i] ?? null,
-        //             'nama_rutetambahan' => $request->nama_rutetambahan[$i] ?? null
-        //         ]);
-
-        //         // Update memo_ekspedisi status
-        //         $memo = Memo_ekspedisi::find($request->memo_ekspedisi_id[$i]);
-        //         if ($memo) {
-        //             $memo->update(['status_memo' => 'aktif', 'status' => 'selesai', 'status_terpakai' => 'digunakan']);
-        //             if ($memo->spk) {
-        //                 $memo->spk->update(['status_spk' => 'faktur']);
-        //             }
-        //         }
-
-        //         if ($request->memo_ekspedisi_id[$i]) {
-        //             $memoTambahan = Memotambahan::where('memo_ekspedisi_id', $request->memo_ekspedisi_id[$i])->get();
-        //             foreach ($memoTambahan as $memo) {
-        //                 if ($memo->status == 'posting') {
-        //                     $memo->update(['status_memo' => 'aktif', 'status' => 'selesai']);
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-
-        // // Step 7: Create new Detail_faktur entries if needed
-        // foreach ($data_pembelians as $data_pembelian) {
-        //     if (!isset($data_pembelian['detail_id'])) {
-        //         Detail_faktur::create([
-        //             'faktur_ekspedisi_id' => $cetakpdf->id,
-        //             'memo_ekspedisi_id' => $data_pembelian['memo_ekspedisi_id'],
-        //             'kode_memo' => $data_pembelian['kode_memo'],
-        //             'tanggal_memo' => $data_pembelian['tanggal_memo'],
-        //             'nama_driver' => $data_pembelian['nama_driver'],
-        //             'telp_driver' => $data_pembelian['telp_driver'],
-        //             'nama_rute' => $data_pembelian['nama_rute'],
-        //             'kendaraan_id' => $data_pembelian['kendaraan_id'],
-        //             'no_kabin' => $data_pembelian['no_kabin'],
-        //             'no_pol' => $data_pembelian['no_pol'],
-        //             'memotambahan_id' => $data_pembelian['memotambahan_id'] ? $data_pembelian['memotambahan_id'] : null,
-        //             'kode_memotambahan' => $data_pembelian['kode_memotambahan'] ? $data_pembelian['kode_memotambahan'] : null,
-        //             'tanggal_memotambahan' => $data_pembelian['tanggal_memotambahan'] ? $data_pembelian['tanggal_memotambahan'] : null,
-        //             'nama_drivertambahan' => $data_pembelian['nama_drivertambahan'] ? $data_pembelian['nama_drivertambahan'] : null,
-        //             'nama_rutetambahan' => $data_pembelian['nama_rutetambahan'] ? $data_pembelian['nama_rutetambahan'] : null,
-        //         ]);
-
-        //         // Update status memo ekspedisi
-        //         $memo = Memo_ekspedisi::find($data_pembelian['memo_ekspedisi_id']);
-        //         $memo->update(['status_memo' => 'aktif', 'status' => 'selesai', 'status_terpakai' => 'digunakan']);
-
-        //         // Update the related SPK status
-        //         if (
-        //             $memo && $memo->spk
-        //         ) {
-        //             $memo->spk->update(['status_spk' => 'faktur']);
-        //         }
-
-        //         if ($data_pembelian['memo_ekspedisi_id']) {
-        //             // Ambil semua memo tambahan yang terkait dengan memo ekspedisi tertentu
-        //             $memoTambahan = Memotambahan::where('memo_ekspedisi_id', $data_pembelian['memo_ekspedisi_id'])->get();
-
-        //             // Loop dan perbarui status semua memo tambahan
-        //             foreach ($memoTambahan as $memo) {
-        //                 // Periksa apakah status memo tambahan adalah 'posting'
-        //                 if ($memo->status == 'posting') {
-        //                     // Jika statusnya 'posting', lakukan pembaruan
-        //                     $memo->update(['status_memo' => 'aktif', 'status' => 'selesai']);
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-
-
-        // sudah benar belum ada update memo tambahan
-        // Step 6: Update existing Detail_faktur entries
-        // $detailIds = $request->detail_ids ?? [];
-        // foreach ($detailIds as $i => $detailId) {
-        //     $detailFaktur = Detail_faktur::find($detailId);
-
-        //     if ($detailFaktur) {
-        //         $detailFaktur->update([
-        //             'memo_ekspedisi_id' => $request->memo_ekspedisi_id[$i] ?? '',
-        //             'kode_memo' => $request->kode_memo[$i] ?? '',
-        //             'tanggal_memo' => $request->tanggal_memo[$i] ?? '',
-        //             'nama_driver' => $request->nama_driver[$i] ?? '',
-        //             'telp_driver' => $request->telp_driver[$i] ?? '',
-        //             'nama_rute' => $request->nama_rute[$i] ?? '',
-        //             'kendaraan_id' => $request->kendaraan_id[$i] ?? '',
-        //             'no_kabin' => $request->no_kabin[$i] ?? '',
-        //             'no_pol' => $request->no_pol[$i] ?? ''
-        //         ]);
-        //     }
-        // }
-
-        // // Step 7: Create new Detail_faktur entries if needed
-        // foreach ($data_pembelians as $data_pembelian) {
-        //     if (!isset($data_pembelian['detail_id'])) {
-        //         Detail_faktur::create([
-        //             'faktur_ekspedisi_id' => $cetakpdf->id,
-        //             'memo_ekspedisi_id' => $data_pembelian['memo_ekspedisi_id'],
-        //             'kode_memo' => $data_pembelian['kode_memo'],
-        //             'tanggal_memo' => $data_pembelian['tanggal_memo'],
-        //             'nama_driver' => $data_pembelian['nama_driver'],
-        //             'telp_driver' => $data_pembelian['telp_driver'],
-        //             'nama_rute' => $data_pembelian['nama_rute'],
-        //             'kendaraan_id' => $data_pembelian['kendaraan_id'],
-        //             'no_kabin' => $data_pembelian['no_kabin'],
-        //             'no_pol' => $data_pembelian['no_pol']
-        //         ]);
-        //     }
-        // }
-
-        // // Step 8: Update Memo_ekspedisi and SPK status
-        // $memoEkspedisiIds = $request->memo_ekspedisi_id ?? [];
-        // foreach ($memoEkspedisiIds as $memoEkspedisiId) {
-        //     $memoEkspedisi = Memo_ekspedisi::find($memoEkspedisiId);
-
-        //     if ($memoEkspedisi) {
-        //         $memoEkspedisi->update(['status_memo' => 'aktif', 'status' => 'selesai', 'status_terpakai' => 'digunakan']);
-        //     }
-        // }
-
-        // if ($request->spk_id) {
-        //     $spk = Spk::find($request->spk_id);
-        //     $spk->update(['status_spk' => 'faktur']); 
-        // }
 
         foreach ($data_pembelians4 as $data_pesanan) {
             $detailId = $data_pesanan['detail_idd'];
