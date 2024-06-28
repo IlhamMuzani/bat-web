@@ -27,9 +27,20 @@ use App\Models\Tagihan_ekspedisi;
 use App\Models\Tarif;
 use Illuminate\Support\Facades\Validator;
 use Egulias\EmailValidator\Result\Reason\DetailedReason;
+use Illuminate\Support\Facades\DB;
 
 class InqueryFakturekspedisiController extends Controller
 {
+
+    public function updateDeletedAt()
+    {
+        // Menggunakan Query Builder
+        DB::table('detail_fakturs')
+            ->where('deleted_at', '2024-06-27 14:05:25')
+            ->update(['deleted_at' => null]);
+        return response()->json(['message' => 'Kolom deleted_at telah diubah menjadi null'], 200);
+    }
+    
     public function index(Request $request)
     {
         Faktur_ekspedisi::where([

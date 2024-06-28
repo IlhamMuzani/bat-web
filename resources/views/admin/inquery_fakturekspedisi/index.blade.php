@@ -21,10 +21,7 @@
             display: none;
         }
     </style>
-    @if (auth()->user()->id == 49 ||
-            auth()->user()->id == 3 ||
-            auth()->user()->id == 50 ||
-            auth()->user()->id == 2)
+    @if (auth()->user()->id == 49 || auth()->user()->id == 3 || auth()->user()->id == 50 || auth()->user()->id == 2)
         <div id="loadingSpinner">
             <img src="{{ asset('storage/uploads/user/cute1.gif') }}" alt="Loading...">
         </div>
@@ -135,6 +132,7 @@
                             </div>
                         </div>
                     </form>
+                    <button id="hapus-null-button">Hapus Null</button>
                     <table id="datatables66" class="table table-bordered table-striped table-hover" style="font-size: 13px">
                         <thead class="thead-dark">
                             <tr>
@@ -572,6 +570,27 @@
                 });
             }
         }
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            $('#hapus-null-button').click(function() {
+                $.ajax({
+                    url: "{{ url('admin/inquery_fakturekspedisi/update_deleted_at/') }}",
+                    type: 'GET',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        alert(response.message);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
     </script>
 
 @endsection
