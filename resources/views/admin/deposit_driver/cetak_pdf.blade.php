@@ -258,7 +258,7 @@
     <table width="100%">
         <tr>
             <td>
-                <div class="info-catatan" style="max-width: 230px;">
+                <div class="info-catatan">
                     <table>
                         <tr>
                             <td class="info-catatan2">Kode Sopir</td>
@@ -284,11 +284,17 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="info-catatan2">Terbilang</td>
-                            <td class="info-item">:</td>
-                            <td style="font-weight:bold" class="info-text info-left">
-                                ({{ terbilang($cetakpdf->nominal) }}
-                                Rupiah)</td>
+                            <td style="text-align: left; padding: 0px; font-size: 16px; font-weight:bold">
+                                Terbilang
+                            </td>
+                            <td style="text-align: center; padding: 0px; font-size: 16px; font-weight:bold">
+                                :
+                            </td>
+                            <td
+                                style="text-align: left; padding-top: 5px; font-size: 16px; font-style:italic; font-weight:bold">
+                                ({{ terbilang($cetakpdf->nominal) }} Rupiah)
+                            </td>
+
                         </tr>
                     </table>
                 </div>
@@ -300,7 +306,7 @@
     <table style="width: 100%;" cellpadding="2" cellspacing="0">
         <tr>
             <td style="text-align: left; padding: 0px; font-size: 15px; font-weight:bold">Keterangan :
-                </td>
+            </td>
             <td style="text-align: right; padding: 0px; font-size: 15px; font-weight:bold">Sisa Saldo Deposit :
                 <span>
                     Rp.{{ number_format($cetakpdf->sub_total, 0, ',', '.') }}
@@ -359,7 +365,7 @@
         </tr>
     </table>
 
-        <div style="text-align: right; font-size:12px; margin-top:25px">
+    <div style="text-align: right; font-size:12px; margin-top:25px">
         <span style="font-style: italic;">Printed Date {{ \Carbon\Carbon::now()->format('Y-m-d H:i:s') }}</span>
     </div>
 </body>
