@@ -299,14 +299,20 @@
                                                         href="{{ url('admin/inquery_memoekspedisi/' . $memoekspedisi->id) }}">Show</a>
                                                 @endif
                                             @endif
-                                            {{-- @if ($memoekspedisi->detail_faktur->first())
+                                            @if ($memoekspedisi->detail_faktur->first())
                                                 <p style="margin-left:15px; margin-right:15px">Digunakan Oleh Faktur
                                                     Ekspedisi
-                                                    <strong>{{ $memoekspedisi->detail_faktur->first()->faktur_ekspedisi->kode_faktur }}</strong>
+                                                    <strong>
+                                                        @if ($memoekspedisi->detail_faktur->first()->faktur_ekspedisi)
+                                                            {{ $memoekspedisi->detail_faktur->first()->faktur_ekspedisi->kode_faktur }}
+                                                        @else
+                                                            tidak ada
+                                                        @endif
+                                                    </strong>
                                                 </p>
                                             @else
                                                 <!-- Kode yang ingin Anda jalankan jika kondisi tidak terpenuhi -->
-                                            @endif --}}
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
