@@ -41,7 +41,7 @@ class MemoekspedisispkController extends Controller
     public function index()
     {
         // $spks = Spk::where('voucher', '<', 2)->get();
-        $spks = Spk::where('voucher', '<', 2)
+        $spks = Spk::where('voucher', '<', 1)
             ->where(function ($query) {
                 $query->where('status_spk', '!=', 'faktur')
                     ->where('status_spk', '!=', 'invoice')

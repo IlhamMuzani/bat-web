@@ -996,4 +996,30 @@ class InqueryMemotambahanController extends Controller
             return response()->json(['message' => 'Detail memo not found'], 404);
         }
     }
+
+    public function deletememotambahanfilter(Request $request)
+    {
+        $selectedIds = explode(',', $request->input('ids'));
+
+        // Mengambil faktur berdasarkan id yang dipilih
+        $memotambahans = Memotambahan::whereIn('id', $selectedIds)->orderBy('id', 'DESC')->get();
+
+        foreach ($memotambahans as $memotambahan) {
+            // Pastikan memotambahan memiliki status 'unpost' sebelum dihapus
+            if ($memotambahan && $memotambahan->status == 'unpost') {
+
+                Memo_ekspedisi::where('id', $memotambahan->memo_ekspedisi_id)->update(['status_memotambahan' => null]);
+
+                // Hapus detail_memotambahan dan pengeluaran_kaskecil yang terkait
+                $memotambahan->detail_memotambahan()->delete();
+                $memotambahan->pengeluaran_kaskecil()->delete();
+                $memotambahan->delete();
+
+                // Delete the main Memotambahan instance
+                $memotambahan->delete();
+            }
+        }
+
+        return back()->with('success', 'Berhasil menghapus Memo tambahan');
+    }
 }
