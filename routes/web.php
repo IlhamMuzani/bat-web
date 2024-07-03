@@ -399,6 +399,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('print_buktipotongpajakglobal', [\App\Http\Controllers\Admin\LaporanBuktipotongpajakglobalController::class, 'print_buktipotongpajakglobal']);
     Route::get('indexnon', [\App\Http\Controllers\Admin\TagihanekspedisiController::class, 'indexnonpph']);
     Route::get('inquery_tagihanekspedisi/editnonpph/{id}', [\App\Http\Controllers\Admin\InqueryTagihanekspedisiController::class, 'editnonpph']);
+    Route::get('laporan_mobillogistikglobal/rekapexportlaporanlogistik', [\App\Http\Controllers\Admin\LaporanMobillogistikglobalController::class, 'rekapexportlaporanlogistik']);
 
     Route::get('deletefakturfilter', [\App\Http\Controllers\Admin\InqueryFakturekspedisiController::class, 'deletefakturfilter']);
     Route::get('deletememotambahanfilter', [\App\Http\Controllers\Admin\InqueryMemotambahanController::class, 'deletememotambahanfilter']);

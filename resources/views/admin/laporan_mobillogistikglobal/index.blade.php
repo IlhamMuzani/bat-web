@@ -3,7 +3,6 @@
 @section('title', 'Laporan Mobil Logistik Global')
 
 @section('content')
-    <!-- Content Header (Page header) -->
     <div id="loadingSpinner" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
         <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
     </div>
@@ -36,7 +35,7 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
-    <section class="content" style="display: none;" id="mainContentSection">
+    <div class="container-fluid">
         <div class="container-fluid">
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible">
@@ -96,6 +95,9 @@
                                     target="_blank">
                                     <i class="fas fa-print"></i> Cetak
                                 </button>
+                                <button type="button" class="btn btn-success btn-block" onclick="printExportexcel()">
+                                    <i class="fas fa-file-excel"></i> Export Excel
+                                </button>
                                 {{-- @endif --}}
                             </div>
                         </div>
@@ -129,17 +131,44 @@
                                 $totalOperasional = 0; // Initialize the total variable
                                 $totalPerbaikan = 0; // Initialize the total variable
                                 $totalSubtotal = 0; // Initialize the total variable
+                                $nomorUrut = 1; // Initialize the counter for row number
                             @endphp
 
                             @foreach ($kendaraans as $kendaraan)
+                                @php
+                                    // Calculate necessary values
+                                    $kategoriMemo =
+                                        optional($kendaraan->faktur_ekspedisi)
+                                            ->whereBetween('created_at', [
+                                                Carbon\Carbon::parse($created_at)->startOfDay(),
+                                                Carbon\Carbon::parse($tanggal_akhir)->endOfDay(),
+                                            ])
+                                            ->where('kategoris', 'memo')
+                                            ->sum('grand_total') ?? 0;
+
+                                    $kategoriNonMemo =
+                                        optional($kendaraan->faktur_ekspedisi)
+                                            ->whereBetween('created_at', [
+                                                Carbon\Carbon::parse($created_at)->startOfDay(),
+                                                Carbon\Carbon::parse($tanggal_akhir)->endOfDay(),
+                                            ])
+                                            ->where('kategoris', 'non memo')
+                                            ->sum('grand_total') ?? 0;
+
+                                    // Calculate the total faktur for the kendaraan
+                                    $totalFakturKendaraan = $kategoriMemo + $kategoriNonMemo;
+
+                                    // Skip rendering if total faktur is 0
+                                    if ($totalFakturKendaraan <= 0) {
+                                        continue;
+                                    }
+                                @endphp
                                 <tr>
-                                    <td class="text-center">{{ $loop->iteration }}</td>
-                                    <td>{{ $kendaraan->no_kabin }} {{ $kendaraan->no_pol }}</td>
+                                    <td class="text-center">{{ $nomorUrut }}</td> {{-- Menampilkan nomor urut --}} <td>
+                                        {{ $kendaraan->no_kabin }} {{ $kendaraan->no_pol }}</td>
                                     <td>
-                                        @if ($kendaraan->user)
-                                            {{ $kendaraan->user->karyawan->nama_lengkap }}
-                                        @else
-                                            tidak ada
+                                        @if ($kendaraan->memo_ekspedisi->whereBetween('created_at', [$created_at, $tanggal_akhir])->first())
+                                            {{ $kendaraan->memo_ekspedisi->whereBetween('created_at', [$created_at, $tanggal_akhir])->first()->nama_driver }}
                                         @endif
                                     </td>
                                     <td class="text-right">
@@ -295,6 +324,8 @@
                                     </td>
                                 </tr>
                                 @php
+                                    $nomorUrut++;
+
                                     $totalRitase +=
                                         optional($kendaraan->memo_ekspedisi)
                                             ->whereBetween('created_at', [$created_at, $tanggal_akhir])
@@ -449,73 +480,88 @@
                 </div>
             </div>
         </div>
-    </section>
-    <!-- /.card -->
-    <script>
-        var tanggalAwal = document.getElementById('created_at');
-        var tanggalAkhir = document.getElementById('tanggal_akhir');
-        if (tanggalAwal.value == "") {
-            tanggalAkhir.readOnly = true;
-        }
-        tanggalAwal.addEventListener('change', function() {
-            if (this.value == "") {
+        </section>
+        <!-- /.card -->
+        <script>
+            var tanggalAwal = document.getElementById('created_at');
+            var tanggalAkhir = document.getElementById('tanggal_akhir');
+            if (tanggalAwal.value == "") {
                 tanggalAkhir.readOnly = true;
-            } else {
-                tanggalAkhir.readOnly = false;
-            };
-            tanggalAkhir.value = "";
-            var today = new Date().toISOString().split('T')[0];
-            tanggalAkhir.value = today;
-            tanggalAkhir.setAttribute('min', this.value);
-        });
-        var form = document.getElementById('form-action')
-
-        function cari() {
-            form.action = "{{ url('admin/laporan_mobillogistikglobal') }}";
-            form.submit();
-        }
-
-        function printReport() {
-            var startDate = tanggalAwal.value;
-            var endDate = tanggalAkhir.value;
-
-            if (startDate && endDate) {
-                form.action = "{{ url('admin/print_mobillogistikglobal') }}" + "?start_date=" + startDate + "&end_date=" +
-                    endDate;
-                form.submit();
-            } else {
-                alert("Silakan isi kedua tanggal sebelum mencetak.");
             }
-        }
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            // Detect the change event on the 'status' dropdown
-            $('#statusx').on('change', function() {
-                // Get the selected value
-                var selectedValue = $(this).val();
-
-                // Check the selected value and redirect accordingly
-                switch (selectedValue) {
-                    case 'memo_perjalanan':
-                        window.location.href = "{{ url('admin/laporan_mobillogistik') }}";
-                        break;
-                    case 'memo_borong':
-                        window.location.href = "{{ url('admin/laporan_mobillogistikglobal') }}";
-                        break;
-                        // case 'akun':
-                        //     window.location.href = "{{ url('admin/laporan_pengeluarankaskecilakun') }}";
-                        //     break;
-                        // case 'memo_tambahan':
-                        //     window.location.href = "{{ url('admin/laporan_saldokas') }}";
-                        //     break;
-                    default:
-                        // Handle other cases or do nothing
-                        break;
-                }
+            tanggalAwal.addEventListener('change', function() {
+                if (this.value == "") {
+                    tanggalAkhir.readOnly = true;
+                } else {
+                    tanggalAkhir.readOnly = false;
+                };
+                tanggalAkhir.value = "";
+                var today = new Date().toISOString().split('T')[0];
+                tanggalAkhir.value = today;
+                tanggalAkhir.setAttribute('min', this.value);
             });
-        });
-    </script>
+            var form = document.getElementById('form-action')
 
-@endsection
+            function cari() {
+                form.action = "{{ url('admin/laporan_mobillogistikglobal') }}";
+                form.submit();
+            }
+
+            function printReport() {
+                var startDate = tanggalAwal.value;
+                var endDate = tanggalAkhir.value;
+
+                if (startDate && endDate) {
+                    form.action = "{{ url('admin/print_mobillogistikglobal') }}" + "?start_date=" + startDate + "&end_date=" +
+                        endDate;
+                    form.submit();
+                } else {
+                    alert("Silakan isi kedua tanggal sebelum mencetak.");
+                }
+            }
+        </script>
+
+        <script>
+            function printExportexcel() {
+                var startDate = tanggalAwal.value;
+                var endDate = tanggalAkhir.value;
+
+                if (startDate && endDate) {
+                    var form = document.getElementById('form-action');
+                    form.action = "{{ url('admin/laporan_mobillogistikglobal/rekapexportlaporanlogistik') }}";
+                    form.submit();
+                } else {
+                    alert("Silakan isi kedua tanggal sebelum mengeksport.");
+                }
+            }
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                // Detect the change event on the 'status' dropdown
+                $('#statusx').on('change', function() {
+                    // Get the selected value
+                    var selectedValue = $(this).val();
+
+                    // Check the selected value and redirect accordingly
+                    switch (selectedValue) {
+                        case 'memo_perjalanan':
+                            window.location.href = "{{ url('admin/laporan_mobillogistik') }}";
+                            break;
+                        case 'memo_borong':
+                            window.location.href = "{{ url('admin/laporan_mobillogistikglobal') }}";
+                            break;
+                            // case 'akun':
+                            //     window.location.href = "{{ url('admin/laporan_pengeluarankaskecilakun') }}";
+                            //     break;
+                            // case 'memo_tambahan':
+                            //     window.location.href = "{{ url('admin/laporan_saldokas') }}";
+                            //     break;
+                        default:
+                            // Handle other cases or do nothing
+                            break;
+                    }
+                });
+            });
+        </script>
+
+    @endsection

@@ -2,18 +2,27 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\LaporanlogistikExport;
+use App\Exports\LogistikglobalExport;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
 use App\Models\Faktur_ekspedisi;
 use App\Models\Kendaraan;
 use App\Models\Pengeluaran_kaskecil;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\RekapExport;
 
 class LaporanMobillogistikglobalController extends Controller
 {
     public function index(Request $request)
     {
         $kendaraans = Kendaraan::with(['faktur_ekspedisi', 'memo_ekspedisi', 'detail_pengeluaran'])->get();
+        $kendaraans = $kendaraans->sort(function ($a, $b) {
+            $numberA = (int) filter_var($a->no_kabin, FILTER_SANITIZE_NUMBER_INT);
+            $numberB = (int) filter_var($b->no_kabin, FILTER_SANITIZE_NUMBER_INT);
+            return $numberA - $numberB;
+        });
 
         $kategoris = $request->kategoris;
         $status = $request->status;
@@ -51,7 +60,7 @@ class LaporanMobillogistikglobalController extends Controller
         $hasSearch = $status || ($created_at && $tanggal_akhir);
         $inquery = $hasSearch ? $faktur_ekspedisis : collect();
 
-        return view('admin.laporan_mobillogistikglobal.index', compact('kendaraans', 'created_at', 'tanggal_akhir', 'kategoris'));
+        return view('admin.laporan_mobillogistikglobal.index', compact('inquery', 'kendaraans', 'created_at', 'tanggal_akhir', 'kategoris'));
     }
 
     public function print_mobillogistikglobal(Request $request)
@@ -65,6 +74,12 @@ class LaporanMobillogistikglobalController extends Controller
         $kendaraans = Kendaraan::with(['faktur_ekspedisi', 'memo_ekspedisi'])
             ->withCount('memo_ekspedisi')
             ->get();
+
+        $kendaraans = $kendaraans->sort(function ($a, $b) {
+            $numberA = (int) filter_var($a->no_kabin, FILTER_SANITIZE_NUMBER_INT);
+            $numberB = (int) filter_var($b->no_kabin, FILTER_SANITIZE_NUMBER_INT);
+            return $numberA - $numberB;
+        });
 
         $inquery = Faktur_ekspedisi::orderBy('id', 'DESC');
 
@@ -93,5 +108,14 @@ class LaporanMobillogistikglobalController extends Controller
 
         $pdf = PDF::loadView('admin.laporan_mobillogistikglobal.print', compact('inquery', 'kendaraans', 'faktur_ekspedisis', 'kategoris'));
         return $pdf->stream('Laporan_mobil_logistik.pdf');
+    }
+
+    public function rekapexportlaporanlogistik(Request $request)
+    {
+        $created_at = $request->input('created_at');
+        $tanggal_akhir = $request->input('tanggal_akhir');
+        $kategoris = $request->input('kategoris');
+
+        return Excel::download(new LogistikglobalExport($created_at, $tanggal_akhir, $kategoris), 'logistik_global.xlsx');
     }
 }
