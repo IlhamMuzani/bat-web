@@ -148,7 +148,9 @@
                                     onclick="printSelectedData()" target="_blank">
                                     <i class="fas fa-print"></i> Cetak Filter
                                 </button>
-
+                                <button type="button" class="btn btn-success btn-block" onclick="printExportexcel()">
+                                    <i class="fas fa-file-excel"></i> Export Excel
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -714,5 +716,18 @@
         });
     </script>
 
+    <script>
+        function printExportexcel() {
+            var startDate = tanggalAwal.value;
+            var endDate = tanggalAkhir.value;
 
+            if (startDate && endDate) {
+                var form = document.getElementById('form-action');
+                form.action = "{{ url('admin/inquery_memoperjalanan/rekapexportmemoperjalanan') }}";
+                form.submit();
+            } else {
+                alert("Silakan isi kedua tanggal sebelum mengeksport.");
+            }
+        }
+    </script>
 @endsection

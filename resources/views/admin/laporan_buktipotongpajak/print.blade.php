@@ -111,6 +111,8 @@
             </td>
             <td class="td" style="text-align: left; padding: 5px; font-weight:bold; font-size: 15px;">Nomor Bukti
             </td>
+            <td class="td" style="text-align: right; padding: 5px; font-weight:bold; font-size: 15px;">DPP
+            </td>
             <td class="td" style="text-align: right; padding: 5px; font-weight:bold; font-size: 15px;">PPH
             </td>
             <td class="td" style="text-align: right; padding: 5px; font-weight:bold; font-size: 15px;">Grand Total
@@ -127,6 +129,10 @@
                 </td>
                 <td class="td" style="text-align: left; padding: 5px; font-size: 15px;">{{ $item->kode_bukti }}</td>
                 <td class="td" style="text-align: left; padding: 5px; font-size: 15px;">{{ $item->nomor_faktur }}
+                <td class="td" style="text-align: right; padding: 5px; font-size: 12px;">
+                    {{ number_format($item->detail_bukti->first()->tagihan_ekspedisi->sub_total, 2, ',', '.') }}
+
+                </td>
                 <td class="td" style="text-align: right; padding: 5px; font-size: 15px;">
                     {{ number_format($item->grand_total * 0.02, 2, ',', '.') }}
                 </td>

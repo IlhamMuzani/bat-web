@@ -96,6 +96,7 @@
                                 <th>Kode Bukti</th>
                                 <th>Nomor Bukti</th>
                                 <th>Tanggal</th>
+                                <th>DPP</th>
                                 <th>Pph</th>
                                 <th>Grand Total</th>
                             </tr>
@@ -115,6 +116,9 @@
                                     </td>
                                     <td>
                                         {{ $buktipotongpajak->tanggal_awal }}
+                                    </td>
+                                    <td class="text-right">
+                                        {{ number_format($buktipotongpajak->detail_bukti->first()->tagihan_ekspedisi->sub_total, 2, ',', '.') }}
                                     </td>
                                     <td class="text-right">
                                         {{ number_format($buktipotongpajak->grand_total * 0.02, 2, ',', '.') }}

@@ -67,6 +67,11 @@ class Tagihan_ekspedisi extends Model
         return $getId = DB::table('tagihan_ekspedisis')->orderBy('id', 'DESC')->take(1)->get();
     }
 
+    public function detail_bukti()
+    {
+        return $this->hasMany(Detail_bukti::class);
+    }
+
     public function detail_tagihan()
     {
         return $this->hasMany(Detail_tagihan::class);
