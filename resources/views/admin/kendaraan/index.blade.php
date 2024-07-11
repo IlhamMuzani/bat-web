@@ -3,7 +3,8 @@
 @section('title', 'Data Kendaraan')
 
 @section('content')
-    <!-- Content Header (Page header) -->
+
+
     <div id="loadingSpinner" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
         <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
     </div>
@@ -119,18 +120,8 @@
                                     <td data-toggle="modal" data-target="#modal-stnk-{{ $kendaraan->id }}"
                                         class="text-center">
                                         @if ($kendaraan->gambar_stnk)
-                                            <style>
-                                                .portrait-img {
-                                                    width: auto;
-                                                    height: 450px;
-                                                    /* Adjust this value to your desired height */
-                                                    display: block;
-                                                    margin: 0 auto;
-                                                    object-fit: cover;
-                                                }
-                                            </style>
                                             <img src="{{ asset('storage/uploads/' . $kendaraan->gambar_stnk) }}"
-                                                alt="{{ $kendaraan->kode_kendaraan }}"class="portrait-img">
+                                                alt="{{ $kendaraan->kode_kendaraan }}" width="50" height="50">
                                         @else
                                             <img src="{{ asset('adminlte/dist/img/img-placeholder.jpg') }}"
                                                 alt="{{ $kendaraan->kode_kendaraan }}" width="50" height="50">
@@ -241,7 +232,7 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h4 class="modal-title">Gambar QR Code</h4>
+                                                <h4 class="modal-title">Gambar QR Code Solar</h4>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
@@ -299,9 +290,18 @@
                                                         {{ $kendaraan->kode_kendaraan }}</p>
                                                     <div style="display: inline-block;">
                                                         @if ($kendaraan->gambar_stnk)
+                                                            <style>
+                                                                .portrait-img {
+                                                                    width: auto;
+                                                                    height: 450px;
+                                                                    /* Adjust this value to your desired height */
+                                                                    display: block;
+                                                                    margin: 0 auto;
+                                                                    object-fit: cover;
+                                                                }
+                                                            </style>
                                                             <img src="{{ asset('storage/uploads/' . $kendaraan->gambar_stnk) }}"
-                                                                alt="{{ $kendaraan->kode_kendaraan }}" width="400"
-                                                                height="220">
+                                                                alt="{{ $kendaraan->kode_kendaraan }}"class="portrait-img">
                                                         @else
                                                             <img src="{{ asset('adminlte/dist/img/img-placeholder.jpg') }}"
                                                                 alt="{{ $kendaraan->kode_kendaraan }}" width="200"
