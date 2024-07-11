@@ -419,6 +419,8 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::post('updatebuktitagihan/{id}', [\App\Http\Controllers\Admin\BuktipotongController::class, 'updatebuktitagihan'])->name('updatebuktitagihan');
 
     Route::get('cetak_buktifilter', [\App\Http\Controllers\Admin\InqueryBuktipotongpajakController::class, 'cetak_buktifilter']);
+    Route::get('cetak_buktifilterfoto', [\App\Http\Controllers\Admin\InqueryBuktipotongpajakController::class, 'cetak_buktifilterfoto']);
+
     // Route::get('unpostfakturselesai/{id}', [\App\Http\Controllers\Admin\InqueryFakturekspedisiController::class, 'unpostfakturselesai'])->name('unpostfakturselesai');
     Route::get('unpostfaktur/{id}', [\App\Http\Controllers\Admin\InqueryFakturekspedisiController::class, 'unpostfaktur'])->name('unpostfaktur');
     Route::get('postingfaktur/{id}', [\App\Http\Controllers\Admin\InqueryFakturekspedisiController::class, 'postingfaktur'])->name('postingfaktur');

@@ -906,6 +906,12 @@
             $('#tableMemo').modal('show');
         }
 
+        function getWeekOfMonth(date) {
+            var adjustedDate = date.getDate() + date.getDay();
+            var prefixes = [0, 1, 2, 3, 4, 5];
+            return Math.ceil(adjustedDate / 7);
+        }
+
         function getMemos(rowIndex) {
             var selectedRow = $('#tables tbody tr:eq(' + rowIndex + ')');
             var karyawan_id = selectedRow.data('id');
@@ -914,14 +920,42 @@
             var bpjs = selectedRow.data('bpjs');
             var pelunasan_kasbon = parseFloat(selectedRow.data('pelunasan_kasbon')).toLocaleString('id-ID');
             var gaji = parseFloat(selectedRow.data('gaji')).toLocaleString('id-ID');
+            var nol = 0;
+
+
+            // Get current date and week of the month
+            var currentDate = new Date();
+            var currentWeek = getWeekOfMonth(currentDate);
+
+            // Check if it's the second week of the month
+            if (currentWeek === 2) {
+                $('#potongan_bpjs-' + activeSpecificationIndex).val(bpjs);
+            } else {
+                $('#potongan_bpjs-' + activeSpecificationIndex).val(nol);
+            }
 
             // Update the form fields for the active specification
             $('#karyawan_id-' + activeSpecificationIndex).val(karyawan_id);
             $('#kode_karyawan-' + activeSpecificationIndex).val(kode_karyawan);
             $('#nama_lengkap-' + activeSpecificationIndex).val(nama_lengkap);
-            $('#potongan_bpjs-' + activeSpecificationIndex).val(bpjs);
-            $('#pelunasan_kasbon-' + activeSpecificationIndex).val(pelunasan_kasbon);
+            // $('#potongan_bpjs-' + activeSpecificationIndex).val(bpjs);
+            $('#pelunasan_kasbon-' + activeSpecificationIndex).val(pelunasan_kasbon.toLocaleString('id-ID'));
             $('#gaji-' + activeSpecificationIndex).val(gaji);
+
+            $('#hari_kerja-' + activeSpecificationIndex).val(nol);
+            $('#uang_makan-' + activeSpecificationIndex).val(nol);
+            $('#uang_hadir-' + activeSpecificationIndex).val(nol);
+            $('#lembur-' + activeSpecificationIndex).val(nol);
+            $('#hasil_lembur-' + activeSpecificationIndex).val(nol);
+            $('#gaji_kotor-' + activeSpecificationIndex).val(nol);
+            $('#kurangtigapuluh-' + activeSpecificationIndex).val(nol);
+            $('#lebihtigapuluh-' + activeSpecificationIndex).val(nol);
+            $('#hasilkurang-' + activeSpecificationIndex).val(nol);
+            $('#hasillebih-' + activeSpecificationIndex).val(nol);
+            $('#absen-' + activeSpecificationIndex).val(nol);
+            $('#hasil_absen-' + activeSpecificationIndex).val(nol);
+            $('#lainya-' + activeSpecificationIndex).val(nol);
+            $('#gajinol_pelunasan-' + activeSpecificationIndex).val(nol);
 
             // Check if bpjs is not null or has a value
             if (bpjs !== null && bpjs !== '') {

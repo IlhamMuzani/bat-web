@@ -3,22 +3,8 @@
 @section('title', 'Inquery Bukti Potong Pajak')
 
 @section('content')
-    <div id="loadingSpinner" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
-        <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
-    </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            setTimeout(function() {
-                document.getElementById("loadingSpinner").style.display = "none";
-                document.getElementById("mainContent").style.display = "block";
-                document.getElementById("mainContentSection").style.display = "block";
-            }, 100); // Adjust the delay time as needed
-        });
-    </script>
-
     <!-- Content Header (Page header) -->
-    <div class="content-header" style="display: none;" id="mainContent">
+    <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
@@ -35,7 +21,7 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
-    <section class="content" style="display: none;" id="mainContentSection">
+    <section class="content">
         <div class="container-fluid">
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible">
@@ -92,6 +78,10 @@
                                 <button type="button" class="btn btn-primary btn-block mt-1" id="checkfilter"
                                     onclick="printSelectedData()" target="_blank">
                                     <i class="fas fa-print"></i> Cetak Filter
+                                </button>
+                                <button type="button" class="btn btn-outline-primary btn-block mt-1" id="checkfilter"
+                                    onclick="printSelectedDatafoto()" target="_blank">
+                                    <i class="fas fa-print"></i> Cetak Bukti Foto
                                 </button>
                             </div>
                         </div>
@@ -416,6 +406,31 @@
                 document.getElementById('selectedIds').value = selectedIds.join(',');
                 var selectedIdsString = selectedIds.join(',');
                 window.location.href = "{{ url('admin/cetak_buktifilter') }}?ids=" + selectedIdsString;
+                // var url = "{{ url('admin/ban/cetak_pdffilter') }}?ids=" + selectedIdsString;
+            }
+        }
+    </script>
+
+    <script>
+        $(function(e) {
+            $("#select_all_ids").click(function() {
+                $('.checkbox_ids').prop('checked', $(this).prop('checked'))
+            })
+        });
+
+        function printSelectedDatafoto() {
+            var selectedIds = document.querySelectorAll(".checkbox_ids:checked");
+            if (selectedIds.length === 0) {
+                alert("Harap centang setidaknya satu item sebelum mencetak.");
+            } else {
+                var selectedCheckboxes = document.querySelectorAll('.checkbox_ids:checked');
+                var selectedIds = [];
+                selectedCheckboxes.forEach(function(checkbox) {
+                    selectedIds.push(checkbox.value);
+                });
+                document.getElementById('selectedIds').value = selectedIds.join(',');
+                var selectedIdsString = selectedIds.join(',');
+                window.location.href = "{{ url('admin/cetak_buktifilterfoto') }}?ids=" + selectedIdsString;
                 // var url = "{{ url('admin/ban/cetak_pdffilter') }}?ids=" + selectedIdsString;
             }
         }
