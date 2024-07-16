@@ -79,7 +79,6 @@
                                 style="margin-right: 10px; font-size:14px" />
                             <input class="form-control" id="kode_tagihan" name="kode_tagihan" type="text" placeholder=""
                                 value="{{ old('kode_tagihan', $inquery->kode_tagihan) }}" readonly style="font-size:14px" />
-
                         </div>
                     </div>
                 </div>
@@ -135,68 +134,68 @@
                             </div>
                         </div>
 
+                        {{-- <div id="forms-containers"></div> --}}
+
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Faktur Ekspedisi <span>
+                                <h3 class="card-title">Form Faktur <span>
                                     </span></h3>
                                 <div class="float-right">
-                                    <button type="button" class="btn btn-primary btn-sm" onclick="addFaktur()">
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="addFaks()">
                                         <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
                             </div>
-                            <!-- /.card-header -->
                             <div class="card-body">
                                 <table class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             <th style="font-size:14px" class="text-center">No</th>
                                             <th style="font-size:14px">Kode Faktur</th>
-                                            <th style="font-size:14px">Tanggal Faktur</th>
+                                            <th style="font-size:14px">Tanggal Ekspedisi</th>
                                             <th style="font-size:14px">Total</th>
                                             <th style="font-size:14px">Opsi</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tabel-faktur">
+                                    <tbody id="tabel-fakturekspedisi">
                                         @foreach ($details as $detail)
-                                            <tr id="faktur-{{ $loop->index }}">
+                                            <tr id="fakturekspedisi-{{ $loop->index }}">
                                                 <td style="width: 70px; font-size:14px" class="text-center"
                                                     id="urutanfaktur">{{ $loop->index + 1 }}
                                                 </td>
                                                 <td hidden>
-                                                    <div class="form-group" hidden>
-                                                        <input type="text" class="form-control" id="nomor_seri-0"
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="detail_idfaks-0"
                                                             name="detail_idfaks[]" value="{{ $detail['id'] }}">
                                                     </div>
                                                     <div class="form-group">
                                                         <input type="text" class="form-control"
-                                                            id="faktur_ekspedisi_id-{{ $loop->index }}"
-                                                            name="faktur_ekspedisi_id[]"
-                                                            value="{{ $detail['faktur_ekspedisi_id'] }}">
+                                                            id="faktur_ekspedisi-{{ $loop->index }}"
+                                                            name="faktur_ekspedisi[]" {{ $detail['faktur_ekspedisi'] }}
+                                                            value="{{ $detail['faktur_ekspedisi'] }}">
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="form-group">
-                                                        <input onclick="FakturEkspedisis({{ $loop->index }})"
-                                                            style="font-size:14px" type="text" class="form-control"
+                                                        <input style="font-size:14px" type="text" class="form-control"
                                                             readonly id="kode_faktur-{{ $loop->index }}"
-                                                            name="kode_faktur[]" value="{{ $detail['kode_faktur'] }}">
+                                                            name="kode_faktur[]" {{ $detail['kode_faktur'] }}
+                                                            value="{{ $detail['kode_faktur'] }}">
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="form-group">
-                                                        <input onclick="FakturEkspedisis({{ $loop->index }})"
-                                                            style="font-size:14px" type="text" class="form-control"
+                                                        <input style="font-size:14px" type="text" class="form-control"
                                                             readonly id="tanggal_faktur-{{ $loop->index }}"
-                                                            name="tanggal_faktur[]"
+                                                            name="tanggal_faktur[]" {{ $detail['tanggal_faktur'] }}
                                                             value="{{ $detail['tanggal_faktur'] }}">
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="form-group">
-                                                        <input onclick="FakturEkspedisis({{ $loop->index }})"
-                                                            style="font-size:14px" type="text" class="form-control"
+                                                        <input style="font-size:14px" type="text" class="form-control"
                                                             id="total-{{ $loop->index }}" readonly name="total[]"
+                                                            {{ $detail['total'] }}
                                                             value="{{ number_format($detail['total'], 0, ',', '.') }}">
 
                                                     </div>
@@ -204,12 +203,8 @@
                                                 <td style="width: 100px">
                                                     <button style="margin-left:5px" type="button"
                                                         class="btn btn-danger btn-sm"
-                                                        onclick="removeFaktur({{ $loop->index }}, {{ $detail['id'] }})">
+                                                        onclick="removeFak({{ $loop->index }}, {{ $detail['id'] }})">
                                                         <i class="fas fa-trash"></i>
-                                                    </button>
-                                                    <button type="button" class="btn btn-primary btn-sm"
-                                                        onclick="FakturEkspedisis({{ $loop->index }})">
-                                                        <i class="fas fa-plus"></i>
                                                     </button>
                                                 </td>
                                             </tr>
@@ -519,40 +514,6 @@
         </div>
         </form>
 
-        <div class="modal fade" id="tableMemo" data-backdrop="static">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Data Faktur Ekspedisi</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="m-2">
-                            <input type="text" id="searchInputrutes" class="form-control" placeholder="Search...">
-                        </div>
-                        <table id="tablefaktur" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">No</th>
-                                    <th>Kode Faktur</th>
-                                    <th>Tanggal</th>
-                                    <th>Pelanggan</th>
-                                    <th>Rute</th>
-                                    <th>Kategori</th>
-                                    <th>Opsi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Faktur data will be populated here via JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="modal fade" id="tableReturn" data-backdrop="static">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -707,7 +668,34 @@
     </section>
 
 
+    <script>
+        function updateGrandTotal() {
+            var grandTotal = 0;
+            // Loop through each row to sum up the total values
+            $('.total').each(function() {
+                grandTotal += parseFloat($(this).val().replace(/\D/g, '') ||
+                    0); // Parse and sum up the total values
+            });
 
+            // Format grand total
+            var grandTotalFormatted = formatRupiah(grandTotal);
+            var grandlocale = grandTotal.toLocaleString('id-ID'); // Menggunakan toLocaleString() untuk format lokal
+
+            // Update the displayed grand total
+            $('#totalpembayaran').val(grandTotalFormatted);
+            $('#grandTotalCell').text(grandlocale);
+
+            // Optionally, update other related values or perform any necessary actions
+        }
+
+        function formatRupiah(number) {
+            var formatted = new Intl.NumberFormat('id-ID', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(number);
+            return formatted;
+        }
+    </script>
 
 
     <script>
@@ -723,6 +711,136 @@
                 $('form').submit();
             });
         });
+    </script>
+
+    <script>
+        var data_pembelianfak = @json(session('data_pembelians1'));
+        var jumlah_fak = 1;
+
+        if (data_pembelianfak != null) {
+            jumlah_fak = data_pembelianfak.length;
+            $('#tabel-fakturekspedisi').empty();
+            var urutanfak = 0;
+            $.each(data_pembelianfak, function(key, value) {
+                urutanfak = urutanfak + 1;
+                itemPembelianfak(urutanfak, key, false, value);
+            });
+        }
+
+        function updateUrutanFak() {
+            var urutanfak = document.querySelectorAll('#urutanfaktur');
+            for (let i = 0; i < urutanfak.length; i++) {
+                urutanfak[i].innerText = i + 1;
+            }
+        }
+
+        var counterfak = 0;
+
+        function addFaks() {
+            counterfak++;
+            jumlah_fak = jumlah_fak + 1;
+
+            if (jumlah_fak === 1) {
+                $('#tabel-fakturekspedisi').empty();
+            } else {
+                // Find the last row and get its index to continue the numbering
+                var lastRow = $('#tabel-fakturekspedisi tr:last');
+                var lastRowIndex = lastRow.find('#urutanfaktur').text();
+                jumlah_fak = parseInt(lastRowIndex) + 1;
+            }
+
+            console.log('Current jumlah_fak:', jumlah_fak);
+            itemPembelianFak(jumlah_fak, jumlah_fak - 1);
+            updateUrutanFak();
+        }
+
+        function removeFak(identifier, detailId) {
+            var row = document.getElementById('fakturekspedisi-' + identifier);
+            row.remove();
+
+            $.ajax({
+                url: "{{ url('admin/inquery_fakturpelunasan/deletedetailpelunasanreturn') }}/" + detailId,
+                type: "POST",
+                data: {
+                    _method: 'DELETE',
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    console.log('Data deleted successfully');
+                },
+                error: function(error) {
+                    console.error('Failed to delete data:', error);
+                }
+            });
+        }
+
+        function itemPembelianFak(identifier, key, style, value = null) {
+            var faktur_ekspedisi_id = '';
+            var kode_faktur = '';
+            var tanggal_faktur = '';
+            var total = '';
+
+            if (value !== null) {
+                faktur_ekspedisi_id = value.faktur_ekspedisi_id;
+                kode_faktur = value.kode_faktur;
+                tanggal_faktur = value.tanggal_faktur;
+                total = value.total;
+
+            }
+
+            // urutan 
+            var item_fak = '<tr id="fakturekspedisi-' + key + '">';
+            item_fak += '<td style="width: 70px; font-size:14px" class="text-center" id="urutanfaktur">' + key +
+                '</td>';
+
+            // faktur_ekspedisi_id 
+            item_fak += '<td hidden>';
+            item_fak += '<div class="form-group">'
+            item_fak += '<input type="text" class="form-control" id="faktur_ekspedisi_id-' + key +
+                '" name="faktur_ekspedisi_id[]" value="' + faktur_ekspedisi_id + '" ';
+            item_fak += '</div>';
+            item_fak += '</td>';
+
+            // kode_faktur 
+            item_fak += '<td>';
+            item_fak += '<div class="form-group">'
+            item_fak += '<input type="text" class="form-control" readonly style="font-size:14px" id="kode_faktur-' +
+                key +
+                '" name="kode_faktur[]" value="' + kode_faktur + '" ';
+            item_fak += '</div>';
+            item_fak += '</td>';
+
+            // tanggal_faktur 
+            item_fak += '<td>';
+            item_fak += '<div class="form-group">'
+            item_fak +=
+                '<input type="text" class="form-control" readonly style="font-size:14px" id="tanggal_faktur-' +
+                key +
+                '" name="tanggal_faktur[]" value="' + tanggal_faktur + '" ';
+            item_fak += '</div>';
+            item_fak += '</td>';
+
+            // total 
+            item_fak += '<td>';
+            item_fak += '<div class="form-group">'
+            item_fak +=
+                '<input type="text" class="form-control" style="font-size:14px" readonly id="total-' +
+                key +
+                '" name="total[]" value="' + total + '" ';
+            item_fak += '</div>';
+            item_fak += '</td>';
+
+            item_fak += '<td style="width: 100px">';
+            item_fak +=
+                '<button type="button" style="margin-left:5px" class="btn btn-danger btn-sm" onclick="removeFak(' +
+                key + ')">';
+            item_fak += '<i class="fas fa-trash"></i>';
+            item_fak += '</button>';
+            item_fak += '</td>';
+            item_fak += '</tr>';
+
+            $('#tabel-fakturekspedisi').append(item_fak);
+        }
     </script>
 
     <script>
@@ -1285,319 +1403,4 @@
     </script>
 
 
-
-
-    <script>
-        var activeSpecificationIndex = 0;
-        var fakturAlreadySelected = []; // Simpan daftar kode faktur yang sudah dipilih
-
-        function FakturEkspedisis(param) {
-            activeSpecificationIndex = param;
-            // Show the modal and filter rows if necessary
-            $('#tableMemo').modal('show');
-        }
-
-        function getFaktur(rowIndex) {
-            var selectedRow = $('#tablefaktur tbody tr:eq(' + rowIndex + ')');
-            var faktur_ekspedisi_id = selectedRow.data('id');
-            var kode_faktur = selectedRow.data('kode_faktur');
-            if (fakturAlreadySelected.includes(kode_faktur)) {
-                alert('Kode faktur sudah dipilih sebelumnya.');
-                return;
-            }
-            fakturAlreadySelected.push(kode_faktur); // Menambahkan kode faktur ke daftar yang sudah dipilih
-            var tanggal_awal = selectedRow.data('tanggal_awal');
-            var sub_total = selectedRow.data('total_tarif');
-
-            // membuat validasi jika kode sudah ada 
-
-            $('#faktur_ekspedisi_id-' + activeSpecificationIndex).val(faktur_ekspedisi_id);
-            $('#kode_faktur-' + activeSpecificationIndex).val(kode_faktur);
-            $('#tanggal_faktur-' + activeSpecificationIndex).val(tanggal_awal);
-            $('#total-' + activeSpecificationIndex).val(parseFloat(sub_total).toLocaleString('id-ID'));
-
-
-            $('#tableMemo').modal('hide');
-
-            updateTotalPembayaran();
-            updateGrandTotallain();
-            updateSubTotalsxx();
-            updateSubTotal();
-        }
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            $('#pelanggan_id').on('input', function() {
-                var pelangganID = $(this).val();
-
-                // Jika pelangganID tidak ada, ambil dari nilai pelanggan_id
-                if (!pelangganID) {
-                    pelangganID = $('#pelanggan_id').attr('data-id');
-                }
-
-                if (pelangganID) {
-                    $.ajax({
-                        url: "{{ url('admin/tagihan_ekspedisi/get_fakturtagihan') }}" + '/' +
-                            pelangganID,
-                        type: "GET",
-                        dataType: "json",
-                        success: function(data) {
-                            $('#tablefaktur tbody').empty();
-                            if (data.length > 0) {
-                                $.each(data, function(index, faktur) {
-                                    var row = '<tr data-id="' + faktur.id +
-                                        '" data-kode_faktur="' + faktur.kode_faktur +
-                                        '" data-tanggal_awal="' + faktur.tanggal +
-                                        '" data-harga_tarif="' + faktur.harga_tarif +
-                                        '" data-total_tarif="' + (parseFloat(faktur
-                                            .total_tarif) + parseFloat(faktur
-                                            .biaya_tambahan)) +
-                                        '" data-param="' + index + '">' +
-                                        '<td class="text-center">' + (index + 1) +
-                                        '</td>' +
-                                        '<td>' + faktur.kode_faktur + '</td>' +
-                                        '<td>' + faktur.tanggal + '</td>' +
-                                        '<td>' + faktur.pelanggan.nama_pell + '</td>' +
-                                        '<td>' + faktur.nama_tarif + '</td>' +
-                                        '<td>' + faktur.kategori + '</td>' +
-                                        '<td class="text-center">' +
-                                        '<button type="button" id="btnTambah" class="btn btn-primary btn-sm" onclick="getFaktur(' +
-                                        index + ')">' +
-                                        '<i class="fas fa-plus"></i>' +
-                                        '</button>' +
-                                        '</td>' +
-                                        '</tr>';
-                                    $('#tablefaktur tbody').append(row);
-                                });
-                            } else {
-                                $('#tablefaktur tbody').append(
-                                    '<tr><td colspan="7" class="text-center">No data available</td></tr>'
-                                );
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error("AJAX Error:", status, error);
-                            $('#tablefaktur tbody').empty();
-                            $('#tablefaktur tbody').append(
-                                '<tr><td colspan="7" class="text-center">Error loading data</td></tr>'
-                            );
-                        }
-                    });
-                } else {
-                    $('#tablefaktur tbody').empty();
-                    $('#tablefaktur tbody').append(
-                        '<tr><td colspan="7" class="text-center">No data available</td></tr>');
-                }
-            });
-
-            // Trigger the input event manually on page load if there's a value in the pelanggan_id field
-            if ($('#pelanggan_id').val()) {
-                $('#pelanggan_id').trigger('input');
-            }
-        });
-    </script>
-
-
-    <script>
-        function filterTablefaktur() {
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("searchInputrutes");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("tablefaktur");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                var displayRow = false;
-
-                // Loop through columns (td 1, 2, and 3)
-                for (j = 1; j <= 4; j++) {
-                    td = tr[i].getElementsByTagName("td")[j];
-                    if (td) {
-                        txtValue = td.textContent || td.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            displayRow = true;
-                            break; // Break the loop if a match is found in any column
-                        }
-                    }
-                }
-
-                // Set the display style based on whether a match is found in any column
-                tr[i].style.display = displayRow ? "" : "none";
-            }
-        }
-        document.getElementById("searchInputrutes").addEventListener("input", filterTablefaktur);
-    </script>
-
-
-    <script>
-        var data_faktur = @json(session('data_pembelians'));
-        var jumlah_faktur = 1;
-
-        if (data_faktur != null) {
-            jumlah_faktur = data_faktur.length;
-            $('#tabel-faktur').empty();
-            var urutan = 0;
-            $.each(data_faktur, function(key, value) {
-                urutan = urutan + 1;
-                itemPembelianfak(urutan, key, value);
-            });
-        }
-
-        var counterfak = 0;
-
-        function addFaktur() {
-            counterfak++;
-            jumlah_faktur = jumlah_faktur + 1;
-
-            if (jumlah_faktur === 1) {
-                $('#tabel-faktur').empty();
-            } else {
-                // Find the last row and get its index to continue the numbering
-                var lastRow = $('#tabel-faktur tr:last');
-                var lastRowIndex = lastRow.find('#urutanfaktur').text();
-                jumlah_faktur = parseInt(lastRowIndex) + 1;
-            }
-            console.log('Current jumlah_faktur:', jumlah_faktur);
-            itemPembelianfak(jumlah_faktur, jumlah_faktur - 1);
-            UpdateUrutanFak();
-        }
-
-
-        function UpdateUrutanFak() {
-            var urutan = document.querySelectorAll('#urutanfaktur');
-            for (let i = 0; i < urutan.length; i++) {
-                urutan[i].innerText = i + 1;
-            }
-        }
-
-        function removeFaktur(identifier, detailId) {
-            var row = document.getElementById('faktur-' + identifier);
-            row.remove();
-
-            $.ajax({
-                url: "{{ url('admin/inquery_fakturpelunasan/deletedetailpelunasan') }}/" + detailId,
-                type: "POST",
-                data: {
-                    _method: 'DELETE',
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    console.log('Data deleted successfully');
-                },
-                error: function(error) {
-                    console.error('Failed to delete data:', error);
-                }
-            });
-            UpdateUrutanFak();
-            updateTotalPembayaran();
-            updateGrandTotallain();
-            updateSubTotalsxx();
-            updateSubTotal();
-        }
-
-        function itemPembelianfak(identifier, key, value = null) {
-            var faktur_ekspedisi_id = '';
-            var kode_faktur = '';
-            var tanggal_faktur = '';
-            var total = '';
-
-            if (value !== null) {
-                faktur_ekspedisi_id = value.faktur_ekspedisi_id;
-                kode_faktur = value.kode_faktur;
-                tanggal_faktur = value.tanggal_faktur;
-                total = value.total;
-
-            }
-
-            // urutan 
-            var item_pembelian = '<tr id="faktur-' + key + '">';
-            item_pembelian += '<td  style="width: 70px; font-size:14px" class="text-center" id="urutanfaktur">' + key +
-                '</td>';
-
-            // faktur_ekspedisi_id 
-            item_pembelian += '<td hidden>';
-            item_pembelian += '<div class="form-group">'
-            item_pembelian += '<input type="text" class="form-control" id="faktur_ekspedisi_id-' + key +
-                '" name="faktur_ekspedisi_id[]" value="' + faktur_ekspedisi_id + '" ';
-            item_pembelian += '</div>';
-            item_pembelian += '</td>';
-
-            // kode_faktur 
-            item_pembelian += '<td onclick="FakturEkspedisis(' + key +
-                ')">';
-            item_pembelian += '<div class="form-group">'
-            item_pembelian +=
-                '<input type="text" class="form-control" readonly style="font-size:14px" id="kode_faktur-' +
-                key +
-                '" name="kode_faktur[]" value="' + kode_faktur + '" ';
-            item_pembelian += '</div>';
-            item_pembelian += '</td>';
-
-            // tanggal_faktur 
-            item_pembelian += '<td onclick="FakturEkspedisis(' + key +
-                ')">';
-            item_pembelian += '<div class="form-group">'
-            item_pembelian +=
-                '<input type="text" class="form-control" readonly style="font-size:14px" id="tanggal_faktur-' +
-                key +
-                '" name="tanggal_faktur[]" value="' + tanggal_faktur + '" ';
-            item_pembelian += '</div>';
-            item_pembelian += '</td>';
-
-            // total 
-            item_pembelian += '<td onclick="FakturEkspedisis(' + key +
-                ')">';
-            item_pembelian += '<div class="form-group">'
-            item_pembelian +=
-                '<input type="text" class="form-control" style="font-size:14px" readonly id="total-' +
-                key +
-                '" name="total[]" value="' + total + '" ';
-            item_pembelian += '</div>';
-            item_pembelian += '</td>';
-
-            item_pembelian += '<td style="width: 100px">';
-            item_pembelian +=
-                '<button type="button" style="margin-left:5px" class="btn btn-danger btn-sm" onclick="removeFaktur(' +
-                key + ')">';
-            item_pembelian += '<i class="fas fa-trash"></i>';
-            item_pembelian += '</button>';
-            item_pembelian +=
-                '<button style="margin-left:3px" type="button" class="btn btn-primary btn-sm" onclick="FakturEkspedisis(' +
-                key +
-                ')">';
-            item_pembelian += '<i class="fas fa-plus"></i>';
-            item_pembelian += '</button>';
-            item_pembelian += '</td>';
-            item_pembelian += '</tr>';
-
-            $('#tabel-faktur').append(item_pembelian);
-        }
-    </script>
-
-    <script>
-        function updateTotalPembayaran() {
-            var grandTotal = 0;
-
-            // Iterate through all input elements with IDs starting with 'total-'
-            $('input[id^="total-"]').each(function() {
-                // Remove dots and replace comma with dot, then parse as float
-                var nilaiTotal = parseFloat($(this).val().replace(/\./g, '').replace(',', '.')) || 0;
-                grandTotal += nilaiTotal;
-            });
-
-            // Format grandTotal as currency in Indonesian Rupiah
-            var formattedGrandTotal = grandTotal.toLocaleString('id-ID');
-            console.log(formattedGrandTotal);
-            // Set the formatted grandTotal to the target element
-            $('#totalpembayaran').val(formattedGrandTotal);
-        }
-
-        function formatRupiah(number) {
-            var formatted = new Intl.NumberFormat('id-ID', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }).format(number);
-            return formatted;
-        }
-    </script>
 @endsection

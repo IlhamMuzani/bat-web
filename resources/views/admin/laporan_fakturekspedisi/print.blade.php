@@ -71,14 +71,27 @@
         }
 
         @page {
-            /* size: A4; */
             margin: 1cm;
+            counter-increment: page;
+            counter-reset: page 1;
+        }
+
+        /* Define the footer with page number */
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: start;
+            font-size: 10px;
+        }
+
+        footer::after {
+            content: counter(page);
         }
     </style>
 </head>
 
 <body style="margin: 0; padding: 0;">
-
     <div id="logo-container">
         <img src="{{ public_path('storage/uploads/gambar_logo/Logo.jpg') }}" alt="BAT" width="70" height="35">
     </div>
@@ -120,6 +133,7 @@
             <td class="td" style="text-align: right; padding: 5px; font-weight:bold; font-size: 11px; width:25%">
                 Total
             </td>
+
             <td class="td" style="text-align: right; padding: 5px; font-weight:bold; font-size: 11px; width:25%">
                 Pph
             </td>
@@ -133,6 +147,10 @@
             <td colspan="5" style="padding: 0px;"></td>
         </tr>
         <!-- Data rows -->
+        @php
+            $totalGrandTotal = 0;
+            $pph23 = 0;
+        @endphp
         @foreach ($inquery as $faktur)
             <tr style="background:rgb(181, 181, 181)">
                 <td class="td" style="text-align: left; padding: 5px; font-size: 11px;">{{ $faktur->kode_faktur }}
@@ -183,24 +201,22 @@
                 </tr>
                 </tr>
             @endforeach
+            @php
+                $totalGrandTotal += $faktur->total_tarif + $faktur->biaya_tambahan;
+                $pph23 += $faktur->pph;
+                // $Selisih = $totalGrandTotal - $pph23;
+                // $Totals = $totalGrandTotal - $pph23;
+            @endphp
+
+            @php
+                $Totals = $totalGrandTotal - $pph23;
+            @endphp
         @endforeach
         <!-- Separator row -->
         <tr style="border-bottom: 1px solid black;">
             <td colspan="" style="padding: 0px;"></td>
         </tr>
         <!-- Subtotal row -->
-        @php
-            $totaltarif = 0;
-            $total = 0;
-            $totalpph = 0;
-        @endphp
-        @foreach ($inquery as $item)
-            @php
-                $totaltarif += $item->total_tarif;
-                $total += $item->grand_total;
-                $totalpph += $item->pph;
-            @endphp
-        @endforeach
         <tr>
             <td colspan="6" style="text-align: right; font-weight: bold; padding: 5px; font-size: 11px;">
                 {{-- Sub Total --}}
@@ -223,14 +239,14 @@
                         <td colspan="5" style="text-align: left; padding-left: 0px; font-size: 11px;">
                             Total</td>
                         <td class="td" style="text-align: right; font-size: 11px;">
-                            {{ number_format($totaltarif, 2, ',', '.') }}
+                            {{ number_format($totalGrandTotal, 2, ',', '.') }}
                         </td>
                     </tr>
                     <tr>
                         <td colspan="5" style="text-align: left; padding-left: 0px; font-size: 11px;">Pph
                         </td>
                         <td class="td" style="text-align: right; font-size: 11px;">
-                            {{ number_format($totalpph, 2, ',', '.') }}</td>
+                            {{ number_format($pph23, 2, ',', '.') }}</td>
                     </tr>
                     <tr>
                         <td colspan="6" style="padding: 0px;">
@@ -243,7 +259,7 @@
                         <td colspan="5" style="text-align: left; padding-left: 0px; font-size: 11px;">Sub Total
                         </td>
                         <td class="td" style="text-align: right; padding-right: 6px; font-size: 11px;">
-                            {{ number_format($totaltarif - $totalpph, 2, ',', '.') }}</td>
+                            {{ number_format($totalGrandTotal - $pph23, 2, ',', '.') }}</td>
                     </tr>
 
                     <tr>
@@ -256,20 +272,12 @@
                     </tr>
                 </table>
             </td>
-
         </tr>
     </table>
-
-
     <br>
 
-    <!-- Tampilkan sub-total di bawah tabel -->
-    {{-- <div style="text-align: right;">
-        <strong>Sub Total: Rp. {{ number_format($total, 0, ',', '.') }}</strong>
-    </div> --}}
-
-
-    {{-- <br> --}}
+    <footer style="position: fixed; bottom: 0; right: 20px; width: auto; text-align: end; font-size: 10px;">Page
+    </footer>
 
     <br>
     <br>

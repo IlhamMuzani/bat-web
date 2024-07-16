@@ -4,22 +4,7 @@
 
 @section('content')
     <!-- Content Header (Page header) -->
-    <div id="loadingSpinner" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
-        <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
-    </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            setTimeout(function() {
-                document.getElementById("loadingSpinner").style.display = "none";
-                document.getElementById("mainContent").style.display = "block";
-                document.getElementById("mainContentSection").style.display = "block";
-            }, 100); // Adjust the delay time as needed
-        });
-    </script>
-
-    <!-- Content Header (Page header) -->
-    <div class="content-header" style="display: none;" id="mainContent">
+    <div class="content-header">
         <div class="containers-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
@@ -34,7 +19,7 @@
             </div>
         </div>
     </div>
-    <section class="content" style="display: none;" id="mainContentSection">
+    <section class="content">
         <div class="containers-fluid">
             @if (session('error'))
                 <div class="alert alert-danger alert-dismissible">
@@ -84,6 +69,17 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
+                        <div class="form-group" style="flex: 8;">
+                            <div class="col-md-0 mb-3">
+                                <label>Kategori</label>
+                                <select class="custom-select form-control" id="kategori" name="kategori">
+                                    <option value="">- Pilih Kategori -</option>
+                                    <option value="pelunasan1">Pelunasan Per Faktur</option>
+                                    {{-- <option value="pelunasan2">Pelunasan Per Invoice</option> --}}
+                                    <option value="pelunasan3" selected>Pelunasan lebih dari 1 kali</option>
+                                </select>
+                            </div>
+                        </div>
                         <label style="font-size:14px" class="form-label" for="kode_tagihan">Kode invoice</label>
                         <div class="form-group d-flex">
                             <input class="form-control" hidden id="tagihan_ekspedisi_id" name="tagihan_ekspedisi_id"
@@ -373,7 +369,6 @@
                                                 value="{{ old('nominal') }}"
                                                 onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46">
                                         </div>
-
                                     </div>
                                     <div class="col-md-6" style="margin-left: 89px">
                                         <div class="form-group">
@@ -1337,5 +1332,30 @@
         }
     </script>
 
+    <script>
+        $(document).ready(function() {
+            // Detect the change event on the 'status' dropdown
+            $('#kategori').on('change', function() {
+                // Get the selected value
+                var selectedValue = $(this).val();
+
+                // Check the selected value and redirect accordingly
+                switch (selectedValue) {
+                    case 'pelunasan1':
+                        window.location.href = "{{ url('admin/faktur_pelunasanperfaktur') }}";
+                        break;
+                        // case 'pelunasan2':
+                        //     window.location.href = "{{ url('admin/faktur_pelunasanperinvoice') }}";
+                        //     break;
+                    case 'pelunasan3':
+                        window.location.href = "{{ url('admin/faktur_pelunasan') }}";
+                        break;
+                    default:
+                        // Handle other cases or do nothing
+                        break;
+                }
+            });
+        });
+    </script>
 
 @endsection

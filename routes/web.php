@@ -421,6 +421,10 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('cetak_buktifilter', [\App\Http\Controllers\Admin\InqueryBuktipotongpajakController::class, 'cetak_buktifilter']);
     Route::get('cetak_buktifilterfoto', [\App\Http\Controllers\Admin\InqueryBuktipotongpajakController::class, 'cetak_buktifilterfoto']);
 
+    Route::delete('inquery_fakturpelunasan/deletedetailpelunasan/{id}', [\App\Http\Controllers\Admin\InqueryFakturpelunasanController::class, 'deletedetailpelunasan']);
+    Route::delete('inquery_fakturpelunasan/deletedetailpelunasanreturn/{id}', [\App\Http\Controllers\Admin\InqueryFakturpelunasanController::class, 'deletedetailpelunasanreturn']);
+    Route::delete('inquery_fakturpelunasan/deletedetailpelunasanpotongan/{id}', [\App\Http\Controllers\Admin\InqueryFakturpelunasanController::class, 'deletedetailpelunasanpotongan']);
+
     // Route::get('unpostfakturselesai/{id}', [\App\Http\Controllers\Admin\InqueryFakturekspedisiController::class, 'unpostfakturselesai'])->name('unpostfakturselesai');
     Route::get('unpostfaktur/{id}', [\App\Http\Controllers\Admin\InqueryFakturekspedisiController::class, 'unpostfaktur'])->name('unpostfaktur');
     Route::get('postingfaktur/{id}', [\App\Http\Controllers\Admin\InqueryFakturekspedisiController::class, 'postingfaktur'])->name('postingfaktur');
@@ -715,4 +719,5 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('inquery_spk/unpostspk/{id}', [\App\Http\Controllers\Admin\InquerySpkController::class, 'unpostspk']);
     Route::get('inquery_spk/postingspk/{id}', [\App\Http\Controllers\Admin\InquerySpkController::class, 'postingspk']);
     Route::resource('inquery_spk', \App\Http\Controllers\Admin\InquerySpkController::class);
+    Route::resource('faktur_pelunasanperfaktur', \App\Http\Controllers\Admin\FakturpelunasanperfakturController::class);
 });

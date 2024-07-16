@@ -18,7 +18,6 @@ use App\Models\Nota_return;
 use App\Models\Pelanggan;
 use App\Models\Potongan_penjualan;
 use App\Models\Return_ekspedisi;
-use App\Models\Spk;
 use App\Models\Tagihan_ekspedisi;
 use App\Models\Tarif;
 use Illuminate\Support\Facades\Validator;
@@ -29,6 +28,7 @@ class FakturpelunasanController extends Controller
     {
 
         $fakturs = Faktur_ekspedisi::get();
+        // Mendapatkan tagihan ekspedisi yang memiliki faktur ekspedisi dan status pelunasannya tidak NULL
         $invoices = Tagihan_ekspedisi::whereDoesntHave('detail_tagihan', function ($query) {
             $query->whereHas('faktur_ekspedisi', function ($query) {
                 $query->whereNotNull('status_pelunasan');
@@ -65,12 +65,13 @@ class FakturpelunasanController extends Controller
         }
 
         $error_pesanans = array();
-        $data_pembelians1 = collect();
+        $data_pembelians = collect();
         $data_pembelians2 = collect();
         $data_pembelians3 = collect();
 
         if ($request->has('faktur_ekspedisi_id')) {
             for ($i = 0; $i < count($request->faktur_ekspedisi_id); $i++) {
+
                 $validasi_produk = Validator::make($request->all(), [
                     'faktur_ekspedisi_id.' . $i => 'required',
                     'kode_faktur.' . $i => 'required',
@@ -86,7 +87,7 @@ class FakturpelunasanController extends Controller
                 $tanggal_faktur = is_null($request->tanggal_faktur[$i]) ? '' : $request->tanggal_faktur[$i];
                 $total = is_null($request->total[$i]) ? '' : $request->total[$i];
 
-                $data_pembelians1->push([
+                $data_pembelians->push([
                     'faktur_ekspedisi_id' => $faktur_ekspedisi_id,
                     'kode_faktur' => $kode_faktur,
                     'tanggal_faktur' => $tanggal_faktur,
@@ -169,7 +170,7 @@ class FakturpelunasanController extends Controller
                 ->withInput()
                 ->with('error_pelanggans', $error_pelanggans)
                 ->with('error_pesanans', $error_pesanans)
-                ->with('data_pembelians1', $data_pembelians1)
+                ->with('data_pembelians', $data_pembelians)
                 ->with('data_pembelians2', $data_pembelians2)
                 ->with('data_pembelians3', $data_pembelians3);
         }
@@ -187,7 +188,6 @@ class FakturpelunasanController extends Controller
             'kode_pelunasan' => $this->kode(),
             'tagihan_ekspedisi_id' => $request->tagihan_ekspedisi_id,
             'kode_tagihan' => $request->kode_tagihan,
-            // 'kategoris' => $request->kategoris,
             'pelanggan_id' => $request->pelanggan_id,
             'kode_pelanggan' => $request->kode_pelanggan,
             'nama_pelanggan' => $request->nama_pelanggan,
@@ -216,10 +216,8 @@ class FakturpelunasanController extends Controller
         Tagihan_ekspedisi::where('id', $request->tagihan_ekspedisi_id)->update([
             'status' => 'selesai',
         ]);
-
         $transaksi_id = $cetakpdf->id;
-
-        foreach ($data_pembelians1 as $data_pesanan) {
+        foreach ($data_pembelians as $data_pesanan) {
             $detailPelunasan = Detail_pelunasan::create([
                 'faktur_pelunasan_id' => $cetakpdf->id,
                 'faktur_ekspedisi_id' => $data_pesanan['faktur_ekspedisi_id'],
@@ -229,19 +227,7 @@ class FakturpelunasanController extends Controller
                 'status' => 'posting',
             ]);
 
-            // Ambil objek faktur ekspedisi
-            $faktur = Faktur_ekspedisi::find($detailPelunasan->faktur_ekspedisi_id);
-
-            if ($faktur) {
-                // Update status faktur
-                $faktur->update(['status_pelunasan' => 'aktif']);
-
-                // Update status spk
-                $spk = Spk::find($faktur->spk_id);
-                if ($spk) {
-                    $spk->update(['status_spk' => 'pelunasan']);
-                }
-            }
+            Faktur_ekspedisi::where('id', $detailPelunasan->faktur_ekspedisi_id)->update(['status_pelunasan' => 'aktif']);
         }
 
         foreach ($data_pembelians2 as $data_pesanan) {
@@ -265,6 +251,7 @@ class FakturpelunasanController extends Controller
                 'nominallain' => str_replace(',', '.', str_replace('.', '', $data_pesanan['nominallain'])),
                 'status' => 'posting',
             ]);
+
             Potongan_penjualan::where('id', $data_pesanan['potongan_penjualan_id'])->update(['status' => 'selesai']);
         }
 
@@ -296,40 +283,19 @@ class FakturpelunasanController extends Controller
 
     public function kode()
     {
-        // Mengambil kode terbaru dari database dengan awalan 'MP'
-        $lastBarang = Faktur_pelunasan::where('kode_pelunasan', 'like', 'LP%')->latest()->first();
-
-        // Mendapatkan bulan dari tanggal kode terakhir
-        $lastMonth = $lastBarang ? date('m', strtotime($lastBarang->created_at)) : null;
-        $currentMonth = date('m');
-
-        // Jika tidak ada kode sebelumnya atau bulan saat ini berbeda dari bulan kode terakhir
-        if (!$lastBarang || $currentMonth != $lastMonth) {
-            $num = 1; // Mulai dari 1 jika bulan berbeda
+        $lastBarang = Faktur_pelunasan::latest()->first();
+        if (!$lastBarang) {
+            $num = 1;
         } else {
-            // Jika ada kode sebelumnya, ambil nomor terakhir
             $lastCode = $lastBarang->kode_pelunasan;
-
-            // Pisahkan kode menjadi bagian-bagian terpisah
-            $parts = explode('/', $lastCode);
-            $lastNum = end($parts); // Ambil bagian terakhir sebagai nomor terakhir
-            $num = (int) $lastNum + 1; // Tambahkan 1 ke nomor terakhir
+            $num = (int) substr($lastCode, strlen('LP')) + 1;
         }
-
-        // Format nomor dengan leading zeros sebanyak 6 digit
         $formattedNum = sprintf("%06s", $num);
-
-        // Awalan untuk kode baru
         $prefix = 'LP';
-        $tahun = date('y');
-        $tanggal = date('dm');
-
-        // Buat kode baru dengan menggabungkan awalan, tanggal, tahun, dan nomor yang diformat
-        $newCode = $prefix . "/" . $tanggal . $tahun . "/" . $formattedNum;
-
-        // Kembalikan kode
+        $newCode = $prefix . $formattedNum;
         return $newCode;
     }
+
 
     public function show($id)
     {

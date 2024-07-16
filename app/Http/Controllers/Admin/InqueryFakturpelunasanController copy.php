@@ -17,6 +17,7 @@ use App\Models\Nota_return;
 use App\Models\Potongan_penjualan;
 use App\Models\Return_ekspedisi;
 use App\Models\Satuan;
+use App\Models\Spk;
 use App\Models\Tagihan_ekspedisi;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -57,8 +58,6 @@ class InqueryFakturpelunasanController extends Controller
 
         return view('admin.inquery_fakturpelunasan.index', compact('inquery'));
     }
-
-
 
     public function edit($id)
     {
@@ -104,7 +103,7 @@ class InqueryFakturpelunasanController extends Controller
         }
 
         $error_pesanans = array();
-        $data_pembelians = collect();
+        $data_pembelians1 = collect();
         $data_pembelians2 = collect();
         $data_pembelians3 = collect();
 
@@ -125,7 +124,8 @@ class InqueryFakturpelunasanController extends Controller
                 $tanggal_faktur = is_null($request->tanggal_faktur[$i]) ? '' : $request->tanggal_faktur[$i];
                 $total = is_null($request->total[$i]) ? '' : $request->total[$i];
 
-                $data_pembelians->push([
+                $data_pembelians1->push([
+                    'detail_idfak' => $request->detail_idfaks[$i] ?? null,
                     'faktur_ekspedisi_id' => $faktur_ekspedisi_id,
                     'kode_faktur' => $kode_faktur,
                     'tanggal_faktur' => $tanggal_faktur,
@@ -210,7 +210,7 @@ class InqueryFakturpelunasanController extends Controller
                 ->withInput()
                 ->with('error_pelanggans', $error_pelanggans)
                 ->with('error_pesanans', $error_pesanans)
-                ->with('data_pembelians', $data_pembelians)
+                ->with('data_pembelians1', $data_pembelians1)
                 ->with('data_pembelians2', $data_pembelians2)
                 ->with('data_pembelians3', $data_pembelians3);
         }
@@ -230,6 +230,7 @@ class InqueryFakturpelunasanController extends Controller
             'tagihan_ekspedisi_id' => $request->tagihan_ekspedisi_id,
             'kode_tagihan' => $request->kode_tagihan,
             'pelanggan_id' => $request->pelanggan_id,
+            // 'kategoris' => $request->kategoris,
             'kode_pelanggan' => $request->kode_pelanggan,
             'nama_pelanggan' => $request->nama_pelanggan,
             'alamat_pelanggan' => $request->alamat_pelanggan,
@@ -262,8 +263,9 @@ class InqueryFakturpelunasanController extends Controller
         $detailIds = $request->input('detail_idss');
         $detailIds = $request->input('detail_ids');
 
-        $updatedFakturEkspedisiIds = []; // Simpan ID faktur ekspedisi yang diperbarui atau ditambahkan
-        foreach ($data_pembelians as $data_pesanan) {
+        $updatedFakturEkspedisiIds = [];
+
+        foreach ($data_pembelians1 as $data_pesanan) {
             $detailPelunasan = Detail_pelunasan::updateOrCreate(
                 ['faktur_ekspedisi_id' => $data_pesanan['faktur_ekspedisi_id']], // Kriteria pencarian
                 [ // Data yang akan diupdate atau dibuat jika tidak ditemukan
@@ -278,13 +280,42 @@ class InqueryFakturpelunasanController extends Controller
             // Simpan ID faktur ekspedisi yang diperbarui atau ditambahkan
             $updatedFakturEkspedisiIds[] = $detailPelunasan->faktur_ekspedisi_id;
         }
+
         // Hapus detail pelunasan yang tidak terkait dengan faktur ekspedisi yang diperbarui
         Detail_pelunasan::whereNotIn('faktur_ekspedisi_id', $updatedFakturEkspedisiIds)->delete();
+
         // Perbarui status pelunasan menjadi aktif untuk faktur yang dipanggil di detail pelunasan
         Faktur_ekspedisi::whereIn('id', $updatedFakturEkspedisiIds)->update(['status_pelunasan' => 'aktif']);
+
+        // Perbarui status spk yang terkait dengan faktur yang diperbarui
+        foreach ($updatedFakturEkspedisiIds as $fakturId) {
+            $faktur = Faktur_ekspedisi::find($fakturId);
+            if ($faktur) {
+                $spk = Spk::find($faktur->spk_id);
+                if ($spk) {
+                    $spk->update(['status_spk' => 'pelunasan']);
+                }
+            }
+        }
+
+        // Ambil ID faktur ekspedisi yang detail pelunasannya dihapus
+        $deletedFakturEkspedisiIds = Faktur_ekspedisi::whereNotIn('id', $updatedFakturEkspedisiIds)
+            ->pluck('id');
+
         // Perbarui status pelunasan menjadi null untuk faktur yang detail pelunasannya dihapus
-        Faktur_ekspedisi::whereNotIn('id', $updatedFakturEkspedisiIds)
+        Faktur_ekspedisi::whereIn('id', $deletedFakturEkspedisiIds)
             ->update(['status_pelunasan' => null]);
+
+        // Perbarui status spk yang terkait dengan faktur yang pelunasannya dihapus
+        foreach ($deletedFakturEkspedisiIds as $fakturId) {
+            $faktur = Faktur_ekspedisi::find($fakturId);
+            if ($faktur) {
+                $spk = Spk::find($faktur->spk_id);
+                if ($spk) {
+                    $spk->update(['status_spk' => 'invoice']);
+                }
+            }
+        }
 
         foreach ($data_pembelians2 as $data_pesanan) {
             $detailId = $data_pesanan['detail_id'];
@@ -397,6 +428,10 @@ class InqueryFakturpelunasanController extends Controller
                 // Jika Faktur_ekspedisi ditemukan dan status_pelunasan == 'YA', perbarui status_pelunasan menjadi null
                 if ($fakturEkspedisi && $fakturEkspedisi->status_pelunasan == 'aktif') {
                     $fakturEkspedisi->update(['status_pelunasan' => null]);
+                    $spk = Spk::find($fakturEkspedisi->spk_id);
+                    if ($spk) {
+                        $spk->update(['status_spk' => 'invoice']);
+                    }
                 }
             }
         }
@@ -409,12 +444,14 @@ class InqueryFakturpelunasanController extends Controller
         // Memperbarui status pelunasan potongan menjadi 'unpost'
         foreach (Detail_pelunasanpotongan::where('faktur_pelunasan_id', $id)->get() as $detail) {
             $detail->update(['status' => 'unpost']);
+
             Potongan_penjualan::where(['id' => $detail->potongan_penjualan_id, 'status' => 'selesai'])->update(['status' => 'posting']);
         }
 
         Tagihan_ekspedisi::where('id', $item->tagihan_ekspedisi_id)->update([
             'status' => 'posting',
         ]);
+
 
         try {
             // Memperbarui status Faktur_pelunasan menjadi 'unpost'
@@ -457,6 +494,12 @@ class InqueryFakturpelunasanController extends Controller
                 // Jika Faktur_ekspedisi ditemukan dan status_pelunasan == null, perbarui status_pelunasan menjadi null
                 if ($fakturEkspedisi && $fakturEkspedisi->status_pelunasan == null) {
                     $fakturEkspedisi->update(['status_pelunasan' => 'aktif']);
+
+                    // Update status_spk hanya jika fakturEkspedisi diupdate
+                    $spk = Spk::find($fakturEkspedisi->spk_id);
+                    if ($spk) {
+                        $spk->update(['status_spk' => 'pelunasan']);
+                    }
                 }
             }
         }
@@ -469,12 +512,14 @@ class InqueryFakturpelunasanController extends Controller
         // Memperbarui status pelunasan potongan menjadi 'posting'
         foreach (Detail_pelunasanpotongan::where('faktur_pelunasan_id', $id)->get() as $detail) {
             $detail->update(['status' => 'posting']);
+
             Potongan_penjualan::where(['id' => $detail->potongan_penjualan_id, 'status' => 'posting'])->update(['status' => 'selesai']);
         }
 
         Tagihan_ekspedisi::where('id', $item->tagihan_ekspedisi_id)->update([
             'status' => 'selesai',
         ]);
+
 
         try {
             // Memperbarui status Faktur_pelunasan menjadi 'posting'
@@ -525,18 +570,6 @@ class InqueryFakturpelunasanController extends Controller
 
         // Setelah berhasil menghapus, kembalikan respon yang sesuai
         return response()->json(['success' => true]);
-    }
-
-    public function deletedetailpelunasan($id)
-    {
-        $item = Detail_pelunasan::find($id);
-
-        if ($item) {
-            $item->delete();
-            return response()->json(['message' => 'Data deleted successfully']);
-        } else {
-            return response()->json(['message' => 'Detail Faktur not found'], 404);
-        }
     }
 
     public function deletedetailpelunasanreturn($id)

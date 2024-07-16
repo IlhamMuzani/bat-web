@@ -39,20 +39,37 @@ class BuktipotongController extends Controller
 
     public function updatebuktitagihan(Request $request, $id)
     {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'gambar_bukti' => 'nullable|mimes:pdf|max:2048',
+            ],
+            [
+                'gambar_bukti.mimes' => 'Hanya file PDF yang diperbolehkan!',
+                'gambar_bukti.max' => 'Ukuran file PDF maksimal 2MB!',
+            ]
+        );
+
+        if ($validator->fails()) {
+            $error = $validator->errors()->all();
+            return back()->withInput()->with('error', $error);
+        }
+
         $tagihan_ekspedisi = Tagihan_ekspedisi::findOrFail($id);
         if ($request->gambar_bukti) {
             Storage::disk('local')->delete('public/uploads/' . $tagihan_ekspedisi->gambar_bukti);
-            $gambar = str_replace(' ', '', $request->gambar_bukti->getClientOriginalName());
-            $namaGambar = 'tagihan_ekspedisi/' . date('mYdHs') . rand(1, 10) . '_' . $gambar;
-            $request->gambar_bukti->storeAs('public/uploads/', $namaGambar);
+            $pdf = str_replace(' ', '', $request->gambar_bukti->getClientOriginalName());
+            $namaPdf = 'tagihan_ekspedisi/' . date('mYdHs') . rand(1, 10) . '_' . $pdf;
+            $request->gambar_bukti->storeAs('public/uploads/', $namaPdf);
         } else {
-            $namaGambar = $tagihan_ekspedisi->gambar_bukti;
+            $namaPdf = $tagihan_ekspedisi->gambar_bukti;  // Retain existing file if no new file is uploaded
         }
+
 
         // Memperbarui nomor bukti tagihan utama
         $tagihan = Tagihan_ekspedisi::findOrFail($id);
         $tagihan->update([
-            'gambar_bukti' => $namaGambar,
+            'gambar_bukti' => $namaPdf,
             'nomor_buktitagihan' => $request->nomor_buktitagihan,
             'tanggal_nomortagihan' => $request->tanggal_nomortagihan
         ]);

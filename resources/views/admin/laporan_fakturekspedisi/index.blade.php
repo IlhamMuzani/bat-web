@@ -68,15 +68,17 @@
                                 </select>
                             </div>
                             <div class="col-md-2 mb-3">
-                                <label for="created_at">Kategori</label>
-                                <select class="custom-select form-control" id="status_pelunasan" name="status_pelunasan">
-                                    <option value="">- Semua Status -</option>
-                                    <option value="" {{ Request::get('status_pelunasan') == '' ? 'selected' : '' }}>
-                                        Belum Lunas
-                                    </option>
-                                    <option value="aktif"
-                                        {{ Request::get('status_pelunasan') == 'aktif' ? 'selected' : '' }}>
-                                        Lunas</option>
+                                <label for="status">Cari Pelanggan</label>
+                                <select class="select2bs4 select2-hidden-accessible" name="pelanggan_id"
+                                    data-placeholder="Cari Pelanggan.." style="width: 100%;" data-select2-id="23"
+                                    tabindex="-1" aria-hidden="true" id="pelanggan_id">
+                                    <option value="">- Pilih -</option>
+                                    @foreach ($pelanggans as $pelanggan)
+                                        <option value="{{ $pelanggan->id }}"
+                                            {{ Request::get('pelanggan_id') == $pelanggan->id ? 'selected' : '' }}>
+                                            {{ $pelanggan->nama_pell }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-md-3 mb-3">
@@ -119,7 +121,7 @@
                         <tbody>
                             @php
                                 $totalGrandTotal = 0;
-                                $totalGrandTotalMemo = 0;
+                                $pph23 = 0;
                             @endphp
                             @foreach ($inquery as $faktur)
                                 <tr style="background: rgb(193, 193, 193)">
@@ -173,14 +175,14 @@
                                 @endforeach
 
                                 @php
-                                    $totalGrandTotal += $faktur->total_tarif;
-                                    $totalGrandTotalMemo += $faktur->pph;
-                                    // $Selisih = $totalGrandTotal - $totalGrandTotalMemo;
-                                    // $Totals = $totalGrandTotal - $totalGrandTotalMemo;
+                                    $totalGrandTotal += $faktur->total_tarif + $faktur->biaya_tambahan;
+                                    $pph23 += $faktur->pph;
+                                    // $Selisih = $totalGrandTotal - $pph23;
+                                    // $Totals = $totalGrandTotal - $pph23;
                                 @endphp
 
                                 @php
-                                    $Totals = $totalGrandTotal - $totalGrandTotalMemo;
+                                    $Totals = $totalGrandTotal - $pph23;
                                 @endphp
                             @endforeach
                         </tbody>
@@ -223,7 +225,7 @@
                                             <div class="form-group">
                                                 <input style="text-align: end; font-size:14px;" type="text"
                                                     class="form-control" readonly
-                                                    value="{{ number_format($totalGrandTotalMemo, 2, ',', '.') }}">
+                                                    value="{{ number_format($pph23, 2, ',', '.') }}">
                                             </div>
                                         </div>
                                         <hr
@@ -243,7 +245,7 @@
                                             <div class="form-group">
                                                 <input style="text-align: end; font-size:14px;" type="text"
                                                     class="form-control" readonly
-                                                    value="{{ Request::get('tanggal_awal') ? number_format($totalGrandTotal - $totalGrandTotalMemo, 2, ',', '.') : 0 }}">
+                                                    value="{{ Request::get('tanggal_awal') ? number_format($totalGrandTotal - $pph23, 2, ',', '.') : 0 }}">
                                             </div>
                                         </div>
                                     </div>

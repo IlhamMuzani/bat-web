@@ -154,26 +154,28 @@
 
                                                             <div class="form-group mb-3">
                                                                 @if ($faktur->gambar_bukti == null)
-                                                                    <img class="mt-3"
-                                                                        src="{{ asset('storage/uploads/gambaricon/imagenoimage.jpg') }}"
-                                                                        alt="bat" height="180" width="200">
+                                                                    <p class="mt-3">Tidak ada PDF yang diunggah.</p>
                                                                 @else
-                                                                    <img class="mt-3"
-                                                                        src="{{ asset('storage/uploads/' . $faktur->gambar_bukti) }}"
-                                                                        alt="bat" height="180" width="200">
+                                                                    <p class="mt-3">
+                                                                        <a href="{{ asset('storage/uploads/' . $faktur->gambar_bukti) }}"
+                                                                            target="_blank">Lihat
+                                                                            PDF yang diunggah</a>
+                                                                    </p>
                                                                 @endif
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="gambar">Foto bukti <small>(Kosongkan saja
+                                                                <label for="gambar_bukti">Dokumen bukti <small>(Kosongkan
+                                                                        saja
                                                                         jika
                                                                         tidak
                                                                         ingin menambahkan)</small></label>
                                                                 <div class="custom-file">
                                                                     <input type="file" class="custom-file-input"
                                                                         id="gambar_bukti" name="gambar_bukti"
-                                                                        accept="image/*">
+                                                                        accept="application/pdf">
                                                                     <label class="custom-file-label"
-                                                                        for="gambar_bukti">Masukkan gambar</label>
+                                                                        for="gambar_bukti">Pilih
+                                                                        PDF</label>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
@@ -205,28 +207,26 @@
                                                             @foreach ($faktur->detail_tagihan as $item)
                                                                 <div class="form-group mb-3">
                                                                     @if ($item->gambar_buktifaktur == null)
-                                                                        <img class="mt-3"
-                                                                            src="{{ asset('storage/uploads/gambaricon/imagenoimage.jpg') }}"
-                                                                            alt="bat" height="180"
-                                                                            width="200">
+                                                                        <p class="mt-3">Tidak ada PDF yang diunggah.</p>
                                                                     @else
-                                                                        <img class="mt-3"
-                                                                            src="{{ asset('storage/uploads/' . $item->gambar_buktifaktur) }}"
-                                                                            alt="bat" height="180"
-                                                                            width="200">
+                                                                        <p class="mt-3">
+                                                                            <a href="{{ asset('storage/uploads/' . $item->gambar_buktifaktur) }}"
+                                                                                target="_blank">Lihat
+                                                                                PDF yang diunggah</a>
+                                                                        </p>
                                                                     @endif
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label for="gambar">Foto bukti <small>(Kosongkan saja
+                                                                    <label for="gambar">Dokumen bukti <small>(Kosongkan saja
                                                                             jika tidak ingin menambahkan)</small></label>
                                                                     <div class="custom-file">
                                                                         <input type="file" class="custom-file-input"
                                                                             id="gambar_buktifaktur_{{ $item->id }}"
                                                                             name="gambar_buktifaktur[{{ $item->id }}]"
-                                                                            accept="image/*">
+                                                                            accept="application/pdf">
                                                                         <label class="custom-file-label"
-                                                                            for="gambar_buktifaktur_{{ $item->id }}">Masukkan
-                                                                            gambar</label>
+                                                                            for="gambar_buktifaktur_{{ $item->id }}">Pilih
+                                                                            Bukti PDF</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row">
