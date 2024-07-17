@@ -606,6 +606,10 @@
 
         function removeBan(identifier, detailId) {
             var row = document.getElementById('pembelian-' + identifier);
+
+            var kode_faktur = row.querySelector('[id^="kode_faktur"]').value;
+            removeFaktur(kode_faktur);
+
             row.remove();
 
             // console.log(detailId);
@@ -824,7 +828,18 @@
 
     <script>
         var activeSpecificationIndex = 0;
+        var fakturAlreadySelected = [];
 
+        document.addEventListener('DOMContentLoaded', function() {
+            var tbody = document.getElementById('tabel-pembelian');
+            var inputs = tbody.querySelectorAll('input[name="kode_faktur[]"]');
+
+            inputs.forEach(function(input) {
+                fakturAlreadySelected.push(input.value);
+            });
+
+            console.log(fakturAlreadySelected); // Untuk memeriksa apakah array sudah terisi dengan benar
+        });
         function MemoEkspedisi(param) {
             activeSpecificationIndex = param;
             // Show the modal and filter rows if necessary
@@ -835,6 +850,13 @@
             var selectedRow = $('#tablefaktur tbody tr:eq(' + rowIndex + ')');
             var faktur_ekspedisi_id = selectedRow.data('id');
             var kode_faktur = selectedRow.data('kode_faktur');
+
+            if (fakturAlreadySelected.includes(kode_faktur)) {
+                alert('Kode faktur sudah dipilih sebelumnya.');
+                return;
+            }
+            fakturAlreadySelected.push(kode_faktur); // Menambahkan kode faktur ke daftar yang sudah dipilih
+
             var nama_rute = selectedRow.data('nama_rute');
             var kode_memo = selectedRow.data('kode_memo');
             var tanggal_awal = selectedRow.data('tanggal_awal');
@@ -862,6 +884,13 @@
             updateGrandTotal()
 
             $('#tableMemo').modal('hide');
+        }
+
+        function removeFaktur(kode_faktur) {
+            var index = fakturAlreadySelected.indexOf(kode_faktur);
+            if (index > -1) {
+                fakturAlreadySelected.splice(index, 1);
+            }
         }
 
         $(document).on("input", ".hargasatuan, .jumlah", function() {
