@@ -159,7 +159,6 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('laporan_pelepasanban', [\App\Http\Controllers\Admin\LaporanpelepasanbanController::class, 'index']);
     Route::get('print_pelepasanban', [\App\Http\Controllers\Admin\LaporanpelepasanbanController::class, 'print_pelepasanban']);
     Route::get('hapusbukti/{id}', [\App\Http\Controllers\Admin\InqueryBuktipotongpajakController::class, 'hapusbukti'])->name('hapusbukti');
-    Route::get('hapusspk/{id}', [\App\Http\Controllers\Admin\InquerySpkController::class, 'hapusspk'])->name('hapusspk');
 
 
     Route::get('pemasangan_ban/ban/{id}', [\App\Http\Controllers\Admin\PemasanganbanController::class, 'ban']);
@@ -250,6 +249,8 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     // Route::middleware('admin')->prefix('admin')->group(function () {
     Route::delete('inquery_pembelianpart/deletepart/{id}', [\App\Http\Controllers\Admin\InqueryPembelianPartController::class, 'deletepart']);
 
+
+    Route::resource('inquery_memoborongspk', \App\Http\Controllers\Admin\InqueryMemoborongspkController::class);
     Route::get('pembelian_part/tabelpart', [\App\Http\Controllers\Admin\PembelianpartController::class, 'tabelpart']);
     Route::get('pembelian_part/tabelpartmesin', [\App\Http\Controllers\Admin\PembelianpartController::class, 'tabelpartmesin']);
     Route::get('tablememoborongs', [\App\Http\Controllers\Admin\TablememoController::class, 'memoborongs']);
@@ -706,8 +707,10 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::resource('laporan_buktipotongpajak', \App\Http\Controllers\Admin\LaporanBuktipotongpajakController::class);
     Route::resource('laporan_buktipotongpajakglobal', \App\Http\Controllers\Admin\LaporanBuktipotongpajakglobalController::class);
 
-    Route::resource('status_spk', \App\Http\Controllers\Admin\StatusSpkController::class);
+    Route::get('faktur_pelunasan/get_fakturpelunasan/{id}', [\App\Http\Controllers\Admin\FakturpelunasanController::class, 'get_fakturpelunasan']);
     Route::resource('spk', \App\Http\Controllers\Admin\SpkController::class);
+    Route::get('hapusspk/{id}', [\App\Http\Controllers\Admin\InquerySpkController::class, 'hapusspk'])->name('hapusspk');
+    Route::resource('status_spk', \App\Http\Controllers\Admin\StatusSpkController::class);
     Route::resource('inquery_spk', \App\Http\Controllers\Admin\InquerySpkController::class);
     Route::resource('status_spk', \App\Http\Controllers\Admin\StatusSpkController::class);
     Route::resource('penerimaan_sj', \App\Http\Controllers\Admin\PenerimaansjController::class);

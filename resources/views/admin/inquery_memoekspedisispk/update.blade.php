@@ -12,7 +12,8 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('admin/inquery_memoekspedisispk') }}">Memo Ekspedisi</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('admin/inquery_memoekspedisispk') }}">Memo Ekspedisi</a>
+                        </li>
                         <li class="breadcrumb-item active">Tambah</li>
                     </ol>
                 </div>
@@ -123,27 +124,24 @@
                                         </div>
                                         <label style="font-size:14px" class="form-label" for="no_kabin">No. Kabin</label>
                                         <div class="form-group d-flex">
-                                            <input onclick="showCategoryModalkendaraan(this.value)" class="form-control"
-                                                id="no_kabin" name="no_kabin" type="text" placeholder=""
-                                                value="{{ old('no_kabin', $inquery->no_kabin) }}" readonly
-                                                style="margin-right: 10px; font-size:14px" />
-                                            <button class="btn btn-primary" type="button"
+                                            <input class="form-control" id="no_kabin" name="no_kabin" type="text"
+                                                placeholder="" value="{{ old('no_kabin', $inquery->no_kabin) }}" readonly
+                                                style="font-size:14px" />
+                                            {{-- <button class="btn btn-primary" type="button"
                                                 onclick="showCategoryModalkendaraan(this.value)">
                                                 <i class="fas fa-search"></i>
-                                            </button>
+                                            </button> --}}
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size:14px" for="golongan">Gol. Kendaraan</label>
-                                            <input onclick="showCategoryModalkendaraan(this.value)" style="font-size:14px"
-                                                type="text" class="form-control" id="golongan" readonly
-                                                name="golongan" placeholder=""
+                                            <input style="font-size:14px" type="text" class="form-control"
+                                                id="golongan" readonly name="golongan" placeholder=""
                                                 value="{{ old('golongan', $inquery->golongan) }}">
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size:14px" for="km">KM Awal</label>
-                                            <input onclick="showCategoryModalkendaraan(this.value)" style="font-size:14px"
-                                                type="text" class="form-control" id="km" readonly
-                                                name="km_awal" placeholder=""
+                                            <input style="font-size:14px" type="text" class="form-control"
+                                                id="km" readonly name="km_awal" placeholder=""
                                                 value="{{ old('km_awal', $inquery->km_awal) }}">
                                         </div>
                                         <div class="form-check" style="color:white">
@@ -176,26 +174,24 @@
                                         <label style="font-size:14px" class="form-label" for="nama_driver">Nama
                                             Sopir</label>
                                         <div class="form-group d-flex">
-                                            <input onclick="showCategoryModaldriver(this.value)" class="form-control"
-                                                id="nama_driver" name="nama_driver" type="text" placeholder=""
+                                            <input class="form-control" id="nama_driver" name="nama_driver"
+                                                type="text" placeholder=""
                                                 value="{{ old('nama_driver', $inquery->nama_driver) }}" readonly
-                                                style="margin-right: 10px;font-size:14px" />
-                                            <button class="btn btn-primary" type="button"
-                                                onclick="showCategoryModaldriver(this.value)">
+                                                style="font-size:14px" />
+                                            {{-- <button class="btn btn-primary" type="button">
                                                 <i class="fas fa-search"></i>
-                                            </button>
+                                            </button> --}}
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size:14px" for="telp">No. Telp</label>
-                                            <input onclick="showCategoryModaldriver(this.value)" style="font-size:14px"
-                                                type="tex" class="form-control" id="telp" readonly
-                                                name="telp" placeholder="" value="{{ old('telp', $inquery->telp) }}">
+                                            <input style="font-size:14px" type="tex" class="form-control"
+                                                id="telp" readonly name="telp" placeholder=""
+                                                value="{{ old('telp', $inquery->telp) }}">
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size:14px" for="saldo_deposit">Saldo Deposit</label>
-                                            <input onclick="showCategoryModaldriver(this.value)" style="font-size:14px"
-                                                type="text" class="form-control" id="saldo_deposit" readonly
-                                                name="saldo_deposit" placeholder=""
+                                            <input style="font-size:14px" type="text" class="form-control"
+                                                id="saldo_deposit" readonly name="saldo_deposit" placeholder=""
                                                 value="{{ old('saldo_deposit', number_format($inquery->saldo_deposit, 0, ',', '.')) }}">
                                         </div>
                                         <div class="form-check" style="color:white">
@@ -224,27 +220,23 @@
                                         <label style="font-size:14px" class="form-label" for="kode_rute">Kode
                                             Rute</label>
                                         <div class="form-group d-flex">
-                                            <input onclick="showCategoryModalrute(this.value)" class="form-control"
-                                                id="kode_rute" name="kode_rute" type="text" placeholder=""
-                                                value="{{ old('kode_rute', $inquery->kode_rute) }}" readonly
-                                                style="margin-right: 10px; font-size:14px" />
-                                            <button class="btn btn-primary" type="button"
-                                                onclick="showCategoryModalrute(this.value)">
+                                            <input class="form-control" id="kode_rute" name="kode_rute" type="text"
+                                                placeholder="" value="{{ old('kode_rute', $inquery->kode_rute) }}"
+                                                readonly style="font-size:14px" />
+                                            {{-- <button class="btn btn-primary" type="button">
                                                 <i class="fas fa-search"></i>
-                                            </button>
+                                            </button> --}}
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size:14px" for="rute_perjalanan">Rute Perjalanan</label>
-                                            <input onclick="showCategoryModalrute(this.value)" style="font-size:14px"
-                                                type="text" class="form-control" id="rute_perjalanan" readonly
-                                                name="nama_rute" placeholder=""
+                                            <input style="font-size:14px" type="text" class="form-control"
+                                                id="rute_perjalanan" readonly name="nama_rute" placeholder=""
                                                 value="{{ old('nama_rute', $inquery->nama_rute) }}">
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size:14px" for="biaya">Uang Jalan</label>
-                                            <input onclick="showCategoryModalrute(this.value)" style="font-size:14px"
-                                                type="text" class="form-control" id="biaya" readonly
-                                                name="uang_jalan" placeholder=""
+                                            <input style="font-size:14px" type="text" class="form-control"
+                                                id="biaya" readonly name="uang_jalan" placeholder=""
                                                 value="{{ old('uang_jalan', number_format($inquery->uang_jalan, 0, ',', '.')) }}">
                                         </div>
                                         <div class="form-check" style="color:white">
@@ -286,11 +278,11 @@
                                             <input class="form-control" id="nama_pell" name="nama_pelanggan"
                                                 type="text" placeholder=""
                                                 value="{{ old('nama_pelanggan', $inquery->nama_pelanggan) }}" readonly
-                                                style="margin-right: 10px; font-size:14px" />
-                                            <button class="btn btn-primary" type="button"
+                                                style="font-size:14px" />
+                                            {{-- <button class="btn btn-primary" type="button"
                                                 onclick="showCategoryModalPelanggan(this.value)">
                                                 <i class="fas fa-search"></i>
-                                            </button>
+                                            </button> --}}
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size:14px" for="alamat_pelanggan">Alamat</label>
@@ -1232,31 +1224,6 @@
         function showCategoryModalrute(selectedCategory) {
             $('#tableRute').modal('show');
         }
-
-        $(document).ready(function() {
-            // Tambahkan event click pada setiap baris dengan class 'selectable-row'
-            $('.selectable-row').on('click', function() {
-                // Dapatkan nilai-nilai yang diperlukan dari elemen-elemen dalam baris
-                var Rute_id = $(this).find('td:eq(0)').text().trim();
-                var KodeRute = $(this).find('td:eq(1)').text().trim();
-                var NamaRute = $(this).find('td:eq(2)').text().trim();
-                var Golongan1 = $(this).find('td:eq(3)').text().trim();
-                var Golongan2 = $(this).find('td:eq(4)').text().trim();
-                var Golongan3 = $(this).find('td:eq(5)').text().trim();
-                var Golongan4 = $(this).find('td:eq(6)').text().trim();
-                var Golongan5 = $(this).find('td:eq(7)').text().trim();
-                var Golongan6 = $(this).find('td:eq(8)').text().trim();
-                var Golongan7 = $(this).find('td:eq(9)').text().trim();
-                var Golongan8 = $(this).find('td:eq(10)').text().trim();
-                var Golongan9 = $(this).find('td:eq(11)').text().trim();
-                var Golongan10 = $(this).find('td:eq(12)').text().trim();
-
-                // Panggil fungsi dengan nilai-nilai yang telah Anda dapatkan
-                getSelectedDatarute(Rute_id, KodeRute, NamaRute, Golongan1, Golongan2, Golongan3, Golongan4,
-                    Golongan5,
-                    Golongan6, Golongan7, Golongan8, Golongan9, Golongan10);
-            });
-        });
 
         function getSelectedDatarute(Rute_id, KodeRute, NamaRute, Golongan1, Golongan2, Golongan3, Golongan4, Golongan5,
             Golongan6, Golongan7, Golongan8, Golongan9, Golongan10) {

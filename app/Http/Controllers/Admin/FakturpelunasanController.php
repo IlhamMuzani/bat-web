@@ -314,4 +314,18 @@ class FakturpelunasanController extends Controller
 
         return $pdf->stream('Faktur_Pelunasan.pdf');
     }
+
+    public function get_fakturpelunasan($pelanggan_id)
+    {
+        $fakturs = Faktur_ekspedisi::where('status_pelunasan', null)
+            ->whereIn('status', ['posting', 'selesai'])
+            ->where('pelanggan_id', $pelanggan_id)
+            ->with('pelanggan')
+            ->with('detail_faktur')
+            ->get();
+
+        return response()->json($fakturs);
+    }
+
+
 }

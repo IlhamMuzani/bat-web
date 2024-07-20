@@ -17,6 +17,7 @@ class Spk extends Model
     protected $fillable =
     [
         'admin',
+        'kategori',
         'kode_spk',
         'qrcode_spk',
         'user_id',

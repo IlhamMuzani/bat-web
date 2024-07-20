@@ -1188,9 +1188,9 @@
                         </div>
                     </div>
                     <div class="card-footer text-right">
-                        <button type="reset" class="btn btn-secondary" id="btnReset">Reset</button>
-                        <button type="submit" class="btn btn-primary" id="btnSimpan">Simpan</button>
-                        <div id="loading" style="display: none;">
+                        <button type="reset" class="btn btn-secondary" id="btnReset3">Reset</button>
+                        <button type="submit" class="btn btn-primary" id="btnSimpan3">Simpan</button>
+                        <div id="loading3" style="display: none;">
                             <i class="fas fa-spinner fa-spin"></i> Sedang Menyimpan...
                         </div>
                     </div>
@@ -2318,31 +2318,6 @@
         //     document.getElementById('harga_rute').value = Golongan10Value.toLocaleString('id-ID');
         // }
 
-        $(document).ready(function() {
-            // Tambahkan event click pada setiap baris dengan class 'selectable-row'
-            $('.selectable-row').on('click', function() {
-                // Dapatkan nilai-nilai yang diperlukan dari elemen-elemen dalam baris
-                var Rute_id = $(this).find('td:eq(0)').text().trim();
-                var KodeRute = $(this).find('td:eq(1)').text().trim();
-                var NamaRute = $(this).find('td:eq(2)').text().trim();
-                var Golongan1 = $(this).find('td:eq(3)').text().trim();
-                var Golongan2 = $(this).find('td:eq(4)').text().trim();
-                var Golongan3 = $(this).find('td:eq(5)').text().trim();
-                var Golongan4 = $(this).find('td:eq(6)').text().trim();
-                var Golongan5 = $(this).find('td:eq(7)').text().trim();
-                var Golongan6 = $(this).find('td:eq(8)').text().trim();
-                var Golongan7 = $(this).find('td:eq(9)').text().trim();
-                var Golongan8 = $(this).find('td:eq(10)').text().trim();
-                var Golongan9 = $(this).find('td:eq(11)').text().trim();
-                var Golongan10 = $(this).find('td:eq(12)').text().trim();
-
-                // Panggil fungsi dengan nilai-nilai yang telah Anda dapatkan
-                getSelectedDatarute(Rute_id, KodeRute, NamaRute, Golongan1, Golongan2, Golongan3, Golongan4,
-                    Golongan5,
-                    Golongan6, Golongan7, Golongan8, Golongan9, Golongan10);
-            });
-        });
-
         function getSelectedDatarute(Rute_id, KodeRute, NamaRute, Golongan1, Golongan2, Golongan3, Golongan4, Golongan5,
             Golongan6, Golongan7, Golongan8, Golongan9, Golongan10) {
 
@@ -2480,31 +2455,6 @@
         function showCategoryModalrute(selectedCategory) {
             $('#tableRute').modal('show');
         }
-
-        $(document).ready(function() {
-            // Tambahkan event click pada setiap baris dengan class 'selectable-row'
-            $('.selectable-row').on('click', function() {
-                // Dapatkan nilai-nilai yang diperlukan dari elemen-elemen dalam baris
-                var Rute_id = $(this).find('td:eq(0)').text().trim();
-                var KodeRute = $(this).find('td:eq(1)').text().trim();
-                var NamaRute = $(this).find('td:eq(2)').text().trim();
-                var Golongan1 = $(this).find('td:eq(3)').text().trim();
-                var Golongan2 = $(this).find('td:eq(4)').text().trim();
-                var Golongan3 = $(this).find('td:eq(5)').text().trim();
-                var Golongan4 = $(this).find('td:eq(6)').text().trim();
-                var Golongan5 = $(this).find('td:eq(7)').text().trim();
-                var Golongan6 = $(this).find('td:eq(8)').text().trim();
-                var Golongan7 = $(this).find('td:eq(9)').text().trim();
-                var Golongan8 = $(this).find('td:eq(10)').text().trim();
-                var Golongan9 = $(this).find('td:eq(11)').text().trim();
-                var Golongan10 = $(this).find('td:eq(12)').text().trim();
-
-                // Panggil fungsi dengan nilai-nilai yang telah Anda dapatkan
-                getSelectedDatarute(Rute_id, KodeRute, NamaRute, Golongan1, Golongan2, Golongan3, Golongan4,
-                    Golongan5,
-                    Golongan6, Golongan7, Golongan8, Golongan9, Golongan10);
-            });
-        });
 
         function getSelectedDatarute(Rute_id, KodeRute, NamaRute, Golongan1, Golongan2, Golongan3, Golongan4, Golongan5,
             Golongan6, Golongan7, Golongan8, Golongan9, Golongan10) {
@@ -3318,6 +3268,23 @@
 
             $('#tabel-pembelian').append(item_pembelian);
         }
+    </script>
+
+
+
+    <script>
+        $(document).ready(function() {
+            // Tambahkan event listener pada tombol "Simpan"
+            $('#btnSimpan3').click(function() {
+                // Sembunyikan tombol "Simpan" dan "Reset", serta tampilkan elemen loading
+                $(this).hide();
+                $('#btnReset3').hide(); // Tambahkan id "btnReset" pada tombol "Reset"
+                $('#loading3').show();
+
+                // Lakukan pengiriman formulir
+                $('form').submit();
+            });
+        });
     </script>
 
     <script>
