@@ -249,7 +249,7 @@ class TagihanekspedisiController extends Controller
         $formattedNum = sprintf("%03s", $num);
 
         // Prefix untuk kode tagihan
-        $prefix = 'IFAP';
+        $prefix = 'IFAD';
 
         // Tanggal
         $tanggal = date('dm');
