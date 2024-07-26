@@ -49,13 +49,17 @@
                                 <label class="form-label" for="kategori">Kategori</label>
                                 <select class="form-control" id="kategori" name="kategori">
                                     <option value="">- Pilih -</option>
-                                    <option value="oli" {{ old('kategori', $part->kategori) == 'oli' ? 'selected' : null }}>
+                                    <option value="oli"
+                                        {{ old('kategori', $part->kategori) == 'oli' ? 'selected' : null }}>
                                         oli</option>
-                                    <option value="body" {{ old('kategori', $part->kategori) == 'body' ? 'selected' : null }}>
+                                    <option value="body"
+                                        {{ old('kategori', $part->kategori) == 'body' ? 'selected' : null }}>
                                         body</option>
-                                    <option value="mesin" {{ old('kategori', $part->kategori) == 'mesin' ? 'selected' : null }}>
+                                    <option value="mesin"
+                                        {{ old('kategori', $part->kategori) == 'mesin' ? 'selected' : null }}>
                                         mesin</option>
-                                    <option value="sasis" {{ old('kategori', $part->kategori) == 'sasis' ? 'selected' : null }}>
+                                    <option value="sasis"
+                                        {{ old('kategori', $part->kategori) == 'sasis' ? 'selected' : null }}>
                                         sasis</option>
                                 </select>
                             </div>
@@ -105,6 +109,10 @@
                                     pail</option>
                                 <option value="kg" {{ old('satuan', $part->satuan) == 'kg' ? 'selected' : null }}>
                                     kg</option>
+                                <option value="pasang" {{ old('satuan', $part->satuan) == 'pasang' ? 'selected' : null }}>
+                                    pasang</option>
+                                <option value="set" {{ old('satuan', $part->satuan) == 'set' ? 'selected' : null }}>
+                                    set</option>
                             </select>
                         </div>
                     </div>
