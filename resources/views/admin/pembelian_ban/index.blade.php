@@ -566,17 +566,6 @@
             item_pembelian += '</td>';
             item_pembelian += '</tr>';
 
-            // $('#tabel-pembelian').append(item_pembelian);
-
-            // if (value !== null) {
-            //     $('#nomor_seri-' + key).val(value.no_seri);
-            //     $('#ukuran_id-' + key).val(value.ukuran_id);
-            //     $('#kondisi_ban-' + key).val(value.kondisi_ban);
-            //     $('#merek_id-' + key).val(value.merek_id);
-            //     $('#typeban_id-' + key).val(value.typeban_id);
-            //     $('#harga-' + key).val(value.harga);
-            // }
-
             if (style) {
                 select2(key);
             }
