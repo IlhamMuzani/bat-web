@@ -102,63 +102,6 @@ class InqueryMemoekspedisiController extends Controller
         }
     }
 
-    // public function index(Request $request)
-    // {
-    //     Memo_ekspedisi::where('status', 'posting')->update(['status_notif' => true]);
-
-    //     $kategori = $request->kategori;
-    //     $status = $request->status;
-    //     $tanggal_awal = $request->tanggal_awal;
-    //     $tanggal_akhir = $request->tanggal_akhir;
-
-    //     if ($kategori === 'Memo Tambahan') {
-    //         $inquery = Memotambahan::query();
-    //     } else {
-    //         $inquery = Memo_ekspedisi::where('kategori', 'Memo Perjalanan'); // Memilih hanya Memo Perjalanan di sini
-    //     }
-
-    //     if ($kategori) {
-    //         $inquery->where('kategori', $kategori);
-    //     }
-
-    //     if ($status) {
-    //         $inquery->where('status', $status);
-    //     }
-
-    //     if ($tanggal_awal && $tanggal_akhir) {
-    //         $inquery->whereBetween('tanggal_awal', [$tanggal_awal, $tanggal_akhir]);
-    //     } elseif ($tanggal_awal) {
-    //         $inquery->where('tanggal_awal', '>=', $tanggal_awal);
-    //     } elseif ($tanggal_akhir) {
-    //         $inquery->where('tanggal_awal', '<=', $tanggal_akhir);
-    //     } else {
-    //         // Jika tidak ada filter tanggal, hari ini
-    //         $inquery->whereDate('tanggal_awal', Carbon::today());
-    //     }
-
-    //     $inquery->orderBy('id', 'DESC');
-    //     $inquery = $inquery->get();
-
-    //     $saldoTerakhir = Saldo::latest()->first();
-
-    //     if ($kategori === 'Memo Perjalanan') {
-    //         $memoekspedisi = Memo_ekspedisi::get();
-    //         $memoekspedisiJson = json_encode($memoekspedisi);
-    //         return view('admin.inquery_memoekspedisi.index', compact('memoekspedisiJson', 'saldoTerakhir', 'inquery'));
-    //     } elseif ($kategori === 'Memo Borong') {
-    //         return view('admin.inquery_memoborong.index', compact('inquery', 'saldoTerakhir'));
-    //     } elseif ($kategori === 'Memo Tambahan') {
-    //         // Anda harus menyesuaikan ini sesuai dengan tampilan dan data yang diperlukan untuk "Memo Tambahan"
-    //         // Misalnya:
-    //         return view('admin.inquery_memotambahan.index', compact('inquery', 'saldoTerakhir'));
-    //     } else {
-    //         // Jika kategori tidak sesuai, tampilkan Memo Perjalanan saja
-    //         $memoekspedisi = Memo_ekspedisi::where('kategori', 'Memo Perjalanan')->get();
-    //         $memoekspedisiJson = json_encode($memoekspedisi);
-    //         return view('admin.inquery_memoekspedisi.index', compact('memoekspedisiJson', 'saldoTerakhir', 'inquery'));
-    //     }
-    // }
-
 
     public function edit($id)
     {
