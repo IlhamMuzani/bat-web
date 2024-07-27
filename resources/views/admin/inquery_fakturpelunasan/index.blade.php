@@ -91,7 +91,7 @@
                             </div>
                         </div>
                     </form>
-                    <button id="hapus-null-button">Hapus Null</button>
+                    {{-- <button id="hapus-null-button">Hapus Null</button> --}}
                     <table id="example1" class="table table-bordered table-striped table-hover" style="font-size: 13px">
                         <thead class="thead-dark">
                             <tr>
