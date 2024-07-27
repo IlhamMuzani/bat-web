@@ -519,13 +519,24 @@ class NokirController extends Controller
     //     $dompdf->stream();
     // }
 
+    // public function cetakpdfnokir($id)
+    // {
+
+    //     $nokir = Nokir::where('id', $id)->first();
+
+    //     $pdf = PDF::loadView('admin/nokir.cetak_pdfnokir', compact('nokir'));
+    //     $pdf->setPaper('letter', 'portrait');
+
+    //     return $pdf->stream();
+    // }
+
+
     public function cetakpdfnokir($id)
     {
-
         $nokir = Nokir::where('id', $id)->first();
 
         $pdf = PDF::loadView('admin/nokir.cetak_pdfnokir', compact('nokir'));
-        $pdf->setPaper('letter', 'portrait');
+        $pdf->setPaper('folio', 'portrait'); // Mengubah ukuran kertas ke folio
 
         return $pdf->stream();
     }

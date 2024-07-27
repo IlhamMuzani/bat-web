@@ -41,6 +41,7 @@ Route::get('stnk/{kode}', [\App\Http\Controllers\StnkController::class, 'detail'
 
 Route::middleware('admin')->prefix('admin')->group(function () {
     // Route::get('update_deleted_at', [\App\Http\Controllers\Admin\InqueryFakturekspedisiController::class, 'updateDeletedAt']);
+    Route::get('inquery_fakturpelunasan/update_deleted_atpelunasan', [\App\Http\Controllers\Admin\InqueryFakturpelunasanController::class, 'updateDeletedAtpelunasan']);
     Route::get('inquery_fakturekspedisi/update_deleted_at', [\App\Http\Controllers\Admin\InqueryFakturekspedisiController::class, 'updateDeletedAt']);
     Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index']);
     Route::get('user/access/{id}', [\App\Http\Controllers\Admin\UserController::class, 'access']);
