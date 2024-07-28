@@ -61,6 +61,9 @@
                                     <option value="sasis"
                                         {{ old('kategori', $part->kategori) == 'sasis' ? 'selected' : null }}>
                                         sasis</option>
+                                    <option value="peralatan"
+                                        {{ old('kategori', $part->kategori) == 'peralatan' ? 'selected' : null }}>
+                                        peralatan</option>
                                 </select>
                             </div>
                             <label for="nama">Nama Barang</label>

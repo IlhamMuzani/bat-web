@@ -1,18 +1,32 @@
 @extends('layouts.app')
 
-@section('title', 'Inquery Bukti Potong Pajak')
+@section('title', 'Inquery Pemakaian Peralatan')
 
 @section('content')
+    <div id="loadingSpinner" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
+        <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(function() {
+                document.getElementById("loadingSpinner").style.display = "none";
+                document.getElementById("mainContent").style.display = "block";
+                document.getElementById("mainContentSection").style.display = "block";
+            }, 100); // Adjust the delay time as needed
+        });
+    </script>
+
     <!-- Content Header (Page header) -->
-    <div class="content-header">
+    <div class="content-header" style="display: none;" id="mainContent">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Inquery Bukti Potong Pajak</h1>
+                    <h1 class="m-0">Inquery Pemakaian Peralatan</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item active">Inquery Bukti Potong Pajak</li>
+                        <li class="breadcrumb-item active">Inquery Pemakaian Peralatan</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -21,7 +35,7 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content" style="display: none;" id="mainContentSection">
         <div class="container-fluid">
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible">
@@ -43,7 +57,7 @@
             @endif
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Inquery Bukti Potong Pajak</h3>
+                    <h3 class="card-title">Inquery Pemakaian Peralatan</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -53,9 +67,10 @@
                                 <select class="custom-select form-control" id="status" name="status">
                                     <option value="">- Semua Status -</option>
                                     <option value="posting" {{ Request::get('status') == 'posting' ? 'selected' : '' }}>
-                                        Posting</option>
-                                    <option value="unpost" {{ Request::get('status') == 'unpost' ? 'selected' : '' }}>Unpost
+                                        Posting
                                     </option>
+                                    <option value="unpost" {{ Request::get('status') == 'unpost' ? 'selected' : '' }}>
+                                        Unpost</option>
                                 </select>
                                 <label for="status">(Pilih Status)</label>
                             </div>
@@ -74,114 +89,87 @@
                                     <i class="fas fa-search"></i> Cari
                                 </button>
                                 <input type="hidden" name="ids" id="selectedIds" value="">
-                                <button type="button" class="btn btn-primary btn-block mt-1" id="checkfilter"
-                                    onclick="printSelectedData()" target="_blank">
-                                    <i class="fas fa-print"></i> Cetak Filter
-                                </button>
-                                <button type="button" class="btn btn-success btn-block mt-1" onclick="viewSelectedPDFs()">
-                                    <i class="fas fa-file-pdf"></i> Lihat Bukti Potong Pajak
-                                </button>
                             </div>
                         </div>
                     </form>
-
                     <table id="datatables66" class="table table-bordered table-striped table-hover" style="font-size: 13px">
                         <thead class="thead-dark">
                             <tr>
-                                <th><input type="checkbox" name="" id="select_all_ids"></th>
+                                <th> <input type="checkbox" name="" id="select_all_ids"></th>
                                 <th class="text-center">No</th>
-                                <th>Kode Bukti</th>
+                                <th>Kode Pemakaian</th>
                                 <th>Tanggal</th>
-                                <th>Bag.inp</th>
-                                <th>Nama Pelanggan</th>
-                                <th>Status</th>
-                                <th>Kategori</th>
-                                <th>Pph</th>
-                                <th>Grand Total</th>
-                                <th class="text-center" width="20">Opsi</th>
+                                <th>No Kabin</th>
+                                <th>No Registrasi</th>
+                                <th>Jenis Kendaraan</th>
+                                <th class="text-center" width="40">Opsi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($inquery as $buktipotongpajak)
-                                <tr class="dropdown"{{ $buktipotongpajak->id }}>
-                                    <td>
-                                        <input type="checkbox" name="selectedIds[]" class="checkbox_ids"
-                                            value="{{ $buktipotongpajak->id }}"
-                                            data-pdf-url="{{ $buktipotongpajak->detail_bukti->first()->tagihan_ekspedisi->detail_tagihan->first()->gambar_buktifaktur ? asset('storage/uploads/' . $buktipotongpajak->detail_bukti->first()->tagihan_ekspedisi->detail_tagihan->first()->gambar_buktifaktur) : asset('storage/uploads/' . $buktipotongpajak->detail_bukti->first()->tagihan_ekspedisi->gambar_bukti) }}">
+                            @foreach ($inquery as $pemakaian)
+                                <tr class="dropdown"{{ $pemakaian->id }}>
+                                    <td><input type="checkbox" name="selectedIds[]" class="checkbox_ids"
+                                            value="{{ $pemakaian->id }}">
                                     </td>
                                     <td class="text-center">{{ $loop->iteration }}</td>
-                                    <td>{{ $buktipotongpajak->kode_bukti }}</td>
-                                    <td>{{ $buktipotongpajak->tanggal_awal }}</td>
+                                    <td>{{ $pemakaian->kode_pemakaian }}</td>
+                                    <td>{{ $pemakaian->tanggal_awal }}</td>
                                     <td>
-                                        @if ($buktipotongpajak->user)
-                                            {{ $buktipotongpajak->user->karyawan->nama_lengkap }}
+                                        @if ($pemakaian->kendaraan)
+                                            {{ $pemakaian->kendaraan->no_kabin }}
                                         @else
-                                            tidak ada
+                                            Kabin tidak ada
                                         @endif
                                     </td>
                                     <td>
-                                        @if ($buktipotongpajak->detail_bukti->first())
-                                            {{ $buktipotongpajak->detail_bukti->first()->tagihan_ekspedisi->nama_pelanggan }}
+                                        @if ($pemakaian->kendaraan)
+                                            {{ $pemakaian->kendaraan->no_pol }}
                                         @else
-                                            tidak ada
+                                            No pol tidak ada
                                         @endif
                                     </td>
-                                    <td>{{ $buktipotongpajak->kategori }}</td>
-                                    <td>{{ $buktipotongpajak->kategoris }}</td>
-                                    <td class="text-right">
-                                        {{ number_format($buktipotongpajak->grand_total * 0.02, 2, ',', '.') }}</td>
-                                    <td class="text-right">
-                                        {{ number_format($buktipotongpajak->grand_total - $buktipotongpajak->grand_total * 0.02, 2, ',', '.') }}
+                                    <td>
+                                        @if ($pemakaian->kendaraan)
+                                            {{ $pemakaian->kendaraan->jenis_kendaraan->nama_jenis_kendaraan }}
+                                        @else
+                                            nama tidak ada
+                                        @endif
                                     </td>
                                     <td class="text-center">
-                                        @if ($buktipotongpajak->status == 'posting')
+                                        @if ($pemakaian->status == 'posting')
                                             <button type="button" class="btn btn-success btn-sm">
                                                 <i class="fas fa-check"></i>
                                             </button>
                                         @endif
-                                        @if ($buktipotongpajak->status == 'selesai')
+                                        @if ($pemakaian->status == 'selesai')
                                             <img src="{{ asset('storage/uploads/indikator/faktur.png') }}" height="40"
                                                 width="40" alt="Roda Mobil">
                                         @endif
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            @if ($buktipotongpajak->status == 'unpost')
+                                            @if ($pemakaian->status == 'unpost')
                                                 <a class="dropdown-item posting-btn"
-                                                    data-memo-id="{{ $buktipotongpajak->id }}">Posting</a>
+                                                    data-memo-id="{{ $pemakaian->id }}">Posting</a>
                                                 <a class="dropdown-item"
-                                                    href="{{ url('admin/inquery_buktipotongpajak/' . $buktipotongpajak->id . '/edit') }}">Update</a>
+                                                    href="{{ url('admin/inquery_pemakaianperalatan/' . $pemakaian->id . '/edit') }}">Update</a>
                                                 <a class="dropdown-item"
-                                                    href="{{ url('admin/inquery_buktipotongpajak/' . $buktipotongpajak->id) }}">Show</a>
+                                                    href="{{ url('admin/inquery_pemakaianperalatan/' . $pemakaian->id) }}">Show</a>
                                                 <form style="margin-top:5px" method="GET"
-                                                    action="{{ route('hapusbukti', ['id' => $buktipotongpajak->id]) }}">
+                                                    action="{{ route('hapuspemakaian', ['id' => $pemakaian->id]) }}">
                                                     <button type="submit"
-                                                        class="dropdown-item btn btn-outline-danger btn-block mt-2">Delete</button>
+                                                        class="dropdown-item btn btn-outline-danger btn-block mt-2">
+                                                        </i> Delete
+                                                    </button>
                                                 </form>
                                             @endif
-                                            @if ($buktipotongpajak->status == 'posting')
+                                            @if ($pemakaian->status == 'posting')
                                                 <a class="dropdown-item unpost-btn"
-                                                    data-memo-id="{{ $buktipotongpajak->id }}">Unpost</a>
+                                                    data-memo-id="{{ $pemakaian->id }}">Unpost</a>
                                                 <a class="dropdown-item"
-                                                    href="{{ url('admin/inquery_buktipotongpajak/' . $buktipotongpajak->id) }}">Show</a>
-                                                <a class="dropdown-item" style="margin-left:0px; margin-right:15px;">
-                                                    @if ($buktipotongpajak->detail_bukti->first()->tagihan_ekspedisi->gambar_bukti == null)
-                                                        @if ($buktipotongpajak->detail_bukti->first()->tagihan_ekspedisi->detail_tagihan->first()->gambar_buktifaktur == null)
-                                                            <span class="text-muted">Tidak ada PDF yang diunggah.</span>
-                                                        @else
-                                                            <a style="margin-left:15px; margin-right:15px;"
-                                                                href="{{ asset('storage/uploads/' . $buktipotongpajak->detail_bukti->first()->tagihan_ekspedisi->detail_tagihan->first()->gambar_buktifaktur) }}"
-                                                                target="_blank" class="text-bold">Lihat Bukti Potong
-                                                                Pajak</a>
-                                                        @endif
-                                                    @else
-                                                        <a style="margin-left:15px; margin-right:15px;"
-                                                            href="{{ asset('storage/uploads/' . $buktipotongpajak->detail_bukti->first()->tagihan_ekspedisi->gambar_bukti) }}"
-                                                            target="_blank" class="text-bold">Lihat Bukti Potong Pajak</a>
-                                                    @endif
-                                                </a>
+                                                    href="{{ url('admin/inquery_pemakaianperalatan/' . $pemakaian->id) }}">Show</a>
                                             @endif
-                                            @if ($buktipotongpajak->status == 'selesai')
+                                            @if ($pemakaian->status == 'selesai')
                                                 <a class="dropdown-item"
-                                                    href="{{ url('admin/inquery_buktipotongpajak/' . $buktipotongpajak->id) }}">Show</a>
+                                                    href="{{ url('admin/inquery_pemakaianperalatan/' . $pemakaian->id) }}">Show</a>
                                             @endif
                                         </div>
                                     </td>
@@ -189,84 +177,6 @@
                             @endforeach
                         </tbody>
                     </table>
-
-                    <!-- Modal to view PDFs -->
-                    <div class="modal fade" id="pdfModal" tabindex="-1" role="dialog"
-                        aria-labelledby="pdfModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-xl" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="pdfModalLabel">Lihat Bukti Potong Pajak</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div id="pdfContainer" class="row"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="pdfViewer" style="width: 100vw; height: 100vh; overflow-y: scroll;"></div>
-
-                    <script src="https://unpkg.com/pdf-lib@1.16.0/dist/pdf-lib.min.js"></script>
-
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.16.0/pdf-lib.min.js"></script>
-                    <script>
-                        async function viewSelectedPDFs() {
-                            let selectedIds = [];
-                            document.querySelectorAll('.checkbox_ids:checked').forEach(checkbox => {
-                                selectedIds.push(checkbox.value);
-                            });
-
-                            if (selectedIds.length === 0) {
-                                alert('Pilih minimal satu bukti potong pajak.');
-                                return;
-                            }
-
-                            let pdfUrls = selectedIds.map(id => document.querySelector(`input[value="${id}"]`).dataset.pdfUrl);
-
-                            try {
-                                // Create a new PDF document
-                                const mergedPdf = await PDFLib.PDFDocument.create();
-
-                                for (const url of pdfUrls) {
-                                    const pdfBytes = await fetch(url).then(res => res.arrayBuffer());
-                                    const pdf = await PDFLib.PDFDocument.load(pdfBytes);
-                                    const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
-                                    copiedPages.forEach(page => mergedPdf.addPage(page));
-                                }
-
-                                // Serialize the PDFDocument to bytes
-                                const mergedPdfBytes = await mergedPdf.save();
-
-                                // Create a Blob and a URL for the merged PDF
-                                const blob = new Blob([mergedPdfBytes], {
-                                    type: 'application/pdf'
-                                });
-                                const url = URL.createObjectURL(blob);
-
-                                // Create a new iframe to display the merged PDF
-                                const iframe = document.createElement('iframe');
-                                iframe.src = url;
-                                iframe.style.width = '100%';
-                                iframe.style.height = '600px';
-                                iframe.style.border = 'none';
-
-                                // Append the iframe to the modal body
-                                const pdfContainer = document.getElementById('pdfContainer');
-                                pdfContainer.innerHTML = ''; // Clear previous content
-                                pdfContainer.appendChild(iframe);
-
-                                // Show the modal
-                                $('#pdfModal').modal('show');
-                            } catch (error) {
-                                console.error('Error merging PDFs:', error);
-                            }
-                        }
-                    </script>
-
                     <!-- Modal Loading -->
                     <div class="modal fade" id="modal-loading" tabindex="-1" role="dialog"
                         aria-labelledby="modal-loading-label" aria-hidden="true" data-backdrop="static">
@@ -280,6 +190,29 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Modal Konfirmasi Hapus -->
+                <div class="modal fade" id="modal-confirm-delete" tabindex="-1" role="dialog"
+                    aria-labelledby="modal-confirm-delete-label" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modal-confirm-delete-label">Konfirmasi Hapus</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Apakah Anda yakin ingin menghapus pemakaian yang dipilih?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                <button type="button" class="btn btn-danger" id="btn-confirm-delete">Hapus</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- /.card-body -->
             </div>
         </div>
@@ -311,10 +244,71 @@
         var form = document.getElementById('form-action');
 
         function cari() {
-            form.action = "{{ url('admin/inquery_buktipotongpajak') }}";
+            form.action = "{{ url('admin/inquery_pemakaianperalatan') }}";
             form.submit();
         }
     </script>
+
+    <script>
+        $(function(e) {
+            $("#select_all_ids").click(function() {
+                $('.checkbox_ids').prop('checked', $(this).prop('checked'))
+            })
+        });
+
+        function deleteSelectedData() {
+            var selectedIds = document.querySelectorAll(".checkbox_ids:checked");
+            if (selectedIds.length === 0) {
+                alert("Harap centang setidaknya satu item sebelum menghapus.");
+            } else {
+                // Tampilkan modal konfirmasi
+                $('#modal-confirm-delete').modal('show');
+
+                // Ketika tombol Hapus di modal konfirmasi diklik
+                $('#btn-confirm-delete').click(function() {
+                    var selectedCheckboxes = document.querySelectorAll('.checkbox_ids:checked');
+                    var selectedIds = [];
+                    selectedCheckboxes.forEach(function(checkbox) {
+                        selectedIds.push(checkbox.value);
+                    });
+                    document.getElementById('selectedIds').value = selectedIds.join(',');
+                    var selectedIdsString = selectedIds.join(',');
+                    window.location.href = "{{ url('admin/deletefakturfilter') }}?ids=" + selectedIdsString;
+
+                    // Sembunyikan modal konfirmasi setelah penghapusan dilakukan
+                    $('#modal-confirm-delete').modal('hide');
+                });
+            }
+        }
+    </script>
+
+    <script>
+        function confirmDelete() {
+            var selectedIds = document.querySelectorAll(".checkbox_ids:checked");
+            if (selectedIds.length === 0) {
+                alert("Harap centang setidaknya satu item sebelum menghapus.");
+            } else {
+                // Tampilkan modal konfirmasi
+                $('#modal-confirm-delete').modal('show');
+
+                // Ketika tombol Hapus di modal konfirmasi diklik
+                $('#btn-confirm-delete').click(function() {
+                    var selectedCheckboxes = document.querySelectorAll('.checkbox_ids:checked');
+                    var selectedIds = [];
+                    selectedCheckboxes.forEach(function(checkbox) {
+                        selectedIds.push(checkbox.value);
+                    });
+                    document.getElementById('selectedIds').value = selectedIds.join(',');
+                    var selectedIdsString = selectedIds.join(',');
+                    window.location.href = "{{ url('admin/deletefakturfilter') }}?ids=" + selectedIdsString;
+
+                    // Sembunyikan modal konfirmasi setelah penghapusan dilakukan
+                    $('#modal-confirm-delete').modal('hide');
+                });
+            }
+        }
+    </script>
+
 
     {{-- unpost memo  --}}
     <script>
@@ -327,7 +321,7 @@
 
                 // Kirim permintaan AJAX untuk melakukan unpost
                 $.ajax({
-                    url: "{{ url('admin/inquery_buktipotongpajak/unpostbukti/') }}/" + memoId,
+                    url: "{{ url('admin/inquery_pemakaianperalatan/unpostpemakaian/') }}/" + memoId,
                     type: 'GET',
                     data: {
                         id: memoId
@@ -367,7 +361,7 @@
 
                 // Kirim permintaan AJAX untuk melakukan posting
                 $.ajax({
-                    url: "{{ url('admin/inquery_buktipotongpajak/postingbukti/') }}/" + memoId,
+                    url: "{{ url('admin/inquery_pemakaianperalatan/postingpemakaian/') }}/" + memoId,
                     type: 'GET',
                     data: {
                         id: memoId
@@ -451,56 +445,6 @@
                     ''); // Menghapus warna latar belakang dari semua baris saat menutup dropdown
             });
         });
-    </script>
-
-    <script>
-        $(function(e) {
-            $("#select_all_ids").click(function() {
-                $('.checkbox_ids').prop('checked', $(this).prop('checked'))
-            })
-        });
-
-        function printSelectedData() {
-            var selectedIds = document.querySelectorAll(".checkbox_ids:checked");
-            if (selectedIds.length === 0) {
-                alert("Harap centang setidaknya satu item sebelum mencetak.");
-            } else {
-                var selectedCheckboxes = document.querySelectorAll('.checkbox_ids:checked');
-                var selectedIds = [];
-                selectedCheckboxes.forEach(function(checkbox) {
-                    selectedIds.push(checkbox.value);
-                });
-                document.getElementById('selectedIds').value = selectedIds.join(',');
-                var selectedIdsString = selectedIds.join(',');
-                window.location.href = "{{ url('admin/cetak_buktifilter') }}?ids=" + selectedIdsString;
-                // var url = "{{ url('admin/ban/cetak_pdffilter') }}?ids=" + selectedIdsString;
-            }
-        }
-    </script>
-
-    <script>
-        $(function(e) {
-            $("#select_all_ids").click(function() {
-                $('.checkbox_ids').prop('checked', $(this).prop('checked'))
-            })
-        });
-
-        function printSelectedDatafoto() {
-            var selectedIds = document.querySelectorAll(".checkbox_ids:checked");
-            if (selectedIds.length === 0) {
-                alert("Harap centang setidaknya satu item sebelum mencetak.");
-            } else {
-                var selectedCheckboxes = document.querySelectorAll('.checkbox_ids:checked');
-                var selectedIds = [];
-                selectedCheckboxes.forEach(function(checkbox) {
-                    selectedIds.push(checkbox.value);
-                });
-                document.getElementById('selectedIds').value = selectedIds.join(',');
-                var selectedIdsString = selectedIds.join(',');
-                window.location.href = "{{ url('admin/cetak_buktifilterfoto') }}?ids=" + selectedIdsString;
-                // var url = "{{ url('admin/ban/cetak_pdffilter') }}?ids=" + selectedIdsString;
-            }
-        }
     </script>
 
 @endsection

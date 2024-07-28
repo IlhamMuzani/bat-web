@@ -3,7 +3,7 @@
 @section('title', 'Data Part')
 
 @section('content')
-    <!-- Content Header (Page header) -->
+
     <div id="loadingSpinner" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
         <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
     </div>
@@ -75,6 +75,8 @@
                                             body</option>
                                         <option value="sasis" {{ Request::get('kategori') == 'sasis' ? 'selected' : '' }}>
                                             sasis</option>
+                                        <option value="peralatan" {{ Request::get('kategori') == 'peralatan' ? 'selected' : '' }}>
+                                            peralatan</option>
                                     </select>
                                     <div class="input-group-append">
                                         <button type="button" class="btn btn-outline-primary" onclick="cari()">

@@ -724,4 +724,28 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('inquery_spk/postingspk/{id}', [\App\Http\Controllers\Admin\InquerySpkController::class, 'postingspk']);
     Route::resource('inquery_spk', \App\Http\Controllers\Admin\InquerySpkController::class);
     Route::resource('faktur_pelunasanperfaktur', \App\Http\Controllers\Admin\FakturpelunasanperfakturController::class);
+
+    Route::resource('inventory_peralatan', \App\Http\Controllers\Admin\InventoryPeralatanController::class);
+    Route::get('klaim_peralatan/get_detailinventory/{id}', [\App\Http\Controllers\Admin\KlaimperalatanController::class, 'get_detailinventory']);
+    Route::resource('pemakaian_peralatan', \App\Http\Controllers\Admin\PemakainperalatanController::class);
+    Route::resource('inquery_pemakaianperalatan', \App\Http\Controllers\Admin\InqueryPemakaianperalatanController::class);
+    Route::get('laporan_pemakaianperalatan', [\App\Http\Controllers\Admin\LaporanpemakaianperalatanController::class, 'index']);
+    Route::get('print_pemakaianperalatan', [\App\Http\Controllers\Admin\LaporanpemakaianperalatanController::class, 'print_pemakaianperalatan']);
+    Route::get('inquery_pemakaianperalatan/unpostpemakaian/{id}', [\App\Http\Controllers\Admin\InqueryPemakaianperalatanController::class, 'unpostpemakaian']);
+    Route::get('inquery_pemakaianperalatan/postingpemakaian/{id}', [\App\Http\Controllers\Admin\InqueryPemakaianperalatanController::class, 'postingpemakaian']);
+    Route::get('hapuspemakaian/{id}', [\App\Http\Controllers\Admin\InqueryPemakaianperalatanController::class, 'hapuspemakaian'])->name('hapuspemakaian');
+    Route::delete('inquery_pemakaianperalatan/deletedetailpemakaians/{id}', [\App\Http\Controllers\Admin\InqueryPemakaianperalatanController::class, 'deletedetailpemakaians']);
+    Route::get('pemakaian_peralatan/cetak-pdf/{id}', [\App\Http\Controllers\Admin\PemakainperalatanController::class, 'cetakpdf']);
+    Route::get('inquery_klaimperalatan/unpostklaimperalatan/{id}', [\App\Http\Controllers\Admin\InqueryKlaimperalatanController::class, 'unpostklaimperalatan']);
+    Route::get('inquery_klaimperalatan/postingklaimperalatan/{id}', [\App\Http\Controllers\Admin\InqueryKlaimperalatanController::class, 'postingklaimperalatan']);
+    Route::resource('klaim_peralatan', \App\Http\Controllers\Admin\KlaimperalatanController::class);
+    Route::resource('inquery_klaimperalatan', \App\Http\Controllers\Admin\InqueryKlaimperalatanController::class);
+    Route::get('laporan_klaimperalatan', [\App\Http\Controllers\Admin\LaporanklaimperalatanController::class, 'index']);
+    Route::get('print_klaimperalatan', [\App\Http\Controllers\Admin\LaporanklaimperalatanController::class, 'print_klaimperalatan']);
+    Route::get('laporan_klaimban', [\App\Http\Controllers\Admin\LaporanklaimbanController::class, 'index']);
+    Route::get('print_klaimban', [\App\Http\Controllers\Admin\LaporanklaimbanController::class, 'print_klaimban']);
+    Route::delete('inquery_klaimperalatan/deletedetailklaim/{id}', [\App\Http\Controllers\Admin\InqueryKlaimperalatanController::class, 'deletedetailklaim']);
+    Route::get('klaim_peralatan/cetak-pdf/{id}', [\App\Http\Controllers\Admin\KlaimperalatanController::class, 'cetakpdf']);
+    Route::get('hapusperalatan/{id}', [\App\Http\Controllers\Admin\InqueryKlaimperalatanController::class, 'hapusperalatan'])->name('hapusperalatan');
+
 });
