@@ -3,7 +3,7 @@
 @section('title', 'Perhitungan Gaji Karyawan')
 
 @section('content')
-    <!-- Content Header (Page header) -->
+
     <div id="loadingSpinner" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
         <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
     </div>
@@ -17,7 +17,6 @@
             }, 100); // Adjust the delay time as needed
         });
     </script>
-
     <!-- Content Header (Page header) -->
     <div class="content-header" style="display: none;" id="mainContent">
         <div class="container-fluid">
@@ -35,7 +34,6 @@
             </div>
         </div>
     </div>
-
 
     <section class="content" style="display: none;" id="mainContentSection">
         <div class="container-fluid">
@@ -134,7 +132,9 @@
                     {{-- <button type="button" class="btn btn-secondary btn-sm" onclick="geserTabelKeKanan()">
                         <i class="fas fa-arrow-right"></i>
                     </button> --}}
+
                     <input type="text" id="searchInputgaji" onkeyup="searchTable()" placeholder="Search..">
+
                     <div class="table-responsive">
                         <!-- Hapus class "overflow-x-auto" -->
                         <table class="table table-bordered table-striped">
@@ -148,16 +148,16 @@
                                     <th style="font-size:14px; text-align:center; min-width: 150px;">UM</th>
                                     <th style="font-size:14px; text-align:center; min-width: 150px;">UH</th>
                                     <th style="font-size:14px; text-align:center; min-width: 150px;">HK</th>
-                                    <th style="font-size:14px; text-align:center; min-width: 150px;">LEMBUR <br> <span>
-                                            (JAM)
+                                    <th style="font-size:14px; text-align:center; min-width: 300px;">LEMBUR <br>
+                                        <span>
+                                            (JAM) (HARI)
                                         </span>
                                     </th>
-                                    <th style="font-size:14px; text-align:center; min-width: 150px;">HASIL LEMBUR</th>
-                                    <th style="font-size:14px; text-align:center; min-width: 150px;">STORING <br> <span>
-                                            (JAM)
+                                    <th style="font-size:14px; text-align:center; min-width: 300px;">HASIL LEMBUR <br>
+                                        <span>
+                                            (JAM) (HARI)
                                         </span>
                                     </th>
-                                    <th style="font-size:14px; text-align:center; min-width: 150px;">STORING HASIL</th>
                                     <th style="font-size:14px; text-align:center; min-width: 150px;">GAJI KOTOR</th>
                                     <th style="font-size:14px; text-align:center; min-width: 300px;">KETERLAMBATAN <br>
                                         <span>
@@ -172,7 +172,8 @@
                                     <th style="font-size:14px; text-align:center; min-width: 150px;">ABSEN</th>
                                     <th style="font-size:14px; text-align:center; min-width: 150px;">HASIL ABSEN</th>
                                     <th style="font-size:14px; text-align:center; min-width: 150px;">BPJS</th>
-                                    <th style="font-size:14px; text-align:center; min-width: 150px;">LAINYA</th>
+                                    <th style="font-size:14px; text-align:center; min-width: 150px;">POTONGAN LAINYA</th>
+                                    <th style="font-size:14px; text-align:center; min-width: 150px;">TAMBAHAN LAINYA</th>
                                     <th style="font-size:14px; text-align:center; min-width: 150px;">PELUNASAN</th>
                                     {{-- <th style="font-size:14px; text-align:center; min-width: 150px;">GAJI NOL PELUNASAN
                                     </th> --}}
@@ -228,34 +229,43 @@
                                                 onkeypress="return isNumberKey(event)">
                                         </div>
                                     </td>
-                                    <td>
-                                        <div class="form-group">
-                                            <input style="font-size:14px" type="text" class="form-control lembur"
-                                                id="lembur-0" name="lembur[]" data-row-id="0"
-                                                onkeypress="return isNumberKey(event)">
+                                    <td style="width: 300px;">
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <div style="width: 45%;">
+                                                <div class="form-group">
+                                                    <input style="font-size:14px" type="text" data-row-id="0"
+                                                        class="form-control lembur" id="lembur-0" name="lembur[]"
+                                                        onkeypress="return isNumberKey(event)">
+                                                </div>
+                                            </div>
+                                            <div style="width: 45%;">
+                                                <div class="form-group">
+                                                    <input style="font-size:14px" type="text"
+                                                        class="form-control storing" id="storing-0" name="storing[]"
+                                                        onkeypress="return isNumberKey(event)">
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
-                                    <td style="width: 150px;">
-                                        <div class="form-group">
-                                            <input style="font-size:14px" readonly type="text"
-                                                class="form-control hasil_lembur" id="hasil_lembur-0"
-                                                name="hasil_lembur[]" data-row-id="0">
+                                    <td style="width: 300px;">
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <div style="width: 45%;">
+                                                <div class="form-group">
+                                                    <input style="font-size:14px" readonly type="text"
+                                                        class="form-control hasil_lembur" id="hasil_lembur-0"
+                                                        name="hasil_lembur[]">
+                                                </div>
+                                            </div>
+                                            <div style="width: 45%;">
+                                                <div class="form-group">
+                                                    <input style="font-size:14px" readonly type="text"
+                                                        class="form-control hasil_storing" id="hasil_storing-0"
+                                                        name="hasil_storing[]">
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
-                                    <td style="width: 150px;">
-                                        <div class="form-group">
-                                            <input style="font-size:14px" type="text" class="form-control storing"
-                                                id="storing-0" name="storing[]" data-row-id="0"
-                                                onkeypress="return isNumberKey(event)">
-                                        </div>
-                                    </td>
-                                    <td style="width: 150px;">
-                                        <div class="form-group">
-                                            <input style="font-size:14px" readonly type="text"
-                                                class="form-control hasil_storing" id="hasil_storing-0"
-                                                name="hasil_storing[]" data-row-id="0">
-                                        </div>
-                                    </td>
+
                                     <td style="width: 150px;">
                                         <div class="form-group">
                                             <input style="font-size:14px" readonly type="text"
@@ -316,7 +326,7 @@
                                     <td style="width: 150px;">
                                         <div class="form-group">
                                             <input type="text" style="font-size:14px"
-                                                class="form-control potongan_bpjs" readonly id="potongan_bpjs-0"
+                                                class="form-control potongan_bpjs" id="potongan_bpjs-0"
                                                 name="potongan_bpjs[]" data-row-id="0">
                                         </div>
                                     </td>
@@ -324,6 +334,14 @@
                                         <div class="form-group">
                                             <input style="font-size:14px" type="text" class="form-control lainya"
                                                 id="lainya-0" name="lainya[]" oninput="formatRupiahform(this)"
+                                                onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                                        </div>
+                                    </td>
+                                    <td style="width: 150px;">
+                                        <div class="form-group">
+                                            <input style="font-size:14px" type="text"
+                                                class="form-control tambahan_lainya" id="tambahan_lainya-0"
+                                                name="tambahan_lainya[]" oninput="formatRupiahform(this)"
                                                 onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                                         </div>
                                     </td>
@@ -571,6 +589,7 @@
             var hasil_absen = '';
             var potongan_bpjs = '';
             var lainya = '';
+            var tambahan_lainya = '';
             var gajinol_pelunasan = '';
             var gaji_bersih = '';
 
@@ -596,6 +615,7 @@
                 hasil_absen = value.hasil_absen;
                 potongan_bpjs = value.potongan_bpjs;
                 lainya = value.lainya;
+                tambahan_lainya = value.tambahan_lainya;
                 gajinol_pelunasan = value.gajinol_pelunasan;
                 gaji_bersih = value.gaji_bersih;
             }
@@ -673,43 +693,43 @@
             item_pembelian += '</div>';
             item_pembelian += '</td>';
 
-            // lembur 
-            item_pembelian += '<td>';
-            item_pembelian += '<div class="form-group">'
+            // lembur
+            item_pembelian += '<td style="width: 300px;">';
+            item_pembelian += '<div style="display: flex; justify-content: space-between;">';
+            item_pembelian += '<div style="width: 45%;">';
+            item_pembelian += '<div class="form-group">';
             item_pembelian +=
-                '<input type="text" class="form-control lembur" onkeypress="return isNumberKey(event)" style="font-size:14px" id="lembur-' +
-                urutan +
-                '" name="lembur[]" value="' + lembur + '" ';
+                '<input type="text" class="form-control lembur" style="font-size:14px" id="lembur-' +
+                urutan + '" name="lembur[]" onkeypress="return isNumberKey(event)" value="' + lembur + '">';
+            item_pembelian += '</div>';
+            item_pembelian += '</div>';
+            item_pembelian += '<div style="width: 45%;">';
+            item_pembelian += '<div class="form-group">';
+            item_pembelian +=
+                '<input type="text" class="form-control storing" style="font-size:14px" id="storing-' +
+                urutan + '" name="storing[]" onkeypress="return isNumberKey(event)" value="' + storing + '">';
+            item_pembelian += '</div>';
+            item_pembelian += '</div>';
             item_pembelian += '</div>';
             item_pembelian += '</td>';
 
-            // hasil_lembur 
-            item_pembelian += '<td>';
-            item_pembelian += '<div class="form-group">'
+            // hasil lembur
+            item_pembelian += '<td style="width: 300px;">';
+            item_pembelian += '<div style="display: flex; justify-content: space-between;">';
+            item_pembelian += '<div style="width: 45%;">';
+            item_pembelian += '<div class="form-group">';
             item_pembelian +=
-                '<input type="text" class="form-control hasil_lembur" style="font-size:14px" readonly id="hasil_lembur-' +
-                urutan +
-                '" name="hasil_lembur[]" value="' + hasil_lembur + '" ';
+                '<input type="text" class="form-control hasil_lembur" readonly style="font-size:14px" id="hasil_lembur-' +
+                urutan + '" name="hasil_lembur[]" value="' + hasil_lembur + '">';
             item_pembelian += '</div>';
-            item_pembelian += '</td>';
-
-            // storing 
-            item_pembelian += '<td>';
-            item_pembelian += '<div class="form-group">'
-            item_pembelian +=
-                '<input type="text" class="form-control storing" onkeypress="return isNumberKey(event)" style="font-size:14px" id="storing-' +
-                urutan +
-                '" name="storing[]" value="' + storing + '" ';
             item_pembelian += '</div>';
-            item_pembelian += '</td>';
-
-            // hasil_storing 
-            item_pembelian += '<td>';
-            item_pembelian += '<div class="form-group">'
+            item_pembelian += '<div style="width: 45%;">';
+            item_pembelian += '<div class="form-group">';
             item_pembelian +=
-                '<input type="text" class="form-control hasil_storing" style="font-size:14px" readonly id="hasil_storing-' +
-                urutan +
-                '" name="hasil_storing[]" value="' + hasil_storing + '" ';
+                '<input type="text" class="form-control hasil_storing" readonly style="font-size:14px" id="hasil_storing-' +
+                urutan + '" name="hasil_storing[]" value="' + hasil_storing + '">';
+            item_pembelian += '</div>';
+            item_pembelian += '</div>';
             item_pembelian += '</div>';
             item_pembelian += '</td>';
 
@@ -792,7 +812,7 @@
             item_pembelian += '<td>';
             item_pembelian += '<div class="form-group">'
             item_pembelian +=
-                '<input type="text" class="form-control potongan_bpjs" style="font-size:14px" readonly id="potongan_bpjs-' +
+                '<input type="text" class="form-control potongan_bpjs" style="font-size:14px" id="potongan_bpjs-' +
                 urutan +
                 '" name="potongan_bpjs[]" value="' + potongan_bpjs + '" ';
             item_pembelian += '</div>';
@@ -805,6 +825,18 @@
                 '<input type="text" class="form-control lainya" style="font-size:14px" id="lainya-' +
                 urutan +
                 '" name="lainya[]" value="' + lainya + '" ';
+            item_pembelian += 'oninput="formatRupiahform(this)" ';
+            item_pembelian += 'onkeypress="return event.charCode >= 48 && event.charCode <= 57">';
+            item_pembelian += '</div>';
+            item_pembelian += '</td>';
+
+            // tambahan_lainya 
+            item_pembelian += '<td>';
+            item_pembelian += '<div class="form-group">';
+            item_pembelian +=
+                '<input type="text" class="form-control tambahan_lainya" style="font-size:14px" id="tambahan_lainya-' +
+                urutan +
+                '" name="tambahan_lainya[]" value="' + tambahan_lainya + '" ';
             item_pembelian += 'oninput="formatRupiahform(this)" ';
             item_pembelian += 'onkeypress="return event.charCode >= 48 && event.charCode <= 57">';
             item_pembelian += '</div>';
@@ -868,6 +900,12 @@
             $('#tableMemo').modal('show');
         }
 
+        function getWeekOfMonth(date) {
+            var adjustedDate = date.getDate() + date.getDay();
+            var prefixes = [0, 1, 2, 3, 4, 5];
+            return Math.ceil(adjustedDate / 7);
+        }
+
         function getMemos(rowIndex) {
             var selectedRow = $('#tables tbody tr:eq(' + rowIndex + ')');
             var karyawan_id = selectedRow.data('id');
@@ -876,29 +914,59 @@
             var bpjs = selectedRow.data('bpjs');
             var pelunasan_kasbon = parseFloat(selectedRow.data('pelunasan_kasbon')).toLocaleString('id-ID');
             var gaji = parseFloat(selectedRow.data('gaji')).toLocaleString('id-ID');
+            var nol = 0;
+
+            // Get current date and week of the month
+            var currentDate = new Date();
+            var currentWeek = getWeekOfMonth(currentDate);
+
+            // Check if it's the second week of the month
+            if (currentWeek === 2) {
+                $('#potongan_bpjs-' + activeSpecificationIndex).val(bpjs);
+            } else {
+                $('#potongan_bpjs-' + activeSpecificationIndex).val(nol);
+            }
 
             // Update the form fields for the active specification
             $('#karyawan_id-' + activeSpecificationIndex).val(karyawan_id);
             $('#kode_karyawan-' + activeSpecificationIndex).val(kode_karyawan);
             $('#nama_lengkap-' + activeSpecificationIndex).val(nama_lengkap);
-            $('#potongan_bpjs-' + activeSpecificationIndex).val(bpjs);
-            $('#pelunasan_kasbon-' + activeSpecificationIndex).val(pelunasan_kasbon);
+            // $('#potongan_bpjs-' + activeSpecificationIndex).val(bpjs);
+            $('#pelunasan_kasbon-' + activeSpecificationIndex).val(pelunasan_kasbon.toLocaleString('id-ID'));
             $('#gaji-' + activeSpecificationIndex).val(gaji);
 
+            $('#hari_kerja-' + activeSpecificationIndex).val(nol);
+            $('#uang_makan-' + activeSpecificationIndex).val(nol);
+            $('#uang_hadir-' + activeSpecificationIndex).val(nol);
+            $('#lembur-' + activeSpecificationIndex).val(nol);
+            $('#storing-' + activeSpecificationIndex).val(nol);
+            $('#hasil_lembur-' + activeSpecificationIndex).val(nol);
+            $('#hasil_storing-' + activeSpecificationIndex).val(nol);
+            $('#gaji_kotor-' + activeSpecificationIndex).val(nol);
+            $('#kurangtigapuluh-' + activeSpecificationIndex).val(nol);
+            $('#lebihtigapuluh-' + activeSpecificationIndex).val(nol);
+            $('#hasilkurang-' + activeSpecificationIndex).val(nol);
+            $('#hasillebih-' + activeSpecificationIndex).val(nol);
+            $('#absen-' + activeSpecificationIndex).val(nol);
+            $('#hasil_absen-' + activeSpecificationIndex).val(nol);
+            $('#lainya-' + activeSpecificationIndex).val(nol);
+            $('#tambahan_lainya-' + activeSpecificationIndex).val(nol);
+            $('#gajinol_pelunasan-' + activeSpecificationIndex).val(nol);
+
             // Check if bpjs is not null or has a value
-            if (bpjs !== null && bpjs !== '') {
-                // Jika ada nilai bpjs
-                if (bpjs === 65735) {
-                    // Jika nilai bpjs adalah 65735, tandai checkbox potongan_bpjs dan atur nilainya menjadi 65735
-                    $('#potongan_bpjs-' + activeSpecificationIndex).val((65735).toLocaleString('id-ID'));
-                } else if (bpjs === 43823) {
-                    // Jika nilai bpjs adalah 43823, tandai checkbox potongan_bpjs dan atur nilainya menjadi 43823
-                    $('#potongan_bpjs-' + activeSpecificationIndex).val((43823).toLocaleString('id-ID'));
-                }
-            } else {
-                // Jika tidak ada nilai bpjs, pastikan checkbox potongan_bpjs tidak dicentang dan biarkan nilainya kosong
-                $('#potongan_bpjs-' + activeSpecificationIndex).val("");
-            }
+            // if (bpjs !== null && bpjs !== '') {
+            //     // Jika ada nilai bpjs
+            //     if (bpjs === 65735) {
+            //         // Jika nilai bpjs adalah 65735, tandai checkbox potongan_bpjs dan atur nilainya menjadi 65735
+            //         $('#potongan_bpjs-' + activeSpecificationIndex).val((65735).toLocaleString('id-ID'));
+            //     } else if (bpjs === 43823) {
+            //         // Jika nilai bpjs adalah 43823, tandai checkbox potongan_bpjs dan atur nilainya menjadi 43823
+            //         $('#potongan_bpjs-' + activeSpecificationIndex).val((43823).toLocaleString('id-ID'));
+            //     }
+            // } else {
+            //     // Jika tidak ada nilai bpjs, pastikan checkbox potongan_bpjs tidak dicentang dan biarkan nilainya kosong
+            //     $('#potongan_bpjs-' + activeSpecificationIndex).val("");
+            // }
 
             // Hide the modal after updating the form fields
             $('#tableMemo').modal('hide');
@@ -908,7 +976,7 @@
     {{-- hasil --}}
     <script>
         $(document).on("input",
-            ".gaji, .lembur, .storing, .kurangtigapuluh, .lebihtigapuluh, .pelunasan_kasbon, .lainya, .absen, .hari_kerja, .potongan_bpjs",
+            ".gaji, .lembur, .storing, .kurangtigapuluh, .lebihtigapuluh, .pelunasan_kasbon, .lainya, .tambahan_lainya, .absen, .hari_kerja, .potongan_bpjs",
             function() {
                 // Ambil baris saat ini
                 var currentRow = $(this).closest('tr');
@@ -922,6 +990,7 @@
                 var lebihtigapuluh = parseFloat(currentRow.find(".lebihtigapuluh").val()) || 0;
                 var pelunasan_kasbon = parseFloat(currentRow.find(".pelunasan_kasbon").val().replace(/[.]/g, '')) || 0;
                 var lainya = parseFloat(currentRow.find(".lainya").val().replace(/[.]/g, '')) || 0;
+                var tambahan_lainya = parseFloat(currentRow.find(".tambahan_lainya").val().replace(/[.]/g, '')) || 0;
                 var absen = parseFloat(currentRow.find(".absen").val()) || 0;
                 var potongan_bpjs = parseFloat(currentRow.find(".potongan_bpjs").val().replace(/[.]/g, '')) || 0;
 
@@ -929,8 +998,9 @@
                 var uang_makan = hari_kerja * 10000;
                 var uang_hadir = hari_kerja * 5000;
 
+                var gajilemburjam = gaji / 10
                 // Hitung hasil lembur dan storing
-                var hasil_lembur = lembur * 10000;
+                var hasil_lembur = lembur * gajilemburjam;
 
                 // Hitung hasil terlambat
                 var hasil_kurangtigapuluh = kurangtigapuluh * 5000;
@@ -944,14 +1014,14 @@
                 var gajiperjam = storing / 12;
                 // Bulatkan gajiperjam menjadi 4 digit di belakang koma
                 gajiperjam = gajiperjam.toFixed(4);
-                var hasil_storing = gajiperjam * gaji;
+                var hasil_storing = gaji * storing;
 
                 // Hitung gaji kotor dan gaji bersih
                 var gaji_kotor = (gaji + 10000 + 5000) * hari_kerja + hasil_lembur + hasil_storing;
                 var gaji_kotor_bulat = Math.round(gaji_kotor);
 
                 var gaji_bersih = gaji_kotor - hasil_kurangtigapuluh - hasil_lebihtigapuluh - hasil_absen -
-                    potongan_bpjs - lainya;
+                    potongan_bpjs - lainya + tambahan_lainya;
                 var gaji_bersih_bulat = Math.round(gaji_bersih);
                 var hasil_gajibersih = gaji_bersih - pelunasan_kasbon;
                 var hasil_gajibersih_bulat = Math.round(hasil_gajibersih);
@@ -1138,6 +1208,7 @@
             }
         });
     </script>
+
     <script>
         function searchTable() {
             // Declare variables
@@ -1172,4 +1243,5 @@
             }
         });
     </script>
+
 @endsection

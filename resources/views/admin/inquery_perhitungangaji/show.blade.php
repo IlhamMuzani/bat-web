@@ -99,10 +99,9 @@
             <td class="td" style="text-align: right; padding: 0px; font-size: 12px;  font-weight:bold; ">
                 UH</td>
             <td class="td" style="text-align: right; padding: 0px; font-size: 12px;  font-weight:bold;">
-                LEMBUR</td>
+                LEMBUR JAM</td>
             <td class="td" style="text-align: right; padding: 0px; font-size: 12px;  font-weight:bold;">
-                STORING</td>
-            </td>
+                LEMBUR HARI</td>
             <td class="td" style="text-align: center; padding: 0px; font-size: 12px;  font-weight:bold;">
                 GAJI <span> <br>KOTOR</span></td>
             </td>
@@ -167,7 +166,7 @@
                     {{ number_format($item->hasil_lembur, 0, ',', '.') }}
                 </td>
                 <td class="td" style="text-align: right; padding: 1px; font-size: 12px;">
-                    {{ number_format($item->hasil_storing, 1, ',', '.') }}
+                    {{ number_format($item->hasil_storing, 0, ',', '.') }}
                 </td>
                 <td class="td" style="text-align: right; padding-right: 7px; font-size: 12px;">
                     {{ number_format($item->gaji_kotor, 0, ',', '.') }}
@@ -201,7 +200,7 @@
             @endphp
         @endforeach
         <tr style="border-bottom: 1px solid black;">
-            <td colspan="8" style="padding: 0px;"></td>
+            <td colspan="14" style="padding: 0px;"></td>
         </tr>
         <tr>
             <td colspan="13"
