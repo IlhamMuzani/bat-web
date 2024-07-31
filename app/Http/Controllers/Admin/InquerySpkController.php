@@ -99,6 +99,9 @@ class InquerySpkController extends Controller
         $spk = Spk::findOrFail($id);
 
         $spk->pelanggan_id = $request->pelanggan_id;
+        $spk->kode_pelanggan = $request->kode_pelanggan;
+        $spk->nama_pelanggan = $request->nama_pelanggan;
+        $spk->alamat_pelanggan = $request->alamat_pelanggan;
         $spk->kendaraan_id = $request->kendaraan_id;
         $spk->no_kabin = $request->no_kabin;
         $spk->golongan = $request->golongan;

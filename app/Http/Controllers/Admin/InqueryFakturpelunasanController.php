@@ -247,15 +247,15 @@ class InqueryFakturpelunasanController extends Controller
             'alamat_pelanggan' => $request->alamat_pelanggan,
             'telp_pelanggan' => $request->telp_pelanggan,
             'keterangan' => $request->keterangan,
-            'saldo_masuk' => str_replace(',', '.', str_replace('.', '', $request->saldo_masuk)),
+            'saldo_masuk' => str_replace(',', '.', str_replace('.', '', $request->saldo_masuk  ?? '0')),
             'totalpenjualan' => str_replace(
                 ',',
                 '.',
-                str_replace('.', '', $request->totalpenjualan)
+                str_replace('.', '', $request->totalpenjualan  ?? '0')
             ),
             'dp' => str_replace(',', '.', str_replace('.', '', $request->dp)),
-            'potonganselisih' => str_replace(',', '.', str_replace('.', '', $request->potonganselisih)),
-            'totalpembayaran' => str_replace(',', '.', str_replace('.', '', $request->totalpembayaran)),
+            'potonganselisih' => str_replace(',', '.', str_replace('.', '', $request->potonganselisih  ?? '0')),
+            'totalpembayaran' => str_replace(',', '.', str_replace('.', '', $request->totalpembayaran  ?? '0')),
             'selisih' =>  $selisih,
             'potongan' => $request->potongan ? str_replace(',', '.', str_replace('.', '', $request->potongan)) : 0,
             'ongkos_bongkar' => $request->ongkos_bongkar ? str_replace(',', '.', str_replace('.', '', $request->ongkos_bongkar)) : 0,
@@ -292,10 +292,6 @@ class InqueryFakturpelunasanController extends Controller
         }
         // Perbarui status pelunasan menjadi aktif untuk faktur yang dipanggil di detail pelunasan
         Faktur_ekspedisi::whereIn('id', $updatedFakturEkspedisiIds)->update(['status_pelunasan' => 'aktif']);
-        // Perbarui status pelunasan menjadi null untuk faktur yang detail pelunasannya dihapus
-        Faktur_ekspedisi::whereNotIn('id', $updatedFakturEkspedisiIds)
-            ->update(['status_pelunasan' => null]);
-
         foreach ($data_pembelians2 as $data_pesanan) {
             $detailId = $data_pesanan['detail_id'];
 
