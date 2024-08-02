@@ -107,10 +107,11 @@
 
 <body style="margin-top: 10; padding: 0;">
     <div id="logo-container">
-        <img src="{{ asset('storage/uploads/gambar_logo/Logo.jpg') }}" alt="BAT" width="70" height="35">
+        <img src="{{ public_path('storage/uploads/user/logo.png') }}" alt="JAVA LINE LOGISTICS" width="150"
+            height="50">
     </div>
     <div style="text-align: center;">
-        <span style="font-weight: bold; font-size: 17px;">SLIP GAJI PT.BINA ANUGERAH TRANSINDO</span>
+        <span style="font-weight: bold; font-size: 17px;">SLIP GAJI PT. JAVA LINE LOGISTICS</span>
     </div>
 
     <br>

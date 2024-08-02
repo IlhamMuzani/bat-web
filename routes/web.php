@@ -580,6 +580,9 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('inquery_tagihanekspedisi/get_fakturtagihannonpph/{id}', [\App\Http\Controllers\Admin\InqueryTagihanekspedisiController::class, 'get_fakturtagihannonpph']);
     Route::get('inquery_memoperjalanan/rekapexportmemoperjalanan', [\App\Http\Controllers\Admin\InqueryMemoekspedisiController::class, 'rekapexportmemoperjalanan']);
 
+    Route::resource('report_slipgajibulanan', \App\Http\Controllers\Admin\ReportgajibulananController::class);
+    Route::resource('report_slipgajimingguan', \App\Http\Controllers\Admin\ReportgajimingguanController::class);
+    
     Route::get('inquery_slipgajibulanan', [\App\Http\Controllers\Admin\InqueryslipgajibulananController::class, 'index']);
     Route::get('inquery_printslipgajibulanan', [\App\Http\Controllers\Admin\InqueryslipgajibulananController::class, 'inquery_printslipgajibulanan']);
     Route::resource('laporan_slipgajibulanan', \App\Http\Controllers\Admin\LaporanSlipgajibulananController::class);
