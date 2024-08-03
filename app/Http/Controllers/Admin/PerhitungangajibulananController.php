@@ -226,7 +226,9 @@ class PerhitungangajibulananController extends Controller
                 $detail_cicilan = Detail_cicilan::where('karyawan_id', $data_pesanan['karyawan_id'])
                     ->where('status', 'posting')
                     ->where('status_cicilan', 'belum lunas')
+                    ->whereNull('detail_gajikaryawan_id')
                     ->first();
+
                 if ($detail_cicilan) {
                     $detail_cicilan->update([
                         // 'status_cicilan' => 'belum lunas',
@@ -248,7 +250,7 @@ class PerhitungangajibulananController extends Controller
             'jam' => $tanggal1->format('H:i:s'),
             'tanggal' => $format_tanggal,
             'tanggal_awal' => $tanggal,
-            'qrcode_return' => 'https://javaline.id/pengeluaran_kaskecil/' . $kodepengeluaran,
+            'qrcode_return' => 'https://batlink.id/pengeluaran_kaskecil/' . $kodepengeluaran,
             'status' => 'unpost',
         ]);
 

@@ -322,7 +322,7 @@ class InqueryPengeluarankaskecilController extends Controller
 
                 $karyawan = Karyawan::find($detail->karyawan_id);
                 if ($karyawan) {
-                    $kasbon = $karyawan->kasbon_backup;
+                    $kasbon = $karyawan->kasbon;
                     $bayar_kasbon = $karyawan->bayar_kasbon;
 
                     // Mengurangi kasbon dan menambah bayar_kasbon
@@ -772,7 +772,7 @@ class InqueryPengeluarankaskecilController extends Controller
 
                             $karyawan = Karyawan::find($detail->karyawan_id);
                             if ($karyawan) {
-                                $kasbon = $karyawan->kasbon_backup;
+                                $kasbon = $karyawan->kasbon;
                                 $bayar_kasbon = $karyawan->bayar_kasbon;
 
                                 // Mengurangi kasbon dan menambah bayar_kasbon

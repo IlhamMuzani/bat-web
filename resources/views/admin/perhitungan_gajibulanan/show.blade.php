@@ -78,8 +78,8 @@
                 <tr>
                     <td style="width:20%;">
                         <div style="text-align: left;">
-                            <img src="{{ public_path('storage/uploads/gambar_logo/Logo.jpg') }}" alt="BAT"
-                                width="70" height="35">
+                            <img src="{{ asset('storage/uploads/gambar_logo/Logo.jpg') }}" alt="BAT" width="70"
+                                height="35">
                         </div>
                     </td>
                     <td style="width: 95%; text-align: left;">
