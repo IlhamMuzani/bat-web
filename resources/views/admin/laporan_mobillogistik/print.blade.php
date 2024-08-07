@@ -72,8 +72,22 @@
         }
 
         @page {
-            /* size: A4; */
             margin: 1cm;
+            counter-increment: page;
+            counter-reset: page 1;
+        }
+
+        /* Define the footer with page number */
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: start;
+            font-size: 10px;
+        }
+
+        footer::after {
+            content: counter(page);
         }
     </style>
 </head>
@@ -325,14 +339,7 @@
                             Biaya Operasional
                         </td>
                         <td class="td" style="text-align: right; font-size: 11px;">
-                            {{ number_format(
-                                $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
-                                        return $kendaraan->detail_pengeluaran->where('barangakun_id', 29)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
-                                    })->sum() ?? 0,
-                                2,
-                                ',',
-                                '.',
-                            ) }}
+                            {{ number_format($totalNominalPerbaikan, 2, ',', '.') }}
                         </td>
                     </tr>
 
@@ -341,14 +348,7 @@
                             Perbaikan
                         </td>
                         <td class="td" style="text-align: right; font-size: 11px;">
-                            {{ number_format(
-                                $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
-                                        return $kendaraan->detail_pengeluaran->where('barangakun_id', 5)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
-                                    })->sum() ?? 0,
-                                2,
-                                ',',
-                                '.',
-                            ) }}
+                            {{ number_format($totalNominalOperasional, 2, ',', '.') }}
                         </td>
                     </tr>
                     <tr>
@@ -362,18 +362,7 @@
                             Sub Total
                         </td>
                         <td class="td" style="text-align: right; font-size: 11px;">
-                            {{ number_format(
-                                $selisih -
-                                    $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
-                                            return $kendaraan->detail_pengeluaran->where('barangakun_id', 29)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
-                                        })->sum() -
-                                    $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
-                                            return $kendaraan->detail_pengeluaran->where('barangakun_id', 5)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
-                                        })->sum(),
-                                2,
-                                ',',
-                                '.',
-                            ) }}
+                            {{ number_format($selisih - $totalNominalPerbaikan - $totalNominalOperasional, 2, ',', '.') }}
                         </td>
                     </tr>
                     <tr>
@@ -402,6 +391,9 @@
 
     <br>
     <br>
+
+    <footer style="position: fixed; bottom: 0; right: 20px; width: auto; text-align: end; font-size: 10px;">Page
+    </footer>
 
 </body>
 

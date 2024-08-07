@@ -3,7 +3,6 @@
 @section('title', 'Laporan Mobil Logistik')
 
 @section('content')
-    <!-- Content Header (Page header) -->
     <div id="loadingSpinner" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
         <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
     </div>
@@ -255,7 +254,6 @@
                                                 value="{{ number_format($totalGrandTotal, 2, ',', '.') }}" readonly>
                                         </div>
                                     </div>
-
                                     <!-- Total Memo -->
                                     <div class="row mb-3">
                                         <div class="col-md-6">
@@ -295,14 +293,7 @@
                                         <div class="col-md-6">
                                             <input style="text-align: end; font-size:14px;" type="text"
                                                 class="form-control" readonly
-                                                value="{{ number_format(
-                                                    $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
-                                                            return $kendaraan->detail_pengeluaran->where('barangakun_id', 29)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
-                                                        })->sum() ?? 0,
-                                                    2,
-                                                    ',',
-                                                    '.',
-                                                ) }}">
+                                                value="{{ number_format($totalNominalOperasional, 2, ',', '.') }}">
                                         </div>
                                     </div>
 
@@ -314,17 +305,9 @@
                                         <div class="col-md-6">
                                             <input style="text-align: end; font-size:14px;" type="text"
                                                 class="form-control" readonly
-                                                value="{{ number_format(
-                                                    $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
-                                                            return $kendaraan->detail_pengeluaran->where('barangakun_id', 5)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
-                                                        })->sum() ?? 0,
-                                                    2,
-                                                    ',',
-                                                    '.',
-                                                ) }}">
+                                                value="{{ number_format($totalNominalPerbaikan, 2, ',', '.') }}">
                                         </div>
                                     </div>
-
                                     <!-- Divider -->
                                     <div class="row mb-3">
                                         <div class="col-md-12">
@@ -342,12 +325,7 @@
                                                 class="form-control"
                                                 value="{{ number_format(
                                                     $selisih -
-                                                        $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
-                                                                return $kendaraan->detail_pengeluaran->where('barangakun_id', 29)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
-                                                            })->sum() -
-                                                        $kendaraans->flatMap(function ($kendaraan) use ($created_at, $tanggal_akhir) {
-                                                                return $kendaraan->detail_pengeluaran->where('barangakun_id', 5)->where('status', 'posting')->whereBetween('created_at', [$created_at, $tanggal_akhir])->pluck('nominal');
-                                                            })->sum(),
+                                                        $totalNominalPerbaikan - $totalNominalOperasional,
                                                     2,
                                                     ',',
                                                     '.',
