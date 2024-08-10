@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use Carbon\Carbon;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\Bukti_potongpajak;
 use App\Models\Detail_bukti;
-use App\Models\Detail_tagihan;
+use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Bukti_potongpajak;
 use App\Models\Tagihan_ekspedisi;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
 class InqueryBuktipotongpajakController extends Controller
@@ -39,7 +38,6 @@ class InqueryBuktipotongpajakController extends Controller
         } elseif ($tanggal_akhir) {
             $inquery->where('tanggal_awal', '<=', $tanggal_akhir);
         } else {
-            // Jika tidak ada filter tanggal hari ini
             $inquery->whereDate('tanggal_awal', Carbon::today());
         }
 
@@ -94,24 +92,6 @@ class InqueryBuktipotongpajakController extends Controller
         return view('admin.inquery_buktipotongpajak.show', compact('cetakpdf', 'details'));
     }
 
-
-    // public function show($id)
-    // {
-    //     $cetakpdf = Bukti_potongpajak::find($id);
-
-    //     // Retrieve all details related to the bukti_potongpajak
-    //     $details = Detail_bukti::where('bukti_potongpajak_id', $id)->get();
-
-    //     // Get the first detail to display the related tagihan_ekspedisi
-    //     $firstDetail = $details->first();
-    //     $tagihan_ekspedisi = null;
-    //     if ($firstDetail) {
-    //         $tagihan_ekspedisi = Tagihan_ekspedisi::where('id', $firstDetail->tagihan_ekspedisi_id)->first();
-    //     }
-
-    //     return view('admin.inquery_buktipotongpajak.show', compact('cetakpdf', 'details', 'tagihan_ekspedisi'));
-    // }
-
     public function unpostbukti($id)
     {
         $faktur = Bukti_potongpajak::find($id);
@@ -126,42 +106,31 @@ class InqueryBuktipotongpajakController extends Controller
             $detailfakturs = Detail_bukti::where('bukti_potongpajak_id', $id)->get();
             foreach ($detailfakturs as $detail) {
                 if ($detail->tagihan_ekspedisi_id) {
-                    // Update status memo ekspedisi
                     Tagihan_ekspedisi::where(['id' => $detail->tagihan_ekspedisi_id])->update(['status_terpakai' => null]);
-                    // Update status memotambahan
                 }
             }
         }
-
-        // Update the status of the faktur to 'unpost'
         $faktur->update([
             'status' => 'unpost'
         ]);
-
-        // Return back with a success message
         return back()->with('success', 'Berhasil');
     }
 
     public function postingbukti($id)
     {
         $faktur = Bukti_potongpajak::where('id', $id)->first();
-
         if (!$faktur) {
             return back()->with('error', 'Bukti tidak ditemukan');
         }
-
         $detail_faktur = Detail_bukti::where('bukti_potongpajak_id', $id)->first();
-
         if ($detail_faktur) {
             $detailfakturs = Detail_bukti::where('bukti_potongpajak_id', $id)->get();
             foreach ($detailfakturs as $detail) {
                 if ($detail->tagihan_ekspedisi_id) {
-                    // Update status memo ekspedisi
                     Tagihan_ekspedisi::where(['id' => $detail->tagihan_ekspedisi_id])->update(['status_terpakai' => 'digunakan']);
                 }
             }
         }
-
         $faktur->update([
             'status' => 'posting'
         ]);
@@ -174,15 +143,11 @@ class InqueryBuktipotongpajakController extends Controller
 
         if ($bukti) {
             $detailtagihan = Detail_bukti::where('bukti_potongpajak_id', $id)->get();
-            // Delete related Detail_tagihan instances
             Detail_bukti::where('bukti_potongpajak_id', $id)->delete();
-
-            // Delete the main bukti_potongpajak_id instance
             $bukti->delete();
 
             return back()->with('success', 'Berhasil menghapus Faktur Ekspedisi');
         } else {
-            // Handle the case where the bukti_potongpajak_id with the given ID is not found
             return back()->with('error', 'Bukti tidak ditemukan');
         }
     }
@@ -201,8 +166,6 @@ class InqueryBuktipotongpajakController extends Controller
     public function cetak_buktifilter(Request $request)
     {
         $selectedIds = explode(',', $request->input('ids'));
-
-        // Mengambil faktur berdasarkan id yang dipilih
         $buktis = Bukti_potongpajak::whereIn('id', $selectedIds)->orderBy('id', 'DESC')->get();
 
         $pdf = PDF::loadView('admin.inquery_buktipotongpajak.cetak_pdffilter', compact('buktis'));
@@ -211,28 +174,63 @@ class InqueryBuktipotongpajakController extends Controller
         return $pdf->stream('Bukti_Potong_pajak.pdf');
     }
 
-    public function cetak_buktifilterfoto(Request $request)
-    {
-        $selectedIds = explode(',', $request->input('ids'));
+    // public function cetak_buktifilterfoto(Request $request)
+    // {
+    //     $selectedIds = explode(',', $request->input('ids'));
 
-        // Mengambil faktur berdasarkan id yang dipilih
-        $buktis = Bukti_potongpajak::whereIn('id', $selectedIds)->orderBy('id', 'DESC')->get();
+    //     // Mengambil faktur berdasarkan id yang dipilih
+    //     $buktis = Bukti_potongpajak::whereIn('id', $selectedIds)->orderBy('id', 'DESC')->get();
 
-        $detail_buktis = Detail_bukti::whereIn('bukti_potongpajak_id', $buktis->pluck('id'))->get();
+    //     $detail_buktis = Detail_bukti::whereIn('bukti_potongpajak_id', $buktis->pluck('id'))->get();
 
-        // Mengambil semua ID tagihan_ekspedisi yang terkait dengan detail_bukti yang dipilih
-        $tagihanEkspedisiIds = $detail_buktis->pluck('tagihan_ekspedisi_id')->unique();
+    //     // Mengambil semua ID tagihan_ekspedisi yang terkait dengan detail_bukti yang dipilih
+    //     $tagihanEkspedisiIds = $detail_buktis->pluck('tagihan_ekspedisi_id')->unique();
 
-        // Mengambil semua tagihan ekspedisi yang terkait
-        $tagihan_ekspedisis = Tagihan_ekspedisi::whereIn('id', $tagihanEkspedisiIds)->get();
+    //     // Mengambil semua tagihan ekspedisi yang terkait
+    //     $tagihan_ekspedisis = Tagihan_ekspedisi::whereIn('id', $tagihanEkspedisiIds)->get();
 
-        // Mengambil semua detail tagihan yang terkait
-        $detail_tagihans = Detail_tagihan::whereIn('tagihan_ekspedisi_id', $tagihanEkspedisiIds)->get();
+    //     // Mengambil semua detail tagihan yang terkait
+    //     $detail_tagihans = Detail_tagihan::whereIn('tagihan_ekspedisi_id', $tagihanEkspedisiIds)->get();
 
-        // Load the view and pass the data
-        $pdf = PDF::loadView('admin.inquery_buktipotongpajak.cetak_pdffilterfoto', compact('buktis', 'detail_buktis', 'tagihan_ekspedisis', 'detail_tagihans'));
-        $pdf->setPaper('a4');
+    //     // Load the view and pass the data
+    //     $pdf = PDF::loadView('admin.inquery_buktipotongpajak.cetak_pdffilterfoto', compact('buktis', 'detail_buktis', 'tagihan_ekspedisis', 'detail_tagihans'));
+    //     $pdf->setPaper('a4');
 
-        return $pdf->stream('Bukti_Potong_pajak.pdf');
-    }
+    // }
+
+    // public function cetak_buktifilterfoto(Request $request)
+    // {
+    //     $selectedIds = explode(',', $request->input('ids'));
+
+    //     $pdfMerger = new Fpdi();
+
+    //     foreach ($selectedIds as $id) {
+    //         // Fetch data
+    //         $bukti = Bukti_potongpajak::find($id);
+    //         $detail_bukti = Detail_bukti::where('bukti_potongpajak_id', $id)->get();
+    //         $tagihanEkspedisiIds = $detail_bukti->pluck('tagihan_ekspedisi_id')->unique();
+    //         $tagihan_ekspedisis = Tagihan_ekspedisi::whereIn('id', $tagihanEkspedisiIds)->get();
+    //         $detail_tagihans = Detail_tagihan::whereIn('tagihan_ekspedisi_id', $tagihanEkspedisiIds)->get();
+
+    //         // Assuming each `gambar_bukti` is a path to a PDF file
+    //         foreach ($tagihan_ekspedisis as $tagihan) {
+    //             $pdfPath = storage_path('public/uploads/' . $tagihan->gambar_bukti);
+
+    //             // Check if the file exists
+    //             if (file_exists($pdfPath)) {
+    //                 $pdfMerger->AddPage();
+    //                 $pdfMerger->setSourceFile($pdfPath);
+    //                 $tplIdx = $pdfMerger->importPage(1);
+    //                 $pdfMerger->useTemplate($tplIdx);
+    //             }
+    //         }
+    //     }
+
+    //     // Save the combined PDF
+    //     $combinedPdfPath = public_path('combined_document.pdf');
+    //     $pdfMerger->Output('F', $combinedPdfPath);
+
+    //     // Optionally, return the combined PDF for download
+    //     return response()->download($combinedPdfPath);
+    // }
 }
