@@ -16,6 +16,7 @@ use App\Models\Detail_faktur;
 use App\Models\Detail_tagihan;
 use App\Models\Detail_tariftambahan;
 use App\Models\Faktur_ekspedisi;
+use App\Models\Karyawan;
 use App\Models\Kendaraan;
 use App\Models\Memo_ekspedisi;
 use App\Models\Memotambahan;
@@ -82,9 +83,12 @@ class InqueryFakturekspedisispkController extends Controller
         $detailtarifs = Detail_tariftambahan::where('faktur_ekspedisi_id', $id)->get();
         $kendaraans = Kendaraan::get();
         $spks = Spk::where('status_spk', 'sj')->get();
+        $karyawans = Karyawan::select('id', 'kode_karyawan', 'nama_lengkap', 'alamat', 'telp')
+            ->where('departemen_id', '4')
+            ->orderBy('nama_lengkap')
+            ->get();
 
-
-        return view('admin.inquery_fakturekspedisispk.update', compact('spks', 'kendaraans', 'memoEkspedisi', 'memoTambahan', 'detailtarifs', 'details', 'inquery', 'pelanggans', 'memos', 'tarifs'));
+        return view('admin.inquery_fakturekspedisispk.update', compact('karyawans', 'spks', 'kendaraans', 'memoEkspedisi', 'memoTambahan', 'detailtarifs', 'details', 'inquery', 'pelanggans', 'memos', 'tarifs'));
         // } else {
         //     // tidak memiliki akses
         //     return back()->with('error', array('Anda tidak memiliki akses'));
@@ -236,6 +240,7 @@ class InqueryFakturekspedisispkController extends Controller
         $cetakpdf = Faktur_ekspedisi::findOrFail($id);
         $cetakpdf->update([
             'kategori' => $request->kategori,
+            'karyawan_id' => $request->karyawan_id,
             'kategoris' => $request->kategoris,
             'tarif_id' => $request->tarif_id,
             'spk_id' => $request->spk_id,

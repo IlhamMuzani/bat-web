@@ -752,4 +752,6 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('klaim_peralatan/cetak-pdf/{id}', [\App\Http\Controllers\Admin\KlaimperalatanController::class, 'cetakpdf']);
     Route::get('hapusperalatan/{id}', [\App\Http\Controllers\Admin\InqueryKlaimperalatanController::class, 'hapusperalatan'])->name('hapusperalatan');
 
+      Route::resource('alamat_muat', \App\Http\Controllers\Admin\AlamatmuatController::class);
+    Route::resource('alamat_bongkar', \App\Http\Controllers\Admin\AlamatbongkarController::class);
 });

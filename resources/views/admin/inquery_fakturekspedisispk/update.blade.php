@@ -12,7 +12,8 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('admin/inquery_fakturekspedisispk') }}">Faktur Ekspedisi</a>
+                        <li class="breadcrumb-item"><a href="{{ url('admin/inquery_fakturekspedisispk') }}">Faktur
+                                Ekspedisi</a>
                         </li>
                         <li class="breadcrumb-item active">Tambah</li>
                     </ol>
@@ -121,11 +122,6 @@
                             </div>
                             <div class="form-group" style="flex: 8;">
                                 <div class="row">
-                                    {{-- <div class="mb-3 mt-4">
-                                <button class="btn btn-primary btn-sm" type="button" onclick="ShowMemo(this.value)">
-                                    <i class="fas fa-plus mr-2"></i> Pilih Pelanggan
-                                </button>
-                            </div> --}}
                                     <div class="form-group" hidden>
                                         <label for="pelanggan_id">pelanggan Id</label>
                                         <input type="text" class="form-control" id="pelanggan_id" readonly
@@ -135,9 +131,8 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label style="font-size:14px" for="kode_pelanggan">Kode Pelanggan</label>
-                                            <input style="font-size:14px"
-                                                type="text" class="form-control" id="kode_pelanggan" readonly
-                                                name="kode_pelanggan" placeholder=""
+                                            <input style="font-size:14px" type="text" class="form-control"
+                                                id="kode_pelanggan" readonly name="kode_pelanggan" placeholder=""
                                                 value="{{ old('kode_pelanggan', $inquery->kode_pelanggan) }}">
                                         </div>
                                     </div>
@@ -145,29 +140,73 @@
                                         <label style="font-size:14px" class="form-label" for="nama_pelanggan">Nama
                                             Pelanggan</label>
                                         <div class="form-group d-flex">
-                                            <input class="form-control"
-                                                id="nama_pelanggan" name="nama_pelanggan" type="text" placeholder=""
+                                            <input class="form-control" id="nama_pelanggan" name="nama_pelanggan"
+                                                type="text" placeholder=""
                                                 value="{{ old('nama_pelanggan', $inquery->nama_pelanggan) }}" readonly
                                                 style="margin-right: 0px; font-size:14px" />
-                                            
+
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label style="font-size:14px" for="telp_pelanggan">No. Telp</label>
-                                            <input style="font-size:14px"
-                                                type="text" class="form-control" id="telp_pelanggan" readonly
-                                                name="telp_pelanggan" placeholder=""
+                                            <input style="font-size:14px" type="text" class="form-control"
+                                                id="telp_pelanggan" readonly name="telp_pelanggan" placeholder=""
                                                 value="{{ old('telp_pelanggan', $inquery->telp_pelanggan) }}">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label style="font-size:14px" for="alamat_pelanggan">Alamat</label>
-                                            <input style="font-size:14px"
-                                                type="text" class="form-control" id="alamat_pelanggan" readonly
-                                                name="alamat_pelanggan" placeholder=""
+                                            <input style="font-size:14px" type="text" class="form-control"
+                                                id="alamat_pelanggan" readonly name="alamat_pelanggan" placeholder=""
                                                 value="{{ old('alamat_pelanggan', $inquery->alamat_pelanggan) }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div id="form_marketing">
+                                    <label style="font-size:14px" class="form-label" for="karyawan_id">Pilih
+                                        Marketing</label>
+                                    <div class="form-group d-flex">
+                                        <input hidden class="form-control" id="karyawan_id" name="karyawan_id"
+                                            type="text" placeholder=""
+                                            value="{{ old('karyawan_id', $inquery->karyawan_id) }}" readonly
+                                            style="margin-right: 10px; font-size:14px" />
+                                        <input onclick="showCategoryModalMarketing(this.value)" class="form-control"
+                                            id="kode_karyawan" name="kode_karyawan" type="text" placeholder=""
+                                            value="{{ old('kode_karyawan', $inquery->karyawan->kode_karyawan ?? null) }}"
+                                            readonly style="margin-right: 10px; font-size:14px" />
+                                        <button class="btn btn-primary" type="button"
+                                            onclick="showCategoryModalMarketing(this.value)">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-size:14px" class="form-label" for="nama_lengkap">Nama
+                                            Marketing</label>
+                                        <div class="form-group d-flex">
+                                            <input class="form-control" id="nama_lengkap" name="nama_lengkap"
+                                                type="text" placeholder=""
+                                                value="{{ old('nama_lengkap', $inquery->karyawan->nama_lengkap ?? null) }}"
+                                                readonly style="font-size:14px" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label style="font-size:14px" for="telp">No. Telp</label>
+                                            <input style="font-size:14px" type="text" class="form-control"
+                                                id="telp" readonly name="telp" placeholder=""
+                                                value="{{ old('telp', $inquery->karyawan->telp ?? null) }}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label style="font-size:14px" for="alamat_karyawan">Alamat</label>
+                                            <input style="font-size:14px" type="text" class="form-control"
+                                                id="alamat_karyawan" readonly name="alamat_karyawan" placeholder=""
+                                                value="{{ old('alamat_karyawan', $inquery->karyawan->alamat ?? null) }}">
                                         </div>
                                     </div>
                                 </div>
@@ -1089,7 +1128,8 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label style="font-size:14px; margin-top:5px" for="tarif">Biaya
+                                                        <label style="font-size:14px; margin-top:5px"
+                                                            for="tarif">Biaya
                                                             Tambahan
                                                             <span class="ml-3">:</span></label>
                                                     </div>
@@ -1114,8 +1154,8 @@
                                                 <label style="font-size:14px; margin-top:5px" for="sub_total">Grand
                                                     Total <span style="margin-left:46px">:</span></label>
                                                 <input style="text-align: end; margin:right:10px; font-size:14px;"
-                                                    type="text" class="form-control sub_total" readonly id="sub_total"
-                                                    name="sub_total" placeholder=""
+                                                    type="text" class="form-control sub_total" readonly
+                                                    id="sub_total" name="sub_total" placeholder=""
                                                     value="{{ old('sub_total', $inquery->grand_total) }}">
                                             </div>
                                         </div>
@@ -1432,6 +1472,53 @@
             </div>
         </div>
 
+
+        <div class="modal fade" id="tableKaryawan" data-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Data Marketing</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive scrollbar m-2">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead class="bg-200 text-900">
+                                    <tr>
+                                        <th class="text-center">No</th>
+                                        <th>Kode Marketing</th>
+                                        <th>Nama Lengkap</th>
+                                        <th>Telp</th>
+                                        <th>Alamat</th>
+                                        <th>Opsi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($karyawans as $karyawan)
+                                        <tr
+                                            onclick="getSelectedDataMarketing('{{ $karyawan->id }}', '{{ $karyawan->kode_karyawan }}', '{{ $karyawan->nama_lengkap }}', '{{ $karyawan->telp }}', '{{ $karyawan->alamat }}')">
+                                            <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td>{{ $karyawan->kode_karyawan }}</td>
+                                            <td>{{ $karyawan->nama_lengkap }}</td>
+                                            <td>{{ $karyawan->telp }}</td>
+                                            <td>{{ $karyawan->alamat }}</td>
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-primary btn-sm"
+                                                    onclick="getSelectedDataMarketing('{{ $karyawan->id }}', '{{ $karyawan->kode_karyawan }}', '{{ $karyawan->nama_lengkap }}', '{{ $karyawan->telp }}', '{{ $karyawan->alamat }}')">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <script>
@@ -2175,6 +2262,25 @@
             document.getElementById('nama_rutetambahan-1').value = NamaRutetambahan_1;
 
             $('#tableSpk').modal('hide');
+        }
+    </script>
+
+
+    <script>
+        function showCategoryModalMarketing(selectedCategory) {
+            $('#tableKaryawan').modal('show');
+        }
+
+        function getSelectedDataMarketing(Karyawan_id, KodeKaryawan, NamaKaryawan, Telp, Alamat) {
+
+            // Assign the values to the corresponding input fields
+            document.getElementById('karyawan_id').value = Karyawan_id;
+            document.getElementById('kode_karyawan').value = KodeKaryawan;
+            document.getElementById('nama_lengkap').value = NamaKaryawan;
+            document.getElementById('telp').value = Telp;
+            document.getElementById('alamat_karyawan').value = Alamat;
+
+            $('#tableKaryawan').modal('hide');
         }
     </script>
 @endsection

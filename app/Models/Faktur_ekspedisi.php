@@ -20,6 +20,7 @@ class Faktur_ekspedisi extends Model
         'spk_id',
         'kode_spk',
         'kode_faktur',
+        'karyawan_id',
         'kategori',
         'kategoris',
         'pph',
@@ -89,6 +90,10 @@ class Faktur_ekspedisi extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class);
+    }
 
     public function kendaraan()
     {

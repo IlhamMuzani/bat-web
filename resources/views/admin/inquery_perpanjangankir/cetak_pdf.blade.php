@@ -108,10 +108,10 @@
             {{-- <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">{{ $loop->iteration }}
                 </td> --}}
             <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">
-                {{ $cetakpdf->nokir->kendaraan->no_kabin }}
+                {{ $cetakpdf->nokir->kendaraan->no_kabin ?? null }}
             </td>
             <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">
-                {{ $cetakpdf->nokir->kendaraan->no_pol }}
+                {{ $cetakpdf->nokir->kendaraan->no_pol ?? null }}
             </td>
             <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">{{ $cetakpdf->masa_berlaku }}
             </td>

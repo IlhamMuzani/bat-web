@@ -591,7 +591,6 @@ class InqueryMemotambahanController extends Controller
         try {
             $item = Memotambahan::findOrFail($id);
 
-            // Assuming there's a foreign key relationship between Memo_ekspedisi and Memotambahan
             $biayatambahan = $item->memo_ekspedisi; // Adjust the relationship name accordingly
 
             if (!$biayatambahan) {

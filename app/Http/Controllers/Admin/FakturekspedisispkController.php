@@ -19,6 +19,7 @@ use App\Models\Detail_memo;
 use App\Models\Detail_memotambahan;
 use App\Models\Detail_tariftambahan;
 use App\Models\Faktur_ekspedisi;
+use App\Models\Karyawan;
 use App\Models\Kendaraan;
 use App\Models\Memo_ekspedisi;
 use App\Models\Memo_tambahan;
@@ -65,6 +66,11 @@ class FakturekspedisispkController extends Controller
         $memos = $memoEkspedisi->concat($memoTambahan);
         $tarifs = Tarif::all();
 
+        $karyawans = Karyawan::select('id', 'kode_karyawan', 'nama_lengkap', 'alamat', 'telp')
+        ->where('departemen_id', '4')
+        ->orderBy('nama_lengkap')
+        ->get();
+        
         return view('admin.faktur_ekspedisispk.index', compact(
             'spks',
             'kendaraans',
@@ -72,6 +78,7 @@ class FakturekspedisispkController extends Controller
             'memos',
             'tarifs',
             'memoEkspedisi',
+            'karyawans',
             'memoTambahan'
         ));
     }
@@ -218,6 +225,7 @@ class FakturekspedisispkController extends Controller
         $tanggal = Carbon::now()->format('Y-m-d');
         $cetakpdf = Faktur_ekspedisi::create([
             'user_id' => auth()->user()->id,
+            'karyawan_id' => $request->karyawan_id,
             'spk_id' => $request->spk_id,
             'kode_spk' => $request->kode_spk,
             'kode_faktur' => $this->kode(),

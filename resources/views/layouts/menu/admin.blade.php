@@ -48,6 +48,8 @@
     request()->is('admin/nokir') ||
     request()->is('admin/stnk') ||
     request()->is('admin/inventory_peralatan') ||
+    request()->is('admin/alamat_muat*') ||
+    request()->is('admin/alamat_bongkar*') ||
     request()->is('admin/sparepart')
         ? 'menu-open'
         : '' }}">
@@ -78,6 +80,8 @@
         request()->is('admin/nokir') ||
         request()->is('admin/stnk') ||
         request()->is('admin/inventory_peralatan') ||
+        request()->is('admin/alamat_muat*') ||
+        request()->is('admin/alamat_bongkar*') ||
         request()->is('admin/sparepart')
             ? 'active'
             : '' }}">
@@ -316,7 +320,7 @@
                 <a href="{{ url('admin/akun') }}"
                     class="nav-link {{ request()->is('admin/akun*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
-                    <p style="font-size: 14px;">Data Barang Akun</p>
+                    <p style="font-size: 14px;">Data Akun</p>
                 </a>
             </li>
         @endif
@@ -326,6 +330,24 @@
                     class="nav-link {{ request()->is('admin/inventory_peralatan*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
                     <p style="font-size: 14px;">Data Inventory Peralatan</p>
+                </a>
+            </li>
+        @endif
+        @if (auth()->check() && auth()->user()->menu['pelanggan'])
+            <li class="nav-item">
+                <a href="{{ url('admin/alamat_muat') }}"
+                    class="nav-link {{ request()->is('admin/alamat_muat*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 14px;">Data Tujuan Muat</p>
+                </a>
+            </li>
+        @endif
+        @if (auth()->check() && auth()->user()->menu['pelanggan'])
+            <li class="nav-item">
+                <a href="{{ url('admin/alamat_bongkar') }}"
+                    class="nav-link {{ request()->is('admin/alamat_bongkar*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 14px;">Data Tujuan Bongkar</p>
                 </a>
             </li>
         @endif

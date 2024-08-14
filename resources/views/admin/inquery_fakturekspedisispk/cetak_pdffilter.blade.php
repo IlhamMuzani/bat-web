@@ -629,7 +629,7 @@
         </table>
         <div style="font-size: 12px; margin-right:300px">Keterangan : {{ $cetakpdf->keterangan }}</div>
         <div style=" margin-top:5px;">
-            <table class="tdd" cellpadding="10" cellspacing="0" style="margin: 0 auto;">
+           <table class="tdd" cellpadding="10" cellspacing="0" style="margin: 0 auto;">
                 <tr>
                     <td style="text-align: center;">
                         <table style="margin: 0 auto;">
@@ -654,6 +654,19 @@
                             </tr>
                             <tr style="text-align: center;">
                                 <td class="label">Finance</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="text-align: center;">
+                        <table style="margin: 0 auto;">
+                            <tr style="text-align: center;">
+                                <td class="label">{{ $cetakpdf->karyawan->nama_lengkap ?? '.' }}</td>
+                            </tr>
+                            <tr>
+                                <td class="separator" colspan="2"><span></span></td>
+                            </tr>
+                            <tr style="text-align: center;">
+                                <td class="label">Marketing</td>
                             </tr>
                         </table>
                     </td>
