@@ -50,6 +50,7 @@
     request()->is('admin/inventory_peralatan') ||
     request()->is('admin/alamat_muat*') ||
     request()->is('admin/alamat_bongkar*') ||
+    request()->is('admin/marketing*') ||
     request()->is('admin/sparepart')
         ? 'menu-open'
         : '' }}">
@@ -82,6 +83,7 @@
         request()->is('admin/inventory_peralatan') ||
         request()->is('admin/alamat_muat*') ||
         request()->is('admin/alamat_bongkar*') ||
+        request()->is('admin/marketing*') ||
         request()->is('admin/sparepart')
             ? 'active'
             : '' }}">
@@ -151,6 +153,15 @@
                     class="nav-link {{ request()->is('admin/pelanggan*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
                     <p style="font-size: 14px;">Data Pelanggan</p>
+                </a>
+            </li>
+        @endif
+        @if (auth()->check() && auth()->user()->menu['pelanggan'])
+            <li class="nav-item">
+                <a href="{{ url('admin/marketing') }}"
+                    class="nav-link {{ request()->is('admin/marketing*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 14px;">Data Marekting</p>
                 </a>
             </li>
         @endif
