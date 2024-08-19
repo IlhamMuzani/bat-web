@@ -290,9 +290,13 @@
                 <td class="text-align: left" style="font-size: 12px; display: block;">Kota Tujuan</td>
                 <td style="text-align: left; font-size: 12px;">
                     <span class="content2">
-                        :@foreach ($cetakpdf->detail_faktur as $item)
-                            {{ $item->nama_rute }}
-                        @endforeach
+                        @if ($cetakpdf->kategoris == 'memo')
+                            :@foreach ($cetakpdf->detail_faktur as $item)
+                                {{ $item->nama_rute }}
+                            @endforeach
+                        @else
+                            : {{ $cetakpdf->sewa_kendaraan->rute_perjalanan->nama_rute ?? null }}
+                        @endif
                     </span>
                     <br>
                 </td>
@@ -629,7 +633,7 @@
         </table>
         <div style="font-size: 12px; margin-right:300px">Keterangan : {{ $cetakpdf->keterangan }}</div>
         <div style=" margin-top:5px;">
-           <table class="tdd" cellpadding="10" cellspacing="0" style="margin: 0 auto;">
+            <table class="tdd" cellpadding="10" cellspacing="0" style="margin: 0 auto;">
                 <tr>
                     <td style="text-align: center;">
                         <table style="margin: 0 auto;">

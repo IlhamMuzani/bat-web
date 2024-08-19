@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Data Pelanggan')
+@section('title', 'Data Rekanan')
 
 @section('content')
 
@@ -22,11 +22,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Data Pelanggan</h1>
+                    <h1 class="m-0">Data Rekanan</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item active">Data Pelanggan</li>
+                        <li class="breadcrumb-item active">Data Rekanan</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -48,21 +48,21 @@
             @endif
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Data Pelanggan</h3>
+                    <h3 class="card-title">Data Rekanan</h3>
                     <div class="float-right">
-                        @if (auth()->check() && auth()->user()->fitur['pelanggan create'])
-                            <a href="{{ url('admin/pelanggan/create') }}" class="btn btn-primary btn-sm">
+                        {{-- @if (auth()->check() && auth()->user()->fitur['vendor create']) --}}
+                            <a href="{{ url('admin/vendor/create') }}" class="btn btn-primary btn-sm">
                                 <i class="fas fa-plus"></i> Tambah
                             </a>
-                        @endif
+                        {{-- @endif --}}
                     </div>
                 </div>
-                <form action="{{ url('admin/pelanggan') }}" method="GET" id="get-keyword" autocomplete="off">
+                <form action="{{ url('admin/vendor') }}" method="GET" id="get-keyword" autocomplete="off">
                     @csrf
                     <div class="row p-3">
                         <div class="col-0 col-md-8"></div>
                         <div class="col-md-4">
-                            <label for="keyword">Cari Pelanggan :</label>
+                            <label for="keyword">Cari Rekanan :</label>
                             <div class="input-group">
                                 <input type="search" class="form-control" name="keyword" id="keyword"
                                     value="{{ Request::get('keyword') }}"
@@ -83,7 +83,7 @@
                             <tr>
                                 <th class="text-center">No</th>
                                 <th>Kode</th>
-                                <th>Nama Pelanggan</th>
+                                <th>Nama Rekanan</th>
                                 {{-- <th>Nama Alias</th> --}}
                                 <th>Nama</th>
                                 <th>Telepon</th>
@@ -92,60 +92,60 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($pelanggans as $pelanggan)
+                            @foreach ($vendors as $vendor)
                                 <tr>
                                     <td class="text-center">{{ $loop->iteration }}</td>
-                                    <td>{{ $pelanggan->kode_pelanggan }}</td>
-                                    <td>{{ $pelanggan->nama_pell }}</td>
-                                    {{-- <td>{{ $pelanggan->nama_alias }}</td> --}}
-                                    <td>{{ $pelanggan->nama_person }}</td>
-                                    <td>{{ $pelanggan->telp }}</td>
-                                    <td data-toggle="modal" data-target="#modal-qrcode-{{ $pelanggan->id }}"
+                                    <td>{{ $vendor->kode_vendor }}</td>
+                                    <td>{{ $vendor->nama_vendor }}</td>
+                                    {{-- <td>{{ $vendor->nama_alias }}</td> --}}
+                                    <td>{{ $vendor->nama_person }}</td>
+                                    <td>{{ $vendor->telp }}</td>
+                                    <td data-toggle="modal" data-target="#modal-qrcode-{{ $vendor->id }}"
                                         style="text-align: center;">
                                         <div style="display: inline-block;">
-                                            {!! DNS2D::getBarcodeHTML("$pelanggan->qrcode_pelanggan", 'QRCODE', 2, 2) !!}
+                                            {!! DNS2D::getBarcodeHTML("$vendor->qrcode_vendor", 'QRCODE', 2, 2) !!}
                                         </div>
                                         {{-- <br>
                                         AB - {{ $user->qrcode_user }} --}}
                                     </td>
                                     <td class="text-center">
-                                        @if (auth()->check() && auth()->user()->fitur['pelanggan show'])
-                                            <a href="{{ url('admin/pelanggan/' . $pelanggan->id) }}"
+                                        {{-- @if (auth()->check() && auth()->user()->fitur['vendor show']) --}}
+                                            <a href="{{ url('admin/vendor/' . $vendor->id) }}"
                                                 class="btn btn-info btn-sm">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                        @endif
-                                        @if (auth()->check() && auth()->user()->fitur['pelanggan update'])
-                                            <a href="{{ url('admin/pelanggan/' . $pelanggan->id . '/edit') }}"
+                                        {{-- @endif
+                                        @if (auth()->check() && auth()->user()->fitur['vendor update']) --}}
+                                            <a href="{{ url('admin/vendor/' . $vendor->id . '/edit') }}"
                                                 class="btn btn-warning btn-sm">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                        @endif
-                                        @if (auth()->check() && auth()->user()->fitur['pelanggan delete'])
+                                        {{-- @endif
+                                        @if (auth()->check() && auth()->user()->fitur['vendor delete']) --}}
                                             <button type="submit" class="btn btn-danger btn-sm" data-toggle="modal"
-                                                data-target="#modal-hapus-{{ $pelanggan->id }}">
+                                                data-target="#modal-hapus-{{ $vendor->id }}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
-                                        @endif
+                                        {{-- @endif --}}
                                     </td>
                                 </tr>
-                                <div class="modal fade" id="modal-hapus-{{ $pelanggan->id }}">
+                                <div class="modal fade" id="modal-hapus-{{ $vendor->id }}">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h4 class="modal-title">Hapus Pelanggan</h4>
+                                                <h4 class="modal-title">Hapus Rekanan</h4>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <p>Yakin hapus pelanggan <strong>{{ $pelanggan->nama_pell }}</strong>?</p>
+                                                <p>Yakin hapus vendor <strong>{{ $vendor->nama_vendor }}</strong>?</p>
                                             </div>
                                             <div class="modal-footer justify-content-between">
                                                 <button type="button" class="btn btn-default"
                                                     data-dismiss="modal">Batal</button>
-                                                <form action="{{ url('admin/pelanggan/' . $pelanggan->id) }}"
+                                                <form action="{{ url('admin/vendor/' . $vendor->id) }}"
                                                     method="POST">
                                                     @csrf
                                                     @method('delete')
@@ -156,7 +156,7 @@
                                     </div>
                                 </div>
 
-                                <div class="modal fade" id="modal-qrcode-{{ $pelanggan->id }}">
+                                <div class="modal fade" id="modal-qrcode-{{ $vendor->id }}">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -172,17 +172,17 @@
                                                 </p> --}}
                                                 <div style="text-align: center;">
                                                     <p style="font-size:20px; font-weight: bold;">
-                                                        {{ $pelanggan->kode_pelanggan }}</p>
+                                                        {{ $vendor->kode_vendor }}</p>
                                                     <div style="display: inline-block;">
-                                                        {!! DNS2D::getBarcodeHTML("$pelanggan->qrcode_pelanggan", 'QRCODE', 15, 15) !!}
+                                                        {!! DNS2D::getBarcodeHTML("$vendor->qrcode_vendor", 'QRCODE', 15, 15) !!}
                                                     </div>
                                                     <p style="font-size:20px; font-weight: bold;">
-                                                        {{ $pelanggan->nama_pell }}</p>
+                                                        {{ $vendor->nama_vendor }}</p>
                                                 </div>
                                                 <div class="modal-footer justify-content-between">
                                                     <button type="button" class="btn btn-default"
                                                         data-dismiss="modal">Batal</button>
-                                                    <a href="{{ url('admin/pelanggan/cetak-pdf/' . $pelanggan->id) }}"
+                                                    <a href="{{ url('admin/vendor/cetak-pdf/' . $vendor->id) }}"
                                                         class="btn btn-primary btn-sm">
                                                         <i class=""></i> Cetak
                                                     </a>
@@ -195,10 +195,10 @@
                         </tbody>
                     </table>
                 </div>
-                @if ($pelanggans->total() > 10)
+                @if ($vendors->total() > 10)
                     <div class="card-footer">
                         <div class="pagination float-right">
-                            {{ $pelanggans->appends(Request::all())->links('pagination::simple-bootstrap-4') }}
+                            {{ $vendors->appends(Request::all())->links('pagination::simple-bootstrap-4') }}
                         </div>
                     </div>
                 @endif

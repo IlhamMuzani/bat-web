@@ -3,52 +3,19 @@
 @section('title', 'Inquery Faktur Ekspedisi')
 
 @section('content')
-    <style>
-        #loadingSpinner {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
+    <div id="loadingSpinner" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
+        <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
+    </div>
 
-        #loadingSpinner img {
-            width: 250px;
-            /* Adjust size as needed */
-        }
-
-        #mainContent,
-        #mainContentSection {
-            display: none;
-        }
-    </style>
-    @if (auth()->user()->id == 49 || auth()->user()->id == 3 || auth()->user()->id == 50 || auth()->user()->id == 2)
-        <div id="loadingSpinner">
-            <img src="{{ asset('storage/uploads/user/cute1.gif') }}" alt="Loading...">
-        </div>
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                setTimeout(function() {
-                    document.getElementById("loadingSpinner").style.display = "none";
-                    document.getElementById("mainContent").style.display = "block";
-                    document.getElementById("mainContentSection").style.display = "block";
-                }, 500); // Adjust the delay time as needed
-            });
-        </script>
-    @else
-        <div id="loadingSpinners" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
-            <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
-        </div>
-
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                setTimeout(function() {
-                    document.getElementById("loadingSpinners").style.display = "none";
-                    document.getElementById("mainContent").style.display = "block";
-                    document.getElementById("mainContentSection").style.display = "block";
-                }, 100); // Adjust the delay time as needed
-            });
-        </script>
-    @endif
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(function() {
+                document.getElementById("loadingSpinner").style.display = "none";
+                document.getElementById("mainContent").style.display = "block";
+                document.getElementById("mainContentSection").style.display = "block";
+            }, 100); // Adjust the delay time as needed
+        });
+    </script>
 
     <!-- Content Header (Page header) -->
     <div class="content-header" style="display: none;" id="mainContent">
@@ -132,7 +99,6 @@
                             </div>
                         </div>
                     </form>
-                    {{-- <button id="hapus-null-button">Hapus Null</button> --}}
                     <table id="datatables66" class="table table-bordered table-striped table-hover" style="font-size: 13px">
                         <thead class="thead-dark">
                             <tr>
@@ -182,7 +148,6 @@
                                         @else
                                             tidak ada
                                         @endif
-
                                     </td>
                                     <td>
                                         @if ($faktur->detail_faktur->first())
@@ -228,8 +193,13 @@
                                                 @endif
                                                 @if (auth()->check() && auth()->user()->fitur['inquery faktur ekspedisi update'])
                                                     @if ($faktur->spk_id == null)
-                                                        <a class="dropdown-item"
-                                                            href="{{ url('admin/inquery_fakturekspedisi/' . $faktur->id . '/edit') }}">Update</a>
+                                                        @if ($faktur->kategoris == 'memo')
+                                                            <a class="dropdown-item"
+                                                                href="{{ url('admin/inquery_fakturekspedisi/' . $faktur->id . '/edit') }}">Update</a>
+                                                        @else
+                                                            <a class="dropdown-item"
+                                                                href="{{ url('admin/inquery_fakturekspedisispk/' . $faktur->id . '/edit') }}">Update</a>
+                                                        @endif
                                                     @else
                                                         <a class="dropdown-item"
                                                             href="{{ url('admin/inquery_fakturekspedisispk/' . $faktur->id . '/edit') }}">Update</a>
@@ -278,29 +248,6 @@
                             @endforeach
                         </tbody>
                     </table>
-
-                    <!-- Modal Konfirmasi Hapus -->
-                    <div class="modal fade" id="modal-confirm-delete" tabindex="-1" role="dialog"
-                        aria-labelledby="modal-confirm-delete-label" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="modal-confirm-delete-label">Konfirmasi Hapus</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    Apakah Anda yakin ingin menghapus faktur yang dipilih?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                    <button type="button" class="btn btn-danger" id="btn-confirm-delete">Hapus</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Modal Loading -->
                     <div class="modal fade" id="modal-loading" tabindex="-1" role="dialog"
                         aria-labelledby="modal-loading-label" aria-hidden="true" data-backdrop="static">
@@ -314,6 +261,29 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Modal Konfirmasi Hapus -->
+                <div class="modal fade" id="modal-confirm-delete" tabindex="-1" role="dialog"
+                    aria-labelledby="modal-confirm-delete-label" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modal-confirm-delete-label">Konfirmasi Hapus</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Apakah Anda yakin ingin menghapus faktur yang dipilih?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                <button type="button" class="btn btn-danger" id="btn-confirm-delete">Hapus</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- /.card-body -->
             </div>
         </div>
@@ -374,6 +344,67 @@
             }
         }
     </script>
+
+    <script>
+        $(function(e) {
+            $("#select_all_ids").click(function() {
+                $('.checkbox_ids').prop('checked', $(this).prop('checked'))
+            })
+        });
+
+        function deleteSelectedData() {
+            var selectedIds = document.querySelectorAll(".checkbox_ids:checked");
+            if (selectedIds.length === 0) {
+                alert("Harap centang setidaknya satu item sebelum menghapus.");
+            } else {
+                // Tampilkan modal konfirmasi
+                $('#modal-confirm-delete').modal('show');
+
+                // Ketika tombol Hapus di modal konfirmasi diklik
+                $('#btn-confirm-delete').click(function() {
+                    var selectedCheckboxes = document.querySelectorAll('.checkbox_ids:checked');
+                    var selectedIds = [];
+                    selectedCheckboxes.forEach(function(checkbox) {
+                        selectedIds.push(checkbox.value);
+                    });
+                    document.getElementById('selectedIds').value = selectedIds.join(',');
+                    var selectedIdsString = selectedIds.join(',');
+                    window.location.href = "{{ url('admin/deletefakturfilter') }}?ids=" + selectedIdsString;
+
+                    // Sembunyikan modal konfirmasi setelah penghapusan dilakukan
+                    $('#modal-confirm-delete').modal('hide');
+                });
+            }
+        }
+    </script>
+
+    <script>
+        function confirmDelete() {
+            var selectedIds = document.querySelectorAll(".checkbox_ids:checked");
+            if (selectedIds.length === 0) {
+                alert("Harap centang setidaknya satu item sebelum menghapus.");
+            } else {
+                // Tampilkan modal konfirmasi
+                $('#modal-confirm-delete').modal('show');
+
+                // Ketika tombol Hapus di modal konfirmasi diklik
+                $('#btn-confirm-delete').click(function() {
+                    var selectedCheckboxes = document.querySelectorAll('.checkbox_ids:checked');
+                    var selectedIds = [];
+                    selectedCheckboxes.forEach(function(checkbox) {
+                        selectedIds.push(checkbox.value);
+                    });
+                    document.getElementById('selectedIds').value = selectedIds.join(',');
+                    var selectedIdsString = selectedIds.join(',');
+                    window.location.href = "{{ url('admin/deletefakturfilter') }}?ids=" + selectedIdsString;
+
+                    // Sembunyikan modal konfirmasi setelah penghapusan dilakukan
+                    $('#modal-confirm-delete').modal('hide');
+                });
+            }
+        }
+    </script>
+
 
     {{-- unpost memo  --}}
     <script>
@@ -508,87 +539,6 @@
                 $('.dropdown-menu').hide();
                 $('tr.dropdown').removeClass('selected').css('background-color',
                     ''); // Menghapus warna latar belakang dari semua baris saat menutup dropdown
-            });
-        });
-    </script>
-
-    <script>
-        $(function(e) {
-            $("#select_all_ids").click(function() {
-                $('.checkbox_ids').prop('checked', $(this).prop('checked'))
-            })
-        });
-
-        function deleteSelectedData() {
-            var selectedIds = document.querySelectorAll(".checkbox_ids:checked");
-            if (selectedIds.length === 0) {
-                alert("Harap centang setidaknya satu item sebelum menghapus.");
-            } else {
-                // Tampilkan modal konfirmasi
-                $('#modal-confirm-delete').modal('show');
-
-                // Ketika tombol Hapus di modal konfirmasi diklik
-                $('#btn-confirm-delete').click(function() {
-                    var selectedCheckboxes = document.querySelectorAll('.checkbox_ids:checked');
-                    var selectedIds = [];
-                    selectedCheckboxes.forEach(function(checkbox) {
-                        selectedIds.push(checkbox.value);
-                    });
-                    document.getElementById('selectedIds').value = selectedIds.join(',');
-                    var selectedIdsString = selectedIds.join(',');
-                    window.location.href = "{{ url('admin/deletefakturfilter') }}?ids=" + selectedIdsString;
-
-                    // Sembunyikan modal konfirmasi setelah penghapusan dilakukan
-                    $('#modal-confirm-delete').modal('hide');
-                });
-            }
-        }
-    </script>
-
-    <script>
-        function confirmDelete() {
-            var selectedIds = document.querySelectorAll(".checkbox_ids:checked");
-            if (selectedIds.length === 0) {
-                alert("Harap centang setidaknya satu item sebelum menghapus.");
-            } else {
-                // Tampilkan modal konfirmasi
-                $('#modal-confirm-delete').modal('show');
-
-                // Ketika tombol Hapus di modal konfirmasi diklik
-                $('#btn-confirm-delete').click(function() {
-                    var selectedCheckboxes = document.querySelectorAll('.checkbox_ids:checked');
-                    var selectedIds = [];
-                    selectedCheckboxes.forEach(function(checkbox) {
-                        selectedIds.push(checkbox.value);
-                    });
-                    document.getElementById('selectedIds').value = selectedIds.join(',');
-                    var selectedIdsString = selectedIds.join(',');
-                    window.location.href = "{{ url('admin/deletefakturfilter') }}?ids=" + selectedIdsString;
-
-                    // Sembunyikan modal konfirmasi setelah penghapusan dilakukan
-                    $('#modal-confirm-delete').modal('hide');
-                });
-            }
-        }
-    </script>
-
-
-    <script>
-        $(document).ready(function() {
-            $('#hapus-null-button').click(function() {
-                $.ajax({
-                    url: "{{ url('admin/inquery_fakturekspedisi/update_deleted_at/') }}",
-                    type: 'GET',
-                    data: {
-                        _token: $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        alert(response.message);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
             });
         });
     </script>

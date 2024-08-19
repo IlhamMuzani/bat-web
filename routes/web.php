@@ -755,4 +755,15 @@ Route::middleware('admin')->prefix('admin')->group(function () {
 
       Route::resource('alamat_muat', \App\Http\Controllers\Admin\AlamatmuatController::class);
     Route::resource('alamat_bongkar', \App\Http\Controllers\Admin\AlamatbongkarController::class);
+
+    Route::get('vendor/search', [\App\Http\Controllers\Admin\VendorController::class, 'search']);
+    Route::resource('vendor', \App\Http\Controllers\Admin\VendorController::class);
+    Route::resource('harga_sewa', \App\Http\Controllers\Admin\HargasewaController::class);
+    Route::resource('sewa_kendaraan', \App\Http\Controllers\Admin\SewakendaraanController::class);
+
+  Route::resource('inquery_sewakendaraan', \App\Http\Controllers\Admin\InquerySewakendaraanController::class);
+  Route::get('inquery_sewakendaraan/unpostsewakendaraan/{id}', [\App\Http\Controllers\Admin\InquerySewakendaraanController::class, 'unpostsewakendaraan']);
+  Route::get('inquery_sewakendaraan/postingsewakendaraan/{id}', [\App\Http\Controllers\Admin\InquerySewakendaraanController::class, 'postingsewakendaraan']);
+  Route::get('hapussewa/{id}', [\App\Http\Controllers\Admin\SewakendaraanController::class, 'hapussewa'])->name('hapussewa');
+
 });

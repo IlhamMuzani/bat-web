@@ -51,6 +51,7 @@
     request()->is('admin/alamat_muat*') ||
     request()->is('admin/alamat_bongkar*') ||
     request()->is('admin/marketing*') ||
+    request()->is('admin/harga_sewa*') ||
     request()->is('admin/sparepart')
         ? 'menu-open'
         : '' }}">
@@ -84,6 +85,7 @@
         request()->is('admin/alamat_muat*') ||
         request()->is('admin/alamat_bongkar*') ||
         request()->is('admin/marketing*') ||
+        request()->is('admin/harga_sewa*') ||
         request()->is('admin/sparepart')
             ? 'active'
             : '' }}">
@@ -153,6 +155,15 @@
                     class="nav-link {{ request()->is('admin/pelanggan*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
                     <p style="font-size: 14px;">Data Pelanggan</p>
+                </a>
+            </li>
+        @endif
+        @if (auth()->check() && auth()->user()->menu['pelanggan'])
+            <li class="nav-item">
+                <a href="{{ url('admin/vendor') }}"
+                    class="nav-link {{ request()->is('admin/vendor*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 14px;">Data Rekanan</p>
                 </a>
             </li>
         @endif
@@ -305,6 +316,15 @@
                     class="nav-link {{ request()->is('admin/tarif*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
                     <p style="font-size: 14px;">Data Tarif</p>
+                </a>
+            </li>
+        @endif
+        @if (auth()->check() && auth()->user()->menu['tarif'])
+            <li class="nav-item">
+                <a href="{{ url('admin/harga_sewa') }}"
+                    class="nav-link {{ request()->is('admin/harga_sewa*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 14px;">Data Harga Sewa</p>
                 </a>
             </li>
         @endif
@@ -576,6 +596,7 @@
     request()->is('admin/buktipotong*') ||
     request()->is('admin/spk*') ||
     request()->is('admin/penerimaan_sj*') ||
+    request()->is('admin/sewa_kendaraan*') ||
     request()->is('admin/pembelian_part*')
         ? 'menu-open'
         : '' }}">
@@ -605,6 +626,7 @@
         request()->is('admin/buktipotong*') ||
         request()->is('admin/spk*') ||
         request()->is('admin/penerimaan_sj*') ||
+        request()->is('admin/sewa_kendaraan*') ||
         request()->is('admin/pembelian_part*')
             ? 'active'
             : '' }}">
@@ -691,6 +713,15 @@
                 </a>
             </li>
         @endif --}}
+        @if (auth()->check() && auth()->user()->menu['memo ekspedisi'])
+            <li class="nav-item">
+                <a href="{{ url('admin/sewa_kendaraan') }}"
+                    class="nav-link {{ request()->is('admin/sewa_kendaraan*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 14px;">Faktur Sewa Kendaraan</p>
+                </a>
+            </li>
+        @endif
         @if (auth()->check() && auth()->user()->menu['memo ekspedisi'])
             <li class="nav-item">
                 <a href="{{ url('admin/spk') }}"

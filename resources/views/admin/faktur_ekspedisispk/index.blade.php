@@ -3,22 +3,8 @@
 @section('title', 'Faktur Ekspedisi')
 
 @section('content')
-    <div id="loadingSpinner" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
-        <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
-    </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            setTimeout(function() {
-                document.getElementById("loadingSpinner").style.display = "none";
-                document.getElementById("mainContent").style.display = "block";
-                document.getElementById("mainContentSection").style.display = "block";
-            }, 100); // Adjust the delay time as needed
-        });
-    </script>
-
     <!-- Content Header (Page header) -->
-    <div class="content-header" style="display: none;" id="mainContent">
+    <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
@@ -26,8 +12,7 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('admin/faktur_ekspedisispk') }}">Faktur Ekspedisi</a>
-                        </li>
+                        <li class="breadcrumb-item"><a href="{{ url('admin/faktur_ekspedisispk') }}">Faktur Ekspedisi</a></li>
                         <li class="breadcrumb-item active">Tambah</li>
                     </ol>
                 </div>
@@ -35,7 +20,8 @@
         </div>
     </div>
 
-    <section class="content" style="display: none;" id="mainContentSection">
+
+    <section class="content">
         <div class="container-fluid">
             @if (session('error'))
                 <div class="alert alert-danger alert-dismissible">
@@ -126,104 +112,154 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div id="form_vendor">
+                            <label style="font-size:14px" class="form-label">Pilih Faktur Sewa Kendaraan</label>
+                            <div class="form-group d-flex">
+                                <input hidden class="form-control" id="sewa_kendaraan_id" name="sewa_kendaraan_id"
+                                    type="text" placeholder="" value="{{ old('sewa_kendaraan_id') }}" readonly
+                                    style="margin-right: 10px; font-size:14px" />
+                                <input onclick="showCategoryModalSewa(this.value)" class="form-control" id="kode_sewa"
+                                    name="kode_sewa" type="text" placeholder="" value="{{ old('kode_sewa') }}" readonly
+                                    style="margin-right: 10px; font-size:14px" />
+                                <button class="btn btn-primary" type="button" onclick="showCategoryModalSewa(this.value)">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                            <div hidden class="form-group">
+                                <label for="vendor_id">Vendor Id</label>
+                                <input type="text" class="form-control" id="vendor_id" readonly name="vendor_id"
+                                    placeholder="" value="{{ old('vendor_id') }}">
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label style="font-size:14px" for="kode_vendor">Kode Rekanan</label>
+                                    <input style="font-size:14px" type="text" class="form-control" id="kode_vendor"
+                                        readonly name="kode_vendor" placeholder="" value="{{ old('kode_vendor') }}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label style="font-size:14px" class="form-label" for="nama_vendor">Nama
+                                    Rekanan</label>
+                                <div class="form-group d-flex">
+                                    <input class="form-control" id="nama_vendor" name="nama_vendor" type="text"
+                                        placeholder="" value="{{ old('nama_vendor') }}" readonly
+                                        style="font-size:14px" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label style="font-size:14px" for="telp_vendor">No. Telp Rekanan</label>
+                                    <input style="font-size:14px" type="text" class="form-control" id="telp_vendor"
+                                        readonly name="telp_vendor" placeholder="" value="{{ old('telp_vendor') }}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label style="font-size:14px" for="alamat_vendor">Alamat Rekanan</label>
+                                    <input style="font-size:14px" type="text" class="form-control" id="alamat_vendor"
+                                        readonly name="alamat_vendor" placeholder="" value="{{ old('alamat_vendor') }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div id="form_pelanggan">
                             <label style="font-size:14px" class="form-label" for="kode_spk">Pilih SPK</label>
                             <div class="form-group d-flex">
                                 <input hidden class="form-control" id="spk_id" name="spk_id" type="text"
                                     placeholder="" value="{{ old('spk_id') }}" readonly
                                     style="margin-right: 10px; font-size:14px" />
                                 <input onclick="showCategoryModalSPK(this.value)" class="form-control" id="kode_spk"
-                                    name="kode_spk" type="text" placeholder="" value="{{ old('kode_spk') }}" readonly
-                                    style="margin-right: 10px; font-size:14px" />
+                                    name="kode_spk" type="text" placeholder="" value="{{ old('kode_spk') }}"
+                                    readonly style="margin-right: 10px; font-size:14px" />
                                 <button class="btn btn-primary" type="button"
                                     onclick="showCategoryModalSPK(this.value)">
                                     <i class="fas fa-search"></i>
                                 </button>
                             </div>
-                            <div class="row">
-                                <div hidden class="form-group">
-                                    <label for="pelanggan_id">pelanggan Id</label>
-                                    <input type="text" class="form-control" id="pelanggan_id" readonly
-                                        name="pelanggan_id" placeholder="" value="{{ old('pelanggan_id') }}">
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label style="font-size:14px" for="kode_pelanggan">Kode Pelanggan</label>
-                                        <input style="font-size:14px" type="text" class="form-control"
-                                            id="kode_pelanggan" readonly name="kode_pelanggan" placeholder=""
-                                            value="{{ old('kode_pelanggan') }}">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <label style="font-size:14px" class="form-label" for="nama_pelanggan">Nama
-                                        Pelanggan</label>
-                                    <div class="form-group d-flex">
-                                        <input class="form-control" id="nama_pelanggan" name="nama_pelanggan"
-                                            type="text" placeholder="" value="{{ old('nama_pelanggan') }}" readonly
-                                            style="margin-right: 0px; font-size:14px" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label style="font-size:14px" for="telp_pelanggan">No. Telp</label>
-                                        <input style="font-size:14px" type="text" class="form-control"
-                                            id="telp_pelanggan" readonly name="telp_pelanggan" placeholder=""
-                                            value="{{ old('telp_pelanggan') }}">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label style="font-size:14px" for="alamat_pelanggan">Alamat</label>
-                                        <input style="font-size:14px" type="text" class="form-control"
-                                            id="alamat_pelanggan" readonly name="alamat_pelanggan" placeholder=""
-                                            value="{{ old('alamat_pelanggan') }}">
-                                    </div>
-                                </div>
+                        </div>
+                        <div hidden class="form-group">
+                            <label for="pelanggan_id">pelanggan Id</label>
+                            <input type="text" class="form-control" id="pelanggan_id" readonly name="pelanggan_id"
+                                placeholder="" value="{{ old('pelanggan_id') }}">
+                        </div>
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label style="font-size:14px" for="kode_pelanggan">Kode Pelanggan</label>
+                                <input style="font-size:14px" type="text" class="form-control" id="kode_pelanggan"
+                                    readonly name="kode_pelanggan" placeholder="" value="{{ old('kode_pelanggan') }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size:14px" class="form-label" for="nama_pelanggan">Nama
+                                Pelanggan</label>
+                            <div class="form-group d-flex">
+                                <input class="form-control" id="nama_pelanggan" name="nama_pelanggan" type="text"
+                                    placeholder="" value="{{ old('nama_pelanggan') }}" readonly
+                                    style="font-size:14px" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label style="font-size:14px" for="telp_pelanggan">No. Telp Pelanggan</label>
+                                <input style="font-size:14px" type="text" class="form-control" id="telp_pelanggan"
+                                    readonly name="telp_pelanggan" placeholder="" value="{{ old('telp_pelanggan') }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label style="font-size:14px" for="alamat_pelanggan">Alamat Pelanggan</label>
+                                <input style="font-size:14px" type="text" class="form-control" id="alamat_pelanggan"
+                                    readonly name="alamat_pelanggan" placeholder=""
+                                    value="{{ old('alamat_pelanggan') }}">
                             </div>
 
-                            <div>
-                                <div id="form_marketing">
-                                    <label style="font-size:14px" class="form-label" for="karyawan_id">Pilih
-                                        Marketing</label>
-                                    <div class="form-group d-flex">
-                                        <input hidden class="form-control" id="karyawan_id" name="karyawan_id"
-                                            type="text" placeholder="" value="{{ old('karyawan_id') }}" readonly
-                                            style="margin-right: 10px; font-size:14px" />
-                                        <input onclick="showCategoryModalMarketing(this.value)" class="form-control"
-                                            id="kode_karyawan" name="kode_karyawan" type="text" placeholder=""
-                                            value="{{ old('kode_karyawan') }}" readonly
-                                            style="margin-right: 10px; font-size:14px" />
-                                        <button class="btn btn-primary" type="button"
-                                            onclick="showCategoryModalMarketing(this.value)">
-                                            <i class="fas fa-search"></i>
-                                        </button>
-                                    </div>
-                                    <div class="form-group">
-                                        <label style="font-size:14px" class="form-label" for="nama_lengkap">Nama
-                                            Marketing</label>
-                                        <div class="form-group d-flex">
-                                            <input class="form-control" id="nama_lengkap" name="nama_lengkap"
-                                                type="text" placeholder="" value="{{ old('nama_lengkap') }}" readonly
-                                                style="font-size:14px" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="form-group">
-                                            <label style="font-size:14px" for="telp">No. Telp</label>
-                                            <input style="font-size:14px" type="text" class="form-control"
-                                                id="telp" readonly name="telp" placeholder=""
-                                                value="{{ old('telp') }}">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="form-group">
-                                            <label style="font-size:14px" for="alamat_karyawan">Alamat</label>
-                                            <input style="font-size:14px" type="text" class="form-control"
-                                                id="alamat_karyawan" readonly name="alamat_karyawan" placeholder=""
-                                                value="{{ old('alamat_karyawan') }}">
-                                        </div>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
 
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div id="form_marketing">
+                            <label style="font-size:14px" class="form-label" for="karyawan_id">Pilih Marketing</label>
+                            <div class="form-group d-flex">
+                                <input hidden class="form-control" id="karyawan_id" name="karyawan_id" type="text"
+                                    placeholder="" value="{{ old('karyawan_id') }}" readonly
+                                    style="margin-right: 10px; font-size:14px" />
+                                <input class="form-control" id="kode_karyawan" name="kode_karyawan" type="text"
+                                    placeholder="" value="{{ old('kode_karyawan') }}" readonly style="font-size:14px" />
+                            </div>
+                            <div class="form-group">
+                                <label style="font-size:14px" class="form-label" for="nama_lengkap">Nama
+                                    Marketing</label>
+                                <div class="form-group d-flex">
+                                    <input class="form-control" id="nama_lengkap" name="nama_lengkap" type="text"
+                                        placeholder="" value="{{ old('nama_lengkap') }}" readonly
+                                        style="font-size:14px" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label style="font-size:14px" for="telp">No. Telp</label>
+                                    <input style="font-size:14px" type="text" class="form-control" id="telp"
+                                        readonly name="telp" placeholder="" value="{{ old('telp') }}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label style="font-size:14px" for="alamat_karyawan">Alamat</label>
+                                    <input style="font-size:14px" type="text" class="form-control"
+                                        id="alamat_karyawan" readonly name="alamat_karyawan" placeholder=""
+                                        value="{{ old('alamat_karyawan') }}">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -461,7 +497,7 @@
                 </div>
                 <div id="non_memo" class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Kendaraan</h3>
+                        <h3 class="card-title">Driver</h3>
                     </div>
                     <div class="card-body">
                         <div class="form-group" hidden>
@@ -469,23 +505,18 @@
                             <input type="text" class="form-control" id="kendaraan_ids" readonly name="kendaraan_ids"
                                 placeholder="" value="{{ old('kendaraan_ids') }}">
                         </div>
-                        <label style="font-size:14px" class="form-label" for="kode_kendaraan">Kode Kendaraan</label>
+                        <label style="font-size:14px" class="form-label" for="nama_sopir">Nama Driver</label>
                         <!-- HTML -->
                         <div id="form-group-kendaraan" class="form-group d-flex">
-                            <input onclick="showCategoryModalkendaraan(this.value)" class="form-control"
-                                id="kode_kendaraan" name="kode_kendaraan" type="text" placeholder=""
-                                value="{{ old('kode_kendaraan') }}" readonly
-                                style="margin-right: 10px; font-size:14px" />
-                            <button class="btn btn-primary" type="button"
-                                onclick="showCategoryModalkendaraan(this.value)">
-                                <i class="fas fa-search"></i>
-                            </button>
-                            <button style="margin-left: 3px" class="btn btn-danger delete-row" type="button">
-                                <i class="fas fa-trash"></i>
-                            </button>
+                            <input class="form-control" id="nama_sopir" name="nama_sopir" type="text" placeholder=""
+                                value="{{ old('nama_sopir') }}" readonly style=" font-size:14px" />
                         </div>
-
                         <div class="form-group">
+                            <label style="font-size:14px" for="telp_sopir">Telp</label>
+                            <input style="font-size:14px" readonly type="text" class="form-control" id="telp_sopir"
+                                name="telp_sopir" placeholder="" value="{{ old('telp_sopir') }}">
+                        </div>
+                        <div hidden class="form-group">
                             <label style="font-size:14px" for="no_kabins">No. Kabin</label>
                             <input style="font-size:14px" type="text" class="form-control" id="no_kabins"
                                 name="no_kabins" placeholder="" value="{{ old('no_kabins') }}">
@@ -493,16 +524,9 @@
 
                         <div class="form-group">
                             <label style="font-size:14px" for="no_pols">No. Pol</label>
-                            <input style="font-size:14px" type="text" class="form-control" id="no_pols"
+                            <input style="font-size:14px" readonly type="text" class="form-control" id="no_pols"
                                 name="no_pols" placeholder="" value="{{ old('no_pols') }}">
                         </div>
-
-                        <div class="form-group">
-                            <label style="font-size:14px" for="nama_sopir">Nama Driver</label>
-                            <input style="font-size:14px" type="text" class="form-control" id="nama_sopir"
-                                name="nama_sopir" placeholder="" value="{{ old('nama_sopir') }}">
-                        </div>
-
                     </div>
                 </div>
                 <div class="card">
@@ -533,29 +557,27 @@
                                 <tr id="pembelian-0">
                                     <td hidden>
                                         <div class="form-group">
-                                            <input onclick="Tarifs(0)" type="text" class="form-control"
-                                                id="tarif_id" value="{{ old('tarif_id') }}" name="tarif_id">
+                                            <input type="text" class="form-control" id="tarif_id"
+                                                value="{{ old('tarif_id') }}" name="tarif_id">
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group">
-                                            <input onclick="Tarifs(0)" style="font-size:14px" type="text"
-                                                class="form-control" readonly id="kode_tarif" name="kode_tarif"
-                                                value="{{ old('kode_tarif') }}">
+                                            <input style="font-size:14px" type="text" class="form-control" readonly
+                                                id="kode_tarif" name="kode_tarif" value="{{ old('kode_tarif') }}">
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group">
-                                            <input onclick="Tarifs(0)" style="font-size:14px" type="text"
-                                                class="form-control" readonly id="nama_tarif" name="nama_tarif"
-                                                value="{{ old('nama_tarif') }}">
+                                            <input style="font-size:14px" type="text" class="form-control" readonly
+                                                id="nama_tarif" name="nama_tarif" value="{{ old('nama_tarif') }}">
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group">
-                                            <input onclick="Tarifs(0)" style="font-size:14px" type="text"
-                                                class="form-control harga_tarif" readonly id="harga_tarif"
-                                                name="harga_tarif" data-row-id="0" value="{{ old('harga_tarif') }}">
+                                            <input style="font-size:14px" type="text" class="form-control harga_tarif"
+                                                readonly id="harga_tarif" name="harga_tarif" data-row-id="0"
+                                                value="{{ old('harga_tarif') }}">
                                         </div>
                                     </td>
                                     <td>
@@ -584,18 +606,25 @@
                                                     M&sup3;</option>
                                                 <option value="rit" {{ old('satuan') == 'rit' ? 'selected' : null }}>
                                                     rit</option>
+                                                <option value="hr" {{ old('satuan') == 'hr' ? 'selected' : null }}>
+                                                    hr</option>
                                             </select>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group">
-                                            <input onclick="Tarifs(0)" style="font-size:14px" type="text"
-                                                class="form-control total_tarif" readonly id="total_tarif"
-                                                name="total_tarif" value="{{ old('total_tarif') }}">
+                                            <input style="font-size:14px" type="text" class="form-control total_tarif"
+                                                readonly id="total_tarif" name="total_tarif"
+                                                value="{{ old('total_tarif') }}">
                                         </div>
                                     </td>
                                     <td style="width: 50px">
-                                        <button type="button" class="btn btn-primary btn-sm" onclick="Tarifs(0)">
+                                        <button id="tarif_pelanggan" type="button" class="btn btn-primary btn-sm"
+                                            onclick="Tarifs(0)">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                        <button id="tarif_vendor" type="button" class="btn btn-primary btn-sm"
+                                            onclick="Tarifsvendor(0)">
                                             <i class="fas fa-plus"></i>
                                         </button>
                                     </td>
@@ -815,6 +844,95 @@
             </form>
         </div>
 
+        <div class="modal fade" id="tableSewa" data-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Data Spk</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive scrollbar m-2">
+                            <table id="datatables66" class="table table-bordered table-striped">
+                                <thead class="bg-200 text-900">
+                                    <tr>
+                                        <th class="text-center">No</th>
+                                        <th>No. Faktur Sewa Kendaraan</th>
+                                        <th>Tanggal</th>
+                                        <th>Nama Rekanan</th>
+                                        <th>Telp</th>
+                                        <th>Opsi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($sewa_kendaraans as $sewa_kendaraan)
+                                        <tr
+                                            onclick="getSelectedDataSewa(
+                                            '{{ $sewa_kendaraan->id }}',
+                                            '{{ $sewa_kendaraan->kode_sewa }}',
+                                            '{{ $sewa_kendaraan->vendor_id }}',
+                                            '{{ $sewa_kendaraan->vendor->kode_vendor ?? '' }}',
+                                            '{{ $sewa_kendaraan->vendor->nama_vendor ?? '' }}',
+                                            '{{ $sewa_kendaraan->vendor->telp ?? '' }}',
+                                            '{{ $sewa_kendaraan->vendor->alamat ?? '' }}',
+                                            '{{ $sewa_kendaraan->pelanggan->id ?? '' }}',
+                                            '{{ $sewa_kendaraan->pelanggan->kode_pelanggan ?? '' }}',
+                                            '{{ $sewa_kendaraan->pelanggan->nama_pell ?? '' }}',
+                                            '{{ $sewa_kendaraan->pelanggan->telp ?? '' }}',
+                                            '{{ $sewa_kendaraan->pelanggan->alamat ?? '' }}',
+                                            '{{ $sewa_kendaraan->pelanggan->karyawan_id ?? '' }}',
+                                            '{{ $sewa_kendaraan->pelanggan->karyawan->kode_karyawan ?? '' }}',
+                                            '{{ $sewa_kendaraan->pelanggan->karyawan->nama_lengkap ?? '' }}',
+                                            '{{ $sewa_kendaraan->pelanggan->karyawan->telp ?? '' }}',
+                                            '{{ $sewa_kendaraan->pelanggan->karyawan->alamat ?? '' }}',
+                                            '{{ $sewa_kendaraan->nama_driver }}',
+                                            '{{ $sewa_kendaraan->telp_driver }}',
+                                            '{{ $sewa_kendaraan->no_pol }}'
+                                            )">
+                                            <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td>{{ $sewa_kendaraan->kode_sewa }}</td>
+                                            <td>{{ $sewa_kendaraan->tanggal_awal }}</td>
+                                            <td>{{ $sewa_kendaraan->vendor->nama_vendor ?? null }}</td>
+                                            <td>{{ $sewa_kendaraan->vendor->telp ?? null }}</td>
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-primary btn-sm"
+                                                    onclick="getSelectedDataSewa(
+                                                        '{{ $sewa_kendaraan->id }}',
+                                                        '{{ $sewa_kendaraan->kode_sewa }}',
+                                                        '{{ $sewa_kendaraan->vendor_id }}',
+                                                        '{{ $sewa_kendaraan->vendor->kode_vendor ?? '' }}',
+                                                        '{{ $sewa_kendaraan->vendor->nama_vendor ?? '' }}',
+                                                        '{{ $sewa_kendaraan->vendor->telp ?? '' }}',
+                                                        '{{ $sewa_kendaraan->vendor->alamat ?? '' }}',
+                                                        '{{ $sewa_kendaraan->pelanggan->id ?? '' }}',
+                                                        '{{ $sewa_kendaraan->pelanggan->kode_pelanggan ?? '' }}',
+                                                        '{{ $sewa_kendaraan->pelanggan->nama_pell ?? '' }}',
+                                                        '{{ $sewa_kendaraan->pelanggan->telp ?? '' }}',
+                                                        '{{ $sewa_kendaraan->pelanggan->alamat ?? '' }}',
+                                                        '{{ $sewa_kendaraan->pelanggan->karyawan_id ?? '' }}',
+                                                        '{{ $sewa_kendaraan->pelanggan->karyawan->kode_karyawan ?? '' }}',
+                                                        '{{ $sewa_kendaraan->pelanggan->karyawan->nama_lengkap ?? '' }}',
+                                                        '{{ $sewa_kendaraan->pelanggan->karyawan->telp ?? '' }}',
+                                                        '{{ $sewa_kendaraan->pelanggan->karyawan->alamat ?? '' }}',
+                                                        '{{ $sewa_kendaraan->nama_driver }}',
+                                                        '{{ $sewa_kendaraan->telp_driver }}',
+                                                        '{{ $sewa_kendaraan->no_pol }}'
+                                                        )">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="modal fade" id="tableSpk" data-backdrop="static">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -835,6 +953,7 @@
                                         <th>Pelanggan</th>
                                         <th>No Kabin</th>
                                         <th>Golongan</th>
+                                        <th>Marketing</th>
                                         <th>Opsi</th>
                                     </tr>
                                 </thead>
@@ -849,6 +968,7 @@
     '{{ $spk->nama_pelanggan }}',
     '{{ $spk->telp }}',
     '{{ $spk->alamat_pelanggan }}',
+    '{{ $spk->pelanggan->karyawan_id ?? '' }}', '{{ $spk->pelanggan->karyawan->kode_karyawan ?? '' }}', '{{ $spk->pelanggan->karyawan->nama_lengkap ?? '' }}', '{{ $spk->pelanggan->karyawan->telp ?? '' }}', '{{ $spk->pelanggan->karyawan->alamat ?? '' }}',
     '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('id')->get(0) ?? '' }}',
     '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('id')->get(1) ?? '' }}',
     '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('kode_memo')->get(0) ?? '' }}',
@@ -884,9 +1004,48 @@
                                             <td>{{ $spk->nama_pelanggan }}</td>
                                             <td>{{ $spk->no_kabin }}</td>
                                             <td>{{ $spk->golongan }}</td>
+                                            <td>{{ $spk->pelanggan->karyawan->nama_lengkap ?? null }}</td>
                                             <td class="text-center">
                                                 <button type="button" class="btn btn-primary btn-sm"
-                                                    onclick="getSelectedDataspk('{{ $spk->id }}', '{{ $spk->kode_spk }}')">
+                                                    onclick="getSelectedDataspk(
+    '{{ $spk->id }}',
+    '{{ $spk->kode_spk }}',
+    '{{ $spk->pelanggan_id }}',
+    '{{ $spk->kode_pelanggan }}',
+    '{{ $spk->nama_pelanggan }}',
+    '{{ $spk->telp }}',
+    '{{ $spk->alamat_pelanggan }}',
+    '{{ $spk->pelanggan->karyawan_id ?? '' }}', '{{ $spk->pelanggan->karyawan->kode_karyawan ?? '' }}', '{{ $spk->pelanggan->karyawan->nama_lengkap ?? '' }}', '{{ $spk->pelanggan->karyawan->telp ?? '' }}', '{{ $spk->pelanggan->karyawan->alamat ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('id')->get(0) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('id')->get(1) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('kode_memo')->get(0) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('kode_memo')->get(1) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('tanggal_awal')->get(0) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('tanggal_awal')->get(1) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('nama_driver')->get(0) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('nama_driver')->get(1) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('telp')->get(0) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('telp')->get(1) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('nama_rute')->get(0) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('nama_rute')->get(1) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('kendaraan_id')->get(0) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('kendaraan_id')->get(1) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('no_kabin')->get(0) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('no_kabin')->get(1) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('no_pol')->get(0) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->pluck('no_pol')->get(1) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->flatMap(function ($memo) {return $memo->memotambahan->where('status', 'posting')->pluck('id');})->get(0) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->flatMap(function ($memo) {return $memo->memotambahan->where('status', 'posting')->pluck('id');})->get(1) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->flatMap(function ($memo) {return $memo->memotambahan->where('status', 'posting')->pluck('kode_tambahan');})->get(0) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->flatMap(function ($memo) {return $memo->memotambahan->where('status', 'posting')->pluck('kode_tambahan');})->get(1) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->flatMap(function ($memo) {return $memo->memotambahan->where('status', 'posting')->pluck('tanggal_awal');})->get(0) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->flatMap(function ($memo) {return $memo->memotambahan->where('status', 'posting')->pluck('tanggal_awal');})->get(1) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->flatMap(function ($memo) {return $memo->memotambahan->where('status', 'posting')->pluck('nama_driver');})->get(0) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->flatMap(function ($memo) {return $memo->memotambahan->where('status', 'posting')->pluck('nama_driver');})->get(1) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->flatMap(function ($memo) {return $memo->memotambahan->where('status', 'posting')->pluck('nama_rute');})->get(0) ?? '' }}',
+    '{{ $spk->memo_ekspedisi->where('status', 'posting')->flatMap(function ($memo) {return $memo->memotambahan->where('status', 'posting')->pluck('nama_rute');})->get(1) ?? '' }}'
+
+     )">
                                                     <i class="fas fa-plus"></i>
                                                 </button>
                                             </td>
@@ -1046,7 +1205,8 @@
                                     <tr
                                         onclick="getTarifs('{{ $tarif->id }}', '{{ $tarif->kode_tarif }}', '{{ $tarif->nama_tarif }}', '{{ $tarif->nominal }}')">
                                         <td class="text-center">{{ $loop->iteration }}</td>
-                                        <td hidden>{{ $tarif->pelanggan->id }}</td>
+                                        <td hidden>{{ $tarif->pelanggan->id ?? null }}</td>
+                                        <td hidden>{{ $tarif->vendor->id ?? null }}</td>
                                         <td>{{ $tarif->kode_tarif }}</td>
                                         <td>{{ $tarif->nama_tarif }}</td>
                                         <td>{{ number_format($tarif->nominal, 0, ',', '.') }}</td>
@@ -1117,7 +1277,7 @@
             </div>
         </div>
 
-         <div class="modal fade" id="tableKaryawan" data-backdrop="static">
+        <div class="modal fade" id="tableKaryawan" data-backdrop="static">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1163,6 +1323,7 @@
                 </div>
             </div>
         </div>
+
     </section>
 
     <script>
@@ -1575,6 +1736,20 @@
             $('#tableTarif').modal('show');
         }
 
+        function Tarifsvendor(selectedCategory) {
+            var nomorId = $('#vendor_id').val(); // Ambil nilai dari form nomor_id
+            // Filter data pelanggan yang memiliki nomor_id yang sesuai
+            $('#datatables3 tbody tr').each(function() {
+                var idPelanggan = $(this).find('td:eq(2)').text(); // Ambil nomor_id dari setiap baris
+                if (idPelanggan === nomorId) {
+                    $(this).show(); // Tampilkan baris jika nomor_id sesuai
+                } else {
+                    $(this).hide(); // Sembunyikan baris jika nomor_id tidak sesuai
+                }
+            });
+            $('#tableTarif').modal('show');
+        }
+
         function getTarifs(Tarif_id, Kodetarif, NamaTarif, Nominal) {
 
             // Set the values in the form fields
@@ -1684,13 +1859,25 @@
             var kategori = document.getElementById('kategoris');
             var memoLabel = document.getElementById('memo_label');
             var nonMemoLabel = document.getElementById('non_memo');
+            var Pelanggan = document.getElementById('form_pelanggan');
+            var Vendor = document.getElementById('form_vendor');
+            var TarifPelanggan = document.getElementById('tarif_pelanggan');
+            var TarifVendor = document.getElementById('tarif_vendor');
 
             if (kategori.value === 'memo') {
                 memoLabel.style.display = 'block';
+                Pelanggan.style.display = 'block';
+                TarifPelanggan.style.display = 'block';
                 nonMemoLabel.style.display = 'none';
+                Vendor.style.display = 'none';
+                TarifVendor.style.display = 'none';
             } else if (kategori.value === 'non memo') {
-                memoLabel.style.display = 'none';
                 nonMemoLabel.style.display = 'block';
+                Vendor.style.display = 'block';
+                TarifVendor.style.display = 'block';
+                memoLabel.style.display = 'none';
+                Pelanggan.style.display = 'none';
+                TarifPelanggan.style.display = 'none';
             }
         }
 
@@ -1735,12 +1922,13 @@
         }
 
         function getSelectedDataspk(Spk_id, Kode_spk, Pelanggan_id, KodePelanggan, NamaPelanggan, Telp, Alamat,
-            MemoEkspedisi_id_0, MemoEkspedisi_id_1, KodeMemo_0, KodeMemo_1, Tanggal_0, Tanggal_1, NamaDriver_0,
+            Marketing_id, KodeKaryawan,
+            NamaKaryawan, Telps, Alamats, MemoEkspedisi_id_0, MemoEkspedisi_id_1, KodeMemo_0, KodeMemo_1, Tanggal_0, Tanggal_1, NamaDriver_0,
             NamaDriver_1,
             TelpDriver_0, TelpDriver_1, NamaRute_0, NamaRute_1, Kendaraan_id_0, Kendaraan_id_1, NoKabin_0, NoKabin_1,
             Nopol_0, Nopol_1, Memotambahan_id_0, Memotambahan_id_1, KodeMemotambahan_0, KodeMemotambahan_1,
             TanggalAwaltambahan_0, TanggalAwaltambahan_1, NamaDrivertambahan_0, NamaDrivertambahan_1, NamaRutetambahan_0,
-            NamaRutetambahan_1) {
+            NamaRutetambahan_1, Vendor_id, KodeVendor, NamaVendor, TelpVendor, AlamatVendor) {
 
             // Assign the values to the corresponding input fields
             document.getElementById('spk_id').value = Spk_id;
@@ -1750,7 +1938,11 @@
             document.getElementById('nama_pelanggan').value = NamaPelanggan;
             document.getElementById('telp_pelanggan').value = Telp;
             document.getElementById('alamat_pelanggan').value = Alamat;
-
+            document.getElementById('karyawan_id').value = Marketing_id;
+            document.getElementById('kode_karyawan').value = KodeKaryawan;
+            document.getElementById('nama_lengkap').value = NamaKaryawan;
+            document.getElementById('telp').value = Telps;
+            document.getElementById('alamat_karyawan').value = Alamats;
             document.getElementById('memo_ekspedisi_id-0').value = MemoEkspedisi_id_0;
             document.getElementById('memo_ekspedisi_id-1').value = MemoEkspedisi_id_1;
             document.getElementById('kode_memo-0').value = KodeMemo_0;
@@ -1780,7 +1972,59 @@
             document.getElementById('nama_rutetambahan-0').value = NamaRutetambahan_0;
             document.getElementById('nama_rutetambahan-1').value = NamaRutetambahan_1;
 
+
             $('#tableSpk').modal('hide');
+        }
+
+        function showCategoryModalSewa(selectedCategory) {
+            $('#tableSewa').modal('show');
+        }
+
+        function getSelectedDataSewa(SewaId, KodeSewa, VendorId, KodeVendor, NamaVendor, TelpVendor, AlamatVendor,
+            Pelanggan_id, KodePelanggan, NamaPelanggan, Telp, Alamat, Karyawan_id,
+            KodeKaryawan, NamaKaryawan, Telps, Alamats, NamaDrivers, TelpDrivers, NoPols) {
+
+            document.getElementById('sewa_kendaraan_id').value = SewaId;
+            document.getElementById('kode_sewa').value = KodeSewa;
+            document.getElementById('vendor_id').value = VendorId;
+            document.getElementById('kode_vendor').value = KodeVendor;
+            document.getElementById('nama_vendor').value = NamaVendor;
+            document.getElementById('telp_vendor').value = TelpVendor;
+            document.getElementById('alamat_vendor').value = AlamatVendor;
+
+            document.getElementById('pelanggan_id').value = Pelanggan_id;
+            document.getElementById('kode_pelanggan').value = KodePelanggan;
+            document.getElementById('nama_pelanggan').value = NamaPelanggan;
+            document.getElementById('telp_pelanggan').value = Telp;
+            document.getElementById('alamat_pelanggan').value = Alamat;
+
+            document.getElementById('karyawan_id').value = Karyawan_id;
+            document.getElementById('kode_karyawan').value = KodeKaryawan;
+            document.getElementById('nama_lengkap').value = NamaKaryawan;
+            document.getElementById('telp').value = Telps;
+            document.getElementById('alamat_karyawan').value = Alamats;
+
+            document.getElementById('nama_sopir').value = NamaDrivers;
+            document.getElementById('telp_sopir').value = TelpDrivers;
+            document.getElementById('no_pols').value = NoPols;
+
+            $('#tableSewa').modal('hide');
+        }
+
+        function showCategoryModalMarketing(selectedCategory) {
+            $('#tableKaryawan').modal('show');
+        }
+
+        function getSelectedDataMarketing(Karyawan_id, KodeKaryawan, NamaKaryawan, Telp, Alamat) {
+
+            // Assign the values to the corresponding input fields
+            document.getElementById('karyawan_id').value = Karyawan_id;
+            document.getElementById('kode_karyawan').value = KodeKaryawan;
+            document.getElementById('nama_lengkap').value = NamaKaryawan;
+            document.getElementById('telp').value = Telp;
+            document.getElementById('alamat_karyawan').value = Alamat;
+
+            $('#tableKaryawan').modal('hide');
         }
     </script>
 
@@ -1828,23 +2072,5 @@
                 }
             });
         });
-    </script>
-
-    <script>
-        function showCategoryModalMarketing(selectedCategory) {
-            $('#tableKaryawan').modal('show');
-        }
-
-        function getSelectedDataMarketing(Karyawan_id, KodeKaryawan, NamaKaryawan, Telp, Alamat) {
-
-            // Assign the values to the corresponding input fields
-            document.getElementById('karyawan_id').value = Karyawan_id;
-            document.getElementById('kode_karyawan').value = KodeKaryawan;
-            document.getElementById('nama_lengkap').value = NamaKaryawan;
-            document.getElementById('telp').value = Telp;
-            document.getElementById('alamat_karyawan').value = Alamat;
-
-            $('#tableKaryawan').modal('hide');
-        }
     </script>
 @endsection

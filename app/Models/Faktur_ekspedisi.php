@@ -18,22 +18,31 @@ class Faktur_ekspedisi extends Model
     [
         'user_id',
         'spk_id',
+        'karyawan_id',
+        'sewa_kendaraan_id',
+        'kode_sewa',
         'kode_spk',
         'kode_faktur',
-        'karyawan_id',
         'kategori',
         'kategoris',
         'pph',
         'qrcode_faktur',
         'kendaraan_id',
         'pelanggan_id',
+        'vendor_id',
         'tarif_id',
         'kode_pelanggan',
         'nama_pelanggan',
         'alamat_pelanggan',
         'telp_pelanggan',
+        'kode_vendor',
+        'nama_vendor',
+        'alamat_vendor',
+        'telp_vendor',
         'kode_tarif',
         'nama_tarif',
+        'nama_sopir',
+        'telp_sopir',
         'telp_driver',
         'harga_tarif',
         'jumlah',
@@ -57,7 +66,6 @@ class Faktur_ekspedisi extends Model
         'kode_memo',
         'no_kabin',
         'no_pol',
-        'nama_sopir',
     ];
 
 
@@ -75,6 +83,16 @@ class Faktur_ekspedisi extends Model
         return $this->belongsTo(Pelanggan::class);
     }
 
+    public function spk()
+    {
+        return $this->belongsTo(Spk::class);
+    }
+
+    public function sewa_kendaraan()
+    {
+        return $this->belongsTo(Sewa_kendaraan::class);
+    }
+
     public function detail_tagihan()
     {
         return $this->hasMany(Detail_tagihan::class);
@@ -88,11 +106,6 @@ class Faktur_ekspedisi extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function karyawan()
-    {
-        return $this->belongsTo(Karyawan::class);
     }
 
     public function kendaraan()
@@ -110,11 +123,16 @@ class Faktur_ekspedisi extends Model
         return $this->hasMany(Detail_tariftambahan::class);
     }
 
-
     public function detail_pelunasan()
     {
         return $this->hasMany(Detail_pelunasan::class);
     }
+
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class);
+    }
+
     public static function getId()
     {
         return $getId = DB::table('faktur_ekspedisis')->orderBy('id', 'DESC')->take(1)->get();

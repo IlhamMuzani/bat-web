@@ -987,7 +987,7 @@ class InqueryMemotambahanController extends Controller
                 return response()->json(['message' => 'Memo not found'], 404);
             }
 
-            // Hapus Detail_memotambahan
+            $item->detail_pengeluaran()->delete();
             $item->delete();
 
             return response()->json(['message' => 'Data deleted successfully']);

@@ -37,5 +37,8 @@ class Detail_memotambahan extends Model
         return $this->belongsTo(Memotambahan::class);
     }
 
-
+    public function detail_pengeluaran()
+    {
+        return $this->hasMany(Detail_pengeluaran::class);
+    }
 }

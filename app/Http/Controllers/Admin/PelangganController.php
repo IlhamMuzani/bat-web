@@ -8,28 +8,58 @@ use App\Models\Supplier;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Karyawan;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class PelangganController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (auth()->check() && auth()->user()->menu['pelanggan']) {
+            $query = Pelanggan::select('id', 'kode_pelanggan', 'nama_pell', 'nama_person', 'telp', 'qrcode_pelanggan');
 
-            $pelanggans = Pelanggan::all();
-            return view('admin/pelanggan.index', compact('pelanggans'));
+            if ($request->has('keyword')) {
+                $keyword = $request->input('keyword');
+                $query->where(function ($q) use ($keyword) {
+                    $q->where('kode_pelanggan', 'like', "%$keyword%")
+                        ->orWhere('nama_pell', 'like', "%$keyword%")
+                        ->orWhere('nama_person', 'like', "%$keyword%")
+                        ->orWhere('telp', 'like', "%$keyword%");
+                });
+            }
+
+            $pelanggans = $query->orderBy('created_at', 'desc')->paginate(10);
+
+            return view('admin.pelanggan.index', compact('pelanggans'));
         } else {
-            // tidak memiliki akses
-            return back()->with('error', array('Anda tidak memiliki akses'));
+            return back()->with('error', 'Anda tidak memiliki akses');
         }
     }
+
+    public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+
+        // Ensure the query is properly formed
+        $karyawans = Pelanggan::where('nama_pell', 'like', "%$keyword%")
+            ->orWhere('kode_pelanggan', 'like', "%$keyword%")
+            ->paginate(10);
+
+        return response()->json($karyawans);
+    }
+
 
     public function create()
     {
         if (auth()->check() && auth()->user()->menu['pelanggan']) {
 
-            return view('admin/pelanggan.create');
+            $karyawans = Karyawan::select('id', 'kode_karyawan', 'nama_lengkap', 'alamat', 'telp')
+                ->where('departemen_id', '4')
+                ->orderBy('nama_lengkap')
+                ->get();
+
+            return view('admin/pelanggan.create', compact('karyawans'));
         } else {
             // tidak memiliki akses
             return back()->with('error', array('Anda tidak memiliki akses'));
@@ -44,6 +74,7 @@ class PelangganController extends Controller
                 'nama_pell' => 'required',
                 // 'nama_alias' => 'required',
                 'alamat' => 'required',
+                'karyawan_id' => 'required',
                 // 'npwp' => 'required',
                 // 'nama_person' => 'required',
                 // 'jabatan' => 'required',
@@ -56,6 +87,7 @@ class PelangganController extends Controller
                 'nama_pell.required' => 'Masukkan nama pelanggan',
                 // 'nama_alias.required' => 'Masukkan nama alias',
                 'alamat.required' => 'Masukkan alamat',
+                'karyawan_id.required' => 'Pilih Marketing',
                 // 'npwp.required' => 'Masukkan no npwp',
                 // 'nama_person.required' => 'Masukkan nama',
                 // 'jabatan.required' => 'Masukkan jabatan',
@@ -100,25 +132,6 @@ class PelangganController extends Controller
         $dompdf->stream();
     }
 
-    // public function kode()
-    // {
-    //     $supplier = Pelanggan::all();
-    //     if ($supplier->isEmpty()) {
-    //         $num = "000001";
-    //     } else {
-    //         $id = Pelanggan::getId();
-    //         foreach ($id as $value);
-    //         $idlm = $value->id;
-    //         $idbr = $idlm + 1;
-    //         $num = sprintf("%06s", $idbr);
-    //     }
-
-    //     $data = 'AP';
-    //     $kode_pelanggan = $data . $num;
-    //     return $kode_pelanggan;
-    // }
-
-
     public function kode()
     {
         $lastBarang = Pelanggan::latest()->first();
@@ -129,10 +142,11 @@ class PelangganController extends Controller
             $num = (int) substr($lastCode, strlen('AP')) + 1;
         }
         $formattedNum = sprintf("%06s", $num);
-        $prefix = 'AP';
+        $prefix = 'AD';
         $newCode = $prefix . $formattedNum;
         return $newCode;
     }
+
 
     public function show($id)
     {
@@ -151,7 +165,11 @@ class PelangganController extends Controller
         if (auth()->check() && auth()->user()->menu['pelanggan']) {
 
             $pelanggan = Pelanggan::where('id', $id)->first();
-            return view('admin/pelanggan.update', compact('pelanggan'));
+            $karyawans = Karyawan::select('id', 'kode_karyawan', 'nama_lengkap', 'alamat', 'telp')
+                ->where('departemen_id', '4')
+                ->orderBy('nama_lengkap')
+                ->get();
+            return view('admin/pelanggan.update', compact('pelanggan', 'karyawans'));
         } else {
             // tidak memiliki akses
             return back()->with('error', array('Anda tidak memiliki akses'));
@@ -166,6 +184,7 @@ class PelangganController extends Controller
                 'nama_pell' => 'required',
                 // 'nama_alias' => 'required',
                 'alamat' => 'required',
+                'karyawan_id' => 'required',
                 // 'npwp' => 'required',
                 // 'nama_person' => 'required',
                 // 'jabatan' => 'required',
@@ -179,6 +198,7 @@ class PelangganController extends Controller
                 'nama_pell.required' => 'Masukkan nama pelanggan',
                 // 'nama_alias.required' => 'Masukkan nama alias',
                 'alamat.required' => 'Masukkan alamat',
+                'karyawan_id.required' => 'Pilih marketing',
                 // 'npwp.required' => 'Masukkan no npwp',
                 // 'nama_person.required' => 'Masukkan nama',
                 // 'jabatan.required' => 'Masukkan jabatan',
@@ -199,6 +219,7 @@ class PelangganController extends Controller
 
         $pelanggan->nama_pell = $request->nama_pell;
         $pelanggan->nama_alias = $request->nama_alias;
+        $pelanggan->karyawan_id = $request->karyawan_id;
         $pelanggan->npwp = $request->npwp;
         $pelanggan->alamat = $request->alamat;
         $pelanggan->nama_person = $request->nama_person;
@@ -212,7 +233,6 @@ class PelangganController extends Controller
         $pelanggan->save();
 
         return redirect('admin/pelanggan')->with('success', 'Berhasil memperbarui pelanggan');
-
     }
 
     public function destroy($id)
