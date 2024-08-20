@@ -172,7 +172,7 @@
                 <a href="{{ url('admin/marketing') }}"
                     class="nav-link {{ request()->is('admin/marketing*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
-                    <p style="font-size: 14px;">Data Marekting</p>
+                    <p style="font-size: 14px;">Data Marketing</p>
                 </a>
             </li>
         @endif
@@ -1134,6 +1134,19 @@
                 </a>
             </li>
         @endif
+
+        @if (auth()->check() && auth()->user()->menu['inquery memo ekspedisi'])
+            <li class="nav-item">
+                <a href="{{ url('admin/inquery_sewakendaraan') }}"
+                    class="nav-link {{ request()->is('admin/inquery_sewakendaraan*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 14px;">Inquery Faktur -<br>
+                        <span style="margin-left: 32px">Sewa Kendaraan</span>
+                    </p>
+                </a>
+            </li>
+        @endif
+
         @if (auth()->check() && auth()->user()->menu['inquery memo ekspedisi'])
             <li class="nav-item">
                 <a href="{{ url('admin/inquery_spk') }}"

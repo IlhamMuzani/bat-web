@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\AlamatmuatController;
 use App\Http\Controllers\Admin\GolonganController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -765,5 +766,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::get('inquery_sewakendaraan/unpostsewakendaraan/{id}', [\App\Http\Controllers\Admin\InquerySewakendaraanController::class, 'unpostsewakendaraan']);
   Route::get('inquery_sewakendaraan/postingsewakendaraan/{id}', [\App\Http\Controllers\Admin\InquerySewakendaraanController::class, 'postingsewakendaraan']);
   Route::get('hapussewa/{id}', [\App\Http\Controllers\Admin\SewakendaraanController::class, 'hapussewa'])->name('hapussewa');
+
+  Route::post('alamat_muat/search', [\App\Http\Controllers\Admin\AlamatmuatController::class, 'searchLocation'])->name('alamat_muat.search');
 
 });
