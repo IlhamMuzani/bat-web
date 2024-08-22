@@ -640,11 +640,6 @@
             </div>
         </div>
     </section>
-
-
-
-
-
     <script>
         function showCategoryModalPelanggan(selectedCategory) {
             $('#tablePelanggan').modal('show');
