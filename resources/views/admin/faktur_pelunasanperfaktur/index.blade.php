@@ -571,12 +571,12 @@
                             <tbody>
                                 @foreach ($returns as $potongan)
                                     <tr onclick="getPotongan({{ $loop->index }})" data-id="{{ $potongan->id }}"
-                                        data-kode_penjualan="{{ $potongan->kode_penjualan }}"
+                                        data-kode_nota="{{ $potongan->kode_nota }}"
                                         data-tanggal_awal="{{ $potongan->tanggal_awal }}"
                                         data-grand_total="{{ $potongan->grand_total }}"
                                         data-param="{{ $loop->index }}">
                                         <td class="text-center">{{ $loop->iteration }}</td>
-                                        <td>{{ $potongan->kode_penjualan }}</td>
+                                        <td>{{ $potongan->kode_nota }}</td>
                                         <td>{{ $potongan->tanggal_awal }}</td>
                                         <td>{{ number_format($potongan->grand_total, 0, ',', '.') }}</td>
                                         <td class="text-center">
@@ -874,7 +874,7 @@
         function getPotongan(rowIndex) {
             var selectedRow = $('#datatables6 tbody tr:eq(' + rowIndex + ')');
             var Potongan_id = selectedRow.data('id');
-            var KodePotongan = selectedRow.data('kode_penjualan');
+            var KodePotongan = selectedRow.data('kode_nota');
             var TanggalAwal = selectedRow.data('tanggal_awal');
             var GrandTotal = selectedRow.data('grand_total');
 
