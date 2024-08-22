@@ -291,12 +291,12 @@
                 <td style="text-align: left; font-size: 12px;">
                     <span class="content2">
                         @if ($cetakpdf->kategoris == 'memo')
-                        :@foreach ($cetakpdf->detail_faktur as $item)
-                            {{ $item->nama_rute }}
-                        @endforeach
-                    @else
-                        : {{ $cetakpdf->sewa_kendaraan->rute_perjalanan->nama_rute ?? null }}
-                    @endif
+                            :@foreach ($cetakpdf->detail_faktur as $item)
+                                {{ $item->nama_rute }}
+                            @endforeach
+                        @else
+                            : {{ $cetakpdf->sewa_kendaraan->rute_perjalanan->nama_rute ?? null }}
+                        @endif
                     </span>
                     <br>
                 </td>
@@ -591,7 +591,7 @@
                         </td>
                         <td class="td" style="text-align: right; padding-right: 23px; font-size: 12px;">
                             {{-- {{ number_format($item->nominal_tambahan, 2, ',', '.') }} --}}
-                            0
+                            0,00
                         </td>
                         @php
                             $totalRuteSum += $item->totalrute;
@@ -617,7 +617,7 @@
                         Ongkos Bongkar :
                     </td>
                     <td class="td" style="text-align: right; padding-right: 23px; font-size: 12px;">
-                        0
+                        0,00
                     </td>
                 </tr>
             @endif

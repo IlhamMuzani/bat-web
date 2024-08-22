@@ -3,7 +3,7 @@
 @section('title', 'Penggantian Oli')
 
 @section('content')
-    <!-- Content Header (Page header) -->
+
     <div id="loadingSpinner" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
         <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
     </div>
@@ -17,7 +17,6 @@
             }, 100); // Adjust the delay time as needed
         });
     </script>
-
     <!-- Content Header (Page header) -->
     <div class="content-header" style="display: none;" id="mainContent">
         <div class="container-fluid">
@@ -58,8 +57,8 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table id="example1" class="table table-bordered table-striped">
-                        <thead>
+                    <table id="datatables66" class="table table-bordered table-striped table-hover" style="font-size: 13px">
+                        <thead class="thead-dark">
                             <tr>
                                 <th class="text-center">No</th>
                                 <th>Kode</th>
@@ -87,6 +86,7 @@
                                             $kendaraan->status_olimesin == 'belum penggantian' ||
                                                 $kendaraan->status_oligardan == 'belum penggantian' ||
                                                 $kendaraan->status_olitransmisi == 'belum penggantian')
+                                                
                                             @if ($kendaraan->status_olimesin == 'belum penggantian')
                                                 <span class="status_olimesin"> Oli Mesin
                                                     <i class="fas fa-exclamation-circle" style="color: red;"></i>

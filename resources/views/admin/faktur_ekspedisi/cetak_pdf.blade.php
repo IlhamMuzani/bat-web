@@ -602,7 +602,7 @@
                     </td>
                     <td class="td" style="text-align: right; padding-right: 23px; font-size: 12px;">
                         {{-- {{ number_format($item->nominal_tambahan, 2, ',', '.') }} --}}
-                        0
+                        0,00
                     </td>
                     @php
                         $totalRuteSum += $item->totalrute;
@@ -613,22 +613,18 @@
         @if ($cetakpdf->detail_tariftambahan->isEmpty())
             <tr>
                 <td class="td" style="text-align: center; padding: 0px; font-size: 12px;">
-
                 </td>
                 <td class="td" style="text-align: center; padding: 0px; font-size: 12px;">
-
                 </td>
                 <td class="td" style="text-align: center; padding: 0px; font-size: 12px;">
-
                 </td>
                 <td class="td" style="text-align: center; padding: 0px; font-size: 12px;">
-
                 </td>
                 <td class="td" style="text-align: right; padding: 2px; font-size: 12px;">
                     Ongkos Bongkar :
                 </td>
                 <td class="td" style="text-align: right; padding-right: 23px; font-size: 12px;">
-                    0
+                    0,00
                 </td>
             </tr>
         @endif

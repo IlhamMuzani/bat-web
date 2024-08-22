@@ -768,5 +768,6 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::get('hapussewa/{id}', [\App\Http\Controllers\Admin\SewakendaraanController::class, 'hapussewa'])->name('hapussewa');
 
   Route::post('alamat_muat/search', [\App\Http\Controllers\Admin\AlamatmuatController::class, 'searchLocation'])->name('alamat_muat.search');
+  Route::resource('lama_penggantianoli', \App\Http\Controllers\Admin\LamapenggantianoliController::class);
 
 });

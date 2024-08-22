@@ -52,6 +52,7 @@
     request()->is('admin/alamat_bongkar*') ||
     request()->is('admin/marketing*') ||
     request()->is('admin/harga_sewa*') ||
+    request()->is('admin/lama_penggantianoli*') ||
     request()->is('admin/sparepart')
         ? 'menu-open'
         : '' }}">
@@ -86,6 +87,7 @@
         request()->is('admin/alamat_bongkar*') ||
         request()->is('admin/marketing*') ||
         request()->is('admin/harga_sewa*') ||
+        request()->is('admin/lama_penggantianoli*') ||
         request()->is('admin/sparepart')
             ? 'active'
             : '' }}">
@@ -379,6 +381,15 @@
                     class="nav-link {{ request()->is('admin/alamat_bongkar*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
                     <p style="font-size: 14px;">Data Tujuan Bongkar</p>
+                </a>
+            </li>
+        @endif
+        @if (auth()->check() && auth()->user()->menu['rute perjalanan'])
+            <li class="nav-item">
+                <a href="{{ url('admin/lama_penggantianoli') }}"
+                    class="nav-link {{ request()->is('admin/lama_penggantianoli*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 14px;">Data Lama Penggantian Oli</p>
                 </a>
             </li>
         @endif
