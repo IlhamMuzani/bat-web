@@ -9,19 +9,14 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Alamat_bongkar extends Model
+class Jarak_km extends Model
 {
     use HasFactory;
     use LogsActivity;
 
     protected $fillable = [
-        'kode_alamat',
-        'pelanggan_id',
-        'vendor_id',
-        'telp',
-        'latitude',
-        'longitude',
-        'alamat',
+        'kode_jarak',
+        'batas',
         'tanggal_awal',
         'tanggal_akhir',
     ];
@@ -36,23 +31,8 @@ class Alamat_bongkar extends Model
             ->logFillable('*');
     }
 
-    public function pelanggan()
-    {
-        return $this->belongsTo(Pelanggan::class);
-    }
-
-    public function vendor()
-    {
-        return $this->belongsTo(Vendor::class);
-    }
-
-    public function spk()
-    {
-        return $this->hasMany(Spk::class);
-    }
-
     public static function getId()
     {
-        return $getId = DB::table('alamat_bongkars')->orderBy('id', 'DESC')->take(1)->get();
+        return $getId = DB::table('batas_kms')->orderBy('id', 'DESC')->take(1)->get();
     }
 }

@@ -45,14 +45,19 @@ class AuthController extends Controller
 
     public function detail($id)
     {
-        $user = User::where('id', $id)->with('karyawan')->first();
+        $user = User::where('id', $id)
+            ->with(['karyawan', 'kendaraan', 'pengambilan_do' => function ($query) {
+                $query->latest()->first(); // Mengambil yang terbaru
+            }])
+            ->first();
 
         if ($user) {
-            return $this->response(TRUE, array('Berhasil menampilkan data'), array($user));
+            return $this->response(TRUE, ['Berhasil menampilkan data'], [$user]);
         } else {
-            return $this->response(FALSE, array('Gagal menampilkan detail!'));
+            return $this->response(FALSE, ['Gagal menampilkan detail!']);
         }
     }
+
 
     public function register(Request $request)
     {

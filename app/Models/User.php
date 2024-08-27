@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
 {
@@ -107,8 +108,13 @@ class User extends Authenticatable
         return $this->belongsTo(Karyawan::class);
     }
 
-    public function kendaraan()
+    public function kendaraan(): HasOne
     {
-        return $this->hasMany(Kendaraan::class);
+        return $this->hasOne(Kendaraan::class, 'user_id');
+    }
+
+    public function pengambilan_do(): HasOne
+    {
+        return $this->hasOne(Pengambilan_do::class, 'user_id');
     }
 }

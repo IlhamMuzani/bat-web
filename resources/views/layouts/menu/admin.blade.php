@@ -53,6 +53,7 @@
     request()->is('admin/marketing*') ||
     request()->is('admin/harga_sewa*') ||
     request()->is('admin/lama_penggantianoli*') ||
+    request()->is('admin/jarak_km*') ||
     request()->is('admin/sparepart')
         ? 'menu-open'
         : '' }}">
@@ -88,6 +89,7 @@
         request()->is('admin/marketing*') ||
         request()->is('admin/harga_sewa*') ||
         request()->is('admin/lama_penggantianoli*') ||
+        request()->is('admin/jarak_km*') ||
         request()->is('admin/sparepart')
             ? 'active'
             : '' }}">
@@ -393,6 +395,15 @@
                 </a>
             </li>
         @endif
+        @if (auth()->check() && auth()->user()->menu['kendaraan'])
+            <li class="nav-item">
+                <a href="{{ url('admin/jarak_km') }}"
+                    class="nav-link {{ request()->is('admin/jarak_km*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 14px;">Data Jarak Update Km</p>
+                </a>
+            </li>
+        @endif
     </ul>
 </li>
 @php
@@ -439,6 +450,7 @@
         request()->is('admin/pemasangan_part*') ||
         request()->is('admin/penggantian_oli*') ||
         request()->is('admin/pemakaian_peralatan*') ||
+        request()->is('admin/status_pemberiando*') ||
         request()->is('admin/status_spk*') ||
         request()->is('admin/status_perjalanan*')
             ? 'active'
@@ -560,7 +572,15 @@
                 </a>
             </li>
         @endif
-
+        @if (auth()->check() && auth()->user()->menu['memo ekspedisi'])
+            <li class="nav-item">
+                <a href="{{ url('admin/status_pemberiando') }}"
+                    class="nav-link {{ request()->is('admin/status_pemberiando*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 13px;">Status Pengambilan DO</p>
+                </a>
+            </li>
+        @endif
         @if (auth()->check() && auth()->user()->menu['pemasangan part'])
             <li class="nav-item">
                 <a href="{{ url('admin/pemakaian_peralatan') }}"
@@ -880,6 +900,7 @@
     request()->is('admin/inqueryklaim_ban*') ||
     request()->is('admin/inquery_pemakaianperalatan*') ||
     request()->is('admin/inquery_klaimperalatan*') ||
+    request()->is('admin/inquery_spk*') ||
     // request()->is('admin/bukti_potongpajak*') ||
     // request()->is('admin/inquery_buktipotongpajak*') ||
     request()->is('admin/inquery_pengeluarankaskecil*')
@@ -916,6 +937,7 @@
         request()->is('admin/inqueryklaim_ban*') ||
         request()->is('admin/inquery_pemakaianperalatan*') ||
         request()->is('admin/inquery_klaimperalatan*') ||
+        request()->is('admin/inquery_spk*') ||
         // request()->is('admin/bukti_potongpajak*') ||
         // request()->is('admin/inquery_buktipotongpajak*') ||
         request()->is('admin/inquery_pengeluarankaskecil*')

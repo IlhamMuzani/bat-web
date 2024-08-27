@@ -36,7 +36,6 @@ class Alamat_muat extends Model
             ->logFillable('*');
     }
 
-
     public function pelanggan()
     {
         return $this->belongsTo(Pelanggan::class);
@@ -56,7 +55,7 @@ class Alamat_muat extends Model
     {
         return $this->hasMany(Pengambilan_do::class);
     }
-    
+
     public static function getId()
     {
         return $getId = DB::table('alamat_muats')->orderBy('id', 'DESC')->take(1)->get();

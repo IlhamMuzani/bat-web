@@ -22,6 +22,13 @@ class Spk extends Model
         'qrcode_spk',
         'user_id',
         'pelanggan_id',
+        'alamat_muat_id',
+        'alamat_bongkar_id',
+        'vendor_id',
+        'kode_vendor',
+        'nama_vendor',
+        'telp_vendor',
+        'alamat_vendor',
         'kode_pelanggan',
         'nama_pelanggan',
         'alamat_pelanggan',
@@ -45,8 +52,6 @@ class Spk extends Model
         'status_spk',
         'tanggal',
         'tanggal_awal',
-
-
 
     ];
 
@@ -77,8 +82,39 @@ class Spk extends Model
         return $this->hasMany(Memo_ekspedisi::class);
     }
 
+    public function faktur_ekspedisi()
+    {
+        return $this->hasMany(Faktur_ekspedisi::class);
+    }
+
+    public function pengambilan_do()
+    {
+        return $this->hasMany(Pengambilan_do::class);
+    }
+
+
     public function rute_perjalanan()
     {
         return $this->belongsTo(Rute_perjalanan::class);
+    }
+
+    public function alamat_muat()
+    {
+        return $this->belongsTo(Alamat_muat::class);
+    }
+
+    public function alamat_bongkar()
+    {
+        return $this->belongsTo(Alamat_bongkar::class);
+    }
+
+    public function pelanggan()
+    {
+        return $this->belongsTo(Pelanggan::class);
+    }
+
+    public static function getId()
+    {
+        return $getId = DB::table('spks')->orderBy('id', 'DESC')->take(1)->get();
     }
 }

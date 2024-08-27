@@ -6,9 +6,12 @@ use App\Http\Controllers\admin\RuteperjalananController;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Alamat_bongkar;
+use App\Models\Alamat_muat;
 use App\Models\Kendaraan;
 use App\Models\Memo_ekspedisi;
 use App\Models\Pelanggan;
+use App\Models\Pengambilan_do;
 use App\Models\Rute_perjalanan;
 use App\Models\Spk;
 use App\Models\User;
@@ -42,7 +45,8 @@ class SpkController extends Controller
         })->get();
         $ruteperjalanans = Rute_perjalanan::all();
         $pelanggans = Pelanggan::all();
-
+        $alamat_muats = Alamat_muat::all();
+        $alamat_bongkars = Alamat_bongkar::all();
 
         $spks = Spk::whereDate('created_at', $today)
             ->orWhere(function ($query) use ($today) {
@@ -52,30 +56,45 @@ class SpkController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('admin.spk.create', compact('kendaraans', 'drivers', 'ruteperjalanans', 'pelanggans'));
+        return view('admin.spk.create', compact(
+            'alamat_muats',
+            'alamat_bongkars',
+            'kendaraans',
+            'drivers',
+            'ruteperjalanans',
+            'pelanggans'
+        ));
     }
 
     public function store(Request $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'kode_spk' => 'unique:spks,kode_spk',
-                'kendaraan_id' => 'required',
-                'pelanggan_id' => 'required',
-                'user_id' => 'required',
-                'rute_perjalanan_id' => 'required',
-                'uang_jalan' => 'required',
-            ],
-            [
-                'kode_spk.unique' => 'Kode spk sudah ada',
-                'kendaraan_id.required' => 'Pilih no kabin',
-                'user_id.required' => 'Pilih driver',
-                'pelanggan_id.required' => 'Pilih Pelanggan',
-                'rute_perjalanan_id.required' => 'Pilih rute perjalanan',
-                'uang_jalan.*' => 'Uang jalan harus berupa angka atau dalam format Rupiah yang valid',
-            ]
-        );
+        $rules = [
+            'kode_spk' => 'unique:spks,kode_spk',
+        ];
+
+        // Define base validation messages
+        $messages = [
+            'kode_spk.unique' => 'Kode spk sudah ada',
+        ];
+
+        // Add additional rules if kategori is not 'non memo'
+        if ($request->kategori !== 'non memo') {
+            $rules['user_id'] = 'required';
+            $rules['rute_perjalanan_id'] = 'required';
+            $rules['kendaraan_id'] = 'required';
+            $rules['uang_jalan'] = 'required';
+
+            $messages['user_id.required'] = 'Pilih driver';
+            $messages['rute_perjalanan_id.required'] = 'Pilih rute perjalanan';
+            $messages['kendaraan_id.required'] = 'Pilih No Kabin';
+            $messages['uang_jalan.*'] = 'Uang jalan harus berupa angka atau dalam format Rupiah yang valid';
+        } else {
+            $rules['vendor_id'] = 'required';
+            $messages['vendor_id.required'] = 'Pilih Vendor';
+        }
+
+        // Validate the request
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
@@ -87,13 +106,22 @@ class SpkController extends Controller
         $tanggal = Carbon::now()->format('Y-m-d');
         $tanggal1 = Carbon::now('Asia/Jakarta');
         $format_tanggal = $tanggal1->format('d F Y');
+
+        $status_spk = $request->kategori === 'non memo' ? 'non memo' : null;
+        $saldo_deposit = $request->saldo_deposit ? str_replace(',', '.', str_replace('.', '', $request->saldo_deposit)) : '0';
+        $uang_jalan = $request->uang_jalan ? str_replace(',', '.', str_replace('.', '', $request->uang_jalan)) : '0';
+
         $cetakpdf = Spk::create(array_merge(
             $request->all(),
             [
                 'admin' => auth()->user()->karyawan->nama_lengkap,
                 'kode_spk' => $this->kode(),
                 'voucher' => '0',
+                'user_id' => $request->user_id,
                 'pelanggan_id' => $request->pelanggan_id,
+                'alamat_muat_id' => $request->alamat_muat_id,
+                'alamat_bongkar_id' => $request->alamat_bongkar_id,
+                'vendor_id' => $request->vendor_id,
                 'kendaraan_id' => $request->kendaraan_id,
                 'no_kabin' => $request->no_kabin,
                 'no_pol' => $request->no_pol,
@@ -106,18 +134,33 @@ class SpkController extends Controller
                 'rute_perjalanan_id' => $request->rute_perjalanan_id,
                 'kode_rute' => $request->kode_rute,
                 'nama_rute' => $request->nama_rute,
-                'saldo_deposit' => str_replace(',', '.', str_replace('.', '', $request->saldo_deposit)),
-                'uang_jalan' => str_replace(',', '.', str_replace('.', '', $request->uang_jalan)),
+                'saldo_deposit' => $saldo_deposit,
+                'uang_jalan' => $uang_jalan,
                 'kode_spk' => $this->kode(),
-                'qrcode_spk' => 'https:///batlink.id/spk/' . $kode,
+                'qrcode_spk' => 'https://javaline.id/spk/' . $kode,
                 'tanggal' => $format_tanggal,
                 'tanggal_awal' => $tanggal,
+                'status_spk' => $status_spk,
                 'status' => 'posting',
             ]
         ));
+
+        $projects = Pengambilan_do::create(array_merge(
+            $request->all(),
+            [
+                'spk_id' => $cetakpdf->id,
+                'kendaraan_id' => $request->kendaraan_id,
+                'rute_perjalanan_id' => $request->rute_perjalanan_id,
+                'user_id' => $request->user_id,
+                'km_awal' => $request->km_awal,
+                'tanggal_awal' => $tanggal,
+                'tanggal' => $format_tanggal,
+                'status' => 'posting',
+            ]
+        ));
+
         return redirect('admin/spk')->with('success', 'Berhasil menambahkan spk');
     }
-
 
     public function kode()
     {

@@ -772,5 +772,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::get('postingfilterpelunasan', [\App\Http\Controllers\Admin\InqueryFakturpelunasanController::class, 'postingfilterpelunasan']);
   Route::get('unpostfilterpelunasan', [\App\Http\Controllers\Admin\InqueryFakturpelunasanController::class, 'unpostfilterpelunasan']);
 
-  
+  Route::resource('status_pemberiando', \App\Http\Controllers\Admin\StatusPemberiandoController::class);
+  Route::resource('jarak_km', \App\Http\Controllers\Admin\JarakkmController::class);
+
 });

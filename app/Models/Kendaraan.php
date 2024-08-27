@@ -56,6 +56,7 @@ class Kendaraan extends Model
         'gambar_barcodesolar',
         'gambar_stnk',
         'timer',
+        'waktu',
         'kota_id',
     ];
 
@@ -106,7 +107,7 @@ class Kendaraan extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function golongan()
@@ -139,6 +140,11 @@ class Kendaraan extends Model
     public function detail_inventories()
     {
         return $this->hasMany(Detail_inventory::class, 'kendaraan_id');
+    }
+
+    public function pengambilan_do()
+    {
+        return $this->hasMany(Pengambilan_do::class);
     }
 
     public static function getId()

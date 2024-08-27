@@ -57,6 +57,26 @@ class Pelanggan extends Model
         return $this->hasMany(Tagihan_ekspedisi::class);
     }
 
+    public function alamat_muat()
+    {
+        return $this->hasMany(Alamat_muat::class);
+    }
+
+    public function alamat_bongkar()
+    {
+        return $this->hasMany(Alamat_bongkar::class);
+    }
+
+    public function pengambilan_do()
+    {
+        return $this->hasMany(Pengambilan_do::class);
+    }
+
+    public function spk()
+    {
+        return $this->hasMany(Spk::class);
+    }
+
     public function karyawan()
     {
         return $this->belongsTo(Karyawan::class);
