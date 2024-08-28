@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Jarak_km;
 use App\Models\Kendaraan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -12,7 +13,7 @@ class KendaraanController extends Controller
     public function listAll()
     {
         $kendaraan = Kendaraan::get();
-        
+
         if (count($kendaraan) > 0) {
             return $this->response(TRUE, array('Berhasil menampilkan data'), $kendaraan);
         } else {
@@ -74,22 +75,26 @@ class KendaraanController extends Controller
     {
         $km = Kendaraan::findOrFail($id);
 
+        $jarak = Jarak_km::first();
+
         $validator = Validator::make(
             $request->all(),
             [
-                'km' => 'required',
                 'km' => [
                     'required',
                     'numeric',
-                    function ($attribute, $value, $fail) use ($km) {
-                        if ($value <= $km->km) {
-                            $fail('Nilai Km harus lebih tinggi dari Km awal');
+                    'min:' . ($km->km + 1),
+                    function ($attribute, $value, $fail) use ($km, $jarak) {
+                        if ($value - $km->km > $jarak->batas) {
+                            $fail('Nilai km baru tidak boleh lebih dari ' . $jarak->batas . ' km dari km awal.');
                         }
                     },
                 ],
             ],
             [
                 'km.required' => 'Masukkan nilai km',
+                'km.numeric' => 'Nilai Km harus berupa angka',
+                'km.min' => 'Nilai Km harus lebih tinggi dari Km awal',
             ]
         );
 
@@ -110,5 +115,4 @@ class KendaraanController extends Controller
             return $this->response(FALSE, array('Gagal memperbarui data!'));
         }
     }
-
 }

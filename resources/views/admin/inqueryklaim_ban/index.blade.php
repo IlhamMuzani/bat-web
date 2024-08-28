@@ -159,15 +159,15 @@
                                         @endif
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             @if ($klaimban->status == 'unpost')
-                                                @if (auth()->check() && auth()->user()->fitur['inquery faktur ekspedisi posting'])
+                                                @if (auth()->check() && auth()->user()->fitur['inquery pemasangan ban posting'])
                                                     <a class="dropdown-item posting-btn"
                                                         data-memo-id="{{ $klaimban->id }}">Posting</a>
                                                 @endif
-                                                @if (auth()->check() && auth()->user()->fitur['inquery faktur ekspedisi update'])
+                                                @if (auth()->check() && auth()->user()->fitur['inquery pemasangan ban update'])
                                                     <a class="dropdown-item"
                                                         href="{{ url('admin/inqueryklaim_ban/' . $klaimban->id . '/edit') }}">Update</a>
                                                 @endif
-                                                @if (auth()->check() && auth()->user()->fitur['inquery faktur ekspedisi show'])
+                                                @if (auth()->check() && auth()->user()->fitur['inquery pemasangan ban show'])
                                                     <a class="dropdown-item"
                                                         href="{{ url('admin/inqueryklaim_ban/' . $klaimban->id) }}">Show</a>
                                                 @endif
@@ -182,17 +182,17 @@
                                                 @endif --}}
                                             @endif
                                             @if ($klaimban->status == 'posting')
-                                                @if (auth()->check() && auth()->user()->fitur['inquery faktur ekspedisi unpost'])
+                                                @if (auth()->check() && auth()->user()->fitur['inquery pemasangan ban unpost'])
                                                     <a class="dropdown-item unpost-btn"
                                                         data-memo-id="{{ $klaimban->id }}">Unpost</a>
                                                 @endif
-                                                @if (auth()->check() && auth()->user()->fitur['inquery faktur ekspedisi show'])
+                                                @if (auth()->check() && auth()->user()->fitur['inquery pemasangan ban show'])
                                                     <a class="dropdown-item"
                                                         href="{{ url('admin/inqueryklaim_ban/' . $klaimban->id) }}">Show</a>
                                                 @endif
                                             @endif
                                             @if ($klaimban->status == 'selesai')
-                                                @if (auth()->check() && auth()->user()->fitur['inquery faktur ekspedisi show'])
+                                                @if (auth()->check() && auth()->user()->fitur['inquery pemasangan ban show'])
                                                     <a class="dropdown-item"
                                                         href="{{ url('admin/inqueryklaim_ban/' . $klaimban->id) }}">Show</a>
                                                 @endif
