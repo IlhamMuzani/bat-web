@@ -22,6 +22,31 @@ class PenggantianOliController extends Controller
     {
         if (auth()->check() && auth()->user()->menu['penggantian oli']) {
 
+            $kendaraanx = Kendaraan::all();
+            foreach ($kendaraanx as $kendaraan) {
+                $updates = [];
+
+                if ($kendaraan->km >= $kendaraan->km_olimesin - 1000) {
+                    $updates['status_olimesin'] = 'belum penggantian';
+                } else {
+                    $updates['status_olimesin'] = 'sudah penggantian';
+                }
+
+                if ($kendaraan->km >= $kendaraan->km_oligardan - 1000) {
+                    $updates['status_oligardan'] = 'belum penggantian';
+                } else {
+                    $updates['status_oligardan'] = 'sudah penggantian';
+                }
+
+                if ($kendaraan->km >= $kendaraan->km_olitransmisi - 1000) {
+                    $updates['status_olitransmisi'] = 'belum penggantian';
+                } else {
+                    $updates['status_olitransmisi'] = 'sudah penggantian';
+                }
+
+                $kendaraan->update($updates);
+            }
+
             Kendaraan::where([
                 ['status_olimesin', 'belum penggantian'],
                 ['status_oligardan', 'belum penggantian'],
@@ -31,18 +56,10 @@ class PenggantianOliController extends Controller
             ]);
 
             $kendaraans = Kendaraan::where(function ($query) {
-                $query->where('status_olimesin', 'konfirmasi')
-                    ->orWhere('status_oligardan', 'konfirmasi')
-                    ->orWhere('status_olitransmisi', 'konfirmasi')
-                    ->orWhere('status_olimesin', 'belum penggantian')
+                $query->where('status_olimesin', 'belum penggantian')
                     ->orWhere('status_oligardan', 'belum penggantian')
                     ->orWhere('status_olitransmisi', 'belum penggantian');
-            })->orderByRaw("CASE
-    WHEN status_olimesin = 'konfirmasi' THEN 1
-    WHEN status_oligardan = 'konfirmasi' THEN 1
-    WHEN status_olitransmisi = 'konfirmasi' THEN 1
-    ELSE 2
-END")->get();
+            })->get();
 
 
             return view('admin.penggantian_oli.index', compact('kendaraans'));
@@ -51,6 +68,7 @@ END")->get();
             return back()->with('error', array('Anda tidak memiliki akses'));
         }
     }
+
 
     public function kendaraan($id)
     {
