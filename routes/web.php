@@ -774,5 +774,6 @@ Route::middleware('admin')->prefix('admin')->group(function () {
 
   Route::resource('status_pemberiando', \App\Http\Controllers\Admin\StatusPemberiandoController::class);
   Route::resource('jarak_km', \App\Http\Controllers\Admin\JarakkmController::class);
+  Route::get('inqueryklaim_ban/cetak-pdf/{id}', [\App\Http\Controllers\Admin\InqueryKlaimbanController::class, 'cetakpdf']);
 
 });
