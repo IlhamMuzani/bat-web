@@ -28,6 +28,7 @@ class Memo_ekspedisi extends Model
         'golongan',
         'status_terpakai',
         'km_awal',
+        'km_akhir',
         'user_id',
         'kode_driver',
         'nama_driver',
