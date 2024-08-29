@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Rute_perjalanan extends Model
 {
@@ -50,6 +51,11 @@ class Rute_perjalanan extends Model
     {
         return $this->hasMany(Pengambilan_do::class);
     }
+
+    // public function pengambilan_do(): HasOne
+    // {
+    //     return $this->hasOne(Pengambilan_do::class, 'rute_perjalanan_id');
+    // }
 
     public static function getId()
     {

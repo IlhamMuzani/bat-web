@@ -77,6 +77,7 @@ class Pengambilan_do extends Model
     {
         return $this->belongsTo(Rute_perjalanan::class);
     }
+    
 
     public function alamat_muat()
     {
