@@ -88,7 +88,7 @@ class MemoekspedisispkController extends Controller
                 // 'kendaraan_id.required' => 'Pilih kendaraan',
             ]
         );
-        
+
         if ($validasi_pelanggan->fails()) {
             $errors = $validasi_pelanggan->errors()->all();
             return back()->withInput()->with('error', $errors);
@@ -105,6 +105,11 @@ class MemoekspedisispkController extends Controller
             case 'Memo Perjalanan':
                 $jarak = Jarak_km::first();
                 $kendaraan = Kendaraan::find($request->kendaraan_id);
+
+                if ($kendaraan == null) {
+                    return back();
+                }
+
                 $validasi_pelanggan = Validator::make(
                     $request->all(),
                     [
@@ -303,7 +308,7 @@ class MemoekspedisispkController extends Controller
                         'umur_ban' => ($kms - $ban->km_pemasangan) + ($ban->jumlah_km ?? 0)
                     ]);
                 }
-                
+
                 $kode = $this->kode();
                 // tgl indo
                 $tanggal1 = Carbon::now('Asia/Jakarta');
@@ -442,6 +447,11 @@ class MemoekspedisispkController extends Controller
             case 'Memo Borong':
                 $jarak = Jarak_km::first();
                 $kendaraan = Kendaraan::find($request->kendaraan_id);
+
+                if ($kendaraan == null) {
+                    return back();
+                }
+
                 $validasi_pelanggan = Validator::make(
                     $request->all(),
                     [
