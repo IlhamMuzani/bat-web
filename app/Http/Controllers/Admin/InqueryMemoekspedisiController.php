@@ -109,10 +109,10 @@ class InqueryMemoekspedisiController extends Controller
 
         $inquery = Memo_ekspedisi::where('id', $id)->first();
 
-        $kendaraans = Kendaraan::all();
-        $drivers = User::whereHas('karyawan', function ($query) {
-            $query->where('departemen_id', '2');
-        })->get();
+        // $kendaraans = Kendaraan::all();
+        // $drivers = User::whereHas('karyawan', function ($query) {
+        //     $query->where('departemen_id', '2');
+        // })->get();
         $ruteperjalanans = Rute_perjalanan::all();
         $biayatambahan = Biaya_tambahan::all();
         $pelanggans = Pelanggan::all();
@@ -124,8 +124,8 @@ class InqueryMemoekspedisiController extends Controller
         return view('admin.inquery_memoekspedisi.update', compact(
             'inquery',
             'pelanggans',
-            'kendaraans',
-            'drivers',
+            // 'kendaraans',
+            // 'drivers',
             'ruteperjalanans',
             'biayatambahan',
             'potonganmemos',

@@ -12,7 +12,8 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('admin/inquery_memoekspedisispk') }}">Memo Ekspedisi</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('admin/inquery_memoekspedisispk') }}">Memo Ekspedisi</a>
+                        </li>
                         <li class="breadcrumb-item active">Tambah</li>
                     </ol>
                 </div>
@@ -922,7 +923,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="tableKendaraan" data-backdrop="static">
+        {{-- <div class="modal fade" id="tableKendaraan" data-backdrop="static">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -967,9 +968,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
-        <div class="modal fade" id="tableDriver" data-backdrop="static">
+        {{-- <div class="modal fade" id="tableDriver" data-backdrop="static">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -987,7 +988,6 @@
                                         <th>Kode Sopir</th>
                                         <th>Nama Sopir</th>
                                         <th>No. Telp</th>
-                                        {{-- <th>Saldo Deposit</th> --}}
                                         <th>Opsi</th>
                                     </tr>
                                 </thead>
@@ -999,7 +999,6 @@
                                             <td>{{ $user->karyawan->kode_karyawan }}</td>
                                             <td>{{ $user->karyawan->nama_lengkap }}</td>
                                             <td>{{ $user->karyawan->telp }}</td>
-                                            {{-- <td>{{ $user->saldodp }}</td> --}}
                                             <td class="text-center">
                                                 <button type="button" class="btn btn-primary btn-sm"
                                                     onclick="getSelectedDatadriver('{{ $user->id }}', '{{ $user->karyawan->kode_karyawan }}', '{{ $user->karyawan->nama_lengkap }}', '{{ $user->karyawan->telp }}', '{{ $user->karyawan->tabungan }}')">
@@ -1014,7 +1013,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         </div>
     </section>
 
@@ -1130,7 +1129,7 @@
             $('#tableRute').modal('show');
         }
 
-   
+
 
         function getSelectedDatarute(Rute_id, KodeRute, NamaRute, Golongan1, Golongan2, Golongan3, Golongan4, Golongan5,
             Golongan6, Golongan7, Golongan8, Golongan9, Golongan10) {

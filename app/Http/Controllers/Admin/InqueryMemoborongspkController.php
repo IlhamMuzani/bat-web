@@ -125,9 +125,9 @@ class InqueryMemoborongspkController extends Controller
         $memos = Memo_ekspedisi::all();
         return view('admin.inquery_memoborongspk.update', compact(
             'inquery',
-            'kendaraans',
+            // 'kendaraans',
             'biayatambahan',
-            'drivers',
+            // 'drivers',
             'ruteperjalanans',
             'memos',
             'detailstambahan',

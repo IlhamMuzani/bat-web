@@ -52,17 +52,17 @@ class MemoekspedisispkController extends Controller
             ->orderBy('created_at', 'desc') // Change 'created_at' to the appropriate timestamp column
             ->get();
 
-        $kendaraans = Kendaraan::all();
-        $drivers = User::whereHas('karyawan', function ($query) {
-            $query->where('departemen_id', '2');
-        })->get();
+        // $kendaraans = Kendaraan::all();
+        // $drivers = User::whereHas('karyawan', function ($query) {
+        //     $query->where('departemen_id', '2');
+        // })->get();
         $ruteperjalanans = Rute_perjalanan::all();
         $biayatambahan = Biaya_tambahan::all();
         $potonganmemos = Potongan_memo::all();
         $pelanggans = Pelanggan::all();
         $memos = Memo_ekspedisi::where(['status_memo' => null, 'status' => 'posting', 'status_memotambahan' => null])->get();
         $saldoTerakhir = Saldo::latest()->first();
-        return view('admin.memo_ekspedisispk.index', compact('spks', 'memos', 'pelanggans', 'kendaraans', 'drivers', 'ruteperjalanans', 'biayatambahan', 'saldoTerakhir', 'potonganmemos'));
+        return view('admin.memo_ekspedisispk.index', compact('spks', 'memos', 'pelanggans', 'ruteperjalanans', 'biayatambahan', 'saldoTerakhir', 'potonganmemos'));
     }
 
 
