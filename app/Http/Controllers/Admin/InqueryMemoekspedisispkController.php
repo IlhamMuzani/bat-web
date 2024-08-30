@@ -23,6 +23,7 @@ use App\Models\Detail_pengeluaran;
 use App\Models\Detail_potongan;
 use App\Models\Detail_tambahan;
 use App\Models\Faktur_ekspedisi;
+use App\Models\Jarak_km;
 use App\Models\Karyawan;
 use App\Models\Kendaraan;
 use App\Models\Memo_ekspedisi;
@@ -186,7 +187,7 @@ class InqueryMemoekspedisispkController extends Controller
             'kategori' => $kategori,
             // Add other common data fields here
         ];
-
+        $jarak = Jarak_km::first(); // Mendapatkan jarak yang akan digunakan untuk validasi
         // Common validation logic
         $validasi_pelanggan = Validator::make(
             $request->all(),
@@ -215,6 +216,18 @@ class InqueryMemoekspedisispkController extends Controller
                         $fail('Uang jalan harus berupa angka atau dalam format Rupiah yang valid.');
                     }
                 }],
+                'km_akhir' => [
+                    'required',
+                    'numeric',
+                    function ($attribute, $value, $fail) use ($request, $jarak) {
+                        $kendaraan = Kendaraan::find($request->kendaraan_id); // Mendapatkan kendaraan berdasarkan ID
+                        if ($kendaraan && $value < $kendaraan->km) { // Hanya jika km_akhir lebih kecil dari km kendaraan
+                            $fail('Nilai km akhir harus lebih tinggi dari km awal');
+                        } elseif ($kendaraan && $value - $kendaraan->km > $jarak->batas) {
+                            $fail('Nilai km tidak boleh lebih dari ' . $jarak->batas . ' km dari km awal.');
+                        }
+                    },
+                ],
             ],
             [
                 'spk_id.required' => 'Pilih spk',
@@ -226,6 +239,8 @@ class InqueryMemoekspedisispkController extends Controller
                 // 'uang_jaminan.required' => 'Cek uang jaminan tidak boleh 0',
                 'uang_jalan.*' => 'Uang jalan harus berupa angka atau dalam format Rupiah yang valid',
                 'sub_total.required' => 'Masukkan total harga',
+                'km_akhir.required' => 'Masukkan km akhir',
+                'km_akhir.numeric' => 'Nilai km harus berupa angka',
             ]
         );
 
@@ -316,6 +331,41 @@ class InqueryMemoekspedisispkController extends Controller
                 ->with('data_pembelians4', $data_pembelians4);
         }
 
+        $kendaraan = Kendaraan::findOrFail($request->kendaraan_id);
+        $kendaraan->update([
+            'km' => $request->km_akhir
+        ]);
+
+        $kms = $request->km_akhir;
+
+        // Periksa apakah selisih kurang dari 1000 atau lebih tinggi dari km_olimesin
+        if (
+            $kms > $kendaraan->km_olimesin - 1000 || $kms > $kendaraan->km_olimesin
+        ) {
+            $status_olimesins = "belum penggantian";
+            $kendaraan->status_olimesin = $status_olimesins;
+        }
+
+        if (
+            $kms > $kendaraan->km_oligardan - 5000 || $kms > $kendaraan->km_oligardan
+        ) {
+            $status_olimesins = "belum penggantian";
+            $kendaraan->status_oligardan = $status_olimesins;
+        }
+
+        if (
+            $kms > $kendaraan->km_olitransmisi - 5000 || $kms > $kendaraan->km_olitransmisi
+        ) {
+            $status_olimesins = "belum penggantian";
+            $kendaraan->status_olitransmisi = $status_olimesins;
+        }
+
+        // Update umur_ban for related ban
+        foreach ($kendaraan->ban as $ban) {
+            $ban->update([
+                'umur_ban' => ($kms - $ban->km_pemasangan) + ($ban->jumlah_km ?? 0)
+            ]);
+        }
         // tgl indo
         $tanggal1 = Carbon::now('Asia/Jakarta');
         $format_tanggal = $tanggal1->format('d F Y');

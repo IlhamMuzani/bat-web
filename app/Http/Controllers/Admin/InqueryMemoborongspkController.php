@@ -20,6 +20,7 @@ use App\Models\Detail_memotambahan;
 use App\Models\Detail_pengeluaran;
 use App\Models\Detail_tambahan;
 use App\Models\Faktur_ekspedisi;
+use App\Models\Jarak_km;
 use App\Models\Karyawan;
 use App\Models\Kendaraan;
 use App\Models\Memo_ekspedisi;
@@ -143,6 +144,7 @@ class InqueryMemoborongspkController extends Controller
     public function update(Request $request, $id)
     {
 
+        $jarak = Jarak_km::first(); // Mendapatkan jarak yang akan digunakan untuk validasi
         $validasi_pelanggan = Validator::make(
             $request->all(),
             [
@@ -154,14 +156,23 @@ class InqueryMemoborongspkController extends Controller
                 'jumlah' => 'required',
                 'satuan' => 'required',
                 'harga_rute' => ['nullable', function ($attribute, $value, $fail) {
-                    // Remove non-numeric characters
                     $numericValue = preg_replace('/[^0-9]/', '', $value);
-
-                    // Check if the resulting string is numeric
                     if (!is_numeric($numericValue)) {
                         $fail('Uang jalan harus berupa angka atau dalam format Rupiah yang valid.');
                     }
                 }],
+                'km_akhir' => [
+                    'required',
+                    'numeric',
+                    function ($attribute, $value, $fail) use ($request, $jarak) {
+                        $kendaraan = Kendaraan::find($request->kendaraan_id); // Mendapatkan kendaraan berdasarkan ID
+                        if ($kendaraan && $value < $kendaraan->km) { // Hanya jika km_akhir lebih kecil dari km kendaraan
+                            $fail('Nilai km akhir harus lebih tinggi dari km awal');
+                        } elseif ($kendaraan && $value - $kendaraan->km > $jarak->batas) {
+                            $fail('Nilai km tidak boleh lebih dari ' . $jarak->batas . ' km dari km awal.');
+                        }
+                    },
+                ],
             ],
             [
                 'spk_id.required' => 'Pilih spk',
@@ -172,6 +183,8 @@ class InqueryMemoborongspkController extends Controller
                 'jumlah.required' => 'Masukkan quantity',
                 'satuan.required' => 'Pilih satuan',
                 'harga_rute.*' => 'Uang jalan harus berupa angka atau dalam format Rupiah yang valid',
+                'km_akhir.required' => 'Masukkan km akhir',
+                'km_akhir.numeric' => 'Nilai km harus berupa angka',
             ]
         );
 
@@ -239,6 +252,42 @@ class InqueryMemoborongspkController extends Controller
         if ($validasi_pelanggan->fails()) {
             $errors = $validasi_pelanggan->errors()->all();
             return back()->withInput()->with('error', $errors);
+        }
+
+        $kendaraan = Kendaraan::findOrFail($request->kendaraan_id);
+        $kendaraan->update([
+            'km' => $request->km_akhir
+        ]);
+
+        $kms = $request->km_akhir;
+
+        // Periksa apakah selisih kurang dari 1000 atau lebih tinggi dari km_olimesin
+        if (
+            $kms > $kendaraan->km_olimesin - 1000 || $kms > $kendaraan->km_olimesin
+        ) {
+            $status_olimesins = "belum penggantian";
+            $kendaraan->status_olimesin = $status_olimesins;
+        }
+
+        if (
+            $kms > $kendaraan->km_oligardan - 5000 || $kms > $kendaraan->km_oligardan
+        ) {
+            $status_olimesins = "belum penggantian";
+            $kendaraan->status_oligardan = $status_olimesins;
+        }
+
+        if (
+            $kms > $kendaraan->km_olitransmisi - 5000 || $kms > $kendaraan->km_olitransmisi
+        ) {
+            $status_olimesins = "belum penggantian";
+            $kendaraan->status_olitransmisi = $status_olimesins;
+        }
+
+        // Update umur_ban for related ban
+        foreach ($kendaraan->ban as $ban) {
+            $ban->update([
+                'umur_ban' => ($kms - $ban->km_pemasangan) + ($ban->jumlah_km ?? 0)
+            ]);
         }
 
         // tgl indo

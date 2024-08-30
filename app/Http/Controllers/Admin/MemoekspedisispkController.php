@@ -19,6 +19,7 @@ use App\Models\Detail_memotambahan;
 use App\Models\Detail_pengeluaran;
 use App\Models\Detail_potongan;
 use App\Models\Detail_tambahan;
+use App\Models\Jarak_km;
 use App\Models\Kendaraan;
 use App\Models\Memo_ekspedisi;
 use App\Models\Memo_tambahan;
@@ -80,12 +81,14 @@ class MemoekspedisispkController extends Controller
             $request->all(),
             [
                 'kategori' => 'required',
+                'kendaraan_id' => 'required',
             ],
             [
                 'kategori.required' => 'Pilih kategori',
+                'kendaraan_id.required' => 'Pilih kendaraan',
             ]
         );
-
+        
         if ($validasi_pelanggan->fails()) {
             $errors = $validasi_pelanggan->errors()->all();
             return back()->withInput()->with('error', $errors);
@@ -100,7 +103,8 @@ class MemoekspedisispkController extends Controller
 
         switch ($kategori) {
             case 'Memo Perjalanan':
-
+                $jarak = Jarak_km::first();
+                $kendaraan = Kendaraan::find($request->kendaraan_id);
                 $validasi_pelanggan = Validator::make(
                     $request->all(),
                     [
@@ -122,6 +126,16 @@ class MemoekspedisispkController extends Controller
                                 $fail('Uang jalan harus berupa angka atau dalam format Rupiah yang valid.');
                             }
                         }],
+                        'km_akhir' => [
+                            'required',
+                            'numeric',
+                            'min:' . ($kendaraan->km + 1),
+                            function ($attribute, $value, $fail) use ($kendaraan, $jarak) {
+                                if ($value - $kendaraan->km > $jarak->batas) {
+                                    $fail('Nilai km baru tidak boleh lebih dari ' . $jarak->batas . ' km dari km awal.');
+                                }
+                            },
+                        ],
                     ],
                     [
                         'spk.required' => 'Pilih Spk',
@@ -135,6 +149,9 @@ class MemoekspedisispkController extends Controller
                         'deposit_driver.required' => 'Masukkan deposit sopir',
                         'deposit_driver.numeric' => 'Deposit harus berupa angka',
                         'uang_jalan.*' => 'Uang jalan harus berupa angka atau dalam format Rupiah yang valid',
+                        'km_akhir.required' => 'Masukkan nilai km',
+                        'km_akhir.numeric' => 'Nilai Km harus berupa angka',
+                        'km_akhir.min' => 'Nilai Km harus lebih tinggi dari Km awal',
                     ]
                 );
 
@@ -251,6 +268,42 @@ class MemoekspedisispkController extends Controller
 
                 $error_pesanans = array();
 
+                $kendaraan = Kendaraan::findOrFail($request->kendaraan_id);
+                $kendaraan->update([
+                    'km' => $request->km_akhir
+                ]);
+
+                $kms = $request->km_akhir;
+
+                // Periksa apakah selisih kurang dari 1000 atau lebih tinggi dari km_olimesin
+                if (
+                    $kms > $kendaraan->km_olimesin - 1000 || $kms > $kendaraan->km_olimesin
+                ) {
+                    $status_olimesins = "belum penggantian";
+                    $kendaraan->status_olimesin = $status_olimesins;
+                }
+
+                if (
+                    $kms > $kendaraan->km_oligardan - 5000 || $kms > $kendaraan->km_oligardan
+                ) {
+                    $status_olimesins = "belum penggantian";
+                    $kendaraan->status_oligardan = $status_olimesins;
+                }
+
+                if (
+                    $kms > $kendaraan->km_olitransmisi - 5000 || $kms > $kendaraan->km_olitransmisi
+                ) {
+                    $status_olimesins = "belum penggantian";
+                    $kendaraan->status_olitransmisi = $status_olimesins;
+                }
+
+                // Update umur_ban for related ban
+                foreach ($kendaraan->ban as $ban) {
+                    $ban->update([
+                        'umur_ban' => ($kms - $ban->km_pemasangan) + ($ban->jumlah_km ?? 0)
+                    ]);
+                }
+                
                 $kode = $this->kode();
                 // tgl indo
                 $tanggal1 = Carbon::now('Asia/Jakarta');
@@ -387,7 +440,8 @@ class MemoekspedisispkController extends Controller
                 break;
 
             case 'Memo Borong':
-
+                $jarak = Jarak_km::first();
+                $kendaraan = Kendaraan::find($request->kendaraan_id);
                 $validasi_pelanggan = Validator::make(
                     $request->all(),
                     [
@@ -411,6 +465,16 @@ class MemoekspedisispkController extends Controller
                                 $fail('Uang jalan harus berupa angka atau dalam format Rupiah yang valid.');
                             }
                         }],
+                        'km_akhir' => [
+                            'required',
+                            'numeric',
+                            'min:' . ($kendaraan->km + 1),
+                            function ($attribute, $value, $fail) use ($kendaraan, $jarak) {
+                                if ($value - $kendaraan->km > $jarak->batas) {
+                                    $fail('Nilai km baru tidak boleh lebih dari ' . $jarak->batas . ' km dari km awal.');
+                                }
+                            },
+                        ],
                     ],
                     [
                         'spk_id.required' => 'Pilih spk',
@@ -424,6 +488,9 @@ class MemoekspedisispkController extends Controller
                         'satuan.required' => 'Pilih satuan',
                         'deposit_drivers.numeric' => 'Deposit harus berupa angka',
                         'harga_rute.*' => 'Uang jalan harus berupa angka atau dalam format Rupiah yang valid',
+                        'km_akhir.required' => 'Masukkan nilai km',
+                        'km_akhir.numeric' => 'Nilai Km harus berupa angka',
+                        'km_akhir.min' => 'Nilai Km harus lebih tinggi dari Km awal',
                     ]
                 );
 
@@ -488,6 +555,42 @@ class MemoekspedisispkController extends Controller
                 if ($validasi_pelanggan->fails()) {
                     $errors = $validasi_pelanggan->errors()->all();
                     return back()->withInput()->with('error', $errors);
+                }
+
+                $kendaraan = Kendaraan::findOrFail($request->kendaraan_id);
+                $kendaraan->update([
+                    'km' => $request->km_akhir
+                ]);
+
+                $kms = $request->km_akhir;
+
+                // Periksa apakah selisih kurang dari 1000 atau lebih tinggi dari km_olimesin
+                if (
+                    $kms > $kendaraan->km_olimesin - 1000 || $kms > $kendaraan->km_olimesin
+                ) {
+                    $status_olimesins = "belum penggantian";
+                    $kendaraan->status_olimesin = $status_olimesins;
+                }
+
+                if (
+                    $kms > $kendaraan->km_oligardan - 5000 || $kms > $kendaraan->km_oligardan
+                ) {
+                    $status_olimesins = "belum penggantian";
+                    $kendaraan->status_oligardan = $status_olimesins;
+                }
+
+                if (
+                    $kms > $kendaraan->km_olitransmisi - 5000 || $kms > $kendaraan->km_olitransmisi
+                ) {
+                    $status_olimesins = "belum penggantian";
+                    $kendaraan->status_olitransmisi = $status_olimesins;
+                }
+
+                // Update umur_ban for related ban
+                foreach ($kendaraan->ban as $ban) {
+                    $ban->update([
+                        'umur_ban' => ($kms - $ban->km_pemasangan) + ($ban->jumlah_km ?? 0)
+                    ]);
                 }
 
                 $kode = $this->kodemb();
