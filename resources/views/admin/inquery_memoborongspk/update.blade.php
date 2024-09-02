@@ -133,7 +133,7 @@
                                             </div>
                                             <div class="col-lg-6">
                                                 <label style="font-size:14px" for="km_akhir">KM Akhir</label>
-                                                <input style="font-size:14px" type="text" class="form-control"
+                                                <input style="font-size:14px" readonly type="text" class="form-control"
                                                     id="km_akhir" name="km_akhir" placeholder=""
                                                     value="{{ old('km_akhir', $inquery->km_akhir) }}" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                                             </div>

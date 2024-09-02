@@ -9,7 +9,7 @@
         "bacon/bacon-qr-code": "^2.0",
         "barryvdh/laravel-dompdf": "^2.0",
         "endroid/qr-code": "4.0",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.8",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
