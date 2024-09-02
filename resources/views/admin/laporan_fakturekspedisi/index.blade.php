@@ -68,31 +68,31 @@
                                 </select>
                             </div>
                             <div class="col-md-2 mb-3">
-    <label for="status">Cari Pelanggan</label>
-    <select class="select2bs4 select2-hidden-accessible" name="pelanggan_id"
-        data-placeholder="Cari Pelanggan.." style="width: 100%;" id="pelanggan_id">
-        <option value="">- Pilih -</option>
-        @foreach ($pelanggans as $pelanggan)
-            <option value="{{ $pelanggan->id }}"
-                {{ Request::get('pelanggan_id') == $pelanggan->id ? 'selected' : '' }}>
-                {{ $pelanggan->nama_pell }}
-            </option>
-        @endforeach
-    </select>
-</div>
-<div class="col-md-2 mb-3">
-    <label for="status">Cari Marketing</label>
-    <select class="select2bs4 select2-hidden-accessible" name="karyawan_id"
-        data-placeholder="Cari Karyawan.." style="width: 100%;" id="karyawan_id">
-        <option value="">- Pilih -</option>
-        @foreach ($karyawans as $karyawan)
-            <option value="{{ $karyawan->id }}"
-                {{ Request::get('karyawan_id') == $karyawan->id ? 'selected' : '' }}>
-                {{ $karyawan->nama_lengkap }}
-            </option>
-        @endforeach
-    </select>
-</div>
+                                <label for="status">Cari Pelanggan</label>
+                                <select class="select2bs4 select2-hidden-accessible" name="pelanggan_id"
+                                    data-placeholder="Cari Pelanggan.." style="width: 100%;" id="pelanggan_id">
+                                    <option value="">- Pilih -</option>
+                                    @foreach ($pelanggans as $pelanggan)
+                                        <option value="{{ $pelanggan->id }}"
+                                            {{ Request::get('pelanggan_id') == $pelanggan->id ? 'selected' : '' }}>
+                                            {{ $pelanggan->nama_pell }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="status">Cari Marketing</label>
+                                <select class="select2bs4 select2-hidden-accessible" name="karyawan_id"
+                                    data-placeholder="Cari Karyawan.." style="width: 100%;" id="karyawan_id">
+                                    <option value="">- Pilih -</option>
+                                    @foreach ($karyawans as $karyawan)
+                                        <option value="{{ $karyawan->id }}"
+                                            {{ Request::get('karyawan_id') == $karyawan->id ? 'selected' : '' }}>
+                                            {{ $karyawan->nama_lengkap }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
 
                             <div class="col-md-2 mb-3">
                                 <label for="tanggal_awal">Tanggal Awal</label>
