@@ -256,10 +256,10 @@ class InqueryMemoborongspkController extends Controller
 
         $kendaraan = Kendaraan::findOrFail($request->kendaraan_id);
         $kendaraan->update([
-            'km' => $request->km_akhir
+            'km' => $request->km_awal
         ]);
 
-        $kms = $request->km_akhir;
+        $kms = $request->km_awal;
 
         // Periksa apakah selisih kurang dari 1000 atau lebih tinggi dari km_olimesin
         if (

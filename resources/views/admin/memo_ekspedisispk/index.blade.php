@@ -127,9 +127,9 @@
                             </div>
                             <div class="form-group" hidden>
                                 <label for="nopol">Id Memo</label>
-                                <input type="text" class="form-control" id="memo_ekspedisi_id"
-                                    name="memo_ekspedisi_id" onclick="ShowMemo(this.value)"
-                                    value="{{ old('memo_ekspedisi_id') }}" readonly placeholder="">
+                                <input type="text" class="form-control" id="memo_ekspedisi_id" name="memo_ekspedisi_id"
+                                    onclick="ShowMemo(this.value)" value="{{ old('memo_ekspedisi_id') }}" readonly
+                                    placeholder="">
                             </div>
 
                             <div class="form-group">
@@ -212,20 +212,21 @@
                                                 id="golongan" readonly name="golongan" placeholder=""
                                                 value="{{ old('golongan') }}">
                                         </div>
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <label style="font-size:14px" for="km">KM Awal</label>
-                                                <input style="font-size:14px" type="text" class="form-control"
-                                                    id="km" readonly name="km_awal" placeholder=""
-                                                    value="{{ old('km_awal') }}">
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <label style="font-size:14px" for="km_akhir">KM Akhir</label>
-                                                <input style="font-size:14px" type="text" class="form-control"
-                                                    id="km_akhir" name="km_akhir" placeholder=""
-                                                    value="{{ old('km_akhir') }}" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
-                                            </div>
+                                        {{-- <div class="row"> --}}
+                                        <div class="form-group">
+                                            <label style="font-size:14px" for="km">KM Awal</label>
+                                            <input style="font-size:14px" type="text" class="form-control"
+                                                id="km" readonly name="km_awal" placeholder=""
+                                                value="{{ old('km_awal') }}">
                                         </div>
+                                        <div hidden class="col-lg-6">
+                                            <label style="font-size:14px" for="km_akhir">KM Akhir</label>
+                                            <input style="font-size:14px" type="text" class="form-control"
+                                                id="km_akhir" name="km_akhir" placeholder=""
+                                                value="{{ old('km_akhir') }}"
+                                                onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                                        </div>
+                                        {{-- </div> --}}
                                         <div class="form-check" style="color:white; margin-top:16px">
                                             <label class="form-check-label">
                                                 .
@@ -2223,7 +2224,8 @@
             $('#tableSpk').modal('show');
         }
 
-        function getSelectedDataspk(Spk_id, KodeSpk, Kendaraan_id, NoKabin, Nopol, Golongan, KmAwal, KmAkhir, User_id, KodeDriver,
+        function getSelectedDataspk(Spk_id, KodeSpk, Kendaraan_id, NoKabin, Nopol, Golongan, KmAwal, KmAkhir, User_id,
+            KodeDriver,
             NamaDriver, Telp, SaldoDP, Rute_id, KodeRute, NamaRute, UangJalan) {
             // Set the values in the form fields
             document.getElementById('spk_id').value = Spk_id;

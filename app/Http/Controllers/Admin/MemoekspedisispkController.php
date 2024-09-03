@@ -103,12 +103,12 @@ class MemoekspedisispkController extends Controller
 
         switch ($kategori) {
             case 'Memo Perjalanan':
-                $jarak = Jarak_km::first();
-                $kendaraan = Kendaraan::find($request->kendaraan_id);
+                // $jarak = Jarak_km::first();
+                // $kendaraan = Kendaraan::find($request->kendaraan_id);
 
-                if ($kendaraan == null) {
-                    return back();
-                }
+                // if ($kendaraan == null) {
+                //     return back();
+                // }
 
                 $validasi_pelanggan = Validator::make(
                     $request->all(),
@@ -131,16 +131,16 @@ class MemoekspedisispkController extends Controller
                                 $fail('Uang jalan harus berupa angka atau dalam format Rupiah yang valid.');
                             }
                         }],
-                        'km_akhir' => [
-                            'required',
-                            'numeric',
-                            'min:' . ($kendaraan->km + 1),
-                            function ($attribute, $value, $fail) use ($kendaraan, $jarak) {
-                                if ($value - $kendaraan->km > $jarak->batas) {
-                                    $fail('Nilai km baru tidak boleh lebih dari ' . $jarak->batas . ' km dari km awal.');
-                                }
-                            },
-                        ],
+                        // 'km_akhir' => [
+                        //     'required',
+                        //     'numeric',
+                        //     'min:' . ($kendaraan->km + 1),
+                        //     function ($attribute, $value, $fail) use ($kendaraan, $jarak) {
+                        //         if ($value - $kendaraan->km > $jarak->batas) {
+                        //             $fail('Nilai km baru tidak boleh lebih dari ' . $jarak->batas . ' km dari km awal.');
+                        //         }
+                        //     },
+                        // ],
                     ],
                     [
                         'spk.required' => 'Pilih Spk',
@@ -154,9 +154,9 @@ class MemoekspedisispkController extends Controller
                         'deposit_driver.required' => 'Masukkan deposit sopir',
                         'deposit_driver.numeric' => 'Deposit harus berupa angka',
                         'uang_jalan.*' => 'Uang jalan harus berupa angka atau dalam format Rupiah yang valid',
-                        'km_akhir.required' => 'Masukkan nilai km',
-                        'km_akhir.numeric' => 'Nilai Km harus berupa angka',
-                        'km_akhir.min' => 'Nilai Km harus lebih tinggi dari Km awal',
+                        // 'km_akhir.required' => 'Masukkan nilai km',
+                        // 'km_akhir.numeric' => 'Nilai Km harus berupa angka',
+                        // 'km_akhir.min' => 'Nilai Km harus lebih tinggi dari Km awal',
                     ]
                 );
 
@@ -275,10 +275,10 @@ class MemoekspedisispkController extends Controller
 
                 $kendaraan = Kendaraan::findOrFail($request->kendaraan_id);
                 $kendaraan->update([
-                    'km' => $request->km_akhir
+                    'km' => $request->km_awal
                 ]);
 
-                $kms = $request->km_akhir;
+                $kms = $request->km_awal;
 
                 // Periksa apakah selisih kurang dari 1000 atau lebih tinggi dari km_olimesin
                 if (
@@ -445,12 +445,12 @@ class MemoekspedisispkController extends Controller
                 break;
 
             case 'Memo Borong':
-                $jarak = Jarak_km::first();
-                $kendaraan = Kendaraan::find($request->kendaraan_id);
+                // $jarak = Jarak_km::first();
+                // $kendaraan = Kendaraan::find($request->kendaraan_id);
 
-                if ($kendaraan == null) {
-                    return back();
-                }
+                // if ($kendaraan == null) {
+                //     return back();
+                // }
 
                 $validasi_pelanggan = Validator::make(
                     $request->all(),
@@ -475,16 +475,16 @@ class MemoekspedisispkController extends Controller
                                 $fail('Uang jalan harus berupa angka atau dalam format Rupiah yang valid.');
                             }
                         }],
-                        'km_akhir' => [
-                            'required',
-                            'numeric',
-                            'min:' . ($kendaraan->km + 1),
-                            function ($attribute, $value, $fail) use ($kendaraan, $jarak) {
-                                if ($value - $kendaraan->km > $jarak->batas) {
-                                    $fail('Nilai km baru tidak boleh lebih dari ' . $jarak->batas . ' km dari km awal.');
-                                }
-                            },
-                        ],
+                        // 'km_akhir' => [
+                        //     'required',
+                        //     'numeric',
+                        //     'min:' . ($kendaraan->km + 1),
+                        //     function ($attribute, $value, $fail) use ($kendaraan, $jarak) {
+                        //         if ($value - $kendaraan->km > $jarak->batas) {
+                        //             $fail('Nilai km baru tidak boleh lebih dari ' . $jarak->batas . ' km dari km awal.');
+                        //         }
+                        //     },
+                        // ],
                     ],
                     [
                         'spk_id.required' => 'Pilih spk',
@@ -498,9 +498,9 @@ class MemoekspedisispkController extends Controller
                         'satuan.required' => 'Pilih satuan',
                         'deposit_drivers.numeric' => 'Deposit harus berupa angka',
                         'harga_rute.*' => 'Uang jalan harus berupa angka atau dalam format Rupiah yang valid',
-                        'km_akhir.required' => 'Masukkan nilai km',
-                        'km_akhir.numeric' => 'Nilai Km harus berupa angka',
-                        'km_akhir.min' => 'Nilai Km harus lebih tinggi dari Km awal',
+                        // 'km_akhir.required' => 'Masukkan nilai km',
+                        // 'km_akhir.numeric' => 'Nilai Km harus berupa angka',
+                        // 'km_akhir.min' => 'Nilai Km harus lebih tinggi dari Km awal',
                     ]
                 );
 
@@ -569,10 +569,10 @@ class MemoekspedisispkController extends Controller
 
                 $kendaraan = Kendaraan::findOrFail($request->kendaraan_id);
                 $kendaraan->update([
-                    'km' => $request->km_akhir
+                    'km' => $request->km_awal
                 ]);
 
-                $kms = $request->km_akhir;
+                $kms = $request->km_awal;
 
                 // Periksa apakah selisih kurang dari 1000 atau lebih tinggi dari km_olimesin
                 if (

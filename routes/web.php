@@ -776,4 +776,6 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::resource('jarak_km', \App\Http\Controllers\Admin\JarakkmController::class);
   Route::get('inqueryklaim_ban/cetak-pdf/{id}', [\App\Http\Controllers\Admin\InqueryKlaimbanController::class, 'cetakpdf']);
 
+  Route::post('ambil_km/{id}', [\App\Http\Controllers\Admin\SpkController::class, 'ambil_km'])->name('ambil_km');
+
 });
