@@ -32,11 +32,11 @@ class AlamatbongkarController extends Controller
             $request->all(),
             [
                 'alamat' => 'required',
-                'latitude' => 'required',
+                // 'latitude' => 'required',
             ],
             [
                 'alamat.required' => 'Masukkan tujuan bongkar',
-                'latitude.required' => 'Pilih titik tujuan',
+                // 'latitude.required' => 'Pilih titik tujuan',
             ]
         );
 
@@ -91,11 +91,11 @@ class AlamatbongkarController extends Controller
             $request->all(),
             [
                 'alamat' => 'required',
-                'latitude' => 'required',
+                // 'latitude' => 'required',
             ],
             [
                 'alamat.required' => 'Masukkan tujuan bongkar',
-                'latitude.required' => 'Pilih titik tujuan',
+                // 'latitude.required' => 'Pilih titik tujuan',
             ]
         );
 
