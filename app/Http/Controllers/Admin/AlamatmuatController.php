@@ -33,11 +33,11 @@ class AlamatmuatController extends Controller
             $request->all(),
             [
                 'alamat' => 'required',
-                'latitude' => 'required',
+                // 'latitude' => 'required',
             ],
             [
                 'alamat.required' => 'Masukkan tujuan muat',
-                'latitude.required' => 'Pilih titik tujuan',
+                // 'latitude.required' => 'Pilih titik tujuan',
             ]
         );
 
@@ -93,11 +93,11 @@ class AlamatmuatController extends Controller
             $request->all(),
             [
                 'alamat' => 'required',
-                'latitude' => 'required',
+                // 'latitude' => 'required',
             ],
             [
                 'alamat.required' => 'Masukkan tujuan muat',
-                'latitude.required' => 'Pilih titik tujuan',
+                // 'latitude.required' => 'Pilih titik tujuan',
             ]
         );
 
