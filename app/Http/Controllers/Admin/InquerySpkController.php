@@ -220,7 +220,9 @@ class InquerySpkController extends Controller
     public function hapusspk($id)
     {
         $memo = Spk::where('id', $id)->first();
+        $memo->pengambilan_do()->delete();
         $memo->delete();
+
         return back()->with('success', 'Berhasil');
     }
 }
