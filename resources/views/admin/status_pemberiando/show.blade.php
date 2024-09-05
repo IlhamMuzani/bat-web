@@ -170,7 +170,7 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-4">
-                                    <strong>Foto Memo Muat</strong>
+                                    <strong>Foto Surat Jalan Muat</strong>
                                 </div>
                                 <div class="col-md-4">
                                     @if ($cetakpdf->gambar)
@@ -184,7 +184,7 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-4">
-                                    <strong>Foto Memo Sampai</strong>
+                                    <strong>Foto Surat Jalan Bongkar</strong>
                                 </div>
                                 <div class="col-md-4">
                                     @if ($cetakpdf->gambar)

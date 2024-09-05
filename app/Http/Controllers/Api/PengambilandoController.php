@@ -172,7 +172,7 @@ class PengambilandoController extends Controller
         $proses = $pengambilan_do->update([
             'user_id' => $request->user_id,
             'status' => 'loading muat',
-            'km_awal' => $kendaraan->km,
+            'km_akhir' => $kendaraan->km,
             'waktu_awal' => now()->format('Y-m-d H:i:s')
         ]);
 
@@ -401,6 +401,7 @@ class PengambilandoController extends Controller
             $kendaraan->update([
                 'status_perjalanan' => 'Kosong',
                 'timer' => $jarakWaktu,
+                'km_akhir' => $kendaraan->km,
                 'waktu' => now()->format('Y-m-d H:i:s')
             ]);
 

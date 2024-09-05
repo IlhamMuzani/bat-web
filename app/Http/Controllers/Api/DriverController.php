@@ -620,7 +620,7 @@ class DriverController extends Controller
             // 'km' => $request->km,
             'status_perjalanan' => 'Perjalanan Kosong',
             'timer' => $jarakWaktu,
-            'kota_id' => $request->kota_id,
+            // 'kota_id' => $request->kota_id,
             'waktu' => now()->format('Y-m-d H:i:s')
         ]);
 
