@@ -136,6 +136,20 @@ class SpkController extends Controller
             return back()->withInput()->with('error', $errors);
         }
 
+        $user_id = $request->input('user_id');
+        $name_driver = $request->input('nama_driver');
+        // Cek pengambilan DO terakhir untuk driver
+        $lastPengambilanDo = Pengambilan_do::where('user_id', $user_id)
+        ->orderBy('created_at', 'desc') // Urutkan berdasarkan tanggal terbaru
+        ->first();
+
+        
+
+        if ($lastPengambilanDo && $lastPengambilanDo->status !== 'selesai') {
+            // Jika pengambilan DO terakhir belum selesai, tampilkan pesan error
+            return back()->with('erorrss', 'Driver ' . $name_driver . ' masih memiliki pengambilan DO yang belum selesai.');
+        }
+
         $kendaraan_id = $request->kendaraan_id;
         $kendaraan = Kendaraan::find($kendaraan_id);
 

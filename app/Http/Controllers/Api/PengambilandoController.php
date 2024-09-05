@@ -9,6 +9,9 @@ use App\Models\Timer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
+
 class PengambilandoController extends Controller
 {
 
@@ -168,11 +171,52 @@ class PengambilandoController extends Controller
         // Temukan objek Kendaraan berdasarkan kendaraan_id dari pengambilan_do
         $kendaraan = Kendaraan::find($pengambilan_do->kendaraan_id);
 
+        if ($kendaraan) {
+            $client = new Client();
+            $response = $client->post('https://vtsapi.easygo-gps.co.id/api/Report/lastposition', [
+                'headers' => [
+                    'accept' => 'application/json',
+                    'token' => 'ADB4E5DFAAEA4BA1A6A8981FEF86FAA9',
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => [
+                    'list_vehicle_id' => [$kendaraan->list_vehicle_id], // Sesuaikan dengan field yang tepat dari tabel Kendaraan
+                    'list_nopol' => [],
+                    'list_no_aset' => [],
+                    'geo_code' => [],
+                    'min_lastupdate_hour' => null,
+                    'page' => 0,
+                    'encrypted' => 0,
+                ],
+            ]);
+
+            $data = json_decode($response->getBody()->getContents(), true);
+
+            if (isset($data['Data'][0]['vehicle_id'])) {
+                $vehicleId = $data['Data'][0]['vehicle_id'];
+
+                // Periksa apakah vehicle_id sama dengan list_vehicle_id
+                if ($vehicleId === $kendaraan->list_vehicle_id) {
+                    // Ambil nilai 'odometer' dari data API dan hilangkan bagian desimalnya
+                    $odometer = intval($data['Data'][0]['odometer'] ?? 0);
+
+                    if ($odometer > 0) {
+                        $kendaraan->km = $odometer;
+                        $kendaraan->save();
+                    }
+
+                    return response()->json(['km' => $odometer]);
+                } else {
+                    // return response()->json(['km' => $kendaraan->km]);
+                }
+            }
+        }
+
         // Perbarui pengambilan_do dengan km_awal dari kendaraan
         $proses = $pengambilan_do->update([
             'user_id' => $request->user_id,
             'status' => 'loading muat',
-            'km_akhir' => $kendaraan->km,
+            'km_awal' => $kendaraan->km,
             'waktu_awal' => now()->format('Y-m-d H:i:s')
         ]);
 
@@ -379,10 +423,54 @@ class PengambilandoController extends Controller
         // Menyimpan file ke storage
         $request->file('bukti')->storeAs('public/uploads/', $namabukti);
 
+        $kendaraan = Kendaraan::find($pengambilan_do->kendaraan_id);
+
+        if ($kendaraan) {
+            $client = new Client();
+            $response = $client->post('https://vtsapi.easygo-gps.co.id/api/Report/lastposition', [
+                'headers' => [
+                    'accept' => 'application/json',
+                    'token' => 'ADB4E5DFAAEA4BA1A6A8981FEF86FAA9',
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => [
+                    'list_vehicle_id' => [$kendaraan->list_vehicle_id], // Sesuaikan dengan field yang tepat dari tabel Kendaraan
+                    'list_nopol' => [],
+                    'list_no_aset' => [],
+                    'geo_code' => [],
+                    'min_lastupdate_hour' => null,
+                    'page' => 0,
+                    'encrypted' => 0,
+                ],
+            ]);
+
+            $data = json_decode($response->getBody()->getContents(), true);
+
+            if (isset($data['Data'][0]['vehicle_id'])) {
+                $vehicleId = $data['Data'][0]['vehicle_id'];
+
+                // Periksa apakah vehicle_id sama dengan list_vehicle_id
+                if ($vehicleId === $kendaraan->list_vehicle_id) {
+                    // Ambil nilai 'odometer' dari data API dan hilangkan bagian desimalnya
+                    $odometer = intval($data['Data'][0]['odometer'] ?? 0);
+
+                    if ($odometer > 0) {
+                        $kendaraan->km = $odometer;
+                        $kendaraan->save();
+                    }
+
+                    return response()->json(['km' => $odometer]);
+                } else {
+                    // return response()->json(['km' => $kendaraan->km]);
+                }
+            }
+        }
+
         // Memperbarui entri di database
         $pengambilan_do->update([
             'bukti' => $namabukti,
             'status' => 'selesai',
+            'km_akhir' => $kendaraan->km,
             'waktu_akhir' => now()->format('Y-m-d H:i:s')
 
         ]);
@@ -393,7 +481,8 @@ class PengambilandoController extends Controller
         $jarakWaktu = $waktuTungguMuat->diff($waktuPerjalananIsi)->format('%d %H:%I');
 
         // Memperbarui kendaraan terkait
-        $kendaraan = Kendaraan::find($pengambilan_do->kendaraan_id);
+
+
         $currentStatusPerjalanan = $kendaraan->status_perjalanan;
         $currentTimer = $kendaraan->waktu;
 
