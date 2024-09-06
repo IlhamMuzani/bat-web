@@ -52,7 +52,6 @@ class PengambilandoController extends Controller
         }
     }
 
-
     public function response($status, $message, $data = null)
     {
         return response()->json([
@@ -393,7 +392,6 @@ class PengambilandoController extends Controller
             'msg' => 'Berhasil Memperbarui Foto Muat',
         ]);
     }
-
 
     public function bukti_fotoselesai(Request $request, $id)
     {
