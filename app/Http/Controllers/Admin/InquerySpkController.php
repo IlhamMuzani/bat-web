@@ -10,6 +10,7 @@ use App\Models\Alamat_bongkar;
 use App\Models\Alamat_muat;
 use App\Models\Jarak_km;
 use App\Models\Kendaraan;
+use App\Models\Memo_ekspedisi;
 use App\Models\Pelanggan;
 use App\Models\Rute_perjalanan;
 use App\Models\Spk;
@@ -219,10 +220,24 @@ class InquerySpkController extends Controller
 
     public function hapusspk($id)
     {
-        $memo = Spk::where('id', $id)->first();
-        $memo->pengambilan_do()->delete();
-        $memo->delete();
+        $spk = Spk::find($id);
 
-        return back()->with('success', 'Berhasil');
+        // Check if the SPK is used in memo_ekspedisi and get the first related memo
+        $memoEkspedisi = Memo_ekspedisi::where('spk_id', $id)->first();
+
+        if ($memoEkspedisi) {
+            // Return back with an error message if used in memo_ekspedisi
+            return back()->withErrors(['error' => 'SPK tidak dapat dihapus karena digunakan di Memo Ekspedisi dengan kode memo: ' . $memoEkspedisi->kode_memo]);
+        }
+        
+        // If not used, delete the SPK
+        if ($spk) {
+            $spk->pengambilan_do()->delete();
+            $spk->delete();
+            return back()->with('success', 'Berhasil');
+        }
+
+        // If SPK not found, return back with an error message
+        return back()->withErrors(['error' => 'SPK tidak ditemukan.']);
     }
 }

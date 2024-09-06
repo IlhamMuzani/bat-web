@@ -89,6 +89,7 @@
                                 <th>NO</th>
                                 <th>KODE SPK</th>
                                 <th>Nama Driver</th>
+                                <th>Kode Driver</th>
                                 <th>No Kabin</th>
                                 <th>TANGGAL</th>
                                 <th>PELANGGAN</th>
@@ -126,6 +127,7 @@
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <td>{{ $buktipotongpajak->spk->kode_spk ?? null }}</td>
                                     <td>{{ $buktipotongpajak->spk->nama_driver ?? null }}</td>
+                                    <td>{{ $buktipotongpajak->spk->user->kode_user ?? null }}</td>
                                     <td>{{ $buktipotongpajak->spk->kendaraan->no_kabin ?? null }}</td>
                                     <td>{{ $buktipotongpajak->tanggal_awal }}</td>
                                     <td>{{ $buktipotongpajak->spk->nama_pelanggan ?? null }}</td>

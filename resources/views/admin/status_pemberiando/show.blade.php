@@ -165,7 +165,11 @@
                                     <strong>Total Km</strong>
                                 </div>
                                 <div class="col-md-4">
-                                    {{ $cetakpdf->km_akhir - $cetakpdf->km_awal }}
+                                    @if ($cetakpdf->km_akhir == null)
+                                        {{ $cetakpdf->kendaraan->km ?? '0' - $cetakpdf->km_awal }}
+                                    @else
+                                        {{ $cetakpdf->km_akhir - $cetakpdf->km_awal }}
+                                    @endif
                                 </div>
                             </div>
                             <div class="row mb-3">
