@@ -12,6 +12,7 @@ use App\Models\Jarak_km;
 use App\Models\Kendaraan;
 use App\Models\Memo_ekspedisi;
 use App\Models\Pelanggan;
+use App\Models\Pengambilan_do;
 use App\Models\Rute_perjalanan;
 use App\Models\Spk;
 use App\Models\User;
@@ -191,6 +192,20 @@ class InquerySpkController extends Controller
             // Pastikan status_spk tetap tidak berubah jika tidak diperlukan
         }
 
+
+        $projects = Pengambilan_do::where('spk_id', $id)->first();
+        if ($projects) {
+            $projects->update([
+                'spk_id' => $id,
+                'kendaraan_id' => $request->kendaraan_id,
+                'rute_perjalanan_id' => $request->rute_perjalanan_id,
+                'user_id' => $request->user_id,
+                'status' => 'posting',
+            ]);
+        } else {
+            return redirect()->back()->with('error', 'Pengambilan DO tidak ditemukan');
+        }
+
         $spk->save();
 
         return redirect('admin/inquery_spk')->with('success', 'Berhasil memperbarui spk');
@@ -229,7 +244,7 @@ class InquerySpkController extends Controller
             // Return back with an error message if used in memo_ekspedisi
             return back()->withErrors(['error' => 'SPK tidak dapat dihapus karena digunakan di Memo Ekspedisi dengan kode memo: ' . $memoEkspedisi->kode_memo]);
         }
-        
+
         // If not used, delete the SPK
         if ($spk) {
             $spk->pengambilan_do()->delete();
