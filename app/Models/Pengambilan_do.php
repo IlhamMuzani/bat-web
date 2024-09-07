@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Pengambilan_do extends Model
 {
@@ -62,6 +63,11 @@ class Pengambilan_do extends Model
     {
         return $this->belongsTo(Kendaraan::class);
     }
+
+    // public function latestkendaraan(): HasOne
+    // {
+    //     return $this->hasOne(Kendaraan::class)->latest();
+    // }
 
     public function spk()
     {

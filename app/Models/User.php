@@ -117,4 +117,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Pengambilan_do::class, 'user_id');
     }
+
+    public function latestpengambilan_do(): HasOne
+    {
+        return $this->hasOne(Pengambilan_do::class)->latest();
+    }
 }
