@@ -192,7 +192,7 @@
                                     <strong>Foto Surat Jalan Bongkar</strong>
                                 </div>
                                 <div class="col-md-4">
-                                    @if ($cetakpdf->gambar)
+                                    @if ($cetakpdf->bukti)
                                         <img data-toggle="modal" data-target="#modal-fototerbongkar-{{ $cetakpdf->id }}"
                                             src="{{ asset('storage/uploads/' . $cetakpdf->bukti) }}"
                                             class="w-100 rounded border">
