@@ -436,6 +436,7 @@
     request()->is('admin/pelepasan_ban*') ||
     request()->is('admin/pemasangan_part*') ||
     request()->is('admin/penggantian_oli*') ||
+    request()->is('admin/status_pemberiando*') ||
     request()->is('admin/pemakaian_peralatan*') ||
     request()->is('admin/status_spk*') ||
     request()->is('admin/status_perjalanan*')

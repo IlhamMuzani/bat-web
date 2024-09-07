@@ -113,18 +113,7 @@ class KaryawanController extends Controller
             $namaGambar = '';
         }
 
-        $kode = $this->kode();
-        $kodedriver = $this->kodedriver();
-        $departemen = $request->departemen_id;
-
-        if ($departemen == 1) {
-            $kode_karyawan = $kode;
-        } elseif ($departemen == 2) {
-            $kode_karyawan = $kodedriver;
-        } else {
-            // Handle other cases if needed
-            $kode_karyawan =  $kode;
-        }
+        $kode_karyawan = ($request->departemen_id == 2) ? $this->kodedriver() : $this->kode();
 
         Karyawan::create(array_merge(
             $request->all(),
@@ -141,24 +130,24 @@ class KaryawanController extends Controller
                 'pembayaran' => 0,
                 'status' => 'null',
                 'kode_karyawan' => $kode_karyawan,
-                'qrcode_karyawan' => 'https://batlink.id/karyawan/' . $kode,
+                'qrcode_karyawan' => 'https://batlink.id/karyawan/' . $kode_karyawan,
                 // 'qrcode_karyawan' => 'http://192.168.1.46/batlink/karyawan/' . $kode
                 'tanggal' => Carbon::now('Asia/Jakarta'),
-
             ]
         ));
 
         return redirect('admin/karyawan')->with('success', 'Berhasil menambahkan karyawan');
     }
-    
+
     public function kode()
     {
-        $lastBarang = Karyawan::latest()->first();
+        // Cari karyawan terakhir dengan kode_karyawan yang diawali dengan 'AA'
+        $lastBarang = Karyawan::where('kode_karyawan', 'like', 'AA%')->latest()->first();
         if (!$lastBarang) {
             $num = 1;
         } else {
             $lastCode = $lastBarang->kode_karyawan;
-            $num = (int) substr($lastCode, strlen('FE')) + 1;
+            $num = (int) substr($lastCode, strlen('AA')) + 1;
         }
         $formattedNum = sprintf("%06s", $num);
         $prefix = 'AA';
@@ -168,12 +157,13 @@ class KaryawanController extends Controller
 
     public function kodedriver()
     {
-        $lastBarang = Karyawan::latest()->first();
+        // Cari karyawan terakhir dengan kode_karyawan yang diawali dengan 'ADR'
+        $lastBarang = Karyawan::where('kode_karyawan', 'like', 'ADR%')->latest()->first();
         if (!$lastBarang) {
             $num = 1;
         } else {
             $lastCode = $lastBarang->kode_karyawan;
-            $num = (int) substr($lastCode, strlen('FE')) + 1;
+            $num = (int) substr($lastCode, strlen('ADR')) + 1;
         }
         $formattedNum = sprintf("%06s", $num);
         $prefix = 'ADR';
