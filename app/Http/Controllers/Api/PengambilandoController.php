@@ -103,64 +103,6 @@ class PengambilandoController extends Controller
         }
     }
 
-    // mengambil km dari request 
-    // public function konfirmasi(Request $request, $id)
-    // {
-
-    //     $pengambilan_do = Pengambilan_do::find($id);
-    //     $proses = $pengambilan_do->update([
-    //         'user_id' => $request->user_id,
-    //         'status' => 'loading muat',
-    //         'waktu_awal' => now()->format('Y-m-d H:i:s')
-    //     ]);
-
-
-    //     $waktuTungguMuat = $pengambilan_do->updated_at;
-    //     $waktuPerjalananIsi = now();
-
-    //     // Format "hari jam:menit:detik"
-    //     $jarakWaktu = $waktuTungguMuat->diff($waktuPerjalananIsi)->format('%d %H:%I');
-
-    //     $kendaraan = Kendaraan::find($pengambilan_do->kendaraan_id);
-
-    //     $currentStatusPerjalanan = $kendaraan->status_perjalanan;
-    //     $currentTimer = $kendaraan->waktu;
-
-    //     $proses = $kendaraan->update([
-    //         'user_id' => $request->user_id,
-    //         'km' => $request->km,
-    //         'status_perjalanan' => 'Perjalanan Kosong',
-    //         'timer' => $jarakWaktu,
-    //         'waktu' => now()->format('Y-m-d H:i:s')
-    //     ]);
-
-    //     // Retrieve the updated status_perjalanan for status_akhir
-    //     $updatedStatusPerjalanan = $kendaraan->fresh()->status_perjalanan;
-    //     $currentTimestamp = now()->format('Y-m-d H:i:s');
-
-    //     // Create Timer record with the old and new status, and the old timer
-    //     Timer::create(array_merge(
-    //         $request->all(),
-    //         [
-    //             'kendaraan_id' => $id,
-    //             'status_awal' => $currentStatusPerjalanan,
-    //             'status_akhir' => $updatedStatusPerjalanan,
-    //             'timer_awal' => $currentTimer,
-    //             'timer_akhir' => $currentTimestamp,
-    //         ]
-    //     ));
-
-
-    //     if ($proses) {
-    //         return response()->json([
-    //             'status' => true,
-    //             'msg' => 'Status loading muat',
-    //         ]);
-    //     } else {
-    //         $this->error('Gagal !');
-    //     }
-    // }
-
     // mengambil km dari kendaraan 
     public function konfirmasi(Request $request, $id)
     {
@@ -301,16 +243,32 @@ class PengambilandoController extends Controller
             ], 400);
         }
 
-        // Menyiapkan nama file untuk penyimpanan
-        $bukti = str_replace(' ', '', $request->file('gambar')->getClientOriginalName());
-        $namabukti = 'pengambilan_do/' . date('mYdHs') . rand(1, 10) . '_' . $bukti;
+        $gambar1 = str_replace(' ', '', $request->file('gambar')->getClientOriginalName());
+        $namagambar1 = 'pengambilan_do/' . date('mYdHs') . rand(1, 10) . '_' . $gambar1;
+        
+        $request->file('gambar')->storeAs('public/uploads/', $namagambar1);
 
-        // Menyimpan file ke storage
-        $request->file('gambar')->storeAs('public/uploads/', $namabukti);
+        // Menyiapkan file 'gambar2' jika ada
+        $namagambar2 = null;
+        if ($request->hasFile('gambar2') && $request->file('gambar2')->isValid()) {
+            $gambar2 = str_replace(' ', '', $request->file('gambar2')->getClientOriginalName());
+            $namagambar2 = 'pengambilan_do/' . date('mYdHs') . rand(1, 10) . '_' . $gambar2;
+            $request->file('gambar2')->storeAs('public/uploads/', $namagambar2);
+        }
+
+        // Menyiapkan file 'gambar3' jika ada
+        $namagambar3 = null;
+        if ($request->hasFile('gambar3') && $request->file('gambar3')->isValid()) {
+            $gambar3 = str_replace(' ', '', $request->file('gambar3')->getClientOriginalName());
+            $namagambar3 = 'pengambilan_do/' . date('mYdHs') . rand(1, 10) . '_' . $gambar3;
+            $request->file('gambar3')->storeAs('public/uploads/', $namagambar3);
+        }
 
         // Memperbarui entri di database
         $pengambilan_do->update([
-            'gambar' => $namabukti,
+            'gambar' => $namagambar1,
+            'gambar2' => $namagambar2,
+            'gambar3' => $namagambar3,
             'status' => 'tunggu bongkar',
         ]);
 
@@ -416,9 +374,26 @@ class PengambilandoController extends Controller
         // Menyiapkan nama file untuk penyimpanan
         $bukti = str_replace(' ', '', $request->file('bukti')->getClientOriginalName());
         $namabukti = 'bukti/' . date('mYdHs') . rand(1, 10) . '_' . $bukti;
-
         // Menyimpan file ke storage
         $request->file('bukti')->storeAs('public/uploads/', $namabukti);
+
+
+        // Menyiapkan file 'bukti2' jika ada
+        $namabukti2 = null;
+        if ($request->hasFile('bukti2') && $request->file('bukti2')->isValid()) {
+            $bukti2 = str_replace(' ', '', $request->file('bukti2')->getClientOriginalName());
+            $namabukti2 = 'bukti/' . date('mYdHs') . rand(1, 10) . '_' . $bukti2;
+            $request->file('bukti2')->storeAs('public/uploads/', $namabukti2);
+        }
+
+        // Menyiapkan file 'gambar3' jika ada
+        $namabukti3 = null;
+        if ($request->hasFile('bukti3') && $request->file('bukti3')->isValid()) {
+            $bukti3 = str_replace(' ', '', $request->file('bukti3')->getClientOriginalName());
+            $namabukti3 = 'bukti/' . date('mYdHs') . rand(1, 10) . '_' . $bukti3;
+            $request->file('bukti3')->storeAs('public/uploads/', $namabukti3);
+        }
+
 
         $kendaraan = Kendaraan::find($pengambilan_do->kendaraan_id);
 
@@ -464,6 +439,8 @@ class PengambilandoController extends Controller
         // Memperbarui entri di database
         $pengambilan_do->update([
             'bukti' => $namabukti,
+            'bukti2' => $namabukti2,
+            'bukti3' => $namabukti3,
             'status' => 'selesai',
             'km_akhir' => $kendaraan ? $kendaraan->km : null,
             'waktu_akhir' => now()->format('Y-m-d H:i:s')
