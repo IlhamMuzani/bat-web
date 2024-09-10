@@ -176,75 +176,122 @@
                                 <div class="col-md-4">
                                     <strong>Foto Surat Jalan Muat</strong>
                                 </div>
-                                <div class="col-md-4">
-                                    @if ($cetakpdf->gambar)
-                                        <img data-toggle="modal" data-target="#modal-foto-{{ $cetakpdf->id }}"
-                                            src="{{ asset('storage/uploads/' . $cetakpdf->gambar) }}"
-                                            class="w-100 rounded border">
-                                    @else
-                                        <img src="{{ asset('adminlte/dist/img/img-placeholder.jpg') }}"
-                                            class="w-100 rounded border">
-                                    @endif
+                                <div class="col-md-8 d-flex">
+                                    <div class="w-33 p-1">
+                                        @if ($cetakpdf->gambar)
+                                            <img data-toggle="modal" data-target="#modal-foto-{{ $cetakpdf->id }}"
+                                                src="{{ asset('storage/uploads/' . $cetakpdf->gambar) }}"
+                                                class="w-100 rounded border">
+                                        @else
+                                            <img src="{{ asset('adminlte/dist/img/img-placeholder.jpg') }}"
+                                                class="w-100 rounded border">
+                                        @endif
+                                    </div>
+                                    <div class="w-33 p-1">
+                                        @if ($cetakpdf->gambar2)
+                                            <img data-toggle="modal" data-target="#modal-foto-{{ $cetakpdf->id }}"
+                                                src="{{ asset('storage/uploads/' . $cetakpdf->gambar2) }}"
+                                                class="w-100 rounded border">
+                                        @else
+                                            <img src="{{ asset('adminlte/dist/img/img-placeholder.jpg') }}"
+                                                class="w-100 rounded border">
+                                        @endif
+                                    </div>
+                                    <div class="w-33 p-1">
+                                        @if ($cetakpdf->gambar3)
+                                            <img data-toggle="modal" data-target="#modal-foto-{{ $cetakpdf->id }}"
+                                                src="{{ asset('storage/uploads/' . $cetakpdf->gambar3) }}"
+                                                class="w-100 rounded border">
+                                        @else
+                                            <img src="{{ asset('adminlte/dist/img/img-placeholder.jpg') }}"
+                                                class="w-100 rounded border">
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
+
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <strong>Foto Surat Jalan Bongkar</strong>
                                 </div>
-                                <div class="col-md-4">
-                                    @if ($cetakpdf->bukti)
-                                        <img data-toggle="modal" data-target="#modal-fototerbongkar-{{ $cetakpdf->id }}"
-                                            src="{{ asset('storage/uploads/' . $cetakpdf->bukti) }}"
-                                            class="w-100 rounded border">
-                                    @else
-                                        <img src="{{ asset('adminlte/dist/img/img-placeholder.jpg') }}"
-                                            class="w-100 rounded border">
-                                    @endif
+                                <div class="col-md-8 d-flex">
+                                    <div class="w-33 p-1">
+                                        @if ($cetakpdf->bukti)
+                                            <img data-toggle="modal"
+                                                data-target="#modal-fototerbongkar-{{ $cetakpdf->id }}"
+                                                src="{{ asset('storage/uploads/' . $cetakpdf->bukti) }}"
+                                                class="w-100 rounded border">
+                                        @else
+                                            <img src="{{ asset('adminlte/dist/img/img-placeholder.jpg') }}"
+                                                class="w-100 rounded border">
+                                        @endif
+                                    </div>
+                                    <div class="w-33 p-1">
+                                        @if ($cetakpdf->bukti)
+                                            <img data-toggle="modal"
+                                                data-target="#modal-fototerbongkar-{{ $cetakpdf->id }}"
+                                                src="{{ asset('storage/uploads/' . $cetakpdf->bukti) }}"
+                                                class="w-100 rounded border">
+                                        @else
+                                            <img src="{{ asset('adminlte/dist/img/img-placeholder.jpg') }}"
+                                                class="w-100 rounded border">
+                                        @endif
+                                    </div>
+                                    <div class="w-33 p-1">
+                                        @if ($cetakpdf->bukti)
+                                            <img data-toggle="modal"
+                                                data-target="#modal-fototerbongkar-{{ $cetakpdf->id }}"
+                                                src="{{ asset('storage/uploads/' . $cetakpdf->bukti) }}"
+                                                class="w-100 rounded border">
+                                        @else
+                                            <img src="{{ asset('adminlte/dist/img/img-placeholder.jpg') }}"
+                                                class="w-100 rounded border">
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="modal fade" id="modal-foto-{{ $cetakpdf->id }}">
-                <div class="modal-dialog modal-lg"> <!-- Tambahkan modal-lg untuk memperbesar ukuran modal -->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Foto Surat Jalan Muat</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div style="text-align: center;">
-                                <img src="{{ asset('storage/uploads/' . $cetakpdf->gambar) }}"
-                                    class="img-fluid rounded border" width="400px" height="400px">
+                <div class="modal fade" id="modal-foto-{{ $cetakpdf->id }}">
+                    <div class="modal-dialog modal-lg"> <!-- Tambahkan modal-lg untuk memperbesar ukuran modal -->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Foto Surat Jalan Muat</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div style="text-align: center;">
+                                    <img src="{{ asset('storage/uploads/' . $cetakpdf->gambar) }}"
+                                        class="img-fluid rounded border" width="400px" height="400px">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="modal fade" id="modal-fototerbongkar-{{ $cetakpdf->id }}">
-                <div class="modal-dialog modal-lg"> <!-- Tambahkan modal-lg untuk memperbesar ukuran modal -->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Foto Surat Jalan Terbongkar</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div style="text-align: center;">
-                                <img src="{{ asset('storage/uploads/' . $cetakpdf->bukti) }}"
-                                    class="img-fluid rounded border" width="400px" height="400px">
+                <div class="modal fade" id="modal-fototerbongkar-{{ $cetakpdf->id }}">
+                    <div class="modal-dialog modal-lg"> <!-- Tambahkan modal-lg untuk memperbesar ukuran modal -->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Foto Surat Jalan Terbongkar</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div style="text-align: center;">
+                                    <img src="{{ asset('storage/uploads/' . $cetakpdf->bukti) }}"
+                                        class="img-fluid rounded border" width="400px" height="400px">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-        </div>
+            </div>
     </section>
 @endsection
