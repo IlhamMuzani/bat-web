@@ -14,7 +14,7 @@
             color: black;
 
             margin-top: 5px;
-            margin-right: 10px;
+            margin-right: 15px;
             margin-left: 10px;
             /* Margin kiri sebesar 20 piksel */
 
@@ -253,7 +253,7 @@
                 PO</td>
             <td class="td" style="text-align: left; padding: 0px; font-size: 10px;  font-weight:bold; width:9%">No.
                 Mobil</td>
-            <td class="td" style="text-align: left; padding: 0px; font-size: 10px;  font-weight:bold; width:11%">Qty
+            <td class="td" style="text-align: left; padding: 0px; font-size: 10px;  font-weight:bold; width:7%">Qty
             </td>
             <td class="td" style="text-align: right; font-size: 10px;  font-weight:bold; width:10%">Harga</td>
             <td class="td" style="text-align: right; font-size: 10px;  font-weight:bold; width:10%">Total</td>

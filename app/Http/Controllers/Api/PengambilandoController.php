@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Kendaraan;
 use App\Models\Pengambilan_do;
 use App\Models\Timer;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -15,42 +16,36 @@ use GuzzleHttp\Client;
 class PengambilandoController extends Controller
 {
 
-    // public function list($id)
-    // {
-    //     // Assuming you have a 'user_id' column in the Pengambilan_do table
-    //     $pengambilando = Pengambilan_do::where([
-    //         ['user_id', $id],
-    //         ['status', '<>', 'unpost'] // Filter out entries where status is 'unpost'
-    //     ])
-    //         ->with(['kendaraan', 'rute_perjalanan', 'alamat_muat', 'alamat_bongkar', 'spk.pelanggan',])
-    //         ->get();
-
-    //     if ($pengambilando->isNotEmpty()) { // Check if there are any records
-    //         return $this->response(TRUE, ['Berhasil menampilkan data'], $pengambilando);
-    //     } else {
-    //         return $this->response(FALSE, ['Gagal menampilkan data!']);
-    //     }
-    // }
-
-
     public function list($id)
     {
-        // Assuming you have a 'user_id' column in the Pengambilan_do table
+        // Mengambil data Pengambilan_do berdasarkan user_id dan status
         $pengambilando = Pengambilan_do::where([
             ['user_id', $id],
             ['status', '<>', 'unpost'] // Filter out entries where status is 'unpost'
         ])
-            ->with(['kendaraan', 'rute_perjalanan', 'alamat_muat', 'alamat_bongkar', 'spk.pelanggan'])
-            ->orderByRaw("CASE WHEN status = 'selesai' THEN 1 ELSE 0 END") // Place 'selesai' status items at the bottom
-            ->orderBy('id', 'asc') // Order by ID or another column to ensure consistent ordering
+        ->with(['kendaraan', 'rute_perjalanan', 'alamat_muat', 'alamat_bongkar', 'spk.pelanggan'])
+        ->orderByRaw("
+        CASE 
+            WHEN status = 'posting' THEN 1
+            WHEN status <> 'selesai' THEN 2
+            WHEN status = 'selesai' THEN 3
+            ELSE 4
+        END
+    ") // Urutkan berdasarkan status
+        ->orderByRaw("CASE WHEN status = 'posting' THEN created_at END DESC") // Urutkan berdasarkan created_at untuk status 'posting' (terbaru dulu)
+            ->orderBy('id', 'asc') // Order by ID to ensure consistent ordering
             ->get();
 
         if ($pengambilando->isNotEmpty()) { // Check if there are any records
             return $this->response(TRUE, ['Berhasil menampilkan data'], $pengambilando);
         } else {
-            return $this->response(FALSE, ['Gagal menampilkan data!']);
+            return $this->response(
+                FALSE,
+                ['Gagal menampilkan data!']
+            );
         }
     }
+
 
     public function response($status, $message, $data = null)
     {
@@ -60,6 +55,7 @@ class PengambilandoController extends Controller
             'data' => $data
         ]);
     }
+
 
     public function kendaraan_search(Request $request)
     {
@@ -103,7 +99,6 @@ class PengambilandoController extends Controller
         }
     }
 
-    // mengambil km dari kendaraan 
     public function konfirmasi(Request $request, $id)
     {
         // Temukan objek Pengambilan_do berdasarkan id
@@ -111,7 +106,30 @@ class PengambilandoController extends Controller
 
         // Temukan objek Kendaraan berdasarkan kendaraan_id dari pengambilan_do
         $kendaraan = Kendaraan::find($pengambilan_do->kendaraan_id);
+        
+        $lastPengambilan = Pengambilan_do::where('user_id',
+            $pengambilan_do->user_id
+        )
+        ->where('id', '<', $id)
+        ->orderBy('created_at',
+            'desc'
+        )
+        ->take(3)
+            ->get();
 
+        // Cek apakah ada pengambilan DO yang statusnya belum selesai
+        foreach ($lastPengambilan as $pengambilan) {
+            if ($pengambilan->status !== 'selesai') {
+                // Jika ditemukan pengambilan DO yang belum selesai
+                return response()->json([
+                    'status' => false,
+                    'msg' => 'Mohon selesaikan pengambilan DO sebelumnya terlebih dahulu.',
+                ], 400);
+            }
+        }
+
+
+        // Jika semua pengecekan lulus, lanjutkan dengan proses pembaruan
         $odometer = null; // Inisialisasi variabel odometer
 
         if ($kendaraan) {
@@ -153,7 +171,7 @@ class PengambilandoController extends Controller
 
         // Perbarui pengambilan_do dengan km_awal dari kendaraan
         $proses = $pengambilan_do->update([
-            'user_id' => $request->user_id,
+            // 'user_id' => $request->user_id,
             'status' => 'loading muat',
             'km_awal' => $kendaraan ? $kendaraan->km : null,
             'waktu_awal' => now()->format('Y-m-d H:i:s')
@@ -170,7 +188,7 @@ class PengambilandoController extends Controller
 
         // Perbarui kendaraan dengan data baru
         $proses = $kendaraan->update([
-            'user_id' => $request->user_id,
+            // 'user_id' => $request->user_id,
             'status_perjalanan' => 'Perjalanan Kosong',
             'timer' => $jarakWaktu,
             'waktu' => now()->format('Y-m-d H:i:s')
@@ -202,6 +220,7 @@ class PengambilandoController extends Controller
             ], 500);
         }
     }
+
 
     public function batal_pengambilan(Request $request, $id)
     {

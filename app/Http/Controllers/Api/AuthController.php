@@ -61,7 +61,7 @@ class AuthController extends Controller
     public function detail($id)
     {
         $user = User::where('id', $id)
-            ->with(['karyawan', 'kendaraan', 'pengambilan_do', 'latestpengambilan_do' => function ($query) {
+            ->with(['karyawan', 'kendaraan', 'latestpengambilan_do' => function ($query) {
                 $query->with('kendaraan');
             }])
             ->first();

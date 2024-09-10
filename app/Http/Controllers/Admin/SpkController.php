@@ -145,10 +145,10 @@ class SpkController extends Controller
 
         
 
-        if ($lastPengambilanDo && $lastPengambilanDo->status !== 'selesai') {
-            // Jika pengambilan DO terakhir belum selesai, tampilkan pesan error
-            return back()->with('erorrss', 'Driver ' . $name_driver . ' masih memiliki pengambilan DO yang belum selesai.');
-        }
+        // if ($lastPengambilanDo && $lastPengambilanDo->status !== 'selesai') {
+        //     // Jika pengambilan DO terakhir belum selesai, tampilkan pesan error
+        //     return back()->with('erorrss', 'Driver ' . $name_driver . ' masih memiliki pengambilan DO yang belum selesai.');
+        // }
 
         $kendaraan_id = $request->kendaraan_id;
         $kendaraan = Kendaraan::find($kendaraan_id);
