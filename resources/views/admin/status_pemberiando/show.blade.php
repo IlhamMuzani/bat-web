@@ -172,50 +172,125 @@
                                     @endif
                                 </div>
                             </div>
+                            <style>
+                                #gambar1,
+                                #gambar2,
+                                #gambar3 {
+                                    width: 100%;
+                                    /* Menyesuaikan lebar gambar dengan kolom */
+                                    height: auto;
+                                    /* Memastikan proporsi gambar tetap */
+                                    object-fit: cover;
+                                    /* Memastikan gambar mengisi kontainer tanpa merusak proporsi */
+                                }
+
+                                #col1,
+                                #col2,
+                                #col3 {
+                                    width: 33.33%;
+                                    /* Menetapkan lebar kolom menjadi sepertiga dari kontainer */
+                                    padding: 0.5rem;
+                                    /* Menambah jarak di dalam kolom */
+                                    box-sizing: border-box;
+                                    /* Termasuk padding dan border dalam perhitungan lebar */
+                                    display: flex;
+                                    justify-content: center;
+                                    /* Memastikan gambar berada di tengah kolom */
+                                }
+
+                                .row img {
+                                    width: 100%;
+                                    /* Menyesuaikan lebar gambar dengan kolom */
+                                    height: auto;
+                                    /* Memastikan proporsi gambar tetap */
+                                    object-fit: cover;
+                                    /* Memastikan gambar mengisi kontainer tanpa merusak proporsi */
+                                }
+                            </style>
+
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <strong>Foto Surat Jalan Muat</strong>
                                 </div>
                                 <div class="col-md-8 d-flex">
-                                    <div class="w-33 p-1">
+                                    <div id="col1">
                                         @if ($cetakpdf->gambar)
-                                            <img data-toggle="modal" data-target="#modal-foto-{{ $cetakpdf->id }}"
+                                            <img id="gambar1" data-toggle="modal"
+                                                data-target="#modal-foto-{{ $cetakpdf->id }}"
                                                 src="{{ asset('storage/uploads/' . $cetakpdf->gambar) }}"
-                                                class="w-100 rounded border">
+                                                class="rounded border">
                                         @else
-                                            <img src="{{ asset('adminlte/dist/img/img-placeholder.jpg') }}"
-                                                class="w-100 rounded border">
+                                            <img id="gambar1" src="{{ asset('adminlte/dist/img/img-placeholder.jpg') }}"
+                                                class="rounded border">
                                         @endif
                                     </div>
-                                    <div class="w-33 p-1">
+                                    <div id="col2">
                                         @if ($cetakpdf->gambar2)
-                                            <img data-toggle="modal" data-target="#modal-foto-{{ $cetakpdf->id }}"
+                                            <img id="gambar2" data-toggle="modal"
+                                                data-target="#modal-foto-{{ $cetakpdf->id }}"
                                                 src="{{ asset('storage/uploads/' . $cetakpdf->gambar2) }}"
-                                                class="w-100 rounded border">
+                                                class="rounded border">
                                         @else
-                                            <img src="{{ asset('adminlte/dist/img/img-placeholder.jpg') }}"
-                                                class="w-100 rounded border">
+                                            <img id="gambar2" src="{{ asset('adminlte/dist/img/img-placeholder.jpg') }}"
+                                                class="rounded border">
                                         @endif
                                     </div>
-                                    <div class="w-33 p-1">
+                                    <div id="col3">
                                         @if ($cetakpdf->gambar3)
-                                            <img data-toggle="modal" data-target="#modal-foto-{{ $cetakpdf->id }}"
+                                            <img id="gambar3" data-toggle="modal"
+                                                data-target="#modal-foto-{{ $cetakpdf->id }}"
                                                 src="{{ asset('storage/uploads/' . $cetakpdf->gambar3) }}"
-                                                class="w-100 rounded border">
+                                                class="rounded border">
                                         @else
-                                            <img src="{{ asset('adminlte/dist/img/img-placeholder.jpg') }}"
-                                                class="w-100 rounded border">
+                                            <img id="gambar3" src="{{ asset('adminlte/dist/img/img-placeholder.jpg') }}"
+                                                class="rounded border">
                                         @endif
                                     </div>
                                 </div>
                             </div>
+
+                            <style>
+                                #bukti1,
+                                #bukti2,
+                                #bukti3 {
+                                    width: 100%;
+                                    /* Menyesuaikan lebar gambar dengan kolom */
+                                    height: auto;
+                                    /* Memastikan proporsi gambar tetap */
+                                    object-fit: cover;
+                                    /* Memastikan gambar mengisi kontainer tanpa merusak proporsi */
+                                }
+
+                                #col1,
+                                #col2,
+                                #col3 {
+                                    width: 33.33%;
+                                    /* Menetapkan lebar kolom menjadi sepertiga dari kontainer */
+                                    padding: 0.5rem;
+                                    /* Menambah jarak di dalam kolom */
+                                    box-sizing: border-box;
+                                    /* Termasuk padding dan border dalam perhitungan lebar */
+                                    display: flex;
+                                    justify-content: center;
+                                    /* Memastikan gambar berada di tengah kolom */
+                                }
+
+                                .row img {
+                                    width: 100%;
+                                    /* Menyesuaikan lebar gambar dengan kolom */
+                                    height: auto;
+                                    /* Memastikan proporsi gambar tetap */
+                                    object-fit: cover;
+                                    /* Memastikan gambar mengisi kontainer tanpa merusak proporsi */
+                                }
+                            </style>
 
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <strong>Foto Surat Jalan Bongkar</strong>
                                 </div>
                                 <div class="col-md-8 d-flex">
-                                    <div class="w-33 p-1">
+                                    <div id="bukti1" class="w-33 p-1">
                                         @if ($cetakpdf->bukti)
                                             <img data-toggle="modal"
                                                 data-target="#modal-fototerbongkar-{{ $cetakpdf->id }}"
@@ -226,22 +301,22 @@
                                                 class="w-100 rounded border">
                                         @endif
                                     </div>
-                                    <div class="w-33 p-1">
-                                        @if ($cetakpdf->bukti)
+                                    <div id="bukti2" class="w-33 p-1">
+                                        @if ($cetakpdf->bukti2)
                                             <img data-toggle="modal"
                                                 data-target="#modal-fototerbongkar-{{ $cetakpdf->id }}"
-                                                src="{{ asset('storage/uploads/' . $cetakpdf->bukti) }}"
+                                                src="{{ asset('storage/uploads/' . $cetakpdf->bukti2) }}"
                                                 class="w-100 rounded border">
                                         @else
                                             <img src="{{ asset('adminlte/dist/img/img-placeholder.jpg') }}"
                                                 class="w-100 rounded border">
                                         @endif
                                     </div>
-                                    <div class="w-33 p-1">
-                                        @if ($cetakpdf->bukti)
+                                    <div id="bukti3" class="w-33 p-1">
+                                        @if ($cetakpdf->bukti3)
                                             <img data-toggle="modal"
                                                 data-target="#modal-fototerbongkar-{{ $cetakpdf->id }}"
-                                                src="{{ asset('storage/uploads/' . $cetakpdf->bukti) }}"
+                                                src="{{ asset('storage/uploads/' . $cetakpdf->bukti3) }}"
                                                 class="w-100 rounded border">
                                         @else
                                             <img src="{{ asset('adminlte/dist/img/img-placeholder.jpg') }}"
