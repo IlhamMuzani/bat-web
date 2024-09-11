@@ -200,6 +200,8 @@ class InquerySpkController extends Controller
                 'kendaraan_id' => $request->kendaraan_id,
                 'rute_perjalanan_id' => $request->rute_perjalanan_id,
                 'user_id' => $request->user_id,
+                'alamat_muat_id' => $request->alamat_muat_id,
+                'alamat_bongkar_id' => $request->alamat_bongkar_id,
                 'status' => 'posting',
             ]);
         } else {
