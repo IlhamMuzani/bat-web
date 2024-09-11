@@ -743,8 +743,8 @@
                                         <tr
                                             onclick="getSelectedDataspk('{{ $spk->id }}',
                                                     '{{ $spk->kode_spk }}','{{ $spk->kendaraan_id }}', '{{ $spk->no_kabin }}', '{{ $spk->no_pol }}', '{{ $spk->golongan }}', '{{ $spk->kendaraan->km ?? null }}', '{{ $spk->km_akhir }}',
-                                                    '{{ $spk->user_id }}', '{{ $spk->user->karyawan->kode_karyawan }}', '{{ $spk->user->karyawan->nama_lengkap }}', '{{ $spk->user->karyawan->telp }}',
-                                                    '{{ $spk->user->karyawan->tabungan }}','{{ $spk->rute_perjalanan_id }}', '{{ $spk->rute_perjalanan->kode_rute }}', '{{ $spk->rute_perjalanan->nama_rute }}',
+                                                    '{{ $spk->user_id }}', '{{ $spk->user->karyawan->kode_karyawan ?? '' }}', '{{ $spk->user->karyawan->nama_lengkap ?? '' }}', '{{ $spk->user->karyawan->telp ?? '' }}',
+                                                    '{{ $spk->user->karyawan->tabungan ?? '' }}','{{ $spk->rute_perjalanan_id }}', '{{ $spk->rute_perjalanan->kode_rute }}', '{{ $spk->rute_perjalanan->nama_rute }}',
                                                     '{{ $spk->uang_jalan }}')">
                                             <td class="text-center">{{ $loop->iteration }}</td>
                                             <td>{{ $spk->kode_spk }}</td>
@@ -753,8 +753,8 @@
                                                 <button type="button" class="btn btn-primary btn-sm"
                                                     onclick="getSelectedDataspk('{{ $spk->id }}',
                                                     '{{ $spk->kode_spk }}','{{ $spk->kendaraan_id }}', '{{ $spk->no_kabin }}', '{{ $spk->no_pol }}', '{{ $spk->golongan }}', '{{ $spk->kendaraan->km ?? null }}', '{{ $spk->km_akhir }}',
-                                                    '{{ $spk->user_id }}', '{{ $spk->user->karyawan->kode_karyawan }}', '{{ $spk->user->karyawan->nama_lengkap }}', '{{ $spk->user->karyawan->telp }}',
-                                                    '{{ $spk->user->karyawan->tabungan }}','{{ $spk->rute_perjalanan_id }}', '{{ $spk->rute_perjalanan->kode_rute }}', '{{ $spk->rute_perjalanan->nama_rute }}',
+                                                    '{{ $spk->user_id ?? '' }}', '{{ $spk->user->karyawan->kode_karyawan ?? '' }}', '{{ $spk->user->karyawan->nama_lengkap ?? '' }}', '{{ $spk->user->karyawan->telp ?? '' }}',
+                                                    '{{ $spk->user->karyawan->tabungan ?? '' }}','{{ $spk->rute_perjalanan_id }}', '{{ $spk->rute_perjalanan->kode_rute }}', '{{ $spk->rute_perjalanan->nama_rute }}',
                                                     '{{ $spk->uang_jalan }}')">
                                                     <i class="fas fa-plus"></i>
                                                 </button>

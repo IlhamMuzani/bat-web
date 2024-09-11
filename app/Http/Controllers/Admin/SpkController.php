@@ -144,7 +144,6 @@ class SpkController extends Controller
         ->first();
 
         
-
         // if ($lastPengambilanDo && $lastPengambilanDo->status !== 'selesai') {
         //     // Jika pengambilan DO terakhir belum selesai, tampilkan pesan error
         //     return back()->with('erorrss', 'Driver ' . $name_driver . ' masih memiliki pengambilan DO yang belum selesai.');
