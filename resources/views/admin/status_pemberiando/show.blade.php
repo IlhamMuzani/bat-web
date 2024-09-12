@@ -348,6 +348,44 @@
                     </div>
                 </div>
 
+                <div class="modal fade" id="modal-foto2-{{ $cetakpdf->id }}">
+                    <div class="modal-dialog modal-lg"> <!-- Tambahkan modal-lg untuk memperbesar ukuran modal -->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Foto Surat Jalan Muat</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div style="text-align: center;">
+                                    <img src="{{ asset('storage/uploads/' . $cetakpdf->gambar2) }}"
+                                        class="img-fluid rounded border" width="400px" height="400px">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modal-foto3-{{ $cetakpdf->id }}">
+                    <div class="modal-dialog modal-lg"> <!-- Tambahkan modal-lg untuk memperbesar ukuran modal -->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Foto Surat Jalan Muat</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div style="text-align: center;">
+                                    <img src="{{ asset('storage/uploads/' . $cetakpdf->gambar3) }}"
+                                        class="img-fluid rounded border" width="400px" height="400px">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="modal fade" id="modal-fototerbongkar-{{ $cetakpdf->id }}">
                     <div class="modal-dialog modal-lg"> <!-- Tambahkan modal-lg untuk memperbesar ukuran modal -->
                         <div class="modal-content">
@@ -360,6 +398,44 @@
                             <div class="modal-body">
                                 <div style="text-align: center;">
                                     <img src="{{ asset('storage/uploads/' . $cetakpdf->bukti) }}"
+                                        class="img-fluid rounded border" width="400px" height="400px">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modal-fototerbongkar2-{{ $cetakpdf->id }}">
+                    <div class="modal-dialog modal-lg"> <!-- Tambahkan modal-lg untuk memperbesar ukuran modal -->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Foto Surat Jalan Terbongkar</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div style="text-align: center;">
+                                    <img src="{{ asset('storage/uploads/' . $cetakpdf->bukti2) }}"
+                                        class="img-fluid rounded border" width="400px" height="400px">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modal-fototerbongkar3-{{ $cetakpdf->id }}">
+                    <div class="modal-dialog modal-lg"> <!-- Tambahkan modal-lg untuk memperbesar ukuran modal -->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Foto Surat Jalan Terbongkar</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div style="text-align: center;">
+                                    <img src="{{ asset('storage/uploads/' . $cetakpdf->bukti3) }}"
                                         class="img-fluid rounded border" width="400px" height="400px">
                                 </div>
                             </div>
