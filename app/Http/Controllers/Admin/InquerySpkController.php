@@ -205,7 +205,7 @@ class InquerySpkController extends Controller
                 'status' => 'posting',
             ]);
         } else {
-            return redirect()->back()->with('error', 'Pengambilan DO tidak ditemukan');
+            // return redirect()->back()->with('error', 'Pengambilan DO tidak ditemukan');
         }
 
         $spk->save();
