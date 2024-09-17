@@ -23,8 +23,13 @@
 
         html,
         body {
-            font-family: 'DOSVGA', monospace;
+            font-family: Arial, sans-serif;
+            /*font-family: 'DOSVGA', Arial, Helvetica, sans-serif;*/
+            /*font-weight: bold;*/
             color: black;
+            margin-top: 10px;
+            margin-left: 20px;
+            margin-right: 20px;
         }
 
         span.h2 {
@@ -236,7 +241,7 @@
     </table>
 
     <div style="font-weight: bold; text-align: center;">
-        <span style="font-weight: bold; font-size: 20px;">FAKTUR PEMBELIAN BAN</span>
+        <span style="font-weight: bold; font-size: 19px;">FAKTUR PEMBELIAN BAN</span>
         <br>
     </div>
 

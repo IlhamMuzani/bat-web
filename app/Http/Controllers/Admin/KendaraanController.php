@@ -130,6 +130,7 @@ class KendaraanController extends Controller
                 'gambar_stnk' => $namaGambarstnk,
                 'kode_kendaraan' => $this->kode(),
                 'status' => 'truk',
+                'status_perjalanan' => 'Kosong',
                 'timer' => '0 00:00',
                 'status_olimesin' => 'belum penggantian',
                 'status_oligardan' => 'belum penggantian',

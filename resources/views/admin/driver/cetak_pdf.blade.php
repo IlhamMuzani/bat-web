@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Kasbon Karyawan</title>
+    <title>Saldo Deposit Driver</title>
     <style>
         /* * {
             border: 1px solid black;
@@ -27,8 +27,8 @@
         html,
         body {
             margin-top: 10px;
-            margin-left: 20px;
-            margin-right: 20px;
+            margin-left: 10px;
+            margin-right: 10px;
             padding: 10px;
             font-family: Arial, sans-serif;
             color: black;
@@ -89,7 +89,7 @@
             display: flex;
             justify-content: space-between;
             font-weight: bold;
-            font-size: 13px;
+            font-size: 15px;
             margin: 5px 0;
         }
 
@@ -151,7 +151,7 @@
 
         .tdd1 td {
             text-align: center;
-            font-size: 13px;
+            font-size: 15px;
             position: relative;
             padding-top: 10px;
             /* Sesuaikan dengan kebutuhan Anda */
@@ -169,14 +169,14 @@
         .info-1 {}
 
         .label {
-            font-size: 13px;
+            font-size: 15px;
             text-align: center;
             /* Teks menjadi berada di tengah */
 
         }
 
         .separator {
-            padding-top: 13px;
+            padding-top: 15px;
             /* Atur sesuai kebutuhan Anda */
             text-align: center;
             /* Teks menjadi berada di tengah */
@@ -199,34 +199,13 @@
         <img src="{{ public_path('storage/uploads/gambar_logo/Logo.jpg') }}" alt="BAT" width="70" height="35">
     </div>
     <br>
-    @if ($cetakpdf->kategori == 'Pengambilan Kasbon')
-        <div style="font-weight: bold; text-align: center">
-            <span style="font-weight: bold; font-size: 19px;">MEMO HUTANG KARYAWAN</span>
-            <br>
-            <br>
-        </div>
-    @else
-        <div style="font-weight: bold; text-align: center">
-            <span style="font-weight: bold; font-size: 19px;">MEMO HUTANG KARYAWAN</span>
-            <br>
-            <br>
-        </div>
-    @endif
-    <hr style="border-top: 0.1px solid black; margin: 3px 0;">
-    <table style="width: 100%;" cellpadding="2" cellspacing="0">
-        <tr>
-            <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">
-                Kode Faktur:{{ $cetakpdf->kode_kasbon }}</td>
-            <td class="td" style="text-align: center; padding: 0px; font-size: 13px; color:white">
-                a</td>
-            <td class="td" style="text-align: center; padding: 0px; font-size: 13px; color:white">
-                a</td>
-            <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">
-                Tanggal:{{ $cetakpdf->tanggal }}</td>
-        </tr>
-    </table>
+    <div style="font-weight: bold; text-align: center">
+        <span style="font-weight: bold; font-size: 19px;">Saldo Deposit Sopir</span>
+        <br>
+        <br>
     </div>
     <hr style="border-top: 0.1px solid black; margin: 3px 0;">
+    </div>
     <?php
     function terbilang($angka)
     {
@@ -260,44 +239,41 @@
     <table width="100%">
         <tr>
             <td>
-                <div class="info-catatan" style="max-width: 230px;">
+                <div class="info-catatan" style="max-width: 230px; font-size:13px">
                     <table>
                         <tr>
-                            <td style="font-size: 13px" class="info-catatan2">Kode Karyawan</td>
-                            <td style="font-size: 13px" class="info-item">:</td>
-                            <td style="font-weight:bold; font-size:13px" class="info-text info-left">
-                                @if ($cetakpdf->karyawan)
-                                    {{ $cetakpdf->karyawan->kode_karyawan }}
-                                @else
-                                    tidak ada
-                                @endif
+                            <td class="info-catatan2">Tanggal</td>
+                            <td class="info-item">:</td>
+                            <td style="font-weight:bold" class="info-text info-left">
+                                <?php echo strftime('%d %B %Y', time()); ?> </td>
+                        </tr>
+                        <tr>
+                            <td class="info-catatan2">Kode Sopir</td>
+                            <td class="info-item">:</td>
+                            <td style="font-weight:bold" class="info-text info-left">
+                                {{ $cetakpdf->kode_karyawan }} </td>
+                        </tr>
+                        <tr>
+                            <td class="info-catatan2">Nama Sopir</td>
+                            <td class="info-item">:</td>
+                            <td style="font-weight:bold" class="info-text info-left">
+                                {{ $cetakpdf->nama_lengkap }}
 
                             </td>
                         </tr>
                         <tr>
-                            <td style="font-size: 13px" class="info-catatan2">Nama Karyawan</td>
-                            <td style="font-size: 13px" class="info-item">:</td>
-                            <td style="font-weight:bold; font-size:13px" class="info-text info-left">
-                                @if ($cetakpdf->karyawan)
-                                    {{ $cetakpdf->karyawan->nama_lengkap }}
-                                @else
-                                    tidak ada
-                                @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="font-size: 13px" class="info-catatan2">Nominal</td>
-                            <td style="font-size: 13px" class="info-item">:</td>
-                            <td style="font-weight:bold; font-size:13px" class="info-text info-left">
+                            <td class="info-catatan2">Nominal</td>
+                            <td class="info-item">:</td>
+                            <td style="font-weight:bold" class="info-text info-left">
                                 Rp.
-                                {{ number_format($cetakpdf->nominal, 0, ',', '.') }}
+                                {{ number_format($cetakpdf->tabungan, 0, ',', '.') }}
                             </td>
                         </tr>
                         <tr>
-                            <td style="font-size: 13px" class="info-catatan2">Terbilang</td>
-                            <td style="font-size: 13px" class="info-item">:</td>
-                            <td style="font-weight:bold; font-size:13px; font-style:italic" class="info-text info-left">
-                                ({{ terbilang($cetakpdf->nominal) }}
+                            <td class="info-catatan2">Terbilang</td>
+                            <td class="info-item">:</td>
+                            <td style="font-weight:bold; font-style:italic" class="info-text info-left">
+                                ({{ terbilang($cetakpdf->tabungan) }}
                                 Rupiah)</td>
                         </tr>
                     </table>
@@ -307,67 +283,8 @@
     </table>
     <hr style="border-top: 0.1px solid black; margin: 3px 0;">
 
-    <table style="width: 100%;" cellpadding="2" cellspacing="0">
-        <tr>
-            <td style="text-align: left; padding: 0px; font-size: 13px; font-weight:bold">Keterangan :
-            </td>
-            <td style="text-align: right; padding: 0px; font-size: 13px; font-weight:bold">Total Kasbon :
-                <span>
-                    Rp.-{{ number_format($cetakpdf->sub_total, 0, ',', '.') }}
-            </td>
-            </span>
-        </tr>
-    </table>
-    <div>
-        <span style="text-align: left; padding: 0px; font-size: 13px; font-weight:bold; margin-right:300px">
-            {{ $cetakpdf->keterangan }}</span>
-    </div>
-
     <br><br><br>
 
-    <table class="tdd" cellpadding="10" cellspacing="0" style="margin: 0 auto;">
-        <tr>
-            <td style="text-align: center;">
-                <table style="margin: 0 auto;">
-                    <tr style="text-align: center;">
-                        <td class="label">{{ auth()->user()->karyawan->nama_lengkap }}</td>
-                    </tr>
-                    <tr>
-                        <td class="separator" colspan="2"><span></span></td>
-                    </tr>
-                    <tr style="text-align: center;">
-                        <td class="label">Accounting</td>
-                    </tr>
-                </table>
-            </td>
-            <td style="text-align: center;">
-                <table style="margin: 0 auto;">
-                    <tr style="text-align: center;">
-                        <td class="label" style="min-height: 13px;">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td class="separator" colspan="2"><span></span></td>
-                    </tr>
-                    <tr style="text-align: center;">
-                        <td class="label">Finance</td>
-                    </tr>
-                </table>
-            </td>
-            <td style="text-align: center;">
-                <table style="margin: 0 auto;">
-                    <tr style="text-align: center;">
-                        <td class="label" style="min-height: 13px;">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td class="separator" colspan="2"><span></span></td>
-                    </tr>
-                    <tr style="text-align: center;">
-                        <td class="label">Karyawan</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
 </body>
 
 </html>

@@ -303,11 +303,11 @@
                                         <div class="form-group d-flex">
                                             <input class="form-control" id="kode_rute" name="kode_rute" type="text"
                                                 placeholder="" value="{{ old('kode_rute') }}" readonly
-                                                style="margin-right: 0px; font-size:14px" />
-                                            {{-- <button class="btn btn-primary" type="button"
+                                                style="margin-right: 10px; font-size:14px" />
+                                            <button class="btn btn-primary" type="button"
                                                 onclick="showCategoryModalrute(this.value)">
                                                 <i class="fas fa-search"></i>
-                                            </button> --}}
+                                            </button>
                                         </div>
                                         <div class="form-group">
                                             <label style="font-size:14px" for="rute_perjalanan">Rute Perjalanan</label>
@@ -1235,7 +1235,7 @@
                                                 onclick="getSelectedDataspk('{{ $spk->id }}',
                                                     '{{ $spk->kode_spk }}','{{ $spk->kendaraan_id }}', '{{ $spk->no_kabin }}', '{{ $spk->no_pol }}', '{{ $spk->golongan }}', '{{ $spk->kendaraan->km ?? null }}','{{ $spk->km_akhir }}',
                                                     '{{ $spk->user_id }}', '{{ $spk->user->karyawan->kode_karyawan }}', '{{ $spk->user->karyawan->nama_lengkap }}', '{{ $spk->user->karyawan->telp }}',
-                                                    '{{ $spk->user->karyawan->tabungan }}','{{ $spk->rute_perjalanan_id }}', '{{ $spk->rute_perjalanan->kode_rute }}', '{{ $spk->rute_perjalanan->nama_rute }}',
+                                                    '{{ $spk->user->karyawan->tabungan }}','{{ $spk->rute_perjalanan_id }}', '{{ $spk->rute_perjalanan->kode_rute ?? null }}', '{{ $spk->rute_perjalanan->nama_rute ?? null }}',
                                                     '{{ $spk->uang_jalan }}')">
                                                 <td class="text-center">{{ $loop->iteration }}</td>
                                                 <td>{{ $spk->kode_spk }}</td>
@@ -1248,7 +1248,7 @@
                                                         onclick="getSelectedDataspk('{{ $spk->id }}',
                                                     '{{ $spk->kode_spk }}','{{ $spk->kendaraan_id }}', '{{ $spk->no_kabin }}', '{{ $spk->no_pol }}', '{{ $spk->golongan }}', '{{ $spk->kendaraan->km ?? null }}','{{ $spk->km_akhir }}',
                                                     '{{ $spk->user_id }}', '{{ $spk->user->karyawan->kode_karyawan }}', '{{ $spk->user->karyawan->nama_lengkap }}', '{{ $spk->user->karyawan->telp }}',
-                                                    '{{ $spk->user->karyawan->tabungan }}','{{ $spk->rute_perjalanan_id }}', '{{ $spk->rute_perjalanan->kode_rute }}', '{{ $spk->rute_perjalanan->nama_rute }}',
+                                                    '{{ $spk->user->karyawan->tabungan }}','{{ $spk->rute_perjalanan_id }}', '{{ $spk->rute_perjalanan->kode_rute ?? null }}', '{{ $spk->rute_perjalanan->nama_rute ?? null }}',
                                                     '{{ $spk->uang_jalan }}')">
                                                         <i class="fas fa-plus"></i>
                                                     </button>

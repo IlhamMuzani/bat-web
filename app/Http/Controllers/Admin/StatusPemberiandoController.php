@@ -41,6 +41,51 @@ class StatusPemberiandoController extends Controller
         return view('admin.status_pemberiando.index', compact('spks'));
     }
 
+    // public function show($id)
+    // {
+    //     $cetakpdf = Pengambilan_do::find($id);
+    //     $kendaraan = Kendaraan::find($cetakpdf->kendaraan_id);
+    //     $odometer = null; // Inisialisasi variabel $odometer
+
+    //     if ($kendaraan) {
+    //         $client = new Client();
+    //         $response = $client->post('https://vtsapi.easygo-gps.co.id/api/Report/lastposition', [
+    //             'headers' => [
+    //                 'accept' => 'application/json',
+    //                 'token' => 'ADB4E5DFAAEA4BA1A6A8981FEF86FAA9',
+    //                 'Content-Type' => 'application/json',
+    //             ],
+    //             'json' => [
+    //                 'list_vehicle_id' => [$kendaraan->list_vehicle_id],
+    //                 'list_nopol' => [],
+    //                 'list_no_aset' => [],
+    //                 'geo_code' => [],
+    //                 'min_lastupdate_hour' => null,
+    //                 'page' => 0,
+    //                 'encrypted' => 0,
+    //             ],
+    //         ]);
+
+    //         $data = json_decode($response->getBody()->getContents(), true);
+
+    //         if (isset($data['Data'][0]['vehicle_id'])) {
+    //             $vehicleId = $data['Data'][0]['vehicle_id'];
+
+    //             if ($vehicleId === $kendaraan->list_vehicle_id) {
+    //                 $odometer = intval($data['Data'][0]['odometer'] ?? 0);
+
+    //                 if ($odometer > 0) {
+    //                     $kendaraan->km = $odometer;
+    //                     $kendaraan->save();
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     // Pastikan variabel $odometer dimasukkan dalam compact
+    //     return view('admin.status_pemberiando.show', compact('cetakpdf', 'odometer'));
+    // }
+
     public function show($id)
     {
         $cetakpdf = Pengambilan_do::find($id);
@@ -48,42 +93,44 @@ class StatusPemberiandoController extends Controller
         $odometer = null; // Inisialisasi variabel $odometer
 
         if ($kendaraan) {
-            $client = new Client();
-            $response = $client->post('https://vtsapi.easygo-gps.co.id/api/Report/lastposition', [
-                'headers' => [
-                    'accept' => 'application/json',
-                    'token' => 'ADB4E5DFAAEA4BA1A6A8981FEF86FAA9',
-                    'Content-Type' => 'application/json',
-                ],
-                'json' => [
-                    'list_vehicle_id' => [$kendaraan->list_vehicle_id],
-                    'list_nopol' => [],
-                    'list_no_aset' => [],
-                    'geo_code' => [],
-                    'min_lastupdate_hour' => null,
-                    'page' => 0,
-                    'encrypted' => 0,
-                ],
-            ]);
+            try {
+                $client = new Client();
+                $response = $client->post('https://vtsapi.easygo-gps.co.id/api/Report/lastposition', [
+                    'headers' => [
+                        'accept' => 'application/json',
+                        'token' => 'ADB4E5DFAAEA4BA1A6A8981FEF86FAA9',
+                        'Content-Type' => 'application/json',
+                    ],
+                    'json' => [
+                        'list_vehicle_id' => [$kendaraan->list_vehicle_id],
+                        'list_nopol' => [],
+                        'list_no_aset' => [],
+                        'geo_code' => [],
+                        'min_lastupdate_hour' => null,
+                        'page' => 0,
+                        'encrypted' => 0,
+                    ],
+                ]);
 
-            $data = json_decode($response->getBody()->getContents(), true);
+                $data = json_decode($response->getBody()->getContents(), true);
 
-            if (isset($data['Data'][0]['vehicle_id'])) {
-                $vehicleId = $data['Data'][0]['vehicle_id'];
+                if (isset($data['Data'][0]['vehicle_id'])) {
+                    $vehicleId = $data['Data'][0]['vehicle_id'];
 
-                if ($vehicleId === $kendaraan->list_vehicle_id) {
-                    $odometer = intval($data['Data'][0]['odometer'] ?? 0);
+                    if ($vehicleId === $kendaraan->list_vehicle_id) {
+                        $odometer = intval($data['Data'][0]['odometer'] ?? 0);
 
-                    if ($odometer > 0) {
-                        $kendaraan->km = $odometer;
-                        $kendaraan->save();
+                        if ($odometer > 0) {
+                            $kendaraan->km = $odometer;
+                            $kendaraan->save();
+                        }
                     }
                 }
+            } catch (\Exception $e) {
             }
         }
 
         // Pastikan variabel $odometer dimasukkan dalam compact
         return view('admin.status_pemberiando.show', compact('cetakpdf', 'odometer'));
     }
-    
 }

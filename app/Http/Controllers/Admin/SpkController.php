@@ -68,47 +68,88 @@ class SpkController extends Controller
         ));
     }
 
+    // public function ambil_km($id)
+    // {
+    //     $kendaraan = Kendaraan::find($id);
+
+    //     if ($kendaraan) {
+    //         $client = new Client();
+    //         $response = $client->post('https://vtsapi.easygo-gps.co.id/api/Report/lastposition', [
+    //             'headers' => [
+    //                 'accept' => 'application/json',
+    //                 'token' => 'ADB4E5DFAAEA4BA1A6A8981FEF86FAA9',
+    //                 'Content-Type' => 'application/json',
+    //             ],
+    //             'json' => [
+    //                 'list_vehicle_id' => [$kendaraan->list_vehicle_id],
+    //                 'list_nopol' => [],
+    //                 'list_no_aset' => [],
+    //                 'geo_code' => [],
+    //                 'min_lastupdate_hour' => null,
+    //                 'page' => 0,
+    //                 'encrypted' => 0,
+    //             ],
+    //         ]);
+
+    //         $data = json_decode($response->getBody()->getContents(), true);
+
+    //         if (isset($data['Data'][0]['vehicle_id'])) {
+    //             $vehicleId = $data['Data'][0]['vehicle_id'];
+
+    //             if ($vehicleId === $kendaraan->list_vehicle_id) {
+    //                 $odometer = intval($data['Data'][0]['odometer'] ?? 0);
+
+    //                 return response()->json(['km' => $odometer]);
+    //             } else {
+    //                 return response()->json(['km' => $kendaraan->km]);
+    //             }
+    //         }
+    //     }
+
+    //     // Jika kendaraan tidak ditemukan, kembalikan response error
+    //     return response()->json(['error' => 'Kendaraan tidak ditemukan'], 404);
+    // }
+
+
     public function ambil_km($id)
     {
         $kendaraan = Kendaraan::find($id);
 
         if ($kendaraan) {
-            $client = new Client();
-            $response = $client->post('https://vtsapi.easygo-gps.co.id/api/Report/lastposition', [
-                'headers' => [
-                    'accept' => 'application/json',
-                    'token' => 'ADB4E5DFAAEA4BA1A6A8981FEF86FAA9',
-                    'Content-Type' => 'application/json',
-                ],
-                'json' => [
-                    'list_vehicle_id' => [$kendaraan->list_vehicle_id],
-                    'list_nopol' => [],
-                    'list_no_aset' => [],
-                    'geo_code' => [],
-                    'min_lastupdate_hour' => null,
-                    'page' => 0,
-                    'encrypted' => 0,
-                ],
-            ]);
+            try {
+                $client = new Client();
+                $response = $client->post('https://vtsapi.easygo-gps.co.id/api/Report/lastposition', [
+                    'headers' => [
+                        'accept' => 'application/json',
+                        'token' => 'ADB4E5DFAAEA4BA1A6A8981FEF86FAA9',
+                        'Content-Type' => 'application/json',
+                    ],
+                    'json' => [
+                        'list_vehicle_id' => [$kendaraan->list_vehicle_id],
+                        'list_nopol' => [],
+                        'list_no_aset' => [],
+                        'geo_code' => [],
+                        'min_lastupdate_hour' => null,
+                        'page' => 0,
+                        'encrypted' => 0,
+                    ],
+                ]);
 
-            $data = json_decode($response->getBody()->getContents(), true);
+                $data = json_decode($response->getBody()->getContents(), true);
 
-            if (isset($data['Data'][0]['vehicle_id'])) {
-                $vehicleId = $data['Data'][0]['vehicle_id'];
+                if (isset($data['Data'][0]['vehicle_id'])) {
+                    $vehicleId = $data['Data'][0]['vehicle_id'];
 
-                if ($vehicleId === $kendaraan->list_vehicle_id) {
-                    $odometer = intval($data['Data'][0]['odometer'] ?? 0);
-
-                    // if ($odometer > 0) {
-                    //     $kendaraan->km = $odometer;
-                    //     $kendaraan->save();
-                    // }
-
-                    return response()->json(['km' => $odometer]);
-                } else {
-                    return response()->json(['km' => $kendaraan->km]);
+                    if ($vehicleId === $kendaraan->list_vehicle_id) {
+                        $odometer = intval($data['Data'][0]['odometer'] ?? 0);
+                        return response()->json(['km' => $odometer]);
+                    }
                 }
+            } catch (\Exception $e) {
             }
+
+            // Jika terjadi error pada API atau vehicle_id tidak cocok, kembalikan km dari database
+            return response()->json(['km' => $kendaraan->km]);
         }
 
         // Jika kendaraan tidak ditemukan, kembalikan response error
@@ -140,10 +181,10 @@ class SpkController extends Controller
         $name_driver = $request->input('nama_driver');
         // Cek pengambilan DO terakhir untuk driver
         $lastPengambilanDo = Pengambilan_do::where('user_id', $user_id)
-        ->orderBy('created_at', 'desc') // Urutkan berdasarkan tanggal terbaru
-        ->first();
+            ->orderBy('created_at', 'desc') // Urutkan berdasarkan tanggal terbaru
+            ->first();
 
-        
+
         // if ($lastPengambilanDo && $lastPengambilanDo->status !== 'selesai') {
         //     // Jika pengambilan DO terakhir belum selesai, tampilkan pesan error
         //     return back()->with('erorrss', 'Driver ' . $name_driver . ' masih memiliki pengambilan DO yang belum selesai.');

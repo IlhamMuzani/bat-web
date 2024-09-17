@@ -9,8 +9,11 @@
     <style>
         html,
         body {
-            font-family: 'DOSVGA', monospace;
+            font-family: Arial, sans-serif;
             color: black;
+            margin-top: 10px;
+            margin-left: 10px;
+            margin-right: 10px;
         }
 
         table {
@@ -182,7 +185,7 @@
             <td style="text-align: center;">
                 <table style="margin: 0 auto;">
                     <tr style="text-align: center; font-size:15px">
-                        <td class="label">
+                        <td style="font-size: 13px" class="label">
                             @if ($pemasangans->user)
                                 {{ $pemasangans->user->karyawan->nama_lengkap }}
                             @else
@@ -194,7 +197,7 @@
                         <td class="separator" colspan="2"><span></span></td>
                     </tr>
                     <tr style="text-align: center; font-size:15px">
-                        <td class="label">Operasional</td>
+                        <td style="font-size: 13px" class="label">Operasional</td>
                     </tr>
                 </table>
             </td>
@@ -204,10 +207,10 @@
                         <td class="label" style="min-height: 15px;">&nbsp;</td>
                     </tr>
                     <tr>
-                        <td class="separator" colspan="2"><span></span></td>
+                        <td style="font-size: 13px" class="separator" colspan="2"><span></span></td>
                     </tr>
                     <tr style="text-align: center; font-size:15px">
-                        <td class="label">SPV Sparepart</td>
+                        <td style="font-size: 13px" class="label">SPV Sparepart</td>
                     </tr>
                 </table>
             </td>
@@ -217,10 +220,10 @@
                         <td class="label" style="min-height: 15px;">&nbsp;</td>
                     </tr>
                     <tr>
-                        <td class="separator" colspan="2"><span></span></td>
+                        <td style="font-size: 13px" class="separator" colspan="2"><span></span></td>
                     </tr>
                     <tr style="text-align: center; font-size:15px">
-                        <td class="label">Gudang</td>
+                        <td style="font-size: 13px" class="label">Gudang</td>
                     </tr>
                 </table>
             </td>
