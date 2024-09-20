@@ -113,6 +113,7 @@ class PengambilandoController extends Controller
             $pengambilan_do->user_id
         )
             ->where('id', '<', $id)
+            ->where('status', '!=', 'unpost')
             ->orderBy(
                 'created_at',
                 'desc'

@@ -777,5 +777,6 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::get('inqueryklaim_ban/cetak-pdf/{id}', [\App\Http\Controllers\Admin\InqueryKlaimbanController::class, 'cetakpdf']);
 
   Route::post('ambil_km/{id}', [\App\Http\Controllers\Admin\SpkController::class, 'ambil_km'])->name('ambil_km');
-
+  Route::get('postingfilterpengambilandeposit', [\App\Http\Controllers\Admin\InqueryDepositdriverController::class, 'postingfilterpengambilandeposit']);
+  Route::get('unpostfilterpengambilandeposit', [\App\Http\Controllers\Admin\InqueryDepositdriverController::class, 'unpostfilterpengambilandeposit']);
 });

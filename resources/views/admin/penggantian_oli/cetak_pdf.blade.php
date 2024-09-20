@@ -184,7 +184,7 @@
         <tr>
             <td style="text-align: center;">
                 <table style="margin: 0 auto;">
-                    <tr style="text-align: center; font-size:15px">
+                    <tr style="text-align: center; font-size:13px">
                         <td style="font-size: 13px" class="label">
                             @if ($pemasangans->user)
                                 {{ $pemasangans->user->karyawan->nama_lengkap }}
@@ -194,22 +194,21 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="separator" colspan="2"><span></span></td>
+                        <td style="font-size: 13px" class="separator" colspan="2"><span></span></td>
                     </tr>
-                    <tr style="text-align: center; font-size:15px">
+                    <tr style="text-align: center; font-size:13px">
                         <td style="font-size: 13px" class="label">Operasional</td>
                     </tr>
                 </table>
-            </td>
             <td style="text-align: center;">
                 <table style="margin: 0 auto;">
                     <tr style="text-align: center;">
-                        <td class="label" style="min-height: 15px;">&nbsp;</td>
+                        <td class="label" style="min-height: 13px; font-size:13px">&nbsp;</td>
                     </tr>
                     <tr>
                         <td style="font-size: 13px" class="separator" colspan="2"><span></span></td>
                     </tr>
-                    <tr style="text-align: center; font-size:15px">
+                    <tr style="text-align: center; font-size:13px">
                         <td style="font-size: 13px" class="label">SPV Sparepart</td>
                     </tr>
                 </table>
@@ -217,12 +216,12 @@
             <td style="text-align: center;">
                 <table style="margin: 0 auto;">
                     <tr style="text-align: center;">
-                        <td class="label" style="min-height: 15px;">&nbsp;</td>
+                        <td class="label" style="min-height: 13px; font-size:13px">&nbsp;</td>
                     </tr>
                     <tr>
                         <td style="font-size: 13px" class="separator" colspan="2"><span></span></td>
                     </tr>
-                    <tr style="text-align: center; font-size:15px">
+                    <tr style="text-align: center; font-size:13px">
                         <td style="font-size: 13px" class="label">Gudang</td>
                     </tr>
                 </table>

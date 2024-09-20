@@ -218,7 +218,7 @@ class PerhitungangajiController extends Controller
             'perhitungan_gajikaryawan_id' => $cetakpdf->id,
             'barangakun_id' => 1,
             'kode_detailakun' => $this->kodeakuns(),
-            'kode_akun' => 'KA000004',
+            'kode_akun' => 'KA000001',
             'nama_akun' => 'GAJI & TUNJANGAN',
             'keterangan' => $request->keterangan,
             'nominal' => str_replace(',', '.', str_replace('.', '', $request->total_gaji)),

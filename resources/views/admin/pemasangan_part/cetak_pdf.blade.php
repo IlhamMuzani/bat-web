@@ -9,8 +9,11 @@
     <style>
         html,
         body {
-            font-family: 'DOSVGA', monospace;
+            font-family: Arial, sans-serif;
             color: black;
+            margin-top: 10px;
+            margin-left: 10px;
+            margin-right: 10px;
         }
 
         table {
@@ -21,7 +24,7 @@
         .td {
             text-align: center;
             padding: 5px;
-            font-size: 15px;
+            font-size: 13px;
             /* border: 1px solid black; */
         }
 
@@ -50,7 +53,7 @@
         }
 
         .separator {
-            padding-top: 15px;
+            padding-top: 13px;
             text-align: center;
         }
 
@@ -75,7 +78,7 @@
     </div>
     <br>
     <div style="font-weight: bold; text-align: center">
-        <span style="font-weight: bold; font-size: 22px;">SURAT PEMASANGAN PART</span>
+        <span style="font-weight: bold; font-size: 19px;">SURAT PEMASANGAN PART</span>
         <br>
         <br>
     </div>
@@ -83,7 +86,7 @@
 
     <table style="width: 100%; border-top: 1px solid black;" cellpadding="2" cellspacing="0">
         <tr>
-            <td class="td" style="text-align: center; padding: 3px; font-size: 16px;">No.
+            <td class="td" style="text-align: center; padding: 3px; font-size: 13px;">No.
                 Kabin: @if ($pemasangans->kendaraan)
                     {{ $pemasangans->kendaraan->no_kabin }}
                 @else
@@ -92,13 +95,13 @@
             </td>
             {{-- <td class="td" style="text-align: center; padding: 3px; font-size: 16px;">No.
                 Registrasi:{{ $pemasangans->kendaraan->no_pol }}</td> --}}
-            <td class="td" style="text-align: center; padding: 3px; font-size: 16px;">Jenis
+            <td class="td" style="text-align: center; padding: 3px; font-size: 13px;">Jenis
                 Kendaraan: @if ($pemasangans->kendaraan)
                     {{ $pemasangans->kendaraan->jenis_kendaraan->nama_jenis_kendaraan }}
                 @else
                 @endif
             </td>
-            <td class="td" style="text-align: center; padding: 3px; font-size: 16px;">
+            <td class="td" style="text-align: center; padding: 3px; font-size: 13px;">
                 Tanggal:{{ $pemasangans->tanggal_pemasangan }}</td>
         </tr>
     </table>
@@ -106,11 +109,11 @@
     {{-- <hr style="border-top: 0.1px solid black; margin: 1px 0;"> --}}
     <table style="width: 100%; border-top: 1px solid black;" cellpadding="2" cellspacing="0">
         <tr>
-            <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">No.</td>
-            <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">Kode Part</td>
-            <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">Nama Barang</td>
-            <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">Keterangan</td>
-            <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">Jumlah</td>
+            <td class="td" style="text-align: center; padding: 5px; font-size: 13px;">No.</td>
+            <td class="td" style="text-align: center; padding: 5px; font-size: 13px;">Kode Part</td>
+            <td class="td" style="text-align: center; padding: 5px; font-size: 13px;">Nama Barang</td>
+            <td class="td" style="text-align: center; padding: 5px; font-size: 13px;">Keterangan</td>
+            <td class="td" style="text-align: center; padding: 5px; font-size: 13px;">Jumlah</td>
         </tr>
         <tr style="border-bottom: 1px solid black;">
             <td colspan="7" style="padding: 0px;">
@@ -118,17 +121,17 @@
         </tr>
         @foreach ($parts as $item)
             <tr>
-                <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">{{ $loop->iteration }}
+                <td class="td" style="text-align: center; padding: 5px; font-size: 13px;">{{ $loop->iteration }}
                 </td>
-                <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">
+                <td class="td" style="text-align: center; padding: 5px; font-size: 13px;">
                     {{ $item->sparepart->kode_partdetail }}
                 </td>
-                <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">
+                <td class="td" style="text-align: center; padding: 5px; font-size: 13px;">
                     {{ $item->sparepart->nama_barang }}
                 </td>
-                <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">{{ $item->keterangan }}
+                <td class="td" style="text-align: center; padding: 5px; font-size: 13px;">{{ $item->keterangan }}
                 </td>
-                <td class="td" style="text-align: center; padding: 5px; font-size: 15px;">
+                <td class="td" style="text-align: center; padding: 5px; font-size: 13px;">
                     {{ $item->jumlah }}</td>
             </tr>
         @endforeach
@@ -145,7 +148,7 @@
             <td style="text-align: center;">
                 <table style="margin: 0 auto;">
                     <tr style="text-align: center;">
-                        <td class="label">
+                        <td style="font-size: 13px" class="label">
                             @if ($pemasangans->user)
                                 {{ $pemasangans->user->karyawan->nama_lengkap }}
                             @else
@@ -154,43 +157,41 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="separator" colspan="2"><span></span></td>
+                        <td style="font-size: 13px" class="separator" colspan="2"><span></span></td>
                     </tr>
                     <tr style="text-align: center;">
-                        <td class="label">Operasional</td>
+                        <td style="font-size:13px" class="label">Operasional</td>
                     </tr>
                 </table>
             </td>
             <td style="text-align: center;">
                 <table style="margin: 0 auto;">
                     <tr style="text-align: center;">
-                        <td class="label" style="min-height: 16px;">&nbsp;</td>
+                        <td style="font-size: 13px" class="label" style="min-height: 16px; font-size:13px">&nbsp;</td>
                     </tr>
                     <tr>
-                        <td class="separator" colspan="2"><span></span></td>
+                        <td style="font-size: 13px" class="separator" colspan="2"><span></span></td>
                     </tr>
                     <tr style="text-align: center;">
-                        <td class="label">SPV Sparepart</td>
+                        <td style="font-size: 13px" class="label">SPV Sparepart</td>
                     </tr>
                 </table>
             </td>
             <td style="text-align: center;">
                 <table style="margin: 0 auto;">
                     <tr style="text-align: center;">
-                        <td class="label" style="min-height: 16px;">&nbsp;</td>
+                        <td style="font-size: 13px" class="label" style="min-height: 16px; font-size:13px">&nbsp;</td>
                     </tr>
                     <tr>
-                        <td class="separator" colspan="2"><span></span></td>
+                        <td style="font-size: 13px" class="separator" colspan="2"><span></span></td>
                     </tr>
                     <tr style="text-align: center;">
-                        <td class="label">Gudang</td>
+                        <td style="font-size: 13px" class="label">Gudang</td>
                     </tr>
                 </table>
             </td>
         </tr>
     </table>
-
-
     <div style="text-align: right; font-size:12px; margin-top:25px">
         <span style="font-style: italic;">Printed Date {{ \Carbon\Carbon::now()->format('Y-m-d H:i:s') }}</span>
     </div>

@@ -74,7 +74,8 @@
 
 <body style="margin: 0; padding: 0;">
     <div id="logo-container">
-        <img src="{{ public_path('storage/uploads/gambar_logo/Logo1.png') }}" alt="BAT" width="70" height="35">
+        <img src="{{ public_path('storage/uploads/gambar_logo/Logo1.png') }}" alt="BAT" width="70"
+            height="35">
     </div>
 
     </div>
@@ -194,7 +195,7 @@
             <td style="text-align: center;">
                 <table style="margin: 0 auto;">
                     <tr style="text-align: center;">
-                        <td style="font-size: 13px" class="label" style="min-height: 16px;">&nbsp;</td>
+                        <td class="label" style="min-height: 16px; font-size: 13px">&nbsp;</td>
                     </tr>
                     <tr>
                         <td class="separator" colspan="2"><span></span></td>
@@ -207,7 +208,7 @@
             <td style="text-align: center;">
                 <table style="margin: 0 auto;">
                     <tr style="text-align: center;">
-                        <td class="label" style="min-height: 16px;">&nbsp;</td>
+                        <td class="label" style="min-height: 16px; font-size: 13px">&nbsp;</td>
                     </tr>
                     <tr>
                         <td class="separator" colspan="2"><span></span></td>

@@ -175,7 +175,7 @@
             <td style="text-align: center;">
                 <table style="margin: 0 auto;">
                     <tr style="text-align: center;">
-                        <td class="label">
+                        <td style="font-size: 13px" class="label">
                             @if ($cetakpdf->user)
                                 {{ $cetakpdf->user->karyawan->nama_lengkap }}
                             @else
@@ -187,33 +187,33 @@
                         <td class="separator" colspan="2"><span></span></td>
                     </tr>
                     <tr style="text-align: center;">
-                        <td class="label">Operasional</td>
+                        <td style="font-size: 13px" class="label">Operasional</td>
                     </tr>
                 </table>
             </td>
             <td style="text-align: center;">
                 <table style="margin: 0 auto;">
                     <tr style="text-align: center;">
-                        <td class="label" style="min-height: 16px;">&nbsp;</td>
+                        <td class="label" style="min-height: 16px; font-size: 13px">&nbsp;</td>
                     </tr>
                     <tr>
-                        <td class="separator" colspan="2"><span></span></td>
+                        <td style="font-size: 13px" class="separator" colspan="2"><span></span></td>
                     </tr>
                     <tr style="text-align: center;">
-                        <td class="label">Financial</td>
+                        <td style="font-size: 13px" class="label">Financial</td>
                     </tr>
                 </table>
             </td>
             <td style="text-align: center;">
                 <table style="margin: 0 auto;">
                     <tr style="text-align: center;">
-                        <td class="label" style="min-height: 16px;">&nbsp;</td>
+                        <td class="label" style="min-height: 16px; font-size: 13px">&nbsp;</td>
                     </tr>
                     <tr>
-                        <td class="separator" colspan="2"><span></span></td>
+                        <td style="font-size: 13px" class="separator" colspan="2"><span></span></td>
                     </tr>
                     <tr style="text-align: center;">
-                        <td class="label">Accounting</td>
+                        <td style="font-size: 13px" class="label">Accounting</td>
                     </tr>
                 </table>
             </td>

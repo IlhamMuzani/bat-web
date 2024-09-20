@@ -20,6 +20,7 @@ class Sewa_kendaraan extends Model
         'kategori',
         'qrcode_sewa',
         'admin',
+        'status_faktur',
         'pph',
         'pelanggan_id',
         'vendor_id',

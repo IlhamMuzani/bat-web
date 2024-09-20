@@ -23,6 +23,7 @@ use App\Models\Memotambahan;
 use App\Models\Pelanggan;
 use App\Models\Pph;
 use App\Models\Saldo;
+use App\Models\Sewa_kendaraan;
 use App\Models\Spk;
 use App\Models\Tagihan_ekspedisi;
 use App\Models\Tarif;
@@ -87,6 +88,7 @@ class InqueryFakturekspedisispkController extends Controller
             ->where('departemen_id', '4')
             ->orderBy('nama_lengkap')
             ->get();
+        // $sewa_kendaraans = Sewa_kendaraan::where('status_faktur', null)->get();
 
         return view('admin.inquery_fakturekspedisispk.update', compact('karyawans', 'spks', 'kendaraans', 'memoEkspedisi', 'memoTambahan', 'detailtarifs', 'details', 'inquery', 'pelanggans', 'memos', 'tarifs'));
         // } else {
