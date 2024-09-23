@@ -677,7 +677,7 @@
                 <td style="text-align: center;">
                     <table style="margin: 0 auto;">
                         <tr style="text-align: center;">
-                            <td class="label">ASFAROH IZZAH NURHAYAH</td>
+                            <td class="label">HAYAH</td>
                         </tr>
                         <tr>
                             <td class="separator" colspan="2"><span></span></td>

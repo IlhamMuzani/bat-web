@@ -247,7 +247,8 @@ class PengambilandoController extends Controller
 
         // Buat record Timer dengan status awal dan akhir, serta timer awal dan akhir
         Timer::create([
-            'kendaraan_id' => $id,
+            'kendaraan_id' => $kendaraan->id,
+            'pengambilan_do_id' => $id,
             'status_awal' => $currentStatusPerjalanan,
             'status_akhir' => $updatedStatusPerjalanan,
             'timer_awal' => $currentTimer,
@@ -364,7 +365,8 @@ class PengambilandoController extends Controller
             Timer::create(array_merge(
                 $request->all(),
                 [
-                    'kendaraan_id' => $id,
+                    'kendaraan_id' => $kendaraan->id,
+                    'pengambilan_do_id' => $id,
                     'status_awal' => $currentStatusPerjalanan,
                     'status_akhir' => $updatedStatusPerjalanan,
                     'timer_awal' => $currentTimer,
@@ -590,7 +592,8 @@ class PengambilandoController extends Controller
             Timer::create(array_merge(
                 $request->all(),
                 [
-                    'kendaraan_id' => $id,
+                    'kendaraan_id' => $kendaraan->id,
+                    'pengambilan_do_id' => $id,
                     'status_awal' => $currentStatusPerjalanan,
                     'status_akhir' => $updatedStatusPerjalanan,
                     'timer_awal' => $currentTimer,
@@ -719,7 +722,8 @@ class PengambilandoController extends Controller
             Timer::create(array_merge(
                 $request->all(),
                 [
-                    'kendaraan_id' => $id,
+                    'kendaraan_id' => $kendaraan->id,
+                    'pengambilan_do_id' => $id,
                     'status_awal' => $currentStatusPerjalanan,
                     'status_akhir' => $updatedStatusPerjalanan,
                     'timer_awal' => $currentTimer,

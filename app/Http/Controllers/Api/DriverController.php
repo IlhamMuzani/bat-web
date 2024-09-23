@@ -128,35 +128,6 @@ class DriverController extends Controller
     public function tunggu_muat(Request $request, $id)
     {
         $km = Kendaraan::findOrFail($id);
-        // $jarak = Jarak_km::first();
-
-        // $validator = Validator::make(
-        //     $request->all(),
-        //     [
-        //         'km' => [
-        //             'required',
-        //             'numeric',
-        //             'min:' . ($km->km + 1),
-        //             function ($attribute, $value, $fail) use ($km, $jarak) {
-        //                 if ($value - $km->km > $jarak->batas) {
-        //                     $fail('Nilai km baru tidak boleh lebih dari ' . $jarak->batas . ' km dari km awal.');
-        //                 }
-        //             },
-        //         ],
-        //     ],
-        //     [
-        //         'km.required' => 'Masukkan nilai km',
-        //         'km.numeric' => 'Nilai Km harus berupa angka',
-        //         'km.min' => 'Nilai Km harus lebih tinggi dari Km awal',
-        //     ]
-        // );
-
-
-        // if ($validator->fails()) {
-        //     $error = $validator->errors()->first();
-        //     return $this->error($error);
-        // }
-
         $kendaraan = Kendaraan::find($id);
         $currentStatusPerjalanan = $kendaraan->status_perjalanan;
         $currentTimer = $kendaraan->waktu;
@@ -176,14 +147,9 @@ class DriverController extends Controller
             'waktu' => now()->format('Y-m-d H:i:s')
         ]);
 
-        // $pengambilan_do = Pengambilan_do::where('kendaraan_id', $kendaraan->id)
-        //     ->first();
-
-        // if ($pengambilan_do) {
-        //     $pengambilan_do->update([
-        //         'km_awal' => $request->km,
-        //     ]);
-        // }
+        $pengambilan_do = Pengambilan_do::where('kendaraan_id', $kendaraan->id)
+            ->first();
+        $pengambilan_do_id = $pengambilan_do ? $pengambilan_do->id : null;
 
         // Retrieve the updated status_perjalanan for status_akhir
         $updatedStatusPerjalanan = $kendaraan->fresh()->status_perjalanan;
@@ -194,6 +160,7 @@ class DriverController extends Controller
             $request->all(),
             [
                 'kendaraan_id' => $id,
+                'pengambilan_do_id' => $pengambilan_do_id,
                 'status_awal' => $currentStatusPerjalanan,
                 'status_akhir' => $updatedStatusPerjalanan,
                 'timer_awal' => $currentTimer,
@@ -239,11 +206,16 @@ class DriverController extends Controller
         $updatedStatusPerjalanan = $kendaraan->fresh()->status_perjalanan;
         $currentTimestamp = now()->format('Y-m-d H:i:s');
 
+        $pengambilan_do = Pengambilan_do::where('kendaraan_id', $kendaraan->id)
+            ->first();
+        $pengambilan_do_id = $pengambilan_do ? $pengambilan_do->id : null;
+
         // Create Timer record with the old and new status, and the old timer
         Timer::create(array_merge(
             $request->all(),
             [
                 'kendaraan_id' => $id,
+                'pengambilan_do_id' => $pengambilan_do_id,
                 'status_awal' => $currentStatusPerjalanan,
                 'status_akhir' => $updatedStatusPerjalanan,
                 'timer_awal' => $currentTimer,
@@ -263,27 +235,6 @@ class DriverController extends Controller
 
     public function perjalanan_isi(Request $request, $id)
     {
-
-        // $km = Kendaraan::findOrFail($id);
-
-        // $validator = Validator::make(
-        //     $request->all(),
-        //     [
-        //         'km' => 'required|numeric|min:' . ($km->km + 1),
-        //         'kota_id' => 'required',
-        //     ],
-        //     [
-        //         'km.required' => 'Masukkan nilai km',
-        //         'km.numeric' => 'Nilai Km harus berupa angka',
-        //         'km.min' => 'Nilai Km harus lebih tinggi dari Km awal',
-        //         'kota_id.required' => 'Pilih tujuan',
-        //     ]
-        // );
-
-        // if ($validator->fails()) {
-        //     $error = $validator->errors()->first();
-        //     return $this->error($error);
-        // }
 
         $kendaraan = Kendaraan::find($id);
         $currentStatusPerjalanan = $kendaraan->status_perjalanan;
@@ -312,11 +263,16 @@ class DriverController extends Controller
         $updatedStatusPerjalanan = $kendaraan->fresh()->status_perjalanan;
         $currentTimestamp = now()->format('Y-m-d H:i:s');
 
+        $pengambilan_do = Pengambilan_do::where('kendaraan_id', $kendaraan->id)
+            ->first();
+        $pengambilan_do_id = $pengambilan_do ? $pengambilan_do->id : null;
+        
         // Create Timer record with the old and new status, and the old timer
         Timer::create(array_merge(
             $request->all(),
             [
                 'kendaraan_id' => $id,
+                'pengambilan_do_id' => $pengambilan_do_id,
                 'status_awal' => $currentStatusPerjalanan,
                 'status_akhir' => $updatedStatusPerjalanan,
                 'timer_awal' => $currentTimer,
@@ -376,11 +332,16 @@ class DriverController extends Controller
         $updatedStatusPerjalanan = $kendaraan->fresh()->status_perjalanan;
         $currentTimestamp = now()->format('Y-m-d H:i:s');
 
+        $pengambilan_do = Pengambilan_do::where('kendaraan_id', $kendaraan->id)
+            ->first();
+        $pengambilan_do_id = $pengambilan_do ? $pengambilan_do->id : null;
+        
         // Create Timer record with the old and new status, and the old timer
         Timer::create(array_merge(
             $request->all(),
             [
                 'kendaraan_id' => $id,
+                'pengambilan_do_id' => $pengambilan_do_id,
                 'status_awal' => $currentStatusPerjalanan,
                 'status_akhir' => $updatedStatusPerjalanan,
                 'timer_awal' => $currentTimer,
@@ -499,11 +460,15 @@ class DriverController extends Controller
         $updatedStatusPerjalanan = $kendaraan->fresh()->status_perjalanan;
         $currentTimestamp = now()->format('Y-m-d H:i:s');
 
+        $pengambilan_do = Pengambilan_do::where('kendaraan_id', $kendaraan->id)
+            ->first();
+        $pengambilan_do_id = $pengambilan_do ? $pengambilan_do->id : null;
         // Create Timer record with the old and new status, and the old timer
         Timer::create(array_merge(
             $request->all(),
             [
                 'kendaraan_id' => $id,
+                'pengambilan_do_id' => $pengambilan_do_id,
                 'status_awal' => $currentStatusPerjalanan,
                 'status_akhir' => $updatedStatusPerjalanan,
                 'timer_awal' => $currentTimer,
@@ -549,11 +514,16 @@ class DriverController extends Controller
         $updatedStatusPerjalanan = $kendaraan->fresh()->status_perjalanan;
         $currentTimestamp = now()->format('Y-m-d H:i:s');
 
+        $pengambilan_do = Pengambilan_do::where('kendaraan_id', $kendaraan->id)
+            ->first();
+        $pengambilan_do_id = $pengambilan_do ? $pengambilan_do->id : null;
+        
         // Create Timer record with the old and new status, and the old timer
         Timer::create(array_merge(
             $request->all(),
             [
                 'kendaraan_id' => $id,
+                'pengambilan_do_id' => $pengambilan_do_id,
                 'status_awal' => $currentStatusPerjalanan,
                 'status_akhir' => $updatedStatusPerjalanan,
                 'timer_awal' => $currentTimer,
@@ -628,11 +598,15 @@ class DriverController extends Controller
         $updatedStatusPerjalanan = $kendaraan->fresh()->status_perjalanan;
         $currentTimestamp = now()->format('Y-m-d H:i:s');
 
+        $pengambilan_do = Pengambilan_do::where('kendaraan_id', $kendaraan->id)
+            ->first();
+        $pengambilan_do_id = $pengambilan_do ? $pengambilan_do->id : null;
         // Create Timer record with the old and new status, and the old timer
         Timer::create(array_merge(
             $request->all(),
             [
                 'kendaraan_id' => $id,
+                'pengambilan_do_id' => $pengambilan_do_id,
                 'status_awal' => $currentStatusPerjalanan,
                 'status_akhir' => $updatedStatusPerjalanan,
                 'timer_awal' => $currentTimer,
@@ -703,11 +677,16 @@ class DriverController extends Controller
         $updatedStatusPerjalanan = $kendaraan->fresh()->status_perjalanan;
         $currentTimestamp = now()->format('Y-m-d H:i:s');
 
+        $pengambilan_do = Pengambilan_do::where('kendaraan_id', $kendaraan->id)
+            ->first();
+        $pengambilan_do_id = $pengambilan_do ? $pengambilan_do->id : null;
+        
         // Create Timer record with the old and new status, and the old timer
         Timer::create(array_merge(
             $request->all(),
             [
                 'kendaraan_id' => $id,
+                'pengambilan_do_id' => $pengambilan_do_id,
                 'status_awal' => $currentStatusPerjalanan,
                 'status_akhir' => $updatedStatusPerjalanan,
                 'timer_awal' => $currentTimer,
@@ -778,11 +757,15 @@ class DriverController extends Controller
         $updatedStatusPerjalanan = $kendaraan->fresh()->status_perjalanan;
         $currentTimestamp = now()->format('Y-m-d H:i:s');
 
+        $pengambilan_do = Pengambilan_do::where('kendaraan_id', $kendaraan->id)
+            ->first();
+        $pengambilan_do_id = $pengambilan_do ? $pengambilan_do->id : null;
         // Create Timer record with the old and new status, and the old timer
         Timer::create(array_merge(
             $request->all(),
             [
                 'kendaraan_id' => $id,
+                'pengambilan_do_id' => $pengambilan_do_id,
                 'status_awal' => $currentStatusPerjalanan,
                 'status_akhir' => $updatedStatusPerjalanan,
                 'timer_awal' => $currentTimer,

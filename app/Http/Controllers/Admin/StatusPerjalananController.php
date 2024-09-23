@@ -16,6 +16,7 @@ use App\Models\Laporanperjalanan;
 use App\Models\Timer;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use GuzzleHttp\Client;
 
 class StatusPerjalananController extends Controller
 {
@@ -78,6 +79,62 @@ class StatusPerjalananController extends Controller
                 $kendaraan->update([
                     'timer' => $formattedTimer // Simpan timer dalam format "hari jam:menit"
                 ]);
+
+                // $odometer = null; // Inisialisasi variabel $odometer
+                // $latitude = null; // Inisialisasi variabel $latitude
+                // $longitude = null; // Inisialisasi variabel $longitude
+
+                // if ($kendaraan) {
+                //     try {
+                //         $client = new Client();
+                //         $response = $client->post('https://vtsapi.easygo-gps.co.id/api/Report/lastposition', [
+                //             'headers' => [
+                //                 'accept' => 'application/json',
+                //                 'token' => 'ADB4E5DFAAEA4BA1A6A8981FEF86FAA9',
+                //                 'Content-Type' => 'application/json',
+                //             ],
+                //             'json' => [
+                //                 'list_vehicle_id' => [$kendaraan->list_vehicle_id],
+                //                 'list_nopol' => [],
+                //                 'list_no_aset' => [],
+                //                 'geo_code' => [],
+                //                 'min_lastupdate_hour' => null,
+                //                 'page' => 0,
+                //                 'encrypted' => 0,
+                //             ],
+                //         ]);
+
+                //         $data = json_decode($response->getBody()->getContents(), true);
+
+                //         if (isset($data['Data'][0]['vehicle_id'])) {
+                //             $vehicleId = $data['Data'][0]['vehicle_id'];
+
+                //             if ($vehicleId === $kendaraan->list_vehicle_id) {
+                //                 // Ambil odometer
+                //                 $odometer = intval($data['Data'][0]['odometer'] ?? 0);
+
+                //                 // Ambil latitude dan longitude
+                //                 $latitude = $data['Data'][0]['lat'] ?? null;
+                //                 $longitude = $data['Data'][0]['lon'] ?? null;
+
+                //                 // Update data kendaraan dengan odometer, latitude, dan longitude
+                //                 if ($odometer > 0) {
+                //                     $kendaraan->km = $odometer;
+                //                 }
+                //                 if ($latitude !== null && $longitude !== null) {
+                //                     $kendaraan->latitude = $latitude;
+                //                     $kendaraan->longitude = $longitude;
+                //                 }
+
+                //                 // Simpan perubahan ke database
+                //                 $kendaraan->save();
+                //             }
+                //         }
+                //     } catch (\Exception $e) {
+                //         // Tangani error jika diperlukan
+                //     }
+                // }
+
             }
 
             return view('admin/status_perjalanan.index', compact('kendaraans'));
@@ -85,6 +142,71 @@ class StatusPerjalananController extends Controller
             // tidak memiliki akses
             return back()->with('error', array('Anda tidak memiliki akses'));
         }
+    }
+
+    public function update_latlong($id)
+    {
+        $kendaraan = Kendaraan::find($id);
+        if ($kendaraan) {
+            try {
+                $client = new \GuzzleHttp\Client();
+                $response = $client->post('https://vtsapi.easygo-gps.co.id/api/Report/lastposition', [
+                    'headers' => [
+                        'accept' => 'application/json',
+                        'token' => 'ADB4E5DFAAEA4BA1A6A8981FEF86FAA9',
+                        'Content-Type' => 'application/json',
+                    ],
+                    'json' => [
+                        'list_vehicle_id' => [$kendaraan->list_vehicle_id],
+                        'list_nopol' => [],
+                        'list_no_aset' => [],
+                        'geo_code' => [],
+                        'min_lastupdate_hour' => null,
+                        'page' => 0,
+                        'encrypted' => 0,
+                    ],
+                ]);
+
+                $data = json_decode($response->getBody()->getContents(), true);
+
+                if (isset($data['Data'][0]['vehicle_id'])) {
+                    $vehicleId = $data['Data'][0]['vehicle_id'];
+
+                    if ($vehicleId === $kendaraan->list_vehicle_id) {
+                        $odometer = intval($data['Data'][0]['odometer'] ?? 0);
+                        $latitude = $data['Data'][0]['lat'] ?? null;
+                        $longitude = $data['Data'][0]['lon'] ?? null;
+
+                        if ($odometer > 0) {
+                            $kendaraan->km = $odometer;
+                        }
+                        if ($latitude !== null && $longitude !== null) {
+                            $kendaraan->latitude = $latitude;
+                            $kendaraan->longitude = $longitude;
+                        }
+
+                        // Simpan perubahan ke database
+                        $kendaraan->save();
+
+                        return response()->json([
+                            'success' => true,
+                            'latitude' => $latitude,
+                            'longitude' => $longitude,
+                        ]);
+                    }
+                }
+            } catch (\Exception $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tidak terhubung ke GPS.'
+                ]);
+            }
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Kendaraan tidak ditemukan.'
+        ]);
     }
 
 
