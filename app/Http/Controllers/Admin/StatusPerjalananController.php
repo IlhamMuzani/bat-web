@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Karyawan;
 use App\Models\Kota;
 use App\Models\Laporanperjalanan;
+use App\Models\Pelanggan;
 use App\Models\Timer;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
@@ -26,19 +27,27 @@ class StatusPerjalananController extends Controller
 
             $status = $request->status_perjalanan;
             $kendaraanId = $request->kendaraan_id;
+            $pelangganId = $request->pelanggan_id;
 
             // Inisialisasi query builder
-            $inquery = Kendaraan::query();
+            $inquery = Kendaraan::with(['latestpengambilan_do.spk.pelanggan']); // Include relasi pelanggan
 
             if ($status) {
                 $inquery->where('status_perjalanan', $status);
             }
 
-            // Tambahkan kondisi untuk kendaraan_id jika ada dalam request
             if ($kendaraanId) {
                 $inquery->where('id', $kendaraanId);
             }
 
+            // Filter berdasarkan pelanggan_id jika diberikan
+            if ($pelangganId) {
+                $inquery->whereHas('latestpengambilan_do.spk.pelanggan', function ($query) use ($pelangganId) {
+                    $query->where('id', $pelangganId);
+                });
+            }
+
+            $pelanggans = Pelanggan::get();
             $kendaraans = $inquery->orderBy('user_id', 'desc')
                 ->orderBy('updated_at', 'desc')
                 ->get()
@@ -54,95 +63,34 @@ class StatusPerjalananController extends Controller
                 $waktuTungguMuat = $kendaraan->updated_at;
                 $jarakWaktu = $waktuTungguMuat->diffInSeconds($waktuPerjalananIsi);
 
-                // Dapatkan timer yang sudah ada dari entitas Kendaraan dalam format "hari jam:menit"
+                // Timer calculation
                 $timerParts = explode(' ', $kendaraan->timer);
                 $hari = (int)$timerParts[0];
                 $jamMenit = explode(':', $timerParts[1]);
                 $jam = (int)$jamMenit[0];
                 $menit = (int)$jamMenit[1];
 
-                // Hitung total detik untuk timer yang ada
                 $totalDetik = ($hari * 24 * 60 * 60) + ($jam * 60 * 60) + ($menit * 60);
-
-                // Tambahkan jarak waktu baru ke total detik
                 $totalDetik += $jarakWaktu;
 
-                // Hitung ulang hari, jam, dan menit
                 $hariBaru = floor($totalDetik / (24 * 60 * 60));
                 $totalDetik %= (24 * 60 * 60);
                 $jamBaru = floor($totalDetik / (60 * 60));
                 $totalDetik %= (60 * 60);
                 $menitBaru = floor($totalDetik / 60);
 
-                // Format ulang timer dalam "hari jam:menit" dan perbarui entitas Kendaraan
                 $formattedTimer = sprintf('%d %02d:%02d', $hariBaru, $jamBaru, $menitBaru);
                 $kendaraan->update([
-                    'timer' => $formattedTimer // Simpan timer dalam format "hari jam:menit"
+                    'timer' => $formattedTimer
                 ]);
-
-                // $odometer = null; // Inisialisasi variabel $odometer
-                // $latitude = null; // Inisialisasi variabel $latitude
-                // $longitude = null; // Inisialisasi variabel $longitude
-
-                // if ($kendaraan) {
-                //     try {
-                //         $client = new Client();
-                //         $response = $client->post('https://vtsapi.easygo-gps.co.id/api/Report/lastposition', [
-                //             'headers' => [
-                //                 'accept' => 'application/json',
-                //                 'token' => 'ADB4E5DFAAEA4BA1A6A8981FEF86FAA9',
-                //                 'Content-Type' => 'application/json',
-                //             ],
-                //             'json' => [
-                //                 'list_vehicle_id' => [$kendaraan->list_vehicle_id],
-                //                 'list_nopol' => [],
-                //                 'list_no_aset' => [],
-                //                 'geo_code' => [],
-                //                 'min_lastupdate_hour' => null,
-                //                 'page' => 0,
-                //                 'encrypted' => 0,
-                //             ],
-                //         ]);
-
-                //         $data = json_decode($response->getBody()->getContents(), true);
-
-                //         if (isset($data['Data'][0]['vehicle_id'])) {
-                //             $vehicleId = $data['Data'][0]['vehicle_id'];
-
-                //             if ($vehicleId === $kendaraan->list_vehicle_id) {
-                //                 // Ambil odometer
-                //                 $odometer = intval($data['Data'][0]['odometer'] ?? 0);
-
-                //                 // Ambil latitude dan longitude
-                //                 $latitude = $data['Data'][0]['lat'] ?? null;
-                //                 $longitude = $data['Data'][0]['lon'] ?? null;
-
-                //                 // Update data kendaraan dengan odometer, latitude, dan longitude
-                //                 if ($odometer > 0) {
-                //                     $kendaraan->km = $odometer;
-                //                 }
-                //                 if ($latitude !== null && $longitude !== null) {
-                //                     $kendaraan->latitude = $latitude;
-                //                     $kendaraan->longitude = $longitude;
-                //                 }
-
-                //                 // Simpan perubahan ke database
-                //                 $kendaraan->save();
-                //             }
-                //         }
-                //     } catch (\Exception $e) {
-                //         // Tangani error jika diperlukan
-                //     }
-                // }
-
             }
 
-            return view('admin/status_perjalanan.index', compact('kendaraans'));
+            return view('admin/status_perjalanan.index', compact('kendaraans', 'pelanggans'));
         } else {
-            // tidak memiliki akses
             return back()->with('error', array('Anda tidak memiliki akses'));
         }
     }
+
 
     public function update_latlong($id)
     {
