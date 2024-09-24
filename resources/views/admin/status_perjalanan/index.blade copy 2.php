@@ -4,33 +4,120 @@
 
 @section('content')
 
-    <div id="loadingSpinner" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
-        <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
+    <div id="loadingContainer" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
+        <div>
+            <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
+            <div style="margin-top: 20px; text-align: center;">
+                <span id="loadingPercentage" style="font-size: 1.5rem;">0%</span>
+            </div>
+        </div>
     </div>
 
     <script>
+        document.getElementById("tombolCari").addEventListener("click", function() {
+            // Tampilkan loading spinner
+            const spinner = document.getElementById("loadingSpinner");
+            spinner.style.display = "block";
+
+            // Simulasi pemuatan data (ganti dengan pemanggilan API sebenarnya)
+            fetchData().then(data => {
+                // Proses data yang diterima
+                console.log(data);
+            }).catch(error => {
+                console.error(error);
+            }).finally(() => {
+                // Sembunyikan loading spinner setelah pemuatan selesai
+                spinner.style.display = "none";
+            });
+        });
+
+        function fetchData() {
+            // Fungsi untuk simulasi pengambilan data
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve("Data berhasil dimuat");
+                }, 2000); // Simulasi waktu pemuatan 2 detik
+            });
+        }
+
+        function updateLoadingProgress(percent) {
+            const progressBar = document.getElementById("progressBar");
+            progressBar.style.width = percent + "%";
+            progressBar.innerText = percent + "%";
+        }
+
+        // Panggil updateLoadingProgress di tempat yang sesuai
+    </script>
+
+
+    <style>
+        #loadingSpinner {
+            display: none;
+            /* Tersembunyi secara default */
+            /* Tambahkan styling untuk spinner */
+        }
+
+        #progressBar {
+            width: 0;
+            height: 20px;
+            background-color: green;
+            /* Ganti dengan warna sesuai kebutuhan */
+        }
+    </style>
+    <script>
         document.addEventListener("DOMContentLoaded", function() {
-            setTimeout(function() {
-                document.getElementById("loadingSpinner").style.display = "none";
-                document.getElementById("mainContent").style.display = "block";
-                document.getElementById("mainContentSection").style.display = "block";
-            }, 100); // Adjust the delay time as needed
+            let percentage = 0;
+            const interval = setInterval(function() {
+                percentage += 1;
+                document.getElementById('loadingPercentage').innerText = percentage + "%";
+
+                if (percentage >= 100) {
+                    clearInterval(interval);
+                    // Munculkan konten utama setelah loading selesai
+                    document.getElementById("loadingContainer").style.display = "none";
+                    document.getElementById("mainContent").style.display = "block";
+                    document.getElementById("mainContentSection").style.display = "block";
+                }
+            }, 30); // Kecepatan loading
         });
     </script>
+
+    <script>
+        document.getElementById('form-action').addEventListener('submit', function(e) {
+            e.preventDefault(); // Mencegah pengiriman form standar
+            document.getElementById("loadingContainer").style.display = "flex"; // Tampilkan loading spinner
+
+            // Ambil data dari form
+            const formData = new FormData(this);
+
+            fetch(this.action, {
+                    method: 'GET',
+                    body: formData,
+                })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("mainContent").innerHTML = data; // Muat konten ke dalam elemen
+                    document.getElementById("loadingContainer").style.display =
+                        "none"; // Sembunyikan loading spinner
+                    document.getElementById("mainContent").style.display = "block"; // Tampilkan konten
+                    document.getElementById("mainContentSection").style.display =
+                        "block"; // Tampilkan konten utama
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById("loadingContainer").style.display =
+                        "none"; // Sembunyikan loading spinner jika ada error
+                });
+        });
+    </script>
+
     <!-- Content Header (Page header) -->
     <div class="content-header" style="display: none;" id="mainContent">
         <div class="container-fluid">
             <div class="row mb-2">
-                {{-- <div class="col-sm-6">
-                    <h1 class="m-0">Status Perjalanan Kendaraan</h1>
-                </div><!-- /.col --> --}}
-                {{-- <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item active">Status Perjalanan Kendaraan</li>
-                    </ol>
-                </div><!-- /.col --> --}}
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+                <!-- Konten header -->
+            </div>
+        </div>
     </div>
     <!-- /.content-header -->
 
@@ -189,6 +276,7 @@
                                 <th>Status Kendaraan</th>
                                 <th>Status Perjalanan</th>
                                 <th>Posisi</th>
+                                <th>Km Berjalan</th>
                                 <th>Map</th>
                                 <th>Timer</th>
                                 {{-- <th class="text-center" width="40">Opsi</th> --}}
@@ -260,6 +348,9 @@
                                             Maps
                                         </a>
                                     </td> --}}
+                                    <td>
+                                        {{ $kendaraan->km - $kendaraan->km_awal }} Km
+                                    </td>
                                     <td>
                                         <a style="font-size:12px"
                                             href="https://maps.google.com/maps?q={{ $kendaraan->latitude }},{{ $kendaraan->longitude }}"
@@ -336,7 +427,4 @@
                 });
         }
     </script>
-
-
-
 @endsection

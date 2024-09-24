@@ -18,6 +18,8 @@ class Kendaraan extends Model
         'kode_kendaraan',
         'list_vehicle_id',
         'gpsid',
+        'lokasi',
+        'status_kendaraan',
         'user_id',
         'pelanggan_id',
         'no_kabin',

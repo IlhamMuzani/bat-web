@@ -4,33 +4,38 @@
 
 @section('content')
 
-    <div id="loadingSpinner" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
-        <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
+    <div id="loadingContainer" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
+        <div>
+            <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
+            <div style="margin-top: 20px; text-align: center;">
+                <span id="loadingPercentage" style="font-size: 1.5rem;">0%</span>
+            </div>
+        </div>
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            setTimeout(function() {
-                document.getElementById("loadingSpinner").style.display = "none";
-                document.getElementById("mainContent").style.display = "block";
-                document.getElementById("mainContentSection").style.display = "block";
-            }, 100); // Adjust the delay time as needed
+            let percentage = 0;
+            const interval = setInterval(function() {
+                percentage += 1;
+                document.getElementById('loadingPercentage').innerText = percentage + "%";
+
+                if (percentage >= 100) {
+                    clearInterval(interval);
+                    document.getElementById("loadingContainer").style.display = "none";
+                    document.getElementById("mainContent").style.display = "block";
+                    document.getElementById("mainContentSection").style.display = "block";
+                }
+            }, 30); // Mengatur kecepatan loading (30ms untuk mencapai 100% dalam waktu 3 detik)
         });
     </script>
     <!-- Content Header (Page header) -->
     <div class="content-header" style="display: none;" id="mainContent">
         <div class="container-fluid">
             <div class="row mb-2">
-                {{-- <div class="col-sm-6">
-                    <h1 class="m-0">Status Perjalanan Kendaraan</h1>
-                </div><!-- /.col --> --}}
-                {{-- <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item active">Status Perjalanan Kendaraan</li>
-                    </ol>
-                </div><!-- /.col --> --}}
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+                <!-- Konten header -->
+            </div>
+        </div>
     </div>
     <!-- /.content-header -->
 
@@ -189,6 +194,7 @@
                                 <th>Status Kendaraan</th>
                                 <th>Status Perjalanan</th>
                                 <th>Posisi</th>
+                                <th>Km Berjalan</th>
                                 <th>Map</th>
                                 <th>Timer</th>
                                 {{-- <th class="text-center" width="40">Opsi</th> --}}
@@ -260,6 +266,9 @@
                                             Maps
                                         </a>
                                     </td> --}}
+                                    <td>
+                                        {{ $kendaraan->km - $kendaraan->km_awal }} Km
+                                    </td>
                                     <td>
                                         <a style="font-size:12px"
                                             href="https://maps.google.com/maps?q={{ $kendaraan->latitude }},{{ $kendaraan->longitude }}"
