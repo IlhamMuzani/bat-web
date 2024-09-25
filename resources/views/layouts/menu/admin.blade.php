@@ -553,17 +553,7 @@
                 </a>
             </li>
         @endif
-        @if (auth()->check() && auth()->user()->menu['status perjalanan kendaraan'])
-            <li class="nav-item">
-                <a href="{{ url('admin/status_perjalanan') }}"
-                    class="nav-link {{ request()->is('admin/status_perjalanan*') ? 'active' : '' }}">
-                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
-                    <p style="font-size: 14px;">Monitoring Perjalanan-<br>
-                        <span style="margin-left: 32px">Kendaraan</span>
-                    </p>
-                </a>
-            </li>
-        @endif
+
 
         @if (auth()->check() && auth()->user()->menu['memo ekspedisi'])
             <li class="nav-item">
@@ -580,6 +570,17 @@
                     class="nav-link {{ request()->is('admin/status_pemberiando*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
                     <p style="font-size: 13px;">Status Pengambilan DO</p>
+                </a>
+            </li>
+        @endif
+        @if (auth()->check() && auth()->user()->menu['status perjalanan kendaraan'])
+            <li class="nav-item">
+                <a href="{{ url('admin/status_perjalanan') }}"
+                    class="nav-link {{ request()->is('admin/status_perjalanan*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 14px;">Monitoring Perjalanan-<br>
+                        <span style="margin-left: 32px">Kendaraan</span>
+                    </p>
                 </a>
             </li>
         @endif
