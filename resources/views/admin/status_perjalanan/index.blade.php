@@ -307,29 +307,79 @@
             var progressText = document.getElementById('progressText');
             var progress = 0;
 
-            // Interval untuk meningkatkan progress hingga 90%
+            // Kirim form secara bersamaan (akan dihandle di atas saat proses selesai)
+            form.submit();
+
+            // Interval untuk meningkatkan progress hingga 50%
             var interval = setInterval(function() {
-                if (progress < 90) {
+                if (progress < 50) {
                     progress += 1;
                     progressBar.style.width = progress + '%';
                     progressText.innerText = progress + '%';
                 } else {
                     clearInterval(interval);
-                    // Simulasi proses reload
+                    // Berhenti sejenak sebelum melanjutkan
                     setTimeout(function() {
-                        // Reload data selesai, set progress ke 100%
-                        progress = 100;
-                        progressBar.style.width = progress + '%';
-                        progressText.innerText = progress + '%';
-
-                        // Submit form setelah proses reload selesai
-                        form.submit();
-                    }, 20000); // Ganti dengan durasi yang sesuai dengan waktu reload Anda
+                        // Mulai meningkatkan dari 50% ke 75%
+                        var nextInterval = setInterval(function() {
+                            if (progress < 75) {
+                                progress += 1;
+                                progressBar.style.width = progress + '%';
+                                progressText.innerText = progress + '%';
+                            } else {
+                                clearInterval(nextInterval);
+                                // Berhenti sejenak sebelum melanjutkan ke 90%
+                                setTimeout(function() {
+                                    // Mulai meningkatkan dari 75% ke 90%
+                                    var toNinetyInterval = setInterval(function() {
+                                            if (progress < 90) {
+                                                progress += 1;
+                                                progressBar.style.width = progress +
+                                                    '%';
+                                                progressText.innerText = progress + '%';
+                                            } else {
+                                                clearInterval(toNinetyInterval);
+                                                // Berhenti sejenak sebelum melanjutkan ke 100%
+                                                setTimeout(function() {
+                                                        // Tingkatkan dari 90% ke 100%
+                                                        var finalInterval =
+                                                            setInterval(function() {
+                                                                    if (progress <
+                                                                        99) {
+                                                                        progress +=
+                                                                            1;
+                                                                        progressBar
+                                                                            .style
+                                                                            .width =
+                                                                            progress +
+                                                                            '%';
+                                                                        progressText
+                                                                            .innerText =
+                                                                            progress +
+                                                                            '%';
+                                                                    } else {
+                                                                        clearInterval
+                                                                            (
+                                                                                finalInterval
+                                                                                );
+                                                                        // Form sudah disubmit sebelumnya
+                                                                    }
+                                                                },
+                                                                500
+                                                                ); // Ganti dengan durasi yang sesuai dengan waktu reload Anda
+                                                    },
+                                                    3000
+                                                    ); // Ganti dengan durasi delay sebelum melanjutkan ke 100%
+                                            }
+                                        },
+                                        500
+                                        ); // Ganti dengan durasi yang sesuai untuk progress dari 75% ke 90%
+                                }, 1000); // Ganti dengan durasi delay setelah mencapai 75%
+                            }
+                        }, 500); // Ganti dengan durasi yang sesuai untuk progress dari 50% ke 75%
+                    }, 1000); // Ganti dengan durasi delay setelah mencapai 50%
                 }
-            }, 30); // Simulasi loading hingga 90% (30ms * 90 = 2700ms)
-
-            // Kirim form
-            form.submit(); // Ini mengirim form, tetapi akan dihandle di atas saat proses selesai
+            }, 30); // Simulasi loading hingga 50%
         }
     </script>
 
@@ -342,7 +392,6 @@
             }, 100); // Sesuaikan waktu penundaan sesuai kebutuhan
         });
     </script>
-
 
     <script>
         function updateLatLong(kendaraanId) {

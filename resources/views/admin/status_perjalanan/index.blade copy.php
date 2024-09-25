@@ -4,38 +4,21 @@
 
 @section('content')
 
-    <div id="loadingContainer" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
-        <div>
-            <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
-            <div style="margin-top: 20px; text-align: center;">
-                <span id="loadingPercentage" style="font-size: 1.5rem;">0%</span>
+    <div id="loadingSpinner"
+        style="display: none; align-items: center; justify-content: center; height: 100vh; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255, 255, 255, 0.8); z-index: 9999;">
+        <div style="text-align: center;">
+            <div id="progressBarContainer" style="width: 300px; background-color: #f3f3f3; border-radius: 5px;">
+                <div id="progressBar" style="width: 0%; height: 30px; background-color: #4caf50; border-radius: 5px;"></div>
             </div>
+            <p id="progressText" style="margin-top: 10px;">0%</p>
         </div>
     </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            let percentage = 0;
-            const interval = setInterval(function() {
-                percentage += 1;
-                document.getElementById('loadingPercentage').innerText = percentage + "%";
-
-                if (percentage >= 100) {
-                    clearInterval(interval);
-                    document.getElementById("loadingContainer").style.display = "none";
-                    document.getElementById("mainContent").style.display = "block";
-                    document.getElementById("mainContentSection").style.display = "block";
-                }
-            }, 30); // Mengatur kecepatan loading (30ms untuk mencapai 100% dalam waktu 3 detik)
-        });
-    </script>
     <!-- Content Header (Page header) -->
     <div class="content-header" style="display: none;" id="mainContent">
         <div class="container-fluid">
             <div class="row mb-2">
-                <!-- Konten header -->
-            </div>
-        </div>
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
 
@@ -70,7 +53,58 @@
                 <div class="card-body">
                     <form method="GET" id="form-action">
                         <div class="form-row">
-                            <div class="col-md-3 col-sm-12">
+
+                            <div class="col-md-2 col-sm-12">
+                                <div class="form-group">
+                                    <select class="custom-select form-control" id="divisi" name="divisi">
+                                        <option value="">- Cari Kode -</option>
+                                        <option value="K1" {{ Request::get('divisi') == 'K1' ? 'selected' : '' }}>
+                                            K1
+                                        </option>
+                                        <option value="K2" {{ Request::get('divisi') == 'K2' ? 'selected' : '' }}>
+                                            K2
+                                        </option>
+                                        <option value="K3" {{ Request::get('divisi') == 'K3' ? 'selected' : '' }}>
+                                            K3
+                                        </option>
+                                        <option value="K4" {{ Request::get('divisi') == 'K4' ? 'selected' : '' }}>
+                                            K4
+                                        </option>
+                                        <option value="K5" {{ Request::get('divisi') == 'K5' ? 'selected' : '' }}>
+                                            K5
+                                        </option>
+                                        <option value="K6" {{ Request::get('divisi') == 'K6' ? 'selected' : '' }}>
+                                            K6
+                                        </option>
+                                        <option value="K7" {{ Request::get('divisi') == 'K7' ? 'selected' : '' }}>
+                                            K7
+                                        </option>
+                                        <option value="All" {{ Request::get('divisi') == 'All' ? 'selected' : '' }}>
+                                            All
+                                        </option>
+                                    </select>
+                                    <label for="status">(Cari Kode)</label>
+                                </div>
+                                {{-- </div> --}}
+                            </div>
+
+
+                            <div class="col-md-2 mb-3">
+                                <select class="select2bs4 select2-hidden-accessible" name="kendaraan_id"
+                                    data-placeholder="Cari No Kabin.." style="width: 100%;" data-select2-id="23"
+                                    tabindex="-1" aria-hidden="true" id="kendaraan_id">
+                                    <option value="">- Pilih -</option>
+                                    @foreach ($kendaraanall as $kendaraan)
+                                        <option value="{{ $kendaraan->id }}"
+                                            {{ Request::get('kendaraan_id') == $kendaraan->id ? 'selected' : '' }}>
+                                            {{ $kendaraan->no_kabin }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <label for="status">(Cari Kendaraan)</label>
+                            </div>
+
+                            <div class="col-md-2 col-sm-12">
                                 {{-- <div class="input-group mb-2"> --}}
                                 <div class="form-group">
                                     <select class="custom-select form-control" id="status_perjalanan"
@@ -117,50 +151,8 @@
                                 </div>
                                 {{-- </div> --}}
                             </div>
-                            <div class="col-md-3 col-sm-12">
-                                <div class="form-group">
-                                    <select class="custom-select form-control" id="divisi" name="divisi">
-                                        <option value="">- Cari Kode -</option>
-                                        <option value="K1" {{ Request::get('divisi') == 'K1' ? 'selected' : '' }}>
-                                            K1
-                                        </option>
-                                        <option value="K2" {{ Request::get('divisi') == 'K2' ? 'selected' : '' }}>
-                                            K2
-                                        </option>
-                                        <option value="K3" {{ Request::get('divisi') == 'K3' ? 'selected' : '' }}>
-                                            K3
-                                        </option>
-                                        <option value="K4" {{ Request::get('divisi') == 'K4' ? 'selected' : '' }}>
-                                            K4
-                                        </option>
-                                        <option value="K5" {{ Request::get('divisi') == 'K5' ? 'selected' : '' }}>
-                                            K5
-                                        </option>
-                                        <option value="K6" {{ Request::get('divisi') == 'K6' ? 'selected' : '' }}>
-                                            K6
-                                        </option>
-                                        <option value="K7" {{ Request::get('divisi') == 'K7' ? 'selected' : '' }}>
-                                            K7
-                                        </option>
-                                    </select>
-                                    <label for="status">(Cari Kode)</label>
-                                </div>
-                                {{-- </div> --}}
-                            </div>
-                            {{-- <div class="col-md-3 mb-3">
-                                <select class="select2bs4 select2-hidden-accessible" name="kendaraan_id"
-                                    data-placeholder="Cari Kode.." style="width: 100%;" data-select2-id="23" tabindex="-1"
-                                    aria-hidden="true" id="kendaraan_id">
-                                    <option value="">- Pilih -</option>
-                                    @foreach ($kendaraans as $kendaraan)
-                                        <option value="{{ $kendaraan->id }}"
-                                            {{ Request::get('kendaraan_id') == $kendaraan->id ? 'selected' : '' }}>
-                                            {{ $kendaraan->no_kabin }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <label for="status">(Cari Kendaraan)</label>
-                            </div> --}}
+
+
                             <div class="col-md-3 mb-3">
                                 <select class="select2bs4 select2-hidden-accessible" name="pelanggan_id"
                                     data-placeholder="Cari Pelanggan.." style="width: 100%;" id="pelanggan_id">
@@ -194,7 +186,6 @@
                                 <th>Status Kendaraan</th>
                                 <th>Status Perjalanan</th>
                                 <th>Posisi</th>
-                                <th>Km Berjalan</th>
                                 <th>Map</th>
                                 <th>Timer</th>
                                 {{-- <th class="text-center" width="40">Opsi</th> --}}
@@ -267,9 +258,6 @@
                                         </a>
                                     </td> --}}
                                     <td>
-                                        {{ $kendaraan->km - $kendaraan->km_awal }} Km
-                                    </td>
-                                    <td>
                                         <a style="font-size:12px"
                                             href="https://maps.google.com/maps?q={{ $kendaraan->latitude }},{{ $kendaraan->longitude }}"
                                             class="btn btn-secondary btn-sm" id="btn-update-latlong" target="_blank"
@@ -308,10 +296,53 @@
         var form = document.getElementById('form-action');
 
         function cari() {
+            // Tampilkan spinner dan gunakan display: flex agar berada di tengah
+            document.getElementById('loadingSpinner').style.display = 'flex';
+
+            // Set action form
             form.action = "{{ url('admin/status_perjalanan') }}";
-            form.submit();
+
+            // Simulasi progress bar
+            var progressBar = document.getElementById('progressBar');
+            var progressText = document.getElementById('progressText');
+            var progress = 0;
+
+            // Interval untuk meningkatkan progress hingga 90%
+            var interval = setInterval(function() {
+                if (progress < 90) {
+                    progress += 1;
+                    progressBar.style.width = progress + '%';
+                    progressText.innerText = progress + '%';
+                } else {
+                    clearInterval(interval);
+                    // Simulasi proses reload
+                    setTimeout(function() {
+                        // Reload data selesai, set progress ke 100%
+                        progress = 100;
+                        progressBar.style.width = progress + '%';
+                        progressText.innerText = progress + '%';
+
+                        // Submit form setelah proses reload selesai
+                        form.submit();
+                    }, 20000); // Ganti dengan durasi yang sesuai dengan waktu reload Anda
+                }
+            }, 30); // Simulasi loading hingga 90% (30ms * 90 = 2700ms)
+
+            // Kirim form
+            form.submit(); // Ini mengirim form, tetapi akan dihandle di atas saat proses selesai
         }
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(function() {
+                document.getElementById("loadingSpinner").style.display = "none";
+                document.getElementById("mainContent").style.display = "block";
+                document.getElementById("mainContentSection").style.display = "block";
+            }, 100); // Sesuaikan waktu penundaan sesuai kebutuhan
+        });
+    </script>
+
 
     <script>
         function updateLatLong(kendaraanId) {
