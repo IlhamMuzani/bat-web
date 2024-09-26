@@ -9,6 +9,7 @@ use App\Models\Pelanggan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Karyawan;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -74,7 +75,7 @@ class PelangganController extends Controller
                 'nama_pell' => 'required',
                 // 'nama_alias' => 'required',
                 'alamat' => 'required',
-                'karyawan_id' => 'required',
+                // 'karyawan_id' => 'required',
                 // 'npwp' => 'required',
                 // 'nama_person' => 'required',
                 // 'jabatan' => 'required',
@@ -87,7 +88,7 @@ class PelangganController extends Controller
                 'nama_pell.required' => 'Masukkan nama pelanggan',
                 // 'nama_alias.required' => 'Masukkan nama alias',
                 'alamat.required' => 'Masukkan alamat',
-                'karyawan_id.required' => 'Pilih Marketing',
+                // 'karyawan_id.required' => 'Pilih Marketing',
                 // 'npwp.required' => 'Masukkan no npwp',
                 // 'nama_person.required' => 'Masukkan nama',
                 // 'jabatan.required' => 'Masukkan jabatan',
@@ -105,13 +106,22 @@ class PelangganController extends Controller
 
         $kode = $this->kode();
 
-        Pelanggan::create(array_merge(
+        $pelanggan = Pelanggan::create(array_merge(
             $request->all(),
             [
                 'kode_pelanggan' => $this->kode(),
                 'qrcode_pelanggan' => 'https://batlink.id/pelanggan/' . $kode,
                 'tanggal_awal' => Carbon::now('Asia/Jakarta'),
                 // 'qrcode_pelanggan' => 'http://192.168.1.46/batlink/pelanggan/' . $kode
+            ]
+        ));
+
+        User::create(array_merge(
+            $request->all(),
+            [
+                'pelanggan_id' => $pelanggan->id,
+                'kode_user' => $this->kode(),
+                'level' => 'pelanggan',
             ]
         ));
 
@@ -184,7 +194,7 @@ class PelangganController extends Controller
                 'nama_pell' => 'required',
                 // 'nama_alias' => 'required',
                 'alamat' => 'required',
-                'karyawan_id' => 'required',
+                // 'karyawan_id' => 'required',
                 // 'npwp' => 'required',
                 // 'nama_person' => 'required',
                 // 'jabatan' => 'required',
@@ -198,7 +208,7 @@ class PelangganController extends Controller
                 'nama_pell.required' => 'Masukkan nama pelanggan',
                 // 'nama_alias.required' => 'Masukkan nama alias',
                 'alamat.required' => 'Masukkan alamat',
-                'karyawan_id.required' => 'Pilih marketing',
+                // 'karyawan_id.required' => 'Pilih marketing',
                 // 'npwp.required' => 'Masukkan no npwp',
                 // 'nama_person.required' => 'Masukkan nama',
                 // 'jabatan.required' => 'Masukkan jabatan',
@@ -238,6 +248,7 @@ class PelangganController extends Controller
     public function destroy($id)
     {
         $pelanggan = Pelanggan::find($id);
+        $pelanggan->user()->delete();
         $pelanggan->delete();
 
         return redirect('admin/pelanggan')->with('success', 'Berhasil menghapus Pelanggan');

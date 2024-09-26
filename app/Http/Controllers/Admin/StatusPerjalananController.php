@@ -47,13 +47,14 @@ class StatusPerjalananController extends Controller
                 if ($status) {
                     $inquery->where('status_perjalanan', $status);
                 }
-
-                if ($kendaraanId) {
+                // Jika "All Kendaraan" dipilih, tidak perlu filter lebih lanjut
+                if ($kendaraanId && $kendaraanId !== 'all') {
                     $inquery->where('id', $kendaraanId);
+                } else {
+                    $inquery = Kendaraan::with(['latestpengambilan_do.spk.pelanggan']); // Include relasi pelanggan
                 }
 
-                // Filter berdasarkan pelanggan_id jika diberikan
-                if ($pelangganId) {
+                if ($pelangganId && $pelangganId !== 'all') {
                     $inquery->whereHas('latestpengambilan_do.spk.pelanggan', function ($query) use ($pelangganId) {
                         $query->where('id', $pelangganId);
                     });

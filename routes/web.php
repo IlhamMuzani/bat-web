@@ -40,6 +40,12 @@ Route::get('pelanggan/{kode}', [\App\Http\Controllers\PelangganController::class
 Route::get('stnk/{kode}', [\App\Http\Controllers\StnkController::class, 'detail']);
 
 
+Route::middleware('pelanggan')->prefix('pelanggan')->group(function () {
+  Route::get('/', [\App\Http\Controllers\Pelanggan\DashboardController::class, 'index']);
+  Route::post('monitoring/update_latlong/{id}', [\App\Http\Controllers\Pelanggan\DashboardController::class, 'update_latlong'])->name('update_latlong');
+  Route::resource('monitoring', \App\Http\Controllers\Pelanggan\DashboardController::class);
+});
+
 Route::middleware('admin')->prefix('admin')->group(function () {
   // Route::get('update_deleted_at', [\App\Http\Controllers\Admin\InqueryFakturekspedisiController::class, 'updateDeletedAt']);
   Route::get('inquery_fakturpelunasan/update_deleted_atpelunasan', [\App\Http\Controllers\Admin\InqueryFakturpelunasanController::class, 'updateDeletedAtpelunasan']);

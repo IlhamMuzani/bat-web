@@ -26,6 +26,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'karyawan_id',
+        'pelanggan_id',
         'kode_user',
         'qrcode_user',
         'password',
@@ -96,9 +97,17 @@ class User extends Authenticatable
         return false;
     }
 
-    public function isOwner()
+    public function isDriver()
     {
-        if ($this->level == 'owner') {
+        if ($this->level == 'driver') {
+            return true;
+        }
+        return false;
+    }
+
+    public function isPelanggan()
+    {
+        if ($this->level == 'pelanggan') {
             return true;
         }
         return false;
@@ -107,6 +116,11 @@ class User extends Authenticatable
     public function karyawan()
     {
         return $this->belongsTo(Karyawan::class);
+    }
+
+    public function pelanggan()
+    {
+        return $this->belongsTo(Pelanggan::class);
     }
 
     public function kendaraan(): HasOne

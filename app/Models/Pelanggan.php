@@ -82,7 +82,11 @@ class Pelanggan extends Model
     {
         return $this->belongsTo(Karyawan::class);
     }
-    
+
+    public function user()
+    {
+        return $this->hasMany(User::class);
+    }
     public static function getId()
     {
         return $getId = DB::table('pelanggans')->orderBy('id', 'DESC')->take(1)->get();
