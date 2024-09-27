@@ -120,6 +120,7 @@ class PelangganController extends Controller
             $request->all(),
             [
                 'pelanggan_id' => $pelanggan->id,
+                'karyawan_id' => null,
                 'kode_user' => $pelanggan->kode_pelanggan,
                 'level' => 'pelanggan',
             ]
