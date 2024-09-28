@@ -17,8 +17,6 @@ class HomeController extends Controller
             return redirect('admin');
         } elseif (auth()->user()->isPelanggan()) {
             return redirect('pelanggan');
-        } elseif (auth()->user()->isDriver()) {
-            return redirect('driver');
         }
     }
 }

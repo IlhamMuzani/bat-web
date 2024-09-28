@@ -97,13 +97,13 @@ class User extends Authenticatable
         return false;
     }
 
-    public function isDriver()
-    {
-        if ($this->level == 'driver') {
-            return true;
-        }
-        return false;
-    }
+    // public function isDriver()
+    // {
+    //     if ($this->level == 'driver') {
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
     public function isPelanggan()
     {
