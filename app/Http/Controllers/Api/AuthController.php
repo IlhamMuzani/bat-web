@@ -43,6 +43,8 @@ class AuthController extends Controller
         }
     }
 
+    
+
     // public function detail($id)
     // {
     //     $user = User::where('id', $id)
