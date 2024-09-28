@@ -11,6 +11,7 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
+        // Validasi input kode_user dan password
         $validator = Validator::make($request->all(), [
             'kode_user' => 'required',
             'password' => 'required',
@@ -19,27 +20,36 @@ class AuthController extends Controller
             'password.required' => 'Password tidak boleh kosong!',
         ]);
 
+        // Jika validasi gagal, kembalikan pesan kesalahan
         if ($validator->fails()) {
-            $error = $validator->errors()->all();
-            return $this->response(FALSE, $error);
+            $errors = $validator->errors()->all();
+            return $this->response(false, $errors);
         }
 
+        // Ambil nilai input
         $kode_user = $request->kode_user;
         $password = $request->password;
 
+        // Cari pengguna berdasarkan kode_user dan departemen_id
         $user = User::where('kode_user', $kode_user)
             ->whereHas('karyawan', function ($query) {
                 $query->where('departemen_id', 2);
             })
             ->first();
+
+        // Cek apakah pengguna ditemukan
         if ($user) {
+            // Verifikasi password pengguna
             if (password_verify($password, $user->password)) {
-                return $this->response(TRUE, array('Berhasil login, Selamat Datang ' . $user->name), array($user));
+                // Kembalikan response sukses dengan informasi pengguna
+                return $this->response(true, ['Berhasil login, Selamat Datang ' . $user->name], [$user]);
             } else {
-                return $this->response(FALSE, array('Kode atau password tidak sesuai!'));
+                // Jika password tidak sesuai, kembalikan pesan kesalahan
+                return $this->response(false, ['Kode atau password tidak sesuai!']);
             }
         } else {
-            return $this->response(FALSE, array('Pengguna tidak ditemukan!'));
+            // Jika pengguna tidak ditemukan, kembalikan pesan kesalahan
+            return $this->response(false, ['Pengguna tidak ditemukan!']);
         }
     }
 
