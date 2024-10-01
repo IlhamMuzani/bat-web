@@ -791,6 +791,18 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::get('unpostfilterpengambilandeposit', [\App\Http\Controllers\Admin\InqueryDepositdriverController::class, 'unpostfilterpengambilandeposit']);
   Route::get('postingfiltertagihan', [\App\Http\Controllers\Admin\InqueryTagihanekspedisiController::class, 'postingfiltertagihan']);
   Route::get('unpostfiltertagihan', [\App\Http\Controllers\Admin\InqueryTagihanekspedisiController::class, 'unpostfiltertagihan']);
-  
+
   Route::post('status_perjalanan/update_latlong/{id}', [\App\Http\Controllers\Admin\StatusPerjalananController::class, 'update_latlong'])->name('update_latlong');
+
+  Route::resource('lama_bearing', \App\Http\Controllers\Admin\LamabearingController::class);
+  Route::resource('penggantian_bearing', \App\Http\Controllers\Admin\PenggantianBearingController::class);
+  Route::resource('inquery_penggantianbearing', \App\Http\Controllers\Admin\InqueryPenggantianbearingController::class);
+
+  Route::get('inquery_penggantianbearing/unpostpenggantian/{id}', [\App\Http\Controllers\Admin\InqueryPenggantianbearingController::class, 'unpostpenggantian']);
+  Route::get('inquery_penggantianbearing/postingpenggantian/{id}', [\App\Http\Controllers\Admin\InqueryPenggantianbearingController::class, 'postingpenggantian']);
+  Route::get('penggantian_bearing/cetak-pdf/{id}', [\App\Http\Controllers\Admin\PenggantianBearingController::class, 'cetakpdf']);
+  Route::get('hapuspenggantianbearing/{id}', [\App\Http\Controllers\Admin\InqueryPenggantianbearingController::class, 'hapuspenggantianbearing'])->name('hapuspenggantianbearing');
+  Route::delete('inquery_penggantianbearing/deletedetailpenggantian/{id}', [\App\Http\Controllers\Admin\InqueryPenggantianbearingController::class, 'deletedetailpenggantian']);
+  Route::get('laporan_penggantianbearing', [\App\Http\Controllers\Admin\LaporanPenggantianbearingController::class, 'index']);
+  Route::get('print_penggantianbearing', [\App\Http\Controllers\Admin\LaporanPenggantianbearingController::class, 'print_penggantianbearing']);
 });

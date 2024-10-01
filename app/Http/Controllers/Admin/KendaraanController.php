@@ -10,6 +10,7 @@ use App\Models\Kendaraan;
 use Illuminate\Http\Request;
 use App\Models\Jenis_kendaraan;
 use App\Http\Controllers\Controller;
+use App\Models\Bearing;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -123,7 +124,7 @@ class KendaraanController extends Controller
         $kode = $this->kode();
 
         $tanggal = Carbon::now()->format('Y-m-d');
-        Kendaraan::create(array_merge(
+        $kendaraan =  Kendaraan::create(array_merge(
             $request->all(),
             [
                 'gambar_barcodesolar' => $namaGambar,
@@ -141,6 +142,14 @@ class KendaraanController extends Controller
                 // 'qrcode_kendaraan' => 'http://192.168.1.46/batlink/kendaraan/' . $kode
             ]
         ));
+
+        Bearing::create(array_merge(
+            $request->all(),
+            [
+                'kendaraan_id' => $kendaraan->id,
+            ]
+        ));
+
         return redirect('admin/kendaraan')->with('success', 'Berhasil menambahkan kendaraan');
     }
 

@@ -146,6 +146,11 @@ class Kendaraan extends Model
         return $this->hasMany(Detail_inventory::class, 'kendaraan_id');
     }
 
+    public function bearing()
+    {
+        return $this->hasMany(Bearing::class);
+    }
+
     public function pengambilan_do()
     {
         return $this->hasMany(Pengambilan_do::class);
@@ -159,7 +164,7 @@ class Kendaraan extends Model
             ->orderByRaw("FIELD(status, 'tunggu bongkar', 'loading muat', 'posting', 'selesai')")
             ->latest();
     }
-    
+
     public static function getId()
     {
         return $getId = DB::table('kendaraans')->orderBy('id', 'DESC')->take(1)->get();

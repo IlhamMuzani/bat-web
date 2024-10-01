@@ -724,7 +724,8 @@ class UserController extends Controller
 
     public function kode()
     {
-        $lastBarang = User::latest()->first();
+        // Cari karyawan terakhir dengan kode_karyawan yang diawali dengan 'AA'
+        $lastBarang = User::where('kode_user', 'like', 'AB%')->latest()->first();
         if (!$lastBarang) {
             $num = 1;
         } else {
