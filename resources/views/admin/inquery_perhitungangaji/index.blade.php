@@ -69,10 +69,10 @@
                                     <option value="">- Pilih Kategori -</option>
                                     <option value="memo_perjalanan" selected>Gaji Mingguan</option>
                                     <option value="slip_mingguan">Slip Gaji Mingguan</option>
-                                    @if (auth()->check() && auth()->user()->menu['gaji karyawan'])
+                                    {{-- @if (auth()->check() && auth()->user()->menu['gaji karyawan']) --}}
                                         <option value="memo_borong">Gaji Bulanan</option>
                                         <option value="slip_bulanan">Slip Gaji Bulanan</option>
-                                    @endif
+                                    {{-- @endif --}}
                                 </select>
                                 <label>(Kategori)</label>
                             </div>
