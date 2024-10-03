@@ -152,7 +152,6 @@
                                     <td>{{ $pengeluaran->jam }}</td>
                                     <td class="text-right">
                                         {{ number_format($pengeluaran->grand_total, 0, ',', '.') }}
-
                                     </td>
                                     <td class="text-center">
                                         @if ($pengeluaran->status == 'posting')

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Kasbon Karyawan')
+@section('title', 'Memo Hutang Karyawan')
 
 @section('content')
     <!-- Content Header (Page header) -->
@@ -8,12 +8,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Kasbon Karyawan</h1>
+                    <h1 class="m-0">Memo Hutang Karyawan</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('admin/kasbon_karyawan') }}">Kasbon Karyawan</a></li>
-                        <li class="breadcrumb-item active">Tambah</li>
+                        <li class="breadcrumb-item"><a href="{{ url('admin/kasbon_karyawan') }}">Memo Hutang Karyawan</a></li>
+                        <li class="breadcrumb-item active">Perbarui</li>
                     </ol>
                 </div>
             </div>
@@ -40,7 +40,7 @@
                 @method('put')
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Tambah</h3>
+                        <h3 class="card-title">Perbarui</h3>
                     </div>
                     <div class="card-body">
                         <div class="mb-3 mt-4">
