@@ -445,9 +445,9 @@
                                                         value="{{ old('nama_barang.0') }}">
                                                 </div>
                                             </td>
-                                            <td hidden>
+                                            <td>
                                                 <div class="form-group">
-                                                    <input style="font-size:14px" type="text" readonly
+                                                    <input style="font-size:14px" type="text"
                                                         class="form-control" id="jumlah-0" name="jumlah[0]"
                                                         value="{{ old('jumlah.0') }}">
                                                 </div>
@@ -529,11 +529,11 @@
                                                         value="{{ old('nama_barang.1') }}">
                                                 </div>
                                             </td>
-                                            <td hidden>
+                                            <td>
                                                 <div class="form-group">
-                                                    <input style="font-size:14px" type="text" readonly
+                                                    <input style="font-size:14px" type="text"
                                                         class="form-control" id="jumlah-1" name="jumlah[1]"
-                                                        value="{{ old('jumlah.2') }}">
+                                                        value="{{ old('jumlah.1') }}">
                                                 </div>
                                             </td>
                                             <td style="width: 50px">
@@ -613,9 +613,9 @@
                                                         value="{{ old('nama_barang.2') }}">
                                                 </div>
                                             </td>
-                                            <td hidden>
+                                            <td>
                                                 <div class="form-group">
-                                                    <input style="font-size:14px" type="text" readonly
+                                                    <input style="font-size:14px" type="text"
                                                         class="form-control" id="jumlah-2" name="jumlah[2]"
                                                         value="{{ old('jumlah.2') }}">
                                                 </div>
@@ -696,11 +696,11 @@
                                                         value="{{ old('nama_barang.3') }}">
                                                 </div>
                                             </td>
-                                            <td hidden>
+                                            <td>
                                                 <div class="form-group">
-                                                    <input style="font-size:14px" type="text" readonly
+                                                    <input style="font-size:14px" type="text"
                                                         class="form-control" id="jumlah-3" name="jumlah[3]"
-                                                        value="{{ old('jumlah.2') }}">
+                                                        value="{{ old('jumlah.3') }}">
                                                 </div>
                                             </td>
                                             <td style="width: 50px">
@@ -779,11 +779,11 @@
                                                         value="{{ old('nama_barang.4') }}">
                                                 </div>
                                             </td>
-                                            <td hidden>
+                                            <td>
                                                 <div class="form-group">
-                                                    <input style="font-size:14px" type="text" readonly
+                                                    <input style="font-size:14px" type="text"
                                                         class="form-control" id="jumlah-4" name="jumlah[4]"
-                                                        value="{{ old('jumlah.2') }}">
+                                                        value="{{ old('jumlah.4') }}">
                                                 </div>
                                             </td>
                                             <td style="width: 50px">
@@ -862,11 +862,11 @@
                                                         value="{{ old('nama_barang.5') }}">
                                                 </div>
                                             </td>
-                                            <td hidden>
+                                            <td>
                                                 <div class="form-group">
-                                                    <input style="font-size:14px" type="text" readonly
+                                                    <input style="font-size:14px" type="text"
                                                         class="form-control" id="jumlah-5" name="jumlah[5]"
-                                                        value="{{ old('jumlah.2') }}">
+                                                        value="{{ old('jumlah.5') }}">
                                                 </div>
                                             </td>
                                             <td style="width: 50px">
@@ -946,11 +946,11 @@
                                                             value="{{ old('nama_barang.6') }}">
                                                     </div>
                                                 </td>
-                                                <td hidden>
+                                                <td>
                                                     <div class="form-group">
-                                                        <input style="font-size:14px" type="text" readonly
+                                                        <input style="font-size:14px" type="text"
                                                             class="form-control" id="jumlah-6" name="jumlah[6]"
-                                                            value="{{ old('jumlah.2') }}">
+                                                            value="{{ old('jumlah.6') }}">
                                                     </div>
                                                 </td>
                                                 <td style="width: 50px">
@@ -1031,11 +1031,11 @@
                                                             value="{{ old('nama_barang.7') }}">
                                                     </div>
                                                 </td>
-                                                <td hidden>
+                                                <td>
                                                     <div class="form-group">
-                                                        <input style="font-size:14px" type="text" readonly
+                                                        <input style="font-size:14px" type="text"
                                                             class="form-control" id="jumlah-7" name="jumlah[7]"
-                                                            value="{{ old('jumlah.2') }}">
+                                                            value="{{ old('jumlah.7') }}">
                                                     </div>
                                                 </td>
                                                 <td style="width: 50px">
@@ -1118,11 +1118,11 @@
                                                             name="nama_barang[8]" value="{{ old('nama_barang.8') }}">
                                                     </div>
                                                 </td>
-                                                <td hidden>
+                                                <td>
                                                     <div class="form-group">
-                                                        <input style="font-size:14px" type="text" readonly
+                                                        <input style="font-size:14px" type="text"
                                                             class="form-control" id="jumlah-8" name="jumlah[8]"
-                                                            value="{{ old('jumlah.2') }}">
+                                                            value="{{ old('jumlah.8') }}">
                                                     </div>
                                                 </td>
                                                 <td style="width: 50px">
@@ -1205,11 +1205,11 @@
                                                             name="nama_barang[9]" value="{{ old('nama_barang.9') }}">
                                                     </div>
                                                 </td>
-                                                <td hidden>
+                                                <td>
                                                     <div class="form-group">
-                                                        <input style="font-size:14px" type="text" readonly
+                                                        <input style="font-size:14px" type="text"
                                                             class="form-control" id="jumlah-9" name="jumlah[9]"
-                                                            value="{{ old('jumlah.2') }}">
+                                                            value="{{ old('jumlah.9') }}">
                                                     </div>
                                                 </td>
                                                 <td style="width: 50px">
@@ -1295,11 +1295,11 @@
                                                             value="{{ old('nama_barang.10') }}">
                                                     </div>
                                                 </td>
-                                                <td hidden>
+                                                <td>
                                                     <div class="form-group">
-                                                        <input style="font-size:14px" type="text" readonly
+                                                        <input style="font-size:14px" type="text"
                                                             class="form-control" id="jumlah-10" name="jumlah[10]"
-                                                            value="{{ old('jumlah.2') }}">
+                                                            value="{{ old('jumlah.10') }}">
                                                     </div>
                                                 </td>
                                                 <td style="width: 50px">
@@ -1386,11 +1386,11 @@
                                                             value="{{ old('nama_barang.11') }}">
                                                     </div>
                                                 </td>
-                                                <td hidden>
+                                                <td>
                                                     <div class="form-group">
-                                                        <input style="font-size:14px" type="text" readonly
+                                                        <input style="font-size:14px" type="text"
                                                             class="form-control" id="jumlah-11" name="jumlah[11]"
-                                                            value="{{ old('jumlah.2') }}">
+                                                            value="{{ old('jumlah.11') }}">
                                                     </div>
                                                 </td>
                                                 <td style="width: 50px">
@@ -1629,12 +1629,12 @@
             var sparepart_id = selectedRow.data('sparepart_id');
             var kode_barang = selectedRow.data('kode_barang');
             var nama_barang = selectedRow.data('nama_barang');
-            var jumlah = 1;
+            // var jumlah = 1;
 
             $('#sparepart_id-' + activeSpecificationIndex).val(sparepart_id);
             $('#kode_barang-' + activeSpecificationIndex).val(kode_barang);
             $('#nama_barang-' + activeSpecificationIndex).val(nama_barang);
-            $('#jumlah-' + activeSpecificationIndex).val(jumlah);
+            // $('#jumlah-' + activeSpecificationIndex).val(jumlah);
             $('#tableKategori').modal('hide');
         }
 
