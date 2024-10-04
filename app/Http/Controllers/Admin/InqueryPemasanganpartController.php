@@ -207,7 +207,7 @@ class InqueryPemasanganpartController extends Controller
         return view('admin.inquery_pemasanganpart.show', compact('parts', 'pemasangan_part'));
     }
 
-    public function unpostpemasanganpart($id)
+    public function unpostpemasangan_part($id)
     {
         $part = Pemasangan_part::where('id', $id)->first();
 
@@ -226,12 +226,10 @@ class InqueryPemasanganpartController extends Controller
             'status' => 'unpost'
         ]);
 
-
-
         return back()->with('success', 'Berhasil');
     }
 
-    public function postingpemasanganpart($id)
+    public function postingpemasangan_part($id)
     {
         $part = Pemasangan_part::where('id', $id)->first();
         $detailpemasangan = Detail_pemasanganpart::where('pemasangan_part_id', $id)->get();
@@ -264,6 +262,15 @@ class InqueryPemasanganpartController extends Controller
         } else {
             return back()->with('error', array('Anda tidak memiliki akses'));
         }
+    }
+
+    public function hapuspemasangan_part($id)
+    {
+        $part = Pemasangan_part::find($id);
+        $part->detail_part()->delete();
+        $part->delete();
+
+        return back()->with('success', 'Berhasil');
     }
 
     public function delete($id)

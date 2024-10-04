@@ -261,7 +261,7 @@ class InqueryPelepasanbanController extends Controller
         // Hapus item Pelepasan_ban
         $item->delete();
 
-        return redirect('admin/inquery_pelepasanban')->with('success', 'Berhasil menghapus Pelepasan');
+        return back()->with('success', 'Berhasil');
     }
 
     public function update(Request $request, $id)

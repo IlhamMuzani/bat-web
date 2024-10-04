@@ -239,6 +239,9 @@
                                                         <option value="Filter Angin"
                                                             {{ old('Filter Angin', $detail['kategori2']) == 'Filter Angin' ? 'selected' : null }}>
                                                             Filter Angin</option>
+                                                        <option value="Filter Transmisi"
+                                                            {{ old('Filter Transmisi', $detail['kategori2']) == 'Filter Transmisi' ? 'selected' : null }}>
+                                                            Filter Transmisi</option>
                                                         <option value="Gemuk"
                                                             {{ old('Gemuk', $detail['kategori2']) == 'Gemuk' ? 'selected' : null }}>
                                                             Gemuk</option>
@@ -547,7 +550,7 @@
             updateUrutan2();
         }
 
-        function itemPembelian2(urutan, key, value = null) {
+        function itemPembelian2(identifier, key, value = null) {
             var kategori2 = '';
             var spareparts_id = '';
             var nama_barang2 = '';
@@ -578,6 +581,8 @@
                 '>Filter Solar Bawah</option>';
             item_pembelian += '<option value="Filter Angin"' + (kategori2 === 'Filter Angin' ? ' selected' : '') +
                 '>Filter Angin</option>';
+            item_pembelian += '<option value="Filter Transmisi"' + (kategori2 === 'Filter Transmisi' ? ' selected' : '') +
+                '>Filter Transmisi</option>';
             item_pembelian += '<option value="Gemuk"' + (kategori2 === 'Gemuk' ? ' selected' : '') +
                 '>Gemuk</option>';
             item_pembelian += '</select>';

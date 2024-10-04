@@ -153,8 +153,6 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::put('admin/update_km/{id}', [\App\Http\Controllers\Admin\KmController::class, 'updateKM'])->name('update_km.update');
 
   Route::get('inquery_ban', [\App\Http\Controllers\Admin\InqueryPembelianBanController::class, 'index']);
-  Route::get('unpostban/{id}', [\App\Http\Controllers\Admin\InqueryPembelianBanController::class, 'unpostban'])->name('unpostban');
-  Route::get('postingban/{id}', [\App\Http\Controllers\Admin\InqueryPembelianBanController::class, 'postingban'])->name('postingban');
   Route::get('hapusban/{id}', [\App\Http\Controllers\Admin\InqueryPembelianBanController::class, 'hapusban'])->name('hapusban');
   Route::get('lihat_faktur/{id}', [\App\Http\Controllers\Admin\InqueryPembelianBanController::class, 'lihat_faktur'])->name('lihat_faktur');
   Route::get('edit_faktur/{id}', [\App\Http\Controllers\Admin\InqueryPembelianBanController::class, 'edit_faktur'])->name('edit_faktur');
@@ -183,10 +181,8 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::get('deletebans/{id}', [\App\Http\Controllers\Admin\InqueryPelepasanbanController::class, 'deletebans'])->name('deletebans');
 
   Route::get('inquery_part', [\App\Http\Controllers\Admin\InqueryPembelianPartController::class, 'index']);
-  Route::get('unpostpart/{id}', [\App\Http\Controllers\Admin\InqueryPembelianPartController::class, 'unpostpart'])->name('unpostpart');
   Route::get('lihat_fakturpart/{id}', [\App\Http\Controllers\Admin\InqueryPembelianPartController::class, 'lihat_fakturpart'])->name('lihat_fakturpart');
   Route::get('edit_fakturpart/{id}', [\App\Http\Controllers\Admin\InqueryPembelianPartController::class, 'edit_fakturpart'])->name('edit_fakturpart');
-  Route::get('postingpart/{id}', [\App\Http\Controllers\Admin\InqueryPembelianPartController::class, 'postingpart'])->name('postingpart');
   Route::get('hapuspart/{id}', [\App\Http\Controllers\Admin\InqueryPembelianPartController::class, 'hapuspart'])->name('hapuspart');
   Route::get('laporan_pembelianpart', [\App\Http\Controllers\Admin\LaporanPembelianPart::class, 'index']);
   Route::get('print_part', [\App\Http\Controllers\Admin\LaporanPembelianPart::class, 'print_part']);
@@ -206,16 +202,12 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::get('hapuspemasanganban/{id}', [\App\Http\Controllers\Admin\InqueryPemasanganbanController::class, 'hapuspemasanganban'])->name('hapuspemasanganban');
 
   Route::get('inquery_pemasanganban', [\App\Http\Controllers\Admin\InqueryPemasanganbanController::class, 'index']);
-  Route::get('unpostpemasangan/{id}', [\App\Http\Controllers\Admin\InqueryPemasanganbanController::class, 'unpostpemasangan'])->name('unpostpemasangan');
-  Route::get('postingpemasangan/{id}', [\App\Http\Controllers\Admin\InqueryPemasanganbanController::class, 'postingpemasangan'])->name('postingpemasangan');
   Route::get('hapuspemasangan/{id}', [\App\Http\Controllers\Admin\InqueryPemasanganbanController::class, 'hapuspemasangan'])->name('hapuspemasangan');
   Route::get('lihat_pemasangan/{id}', [\App\Http\Controllers\Admin\InqueryPemasanganbanController::class, 'lihat_pemasangan'])->name('lihat_pemasangan');
   Route::get('edit_pemasangan/{id}', [\App\Http\Controllers\Admin\InqueryPemasanganbanController::class, 'edit_pemasangan'])->name('edit_pemasangan');
   Route::get('konfirmasiselesai/{id}', [\App\Http\Controllers\Admin\StatusPerjalananController::class, 'konfirmasiselesai'])->name('konfirmasiselesai');
 
   Route::get('inquery_pelepasanban', [\App\Http\Controllers\Admin\InqueryPelepasanbanController::class, 'index']);
-  Route::get('unpostpelepasan/{id}', [\App\Http\Controllers\Admin\InqueryPelepasanbanController::class, 'unpostpelepasan'])->name('unpostpelepasan');
-  Route::get('postingpelepasan/{id}', [\App\Http\Controllers\Admin\InqueryPelepasanbanController::class, 'postingpelepasan'])->name('postingpelepasan');
   Route::get('lihat_pelepasan/{id}', [\App\Http\Controllers\Admin\InqueryPelepasanbanController::class, 'lihat_pelepasan'])->name('lihat_pelepasan');
   Route::get('hapuspelepasan/{id}', [\App\Http\Controllers\Admin\InqueryPelepasanbanController::class, 'hapuspelepasan'])->name('hapuspelepasan');
   Route::get('edit_pelepasan/{id}', [\App\Http\Controllers\Admin\InqueryPelepasanbanController::class, 'edit_pelepasan'])->name('edit_pelepasan');
@@ -305,8 +297,6 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::get('print_laporanstatusperjalanan', [\App\Http\Controllers\Admin\LaporanStatusPerjalananController::class, 'print_statusperjalanan']);
 
   Route::get('inquery_penggantianoli', [\App\Http\Controllers\Admin\InqueryPenggantianoliController::class, 'index']);
-  Route::get('unpostpenggantianoli/{id}', [\App\Http\Controllers\Admin\InqueryPenggantianoliController::class, 'unpostpenggantianoli'])->name('unpostpenggantianoli');
-  Route::get('postingpenggantianoli/{id}', [\App\Http\Controllers\Admin\InqueryPenggantianoliController::class, 'postingpenggantianoli'])->name('postingpenggantianoli');
   Route::get('hapuspenggantianoli/{id}', [\App\Http\Controllers\Admin\InqueryPenggantianoliController::class, 'hapuspenggantianoli'])->name('hapuspenggantianoli');
   Route::get('lihat_penggantianoli/{id}', [\App\Http\Controllers\Admin\InqueryPenggantianoliController::class, 'lihat_penggantianoli'])->name('lihat_penggantianoli');
   Route::get('edit_penggantianoli/{id}', [\App\Http\Controllers\Admin\InqueryPenggantianoliController::class, 'edit_penggantianoli'])->name('edit_penggantianoli');
@@ -805,4 +795,23 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::delete('inquery_penggantianbearing/deletedetailpenggantian/{id}', [\App\Http\Controllers\Admin\InqueryPenggantianbearingController::class, 'deletedetailpenggantian']);
   Route::get('laporan_penggantianbearing', [\App\Http\Controllers\Admin\LaporanPenggantianbearingController::class, 'index']);
   Route::get('print_penggantianbearing', [\App\Http\Controllers\Admin\LaporanPenggantianbearingController::class, 'print_penggantianbearing']);
+
+  Route::get('inquery_pembelianban/unpostban/{id}', [\App\Http\Controllers\Admin\InqueryPembelianBanController::class, 'unpostban'])->name('unpostban');
+  Route::get('inquery_pembelianban/postingban/{id}', [\App\Http\Controllers\Admin\InqueryPembelianBanController::class, 'postingban'])->name('postingban');
+
+  Route::get('inquery_pembelianpart/unpostpart/{id}', [\App\Http\Controllers\Admin\InqueryPembelianPartController::class, 'unpostpart'])->name('unpostpart');
+  Route::get('inquery_pembelianpart/postingpart/{id}', [\App\Http\Controllers\Admin\InqueryPembelianPartController::class, 'postingpart'])->name('postingpart');
+
+  Route::get('inquery_pemasanganban/unpostpemasangan/{id}', [\App\Http\Controllers\Admin\InqueryPemasanganbanController::class, 'unpostpemasangan'])->name('unpostpemasangan');
+  Route::get('inquery_pemasanganban/postingpemasangan/{id}', [\App\Http\Controllers\Admin\InqueryPemasanganbanController::class, 'postingpemasangan'])->name('postingpemasangan');
+
+  Route::get('inquery_pelepasanban/unpostpelepasan/{id}', [\App\Http\Controllers\Admin\InqueryPelepasanbanController::class, 'unpostpelepasan'])->name('unpostpelepasan');
+  Route::get('inquery_pelepasanban/postingpelepasan/{id}', [\App\Http\Controllers\Admin\InqueryPelepasanbanController::class, 'postingpelepasan'])->name('postingpelepasan');
+
+  Route::get('inquery_pemasanganpart/unpostpemasangan_part/{id}', [\App\Http\Controllers\Admin\InqueryPemasanganpartController::class, 'unpostpemasangan_part']);
+  Route::get('inquery_pemasanganpart/postingpemasangan_part/{id}', [\App\Http\Controllers\Admin\InqueryPemasanganpartController::class, 'postingpemasangan_part']);
+  Route::get('hapuspemasangan_part/{id}', [\App\Http\Controllers\Admin\InqueryPemasanganpartController::class, 'hapuspemasangan_part'])->name('hapuspemasangan_part');
+
+  Route::get('inquery_penggantianoli/unpostpenggantianoli/{id}', [\App\Http\Controllers\Admin\InqueryPenggantianoliController::class, 'unpostpenggantianoli'])->name('unpostpenggantianoli');
+  Route::get('inquery_penggantianoli/postingpenggantianoli/{id}', [\App\Http\Controllers\Admin\InqueryPenggantianoliController::class, 'postingpenggantianoli'])->name('postingpenggantianoli');
 });

@@ -945,6 +945,7 @@
     request()->is('admin/inquery_pelepasanban*') ||
     request()->is('admin/inquery_pemasanganpart*') ||
     request()->is('admin/inquery_penggantianoli*') ||
+    request()->is('admin/inquery_penggantianbearing*') ||
     request()->is('admin/inquery_updatekm*') ||
     request()->is('admin/inquery_perhitungangaji*') ||
     request()->is('admin/inquery_perpanjanganstnk*') ||
@@ -983,6 +984,7 @@
         request()->is('admin/inquery_pelepasanban*') ||
         request()->is('admin/inquery_pemasanganpart*') ||
         request()->is('admin/inquery_penggantianoli*') ||
+        request()->is('admin/inquery_penggantianbearing*') ||
         request()->is('admin/inquery_updatekm*') ||
         request()->is('admin/inquery_perpanjanganstnk*') ||
         request()->is('admin/inquery_perpanjangankir*') ||
