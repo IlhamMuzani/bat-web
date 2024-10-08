@@ -75,16 +75,16 @@ class PemasanganpartController extends Controller
                 $data_pembelians->push(['sparepart_id' => $sparepart_id, 'nama_barang' => $nama_barang, 'keterangan' => $keterangan, 'jumlah' => $jumlah]);
             }
 
-            if (!$error_pelanggans && !$error_pesanans) {
-                foreach ($request->sparepart_id as $index => $sparepartId) {
-                    $jumlahDiminta = $request->jumlah[$index];
-                    $sparepart = Sparepart::find($sparepartId);
+            // if (!$error_pelanggans && !$error_pesanans) {
+            //     foreach ($request->sparepart_id as $index => $sparepartId) {
+            //         $jumlahDiminta = $request->jumlah[$index];
+            //         $sparepart = Sparepart::find($sparepartId);
 
-                    if ($sparepart && $jumlahDiminta > $sparepart->jumlah) {
-                        array_push($error_pesanans, "Stok Sparepart nomor " . ($index + 1) . " tidak mencukupi!");
-                    }
-                }
-            }
+            //         if ($sparepart && $jumlahDiminta > $sparepart->jumlah) {
+            //             array_push($error_pesanans, "Stok Sparepart nomor " . ($index + 1) . " tidak mencukupi!");
+            //         }
+            //     }
+            // }
         } else {
         }
 
@@ -121,7 +121,7 @@ class PemasanganpartController extends Controller
                     $jumlah_sparepart = $sparepart->jumlah - $data_pesanan['jumlah'];
 
                     // Pastikan jumlah sparepart tidak kurang dari nol
-                    $jumlah_sparepart = max(0, $jumlah_sparepart);
+                    // $jumlah_sparepart = max(0, $jumlah_sparepart);
 
                     // Memperbarui jumlah sparepart
                     $sparepart->update(['jumlah' => $jumlah_sparepart]);
@@ -163,37 +163,22 @@ class PemasanganpartController extends Controller
         }
     }
 
-    // public function kode()
-    // {
-    //     $pemasangan = Pemasangan_part::all();
-    //     if ($pemasangan->isEmpty()) {
-    //         $num = "000001";
-    //     } else {
-    //         $id = Pemasangan_part::getId();
-    //         foreach ($id as $value);
-    //         $idlm = $value->id;
-    //         $idbr = $idlm + 1;
-    //         $num = sprintf("%06s", $idbr);
-    //     }
-
-    //     $data = 'AP';
-    //     $kode_pemasangan = $data . $num;
-    //     return $kode_pemasangan;
-    // }
-
     public function kode()
     {
-        $lastBarang = Pemasangan_part::latest()->first();
-        if (!$lastBarang) {
-            $num = 1;
+        $pemasangan = Pemasangan_part::all();
+        if ($pemasangan->isEmpty()) {
+            $num = "000001";
         } else {
-            $lastCode = $lastBarang->kode_pemasanganpart;
-            $num = (int) substr($lastCode, strlen('AP')) + 1;
+            $id = Pemasangan_part::getId();
+            foreach ($id as $value);
+            $idlm = $value->id;
+            $idbr = $idlm + 1;
+            $num = sprintf("%06s", $idbr);
         }
-        $formattedNum = sprintf("%06s", $num);
-        $prefix = 'AP';
-        $newCode = $prefix . $formattedNum;
-        return $newCode;
+
+        $data = 'AP';
+        $kode_pemasangan = $data . $num;
+        return $kode_pemasangan;
     }
 
     public function destroy($id)
