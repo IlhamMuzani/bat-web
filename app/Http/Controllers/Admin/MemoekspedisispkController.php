@@ -254,17 +254,33 @@ class MemoekspedisispkController extends Controller
 
                 session()->flash('last_deposit_driver', $request->input('deposit_driver'));
 
+
+                $kendaraan_id = $request->input('kendaraan_id');
+                $postedCount = Memo_ekspedisi::where(
+                    'kendaraan_id',
+                    $kendaraan_id
+                )
+                    ->where('status', 'rilis')
+                    ->count();
+
+
+                if (
+                    $postedCount >= 1
+                ) {
+                    return back()->with('erorrss', 'DO sebelumnya belum terambil, hubungi driver untuk segera menyelesaikan do');
+                }
+
                 $nama_driver = $request->input('nama_driver');
                 $postedCount = Memo_ekspedisi::where('nama_driver', $nama_driver)
                     ->where('status', 'posting')
                     ->count();
 
                 // Jika jumlahnya sudah mencapai atau melebihi 3, lewati memo ekspedisi ini
-                // if (
-                //     $postedCount >= 3
-                // ) {
-                //     return back()->with('erorrss', 'Memo telah mencapai batas maksimal untuk driver: ' . $nama_driver . ' ' . 'buat faktur terlebih dahulu untuk memo yang sudah di posting');
-                // }
+                if (
+                    $postedCount >= 3
+                ) {
+                    return back()->with('erorrss', 'Memo telah mencapai batas maksimal untuk driver: ' . $nama_driver . ' ' . 'buat faktur terlebih dahulu untuk memo yang sudah di posting');
+                }
 
                 $error_pelanggans = array();
 
@@ -567,6 +583,24 @@ class MemoekspedisispkController extends Controller
                         ->with('error_pelanggans', $error_pelanggans)
                         ->with('error_pesanans', $error_pesanans)
                         ->with('data_pembelians', $data_pembelians);
+                }
+
+                $kendaraan_id = $request->input('kendaraan_id');
+                $postedCount = Memo_ekspedisi::where(
+                    'kendaraan_id',
+                    $kendaraan_id
+                )
+                    ->where(
+                        'status',
+                        'rilis'
+                    )
+                    ->count();
+
+
+                if (
+                    $postedCount >= 1
+                ) {
+                    return back()->with('erorrss', 'DO sebelumnya belum terambil, hubungi driver untuk segera menyelesaikan do');
                 }
 
                 $deposit = $request->depositsopir;
