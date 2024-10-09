@@ -244,7 +244,7 @@ class PengambilandoController extends Controller
             // Jika tidak ada memo yang statusnya 'rilis', tidak ada update yang dilakukan
             // Kamu bisa m
         }
-        
+
         // Hitung jarak waktu antara waktu tunggu muat dan waktu perjalanan isi
         $waktuTungguMuat = $pengambilan_do->updated_at;
         $waktuPerjalananIsi = now();
@@ -358,6 +358,8 @@ class PengambilandoController extends Controller
             'gambar2' => $namagambar2,
             'gambar3' => $namagambar3,
             'status' => 'tunggu bongkar',
+            'waktu_suratawal' => now()->format('Y-m-d H:i:s'),
+            'status_suratjalan' => 'belum pulang'
         ]);
 
         // Menghitung jarak waktu
