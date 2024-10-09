@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kendaraan;
+use App\Models\Memo_ekspedisi;
 use App\Models\Pengambilan_do;
+use App\Models\Spk;
 use App\Models\Timer;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -224,6 +226,25 @@ class PengambilandoController extends Controller
             'waktu_awal' => now()->format('Y-m-d H:i:s')
         ]);
 
+
+        $spk = Spk::where('id', $pengambilan_do->spk_id)->first();
+        $memos = Memo_ekspedisi::where('spk_id', $spk->id)
+            ->where('status', 'rilis') // Ambil hanya memo yang statusnya 'rilis'
+            ->get();
+
+        // Cek apakah ada memo yang perlu diupdate
+        if ($memos->isNotEmpty()) {
+            foreach ($memos as $memo) {
+                // Update status memo menjadi 'unpost'
+                $memo->update([
+                    'status' => 'unpost',
+                ]);
+            }
+        } else {
+            // Jika tidak ada memo yang statusnya 'rilis', tidak ada update yang dilakukan
+            // Kamu bisa m
+        }
+        
         // Hitung jarak waktu antara waktu tunggu muat dan waktu perjalanan isi
         $waktuTungguMuat = $pengambilan_do->updated_at;
         $waktuPerjalananIsi = now();

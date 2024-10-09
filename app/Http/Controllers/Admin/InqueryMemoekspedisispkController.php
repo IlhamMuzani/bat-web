@@ -30,6 +30,7 @@ use App\Models\Memo_ekspedisi;
 use App\Models\Memotambahan;
 use App\Models\Pelanggan;
 use App\Models\Penerimaan_kaskecil;
+use App\Models\Pengambilan_do;
 use App\Models\Pengeluaran_kaskecil;
 use App\Models\Potongan_memo;
 use App\Models\Rute_perjalanan;
@@ -382,6 +383,19 @@ class InqueryMemoekspedisispkController extends Controller
 
         $hasil_jumlah = $uang_jalans + $biaya_tambahan - $potongan_memos;
 
+        $spk_id = $request->spk_id;
+        $spk = Spk::where('id', $spk_id)->first();
+        $pengambilan_do = Pengambilan_do::where('spk_id', $spk->id)->first(); // Mengambil satu pengambilan_do
+
+        $status_memo = 'rilis';
+        if (
+            $pengambilan_do && in_array($pengambilan_do->status, ['unpost', 'posting'])
+        ) {
+            $status_memo = 'rilis';
+        } else {
+            $status_memo = 'unpost';
+        }
+
         $cetakpdf = Memo_ekspedisi::findOrFail($id);
         $cetakpdf->update(
             [
@@ -413,16 +427,8 @@ class InqueryMemoekspedisispkController extends Controller
                 'sub_total' => str_replace(',', '.', str_replace('.', '', $request->sub_total)),
                 'keterangan' => $request->keterangan,
                 'hasil_jumlah' => $hasil_jumlah,
+                'status' => $status_memo,
 
-                // 'biaya_id' => $request->biaya_id,
-                // 'kode_biaya' => $request->kode_biaya,
-                // 'nama_biaya' => $request->nama_biaya,
-                // 'nominal' => $request->has('nominal') ? ($request->nominal != 0 ? str_replace('.', '', $request->nominal) : null) : null,
-
-                // 'potongan_id' => $request->potongan_id,
-                // 'kode_potongan' => $request->kode_potongan,
-                // 'keterangan_potongan' => $request->keterangan_potongan,
-                // 'nominal_potongan' => $request->has('nominal_potongan') ? ($request->nominal_potongan != 0 ? str_replace('.', '', $request->nominal_potongan) : null) : null,
             ]
         );
 

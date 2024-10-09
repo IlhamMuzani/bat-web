@@ -27,6 +27,7 @@ use App\Models\Memo_ekspedisi;
 use App\Models\Memotambahan;
 use App\Models\Pelanggan;
 use App\Models\Penerimaan_kaskecil;
+use App\Models\Pengambilan_do;
 use App\Models\Pengeluaran_kaskecil;
 use App\Models\Potongan_memo;
 use App\Models\Rute_perjalanan;
@@ -307,9 +308,19 @@ class InqueryMemoborongspkController extends Controller
         $hasil_jumlah = ($totalrute - $pphs) / 2 + $biaya_tambahan;
 
 
-        // $uang_jaminan = str_replace('.', '', $request->uang_jaminans); // Menghapus titik
-        // $uang_jaminan = str_replace(',', '.', $uang_jaminan); // Mengganti koma menjadi titik
-        // $uang_jaminan = round($uang_jaminan); // Membulatkan nilai
+        $spk_id = $request->spk_id;
+        $spk = Spk::where('id', $spk_id)->first();
+        $pengambilan_do = Pengambilan_do::where('spk_id', $spk->id)->first(); // Mengambil satu pengambilan_do
+
+        $status_memo = 'rilis';
+        if (
+            $pengambilan_do && in_array($pengambilan_do->status, ['unpost', 'posting'])
+        ) {
+            $status_memo = 'rilis';
+        } else {
+            $status_memo = 'unpost';
+        }
+
 
         $tanggal = Carbon::now()->format('Y-m-d');
         $cetakpdf->update(
@@ -357,6 +368,8 @@ class InqueryMemoborongspkController extends Controller
                 'jumlah' => $request->jumlah,
                 'satuan' => $request->satuan,
                 'totalrute' => str_replace(',', '.', str_replace('.', '', $request->totalrute)),
+                'status' => $status_memo,
+
             ]
         );
 
