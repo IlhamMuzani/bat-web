@@ -51,7 +51,7 @@
                         <div class="row">
                             <div class="col-md-2 mb-3">
                                 <select class="custom-select form-control" id="kategori" name="kategori">
-                                    <option value="">- Semua Status -</option>
+                                    <option value="">- Semua Kategori -</option>
                                     <option value="Memo Perjalanan"
                                         {{ Request::get('kategori') == 'Memo Perjalanan' ? 'selected' : '' }}>
                                         Memo Perjalanan
