@@ -259,7 +259,9 @@ class PengambilandoController extends Controller
             // 'user_id' => $request->user_id,
             'status_perjalanan' => 'Perjalanan Kosong',
             'timer' => $jarakWaktu,
-            'waktu' => now()->format('Y-m-d H:i:s')
+            'waktu' => now()->format('Y-m-d H:i:s'),
+            'waktu_suratawal' => now()->format('Y-m-d H:i:s'),
+            'status_suratjalan' => 'belum pulang'
         ]);
 
         // Retrieve the updated status_perjalanan for status_akhir
