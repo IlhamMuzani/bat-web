@@ -270,17 +270,17 @@ class MemoekspedisispkController extends Controller
                     return back()->with('erorrss', 'DO sebelumnya belum terambil, hubungi driver untuk segera menyelesaikan do');
                 }
 
-                $nama_driver = $request->input('nama_driver');
-                $postedCount = Memo_ekspedisi::where('nama_driver', $nama_driver)
-                    ->where('status', 'posting')
-                    ->count();
+                // $nama_driver = $request->input('nama_driver');
+                // $postedCount = Memo_ekspedisi::where('nama_driver', $nama_driver)
+                //     ->where('status', 'posting')
+                //     ->count();
 
-                // Jika jumlahnya sudah mencapai atau melebihi 3, lewati memo ekspedisi ini
-                if (
-                    $postedCount >= 3
-                ) {
-                    return back()->with('erorrss', 'Memo telah mencapai batas maksimal untuk driver: ' . $nama_driver . ' ' . 'buat faktur terlebih dahulu untuk memo yang sudah di posting');
-                }
+                // // Jika jumlahnya sudah mencapai atau melebihi 3, lewati memo ekspedisi ini
+                // if (
+                //     $postedCount >= 3
+                // ) {
+                //     return back()->with('erorrss', 'Memo telah mencapai batas maksimal untuk driver: ' . $nama_driver . ' ' . 'buat faktur terlebih dahulu untuk memo yang sudah di posting');
+                // }
 
                 $error_pelanggans = array();
 
