@@ -188,6 +188,8 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::get('print_part', [\App\Http\Controllers\Admin\LaporanPembelianPart::class, 'print_part']);
   Route::delete('inquery_fakturekspedisi/delettariftambahan/{id}', [\App\Http\Controllers\Admin\InqueryFakturekspedisiController::class, 'delettariftambahan']);
   Route::delete('inquery_fakturekspedisispk/delettariftambahan/{id}', [\App\Http\Controllers\Admin\InqueryFakturekspedisispkController::class, 'delettariftambahan']);
+  Route::get('postingfilterspk', [\App\Http\Controllers\Admin\InquerySpkController::class, 'postingfilterspk']);
+  Route::get('unpostfilterspk', [\App\Http\Controllers\Admin\InquerySpkController::class, 'unpostfilterspk']);
 
 
   Route::get('inquery_km', [\App\Http\Controllers\Admin\InqueryUpdateKMController::class, 'index']);
