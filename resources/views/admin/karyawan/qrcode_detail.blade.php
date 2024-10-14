@@ -120,7 +120,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-5">
-                                 
+
                                     @if ($karyawan->gambar)
                                         <img src="{{ asset('storage/uploads/' . $karyawan->gambar) }}"
                                             alt="{{ $karyawan->nama_lengkap }}" class="w-100 rounded border">
@@ -257,6 +257,67 @@
                                 class="btn btn-outline-primary btn-sm float-end">
                                 <i class="fa-solid fa-print"></i> Cetak PDV
                                 </a> --}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Foto KTP dan SIM</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    @if ($karyawan->ft_ktp)
+                                        <img src="{{ asset('storage/uploads/' . $karyawan->ft_ktp) }}"
+                                            alt="{{ $karyawan->no_ktp }}" height="300px" width="100px"
+                                            class="w-100 rounded border">
+                                    @else
+                                        <img src="{{ asset('adminlte/dist/img/img-placeholder.jpg') }}"
+                                            alt="{{ $karyawan->no_ktp }}" height="300px" width="100px"
+                                            class="w-100 rounded border">
+                                    @endif
+                                </div>
+                                <div class="col-md-5">
+                                    @if ($karyawan->ft_sim)
+                                        <img src="{{ asset('storage/uploads/' . $karyawan->ft_sim) }}"
+                                            alt="{{ $karyawan->no_ktp }}" height="300px" width="100px"
+                                            class="w-100 rounded border">
+                                    @else
+                                        <img src="{{ asset('adminlte/dist/img/img-placeholder.jpg') }}"
+                                            alt="{{ $karyawan->no_ktp }}" height="300px" width="100px"
+                                            class="w-100 rounded border">
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="modal-qrcode-{{ $karyawan->id }}">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Gambar QR Code</h4>
+                                        <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div style="text-align: center;">
+                                            <div style="display: inline-block;">
+                                                {!! DNS2D::getBarcodeHTML("$karyawan->qrcode_karyawan", 'QRCODE', 15, 15) !!}
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="button" class="btn btn-default"
+                                                data-dismiss="modal">Batal</button>
+                                            <a href="{{ url('admin/karyawan/cetak-pdf/' . $karyawan->id) }}"
+                                                class="btn btn-primary btn-sm">
+                                                <i class=""></i> Cetak
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
