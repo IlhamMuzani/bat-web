@@ -31,7 +31,7 @@ class DriverController extends Controller
     public function update_profile(Request $request, $id)
     {
         // Temukan pengguna berdasarkan ID
-        $user = User::find($id);
+        // $user = User::find($id);
 
         // Validasi input dari request
         $validator = Validator::make(
@@ -56,7 +56,7 @@ class DriverController extends Controller
         }
 
         // Temukan karyawan berdasarkan karyawan_id dari pengguna
-        $karyawan = Karyawan::where('id', $user->karyawan_id)->first();
+        $karyawan = Karyawan::where('id', $id)->first();
 
         // Jika karyawan tidak ditemukan
         if (!$karyawan) {
@@ -295,7 +295,7 @@ class DriverController extends Controller
         $pengambilan_do = Pengambilan_do::where('kendaraan_id', $kendaraan->id)
             ->first();
         $pengambilan_do_id = $pengambilan_do ? $pengambilan_do->id : null;
-        
+
         // Create Timer record with the old and new status, and the old timer
         Timer::create(array_merge(
             $request->all(),
@@ -364,7 +364,7 @@ class DriverController extends Controller
         $pengambilan_do = Pengambilan_do::where('kendaraan_id', $kendaraan->id)
             ->first();
         $pengambilan_do_id = $pengambilan_do ? $pengambilan_do->id : null;
-        
+
         // Create Timer record with the old and new status, and the old timer
         Timer::create(array_merge(
             $request->all(),
@@ -546,7 +546,7 @@ class DriverController extends Controller
         $pengambilan_do = Pengambilan_do::where('kendaraan_id', $kendaraan->id)
             ->first();
         $pengambilan_do_id = $pengambilan_do ? $pengambilan_do->id : null;
-        
+
         // Create Timer record with the old and new status, and the old timer
         Timer::create(array_merge(
             $request->all(),
