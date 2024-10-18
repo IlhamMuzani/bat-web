@@ -395,6 +395,17 @@
                 </a>
             </li>
         @endif
+        @if (auth()->user()->id == 1)
+            @if (auth()->check() && auth()->user()->menu['rute perjalanan'])
+                <li class="nav-item">
+                    <a href="{{ url('admin/jarak_titik') }}"
+                        class="nav-link {{ request()->is('admin/jarak_titik*') ? 'active' : '' }}">
+                        <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                        <p style="font-size: 14px;">Jarak Titik</p>
+                    </a>
+                </li>
+            @endif
+        @endif
     </ul>
 </li>
 @php
@@ -1382,6 +1393,18 @@
                     </p>
                 </a>
             </li>
+        @endif
+        @if (auth()->user()->id == 1)
+            @if (auth()->check() && auth()->user()->menu['inquery memo ekspedisi'])
+                <li class="nav-item">
+                    <a href="{{ url('admin/inquery_pengambilando') }}"
+                        class="nav-link {{ request()->is('admin/inquery_pengambilando*') ? 'active' : '' }}">
+                        <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                        <p style="font-size: 13px;">Inquery Pengambilan DO
+                        </p>
+                    </a>
+                </li>
+            @endif
         @endif
         @if (auth()->check() && auth()->user()->menu['inquery pengambilan kas kecil'])
             <li class="nav-item">

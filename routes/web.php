@@ -774,6 +774,12 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::get('postingfilterpelunasan', [\App\Http\Controllers\Admin\InqueryFakturpelunasanController::class, 'postingfilterpelunasan']);
   Route::get('unpostfilterpelunasan', [\App\Http\Controllers\Admin\InqueryFakturpelunasanController::class, 'unpostfilterpelunasan']);
 
+  Route::resource('inquery_pengambilando', \App\Http\Controllers\Admin\InqueryPengambilandoController::class);
+  Route::get('inquery_pengambilando/unpostpengambilando/{id}', [\App\Http\Controllers\Admin\InqueryPengambilandoController::class,
+    'unpostpengambilando'
+  ]);
+  Route::get('inquery_pengambilando/postingpengambilando/{id}', [\App\Http\Controllers\Admin\InqueryPengambilandoController::class, 'postingpengambilando']);
+  Route::get('hapuspengambilando/{id}', [\App\Http\Controllers\Admin\InqueryPengambilandoController::class, 'hapuspengambilando'])->name('hapuspengambilando');
   Route::resource('status_pemberiando', \App\Http\Controllers\Admin\StatusPemberiandoController::class);
   Route::resource('jarak_km', \App\Http\Controllers\Admin\JarakkmController::class);
   Route::get('inqueryklaim_ban/cetak-pdf/{id}', [\App\Http\Controllers\Admin\InqueryKlaimbanController::class, 'cetakpdf']);
@@ -818,5 +824,6 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::get('inquery_penggantianoli/postingpenggantianoli/{id}', [\App\Http\Controllers\Admin\InqueryPenggantianoliController::class, 'postingpenggantianoli'])->name('postingpenggantianoli');
 
   Route::resource('monitoring_suratjalan', \App\Http\Controllers\Admin\MonitoringsuratjalanController::class);
+  Route::resource('jarak_titik', \App\Http\Controllers\Admin\JaraktitikController::class);
 
 });
