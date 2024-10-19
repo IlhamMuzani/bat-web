@@ -254,7 +254,7 @@ class DriverController extends Controller
         if ($distance > $allowedRadius) {
             return response()->json([
                 'status' => false,
-                'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan',
+                'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan, jarak anda dari tujuan sekitar ' . round($distance, 2) . ' km.',
             ], 200);
         }
 
@@ -404,7 +404,7 @@ class DriverController extends Controller
         if ($distance > $allowedRadius) {
             return response()->json([
                 'status' => false,
-                'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan',
+                'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan, jarak anda dari tujuan sekitar ' . round($distance, 2) . ' km.',
             ], 200);
         }
         $currentStatusPerjalanan = $kendaraan->status_perjalanan;
@@ -550,7 +550,7 @@ class DriverController extends Controller
         if ($distance > $allowedRadius) {
             return response()->json([
                 'status' => false,
-                'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan',
+                'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan, jarak anda dari tujuan sekitar ' . round($distance, 2) . ' km.',
             ], 200);
         }
         $currentStatusPerjalanan = $kendaraan->status_perjalanan;
@@ -702,7 +702,7 @@ class DriverController extends Controller
         if ($distance > $allowedRadius) {
             return response()->json([
                 'status' => false,
-                'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan',
+                'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan, jarak anda dari tujuan sekitar ' . round($distance, 2) . ' km.',
             ], 200);
         }
 
@@ -848,7 +848,7 @@ class DriverController extends Controller
         if ($distance > $allowedRadius) {
             return response()->json([
                 'status' => false,
-                'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan',
+                'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan, jarak anda dari tujuan sekitar ' . round($distance, 2) . ' km.',
             ], 200);
         }
         $currentStatusPerjalanan = $kendaraan->status_perjalanan;
@@ -1044,7 +1044,7 @@ class DriverController extends Controller
         if ($distance > $allowedRadius) {
             return response()->json([
                 'status' => false,
-                'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan',
+                'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan, jarak anda dari tujuan sekitar ' . round($distance, 2) . ' km.',
             ], 200);
         }
         $currentStatusPerjalanan = $kendaraan->status_perjalanan;
@@ -1190,7 +1190,7 @@ class DriverController extends Controller
         if ($distance > $allowedRadius) {
             return response()->json([
                 'status' => false,
-                'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan',
+                'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan, jarak anda dari tujuan sekitar ' . round($distance, 2) . ' km.',
             ], 200);
         }
         $currentStatusPerjalanan = $kendaraan->status_perjalanan;
