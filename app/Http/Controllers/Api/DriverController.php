@@ -245,7 +245,7 @@ class DriverController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'Nilai jarak tidak valid.',
-            ], 400); // Jika tidak ada nilai jarak yang valid, kembalikan error
+            ], 200); // Jika tidak ada nilai jarak yang valid, kembalikan error
         }
 
         $allowedRadius = $jarak_titik->jarak;
@@ -255,7 +255,7 @@ class DriverController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan',
-            ], 403);
+            ], 200);
         }
 
         $currentStatusPerjalanan = $kendaraan->status_perjalanan;
@@ -395,7 +395,7 @@ class DriverController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'Nilai jarak tidak valid.',
-            ], 400); // Jika tidak ada nilai jarak yang valid, kembalikan error
+            ], 200); // Jika tidak ada nilai jarak yang valid, kembalikan error
         }
 
         $allowedRadius = $jarak_titik->jarak;
@@ -405,7 +405,7 @@ class DriverController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan',
-            ], 403);
+            ], 200);
         }
         $currentStatusPerjalanan = $kendaraan->status_perjalanan;
         $currentTimer = $kendaraan->waktu;
@@ -541,7 +541,7 @@ class DriverController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'Nilai jarak tidak valid.',
-            ], 400); // Jika tidak ada nilai jarak yang valid, kembalikan error
+            ], 200); // Jika tidak ada nilai jarak yang valid, kembalikan error
         }
 
         $allowedRadius = $jarak_titik->jarak;
@@ -551,7 +551,7 @@ class DriverController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan',
-            ], 403);
+            ], 200);
         }
         $currentStatusPerjalanan = $kendaraan->status_perjalanan;
         $currentTimer = $kendaraan->waktu;
@@ -693,7 +693,7 @@ class DriverController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'Nilai jarak tidak valid.',
-            ], 400); // Jika tidak ada nilai jarak yang valid, kembalikan error
+            ], 200); // Jika tidak ada nilai jarak yang valid, kembalikan error
         }
 
         $allowedRadius = $jarak_titik->jarak;
@@ -703,7 +703,7 @@ class DriverController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan',
-            ], 403);
+            ], 200);
         }
 
         $currentStatusPerjalanan = $kendaraan->status_perjalanan;
@@ -839,7 +839,7 @@ class DriverController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'Nilai jarak tidak valid.',
-            ], 400); // Jika tidak ada nilai jarak yang valid, kembalikan error
+            ], 200); // Jika tidak ada nilai jarak yang valid, kembalikan error
         }
 
         $allowedRadius = $jarak_titik->jarak;
@@ -849,7 +849,7 @@ class DriverController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan',
-            ], 403);
+            ], 200);
         }
         $currentStatusPerjalanan = $kendaraan->status_perjalanan;
         $currentTimer = $kendaraan->waktu;
@@ -1035,7 +1035,7 @@ class DriverController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'Nilai jarak tidak valid.',
-            ], 400); // Jika tidak ada nilai jarak yang valid, kembalikan error
+            ], 200); // Jika tidak ada nilai jarak yang valid, kembalikan error
         }
 
         $allowedRadius = $jarak_titik->jarak;
@@ -1045,7 +1045,7 @@ class DriverController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan',
-            ], 403);
+            ], 200);
         }
         $currentStatusPerjalanan = $kendaraan->status_perjalanan;
         $currentTimer = $kendaraan->waktu;
@@ -1181,7 +1181,7 @@ class DriverController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'Nilai jarak tidak valid.',
-            ], 400); // Jika tidak ada nilai jarak yang valid, kembalikan error
+            ], 200); // Jika tidak ada nilai jarak yang valid, kembalikan error
         }
 
         $allowedRadius = $jarak_titik->jarak;
@@ -1191,7 +1191,7 @@ class DriverController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan',
-            ], 403);
+            ], 200);
         }
         $currentStatusPerjalanan = $kendaraan->status_perjalanan;
         $currentTimer = $kendaraan->waktu;

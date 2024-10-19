@@ -132,7 +132,7 @@ class PengambilandoController extends Controller
                 return response()->json([
                     'status' => false,
                     'msg' => 'Mohon selesaikan pengambilan DO sebelumnya terlebih dahulu.',
-                ], 400);
+                ], 200);
             }
         }
 
@@ -418,7 +418,7 @@ class PengambilandoController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'Nilai jarak tidak valid.',
-            ], 400); // Jika tidak ada nilai jarak yang valid, kembalikan error
+            ], 200); // Jika tidak ada nilai jarak yang valid, kembalikan error
         }
 
         $allowedRadius = $jarak_titik->jarak;
@@ -428,7 +428,7 @@ class PengambilandoController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan',
-            ], 403);
+            ], 200);
         }
 
 
@@ -437,7 +437,7 @@ class PengambilandoController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'Gambar tidak valid.',
-            ], 400);
+            ], 200);
         }
 
         $gambar1 = str_replace(' ', '', $request->file('gambar')->getClientOriginalName());
@@ -666,7 +666,7 @@ class PengambilandoController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'Nilai jarak tidak valid.',
-            ], 400); // Jika tidak ada nilai jarak yang valid, kembalikan error
+            ], 200); // Jika tidak ada nilai jarak yang valid, kembalikan error
         }
 
         $allowedRadius = $jarak_titik->jarak;
@@ -676,7 +676,7 @@ class PengambilandoController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'Tidak dapat melakukan update karena masih jauh dari tujuan',
-            ], 403);
+            ], 200);
         }
 
         // Validasi bahwa file diupload
@@ -684,7 +684,7 @@ class PengambilandoController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'File bukti tidak valid.',
-            ], 400);
+            ], 200);
         }
 
         // Menyiapkan nama file untuk penyimpanan
@@ -863,7 +863,7 @@ class PengambilandoController extends Controller
             return response()->json([
                 'status' => false,
                 'msg' => 'File bukti tidak valid.',
-            ], 400);
+            ], 200);
         }
 
         // Menyiapkan file 'bukti1' jika ada
