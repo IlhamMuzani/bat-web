@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Alamat_bongkar;
 use App\Models\Alamat_muat;
 use App\Models\Jarak_km;
 use App\Models\Jarak_titik;
@@ -612,7 +613,7 @@ class DriverController extends Controller
         $kendaraan = Kendaraan::find($id);
         $pengambilan_do = $kendaraan->latestpengambilan_do;
 
-        $alamat_muat = Alamat_muat::where('id', $pengambilan_do->alamat_muat_id)->first();
+        $alamat_muat = Alamat_bongkar::where('id', $pengambilan_do->alamat_bongkar_id)->first();
 
         if ($kendaraan) {
             try {

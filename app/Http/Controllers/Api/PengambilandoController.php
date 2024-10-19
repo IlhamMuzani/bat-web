@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Alamat_bongkar;
 use App\Models\Alamat_muat;
 use App\Models\Jarak_titik;
 use App\Models\Kendaraan;
@@ -643,9 +644,9 @@ class PengambilandoController extends Controller
             }
         }
 
-        $alamat_muat = Alamat_muat::where(
+        $alamat_muat = Alamat_bongkar::where(
             'id',
-            $pengambilan_do->alamat_muat_id
+            $pengambilan_do->alamat_bongkar_id
         )->first();
         // Temukan objek Kendaraan berdasarkan kendaraan_id dari pengambilan_do
 
