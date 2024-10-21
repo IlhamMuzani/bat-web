@@ -62,6 +62,7 @@
                                 <th>Kode Kendaraan</th>
                                 <th>No Kabin</th>
                                 <th>No Pol</th>
+                                <th>Akses Lokasi</th>
                                 <th class="text-center" width="90">Opsi</th>
                             </tr>
                         </thead>
@@ -74,6 +75,13 @@
                                     <td>{{ $kendaraan->no_kabin }}
                                     </td>
                                     <td>{{ $kendaraan->no_pol }}
+                                    </td>
+                                    <td>
+                                        @if ($kendaraan->akses_lokasi == 1)
+                                            <span style="font-size: 10px" class="badge badge-success">True</span>
+                                        @else
+                                            <span style="font-size: 10px" class="badge badge-warning">False</span>
+                                        @endif
                                     </td>
                                     </td>
                                     <td class="text-center">
