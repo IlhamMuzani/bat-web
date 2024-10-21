@@ -60,6 +60,7 @@
                             <tr>
                                 <th class="text-center">No</th>
                                 <th>Kode Kendaraan</th>
+                                <th>Driver</th>
                                 <th>No Kabin</th>
                                 <th>No Pol</th>
                                 <th>Akses Lokasi</th>
@@ -71,6 +72,8 @@
                                 <tr>
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <td>{{ $kendaraan->kode_kendaraan }}
+                                    </td>
+                                    <td>{{ $kendaraan->latestpengambilan_do->spk->nama_driver ?? null }}
                                     </td>
                                     <td>{{ $kendaraan->no_kabin }}
                                     </td>
