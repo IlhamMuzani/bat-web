@@ -775,7 +775,8 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::get('unpostfilterpelunasan', [\App\Http\Controllers\Admin\InqueryFakturpelunasanController::class, 'unpostfilterpelunasan']);
 
   Route::resource('inquery_pengambilando', \App\Http\Controllers\Admin\InqueryPengambilandoController::class);
-  Route::get('inquery_pengambilando/unpostpengambilando/{id}', [\App\Http\Controllers\Admin\InqueryPengambilandoController::class,
+  Route::get('inquery_pengambilando/unpostpengambilando/{id}', [
+    \App\Http\Controllers\Admin\InqueryPengambilandoController::class,
     'unpostpengambilando'
   ]);
   Route::get('inquery_pengambilando/postingpengambilando/{id}', [\App\Http\Controllers\Admin\InqueryPengambilandoController::class, 'postingpengambilando']);
@@ -827,4 +828,6 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::resource('jarak_titik', \App\Http\Controllers\Admin\JaraktitikController::class);
   Route::resource('akses_lokasi', \App\Http\Controllers\Admin\AkseslokasiController::class);
 
+  Route::get('unpostfilterakses', [\App\Http\Controllers\Admin\AkseslokasiController::class, 'unpostfilterakses']);
+  Route::get('postingfilterakses', [\App\Http\Controllers\Admin\AkseslokasiController::class, 'postingfilterakses']);
 });
