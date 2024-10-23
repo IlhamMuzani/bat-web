@@ -386,7 +386,7 @@
                 </a>
             </li>
         @endif
-        @if (auth()->check() && auth()->user()->menu['rute perjalanan'])
+        @if (auth()->check() && auth()->user()->menu['kendaraan'])
             <li class="nav-item">
                 <a href="{{ url('admin/lama_penggantianoli') }}"
                     class="nav-link {{ request()->is('admin/lama_penggantianoli*') || request()->is('admin/lama_bearing*') || request()->is('admin/jarak_km*') ? 'active' : '' }}">
@@ -396,7 +396,7 @@
             </li>
         @endif
         @if (auth()->user()->id == 1)
-            @if (auth()->check() && auth()->user()->menu['rute perjalanan'])
+            @if (auth()->check() && auth()->user()->menu['kendaraan'])
                 <li class="nav-item">
                     <a href="{{ url('admin/jarak_titik') }}"
                         class="nav-link {{ request()->is('admin/jarak_titik*') ? 'active' : '' }}">
@@ -407,7 +407,7 @@
             @endif
         @endif
         @if (auth()->user()->id == 1)
-            @if (auth()->check() && auth()->user()->menu['rute perjalanan'])
+            @if (auth()->check() && auth()->user()->menu['kendaraan'])
                 <li class="nav-item">
                     <a href="{{ url('admin/akses_lokasi') }}"
                         class="nav-link {{ request()->is('admin/akses_lokasi*') ? 'active' : '' }}">
@@ -418,7 +418,7 @@
             @endif
         @endif
         @if (auth()->user()->id == 1 || auth()->user()->id == 3)
-            @if (auth()->check() && auth()->user()->menu['rute perjalanan'])
+            @if (auth()->check() && auth()->user()->menu['kendaraan'])
                 <li class="nav-item">
                     <a href="{{ url('admin/akses_spk') }}"
                         class="nav-link {{ request()->is('admin/akses_spk*') ? 'active' : '' }}">
