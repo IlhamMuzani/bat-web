@@ -417,6 +417,17 @@
                 </li>
             @endif
         @endif
+        @if (auth()->user()->id == 1 || auth()->user()->id == 3)
+            @if (auth()->check() && auth()->user()->menu['rute perjalanan'])
+                <li class="nav-item">
+                    <a href="{{ url('admin/akses_spk') }}"
+                        class="nav-link {{ request()->is('admin/akses_spk*') ? 'active' : '' }}">
+                        <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                        <p style="font-size: 14px;">Akses SPK</p>
+                    </a>
+                </li>
+            @endif
+        @endif
     </ul>
 </li>
 @php
