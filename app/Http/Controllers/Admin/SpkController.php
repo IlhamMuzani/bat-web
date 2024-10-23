@@ -285,6 +285,7 @@ class SpkController extends Controller
                 'tanggal_awal' => $tanggal,
                 'tanggal' => $format_tanggal,
                 'status' => 'posting',
+                'akses_spk' => 1
             ]
         ));
 
