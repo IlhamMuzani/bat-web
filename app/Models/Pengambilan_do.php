@@ -27,7 +27,11 @@ class Pengambilan_do extends Model
         'waktu_akhir',
         'rute_perjalanan_id',
         'alamat_muat_id',
+        'alamat_muat2_id',
+        'alamat_muat3_id',
         'alamat_bongkar_id',
+        'alamat_bongkar2_id',
+        'alamat_bongkar3_id',
         'status',
         'pengambilan_do',
         'gambar',
@@ -42,6 +46,8 @@ class Pengambilan_do extends Model
         'waktu_suratakhir',
         'status_suratjalan',
         'akses_spk',
+        'status_penerimaansj',
+        'penerima_sj',
         'tanggal',
         'tanggal_awal',
         'tanggal_akhir',
@@ -91,16 +97,37 @@ class Pengambilan_do extends Model
     {
         return $this->belongsTo(Rute_perjalanan::class);
     }
-    
+
 
     public function alamat_muat()
     {
-        return $this->belongsTo(Alamat_muat::class);
+        return $this->belongsTo(Alamat_muat::class, 'alamat_muat_id'); // foreign key untuk alamat pertama
     }
+
+    public function alamat_muat2()
+    {
+        return $this->belongsTo(Alamat_muat::class, 'alamat_muat2_id'); // foreign key untuk alamat kedua
+    }
+
+    public function alamat_muat3()
+    {
+        return $this->belongsTo(Alamat_muat::class, 'alamat_muat3_id'); // foreign key untuk alamat ketiga
+    }
+
 
     public function alamat_bongkar()
     {
-        return $this->belongsTo(Alamat_bongkar::class);
+        return $this->belongsTo(Alamat_bongkar::class, 'alamat_bongkar_id'); // foreign key untuk alamat pertama
+    }
+
+    public function alamat_bongkar2()
+    {
+        return $this->belongsTo(Alamat_bongkar::class, 'alamat_bongkar2_id'); // foreign key untuk alamat kedua
+    }
+
+    public function alamat_bongkar3()
+    {
+        return $this->belongsTo(Alamat_bongkar::class, 'alamat_bongkar3_id'); // foreign key untuk alamat ketiga
     }
 
     public static function getId()

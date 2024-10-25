@@ -477,6 +477,7 @@
     request()->is('admin/pemakaian_peralatan*') ||
     request()->is('admin/status_spk*') ||
     request()->is('admin/monitoring_suratjalan*') ||
+    request()->is('admin/penerimaansuratjalan*') ||
     request()->is('admin/status_perjalanan*')
         ? 'menu-open'
         : '' }}">
@@ -489,6 +490,7 @@
         request()->is('admin/status_pemberiando*') ||
         request()->is('admin/status_spk*') ||
         request()->is('admin/monitoring_suratjalan*') ||
+        request()->is('admin/penerimaansuratjalan*') ||
         request()->is('admin/status_perjalanan*')
             ? 'active'
             : '' }}">
@@ -590,6 +592,15 @@
                     <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
                     <p style="font-size: 14px;">Monitoring Surat Jalan
                     </p>
+                </a>
+            </li>
+        @endif
+        @if (auth()->check() && auth()->user()->menu['kendaraan'])
+            <li class="nav-item">
+                <a href="{{ url('admin/penerimaansuratjalan') }}"
+                    class="nav-link {{ request()->is('admin/penerimaansuratjalan*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 13px;">Penerimaan Surat Jalan</p>
                 </a>
             </li>
         @endif
