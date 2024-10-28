@@ -285,6 +285,7 @@ class SpkController extends Controller
                 'tanggal_awal' => $tanggal,
                 'tanggal' => $format_tanggal,
                 'status' => 'posting',
+                'status_penerimaansj' => 'unpost',
                 'akses_spk' => 1
             ]
         ));
@@ -351,5 +352,138 @@ class SpkController extends Controller
         $result = json_decode(curl_exec($curl));
 
         return $result;
+    }
+
+    public function searchAlamatMuat(Request $request)
+    {
+        $query = $request->input('search');
+
+        // Lakukan pencarian berdasarkan kode atau alamat pelanggan
+        $alamat_muats = Alamat_muat::where('kode_alamat', 'LIKE', "%{$query}%")
+            ->orWhere('alamat', 'LIKE', "%{$query}%")
+            ->orWhereHas('pelanggan', function ($q) use ($query) {
+                $q->where('nama_pell', 'LIKE', "%{$query}%");
+            })
+            ->get();
+
+        // Kembalikan HTML untuk update tabel
+        $html = '';
+        foreach ($alamat_muats as $index => $alamat_muat) {
+            $html .= '
+        <tr onclick="getSelectedDataAlamatmuat2(\'' . $alamat_muat->id . '\', \'' . $alamat_muat->kode_alamat . '\', \'' . $alamat_muat->alamat . '\')">
+            <td class="text-center">' . ($index + 1) . '</td>
+            <td>' . $alamat_muat->kode_alamat . '</td>
+            <td>' . ($alamat_muat->pelanggan->nama_pell ?? 'tidak ada') . '</td>
+            <td>' . $alamat_muat->alamat . '</td>
+            <td class="text-center">
+                <button type="button" class="btn btn-primary btn-sm" onclick="getSelectedDataAlamatmuat2(\'' . $alamat_muat->id . '\', \'' . $alamat_muat->kode_alamat . '\', \'' . $alamat_muat->alamat . '\')">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </td>
+        </tr>
+    ';
+        }
+
+        return response()->json($html);
+    }
+
+    public function searchAlamatMuat3(Request $request)
+    {
+        $query = $request->input('search');
+
+        // Lakukan pencarian berdasarkan kode atau alamat pelanggan
+        $alamat_muats = Alamat_muat::where('kode_alamat', 'LIKE', "%{$query}%")
+            ->orWhere('alamat', 'LIKE', "%{$query}%")
+            ->orWhereHas('pelanggan', function ($q) use ($query) {
+                $q->where('nama_pell', 'LIKE', "%{$query}%");
+            })
+            ->get();
+
+        // Kembalikan HTML untuk update tabel
+        $html = '';
+        foreach ($alamat_muats as $index => $alamat_muat) {
+            $html .= '
+        <tr onclick="getSelectedDataAlamatmuat3(\'' . $alamat_muat->id . '\', \'' . $alamat_muat->kode_alamat . '\', \'' . $alamat_muat->alamat . '\')">
+            <td class="text-center">' . ($index + 1) . '</td>
+            <td>' . $alamat_muat->kode_alamat . '</td>
+            <td>' . ($alamat_muat->pelanggan->nama_pell ?? 'tidak ada') . '</td>
+            <td>' . $alamat_muat->alamat . '</td>
+            <td class="text-center">
+                <button type="button" class="btn btn-primary btn-sm" onclick="getSelectedDataAlamatmuat3(\'' . $alamat_muat->id . '\', \'' . $alamat_muat->kode_alamat . '\', \'' . $alamat_muat->alamat . '\')">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </td>
+        </tr>
+    ';
+        }
+
+        return response()->json($html);
+    }
+
+
+    public function searchAlamatBongkar(Request $request)
+    {
+        $query = $request->input('search');
+
+        // Lakukan pencarian berdasarkan kode atau alamat pelanggan
+        $alamat_muats = Alamat_bongkar::where('kode_alamat', 'LIKE', "%{$query}%")
+            ->orWhere('alamat', 'LIKE', "%{$query}%")
+            ->orWhereHas('pelanggan', function ($q) use ($query) {
+                $q->where('nama_pell', 'LIKE', "%{$query}%");
+            })
+            ->get();
+
+        // Kembalikan HTML untuk update tabel
+        $html = '';
+        foreach ($alamat_muats as $index => $alamat_muat) {
+            $html .= '
+        <tr onclick="getSelectedDataAlamatbongkar2(\'' . $alamat_muat->id . '\', \'' . $alamat_muat->kode_alamat . '\', \'' . $alamat_muat->alamat . '\')">
+            <td class="text-center">' . ($index + 1) . '</td>
+            <td>' . $alamat_muat->kode_alamat . '</td>
+            <td>' . ($alamat_muat->pelanggan->nama_pell ?? 'tidak ada') . '</td>
+            <td>' . $alamat_muat->alamat . '</td>
+            <td class="text-center">
+                <button type="button" class="btn btn-primary btn-sm" onclick="getSelectedDataAlamatbongkar2(\'' . $alamat_muat->id . '\', \'' . $alamat_muat->kode_alamat . '\', \'' . $alamat_muat->alamat . '\')">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </td>
+        </tr>
+    ';
+        }
+
+        return response()->json($html);
+    }
+
+    public function searchAlamatBongkar3(Request $request)
+    {
+        $query = $request->input('search');
+
+        // Lakukan pencarian berdasarkan kode atau alamat pelanggan
+        $alamat_muats = Alamat_bongkar::where('kode_alamat', 'LIKE', "%{$query}%")
+            ->orWhere('alamat', 'LIKE', "%{$query}%")
+            ->orWhereHas('pelanggan', function ($q) use ($query) {
+                $q->where('nama_pell', 'LIKE', "%{$query}%");
+            })
+            ->get();
+
+        // Kembalikan HTML untuk update tabel
+        $html = '';
+        foreach ($alamat_muats as $index => $alamat_muat) {
+            $html .= '
+        <tr onclick="getSelectedDataAlamatbongkar3(\'' . $alamat_muat->id . '\', \'' . $alamat_muat->kode_alamat . '\', \'' . $alamat_muat->alamat . '\')">
+            <td class="text-center">' . ($index + 1) . '</td>
+            <td>' . $alamat_muat->kode_alamat . '</td>
+            <td>' . ($alamat_muat->pelanggan->nama_pell ?? 'tidak ada') . '</td>
+            <td>' . $alamat_muat->alamat . '</td>
+            <td class="text-center">
+                <button type="button" class="btn btn-primary btn-sm" onclick="getSelectedDataAlamatbongkar3(\'' . $alamat_muat->id . '\', \'' . $alamat_muat->kode_alamat . '\', \'' . $alamat_muat->alamat . '\')">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </td>
+        </tr>
+    ';
+        }
+
+        return response()->json($html);
     }
 }
