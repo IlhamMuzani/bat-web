@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Alamat_bongkar;
 use App\Models\Alamat_muat;
 use App\Models\Jarak_titik;
+use App\Models\Karyawan;
 use App\Models\Kendaraan;
 use App\Models\Memo_ekspedisi;
 use App\Models\Pengambilan_do;
@@ -136,9 +137,13 @@ class PengambilandoController extends Controller
     public function terima(Request $request, $id)
     {
         $pengambilan = Pengambilan_do::findOrFail($id);
+
+        $penerimasj = $request->penerima_sj;
+        $user = User::where('id', $penerimasj)->first();
+        $karyawan = Karyawan::where('id', $user->karyawan_id)->first();
         $pengambilan->update([
             'status_penerimaansj' => 'posting',
-            'penerima_sj' => $request->penerima_sj,
+            'penerima_sj' => $karyawan->nama_lengkap,
         ]);
 
         if ($pengambilan) {
@@ -158,9 +163,13 @@ class PengambilandoController extends Controller
     public function batal_terima(Request $request, $id)
     {
         $pengambilan = Pengambilan_do::findOrFail($id);
+
+        $penerimasj = $request->penerima_sj;
+        $user = User::where('id', $penerimasj)->first();
+        $karyawan = Karyawan::where('id', $user->karyawan_id)->first();
         $pengambilan->update([
             'status_penerimaansj' => 'unpost',
-            'penerima_sj' => $request->penerima_sj,
+            'penerima_sj' => $karyawan->nama_lengkap,
         ]);
 
         if ($pengambilan) {
@@ -176,6 +185,7 @@ class PengambilandoController extends Controller
             ], 500);
         }
     }
+
 
     public function response($status, $message, $data = null)
     {
