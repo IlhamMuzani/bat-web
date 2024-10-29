@@ -890,7 +890,7 @@
                 <a href="{{ url('admin/penerimaan_sj') }}"
                     class="nav-link {{ request()->is('admin/penerimaan_sj*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
-                    <p style="font-size: 14px;">Penerimaan Surat Jalan</p>
+                    <p style="font-size: 12px;">Penerimaan Surat Jalan(Kantor)</p>
                 </a>
             </li>
         @endif
