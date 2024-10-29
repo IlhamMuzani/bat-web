@@ -107,10 +107,10 @@
                             </div>
                         </div>
                     </form>
-                    <table id="datatables66" class="table table-bordered table-striped table-hover" style="font-size: 13px">
+                    <table id="datatables99" class="table table-bordered table-striped table-hover" style="font-size: 13px">
                         <thead class="thead-dark">
                             <tr>
-                                <th><input type="checkbox" name="" id="select_all_ids"></th>
+                                {{-- <th><input type="checkbox" name="" id="select_all_ids"></th> --}}
                                 <th>NO</th>
                                 <th>KODE SPK</th>
                                 <th>PELANGGAN</th>
@@ -127,8 +127,8 @@
                             @foreach ($spks as $pengambilan_do)
                                 {{-- @if (is_null($pengambilan_do->waktu_suratakhir)) --}}
                                 <tr class="dropdown"{{ $pengambilan_do->id }}>
-                                    <td><input type="checkbox" name="selectedIds[]" class="checkbox_ids"
-                                            value="{{ $pengambilan_do->id }}"></td>
+                                    {{-- <td><input type="checkbox" name="selectedIds[]" class="checkbox_ids"
+                                            value="{{ $pengambilan_do->id }}"></td> --}}
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <td>{{ $pengambilan_do->spk->kode_spk ?? '-' }}</td>
                                     <td>{{ $pengambilan_do->spk->nama_pelanggan ?? '-' }}</td>
@@ -242,4 +242,32 @@
         });
     </script> --}}
 
+    <script>
+        $(document).ready(function() {
+            $('#datatables99').DataTable({
+                "lengthMenu": [
+                    [-1],
+                    ["All"]
+                ],
+                "columnDefs": [{
+                        "orderable": false,
+                        "targets": 0
+                    } // Kolom nomor urut tidak dapat diurutkan
+                ],
+                "order": [
+                    [1, 'asc']
+                ], // Urutan default mulai dari kolom ke-2
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i +
+                            1; // Mengisi ulang nomor urut berdasarkan urutan yang ditampilkan
+                    });
+                }
+            });
+        });
+    </script>
 @endsection
