@@ -142,6 +142,11 @@ class User extends Authenticatable
             ->latest();
     }
 
+    public function timer_suratjalan()
+    {
+        return $this->hasMany(Timer_suratjalan::class);
+    }
+
     // public function latestpengambilan_do()
     // {
     //     return $this->hasOne(Pengambilan_do::class)

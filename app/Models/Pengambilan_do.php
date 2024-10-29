@@ -130,6 +130,11 @@ class Pengambilan_do extends Model
         return $this->belongsTo(Alamat_bongkar::class, 'alamat_bongkar3_id'); // foreign key untuk alamat ketiga
     }
 
+    public function timer_suratjalan()
+    {
+        return $this->hasMany(Timer_suratjalan::class);
+    }
+
     public static function getId()
     {
         return $getId = DB::table('pengambilan_dos')->orderBy('id', 'DESC')->take(1)->get();
