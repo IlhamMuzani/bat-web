@@ -10,6 +10,7 @@ use App\Models\Alamat_muat;
 use App\Models\Pelanggan;
 use App\Models\Vendor;
 use Illuminate\Support\Facades\Validator;
+use GuzzleHttp\Client;
 
 class AlamatmuatController extends Controller
 {
@@ -33,11 +34,11 @@ class AlamatmuatController extends Controller
             $request->all(),
             [
                 'alamat' => 'required',
-                // 'latitude' => 'required',
+                'latitude' => 'required',
             ],
             [
                 'alamat.required' => 'Masukkan tujuan muat',
-                // 'latitude.required' => 'Pilih titik tujuan',
+                'latitude.required' => 'Pilih titik tujuan',
             ]
         );
 
@@ -56,12 +57,45 @@ class AlamatmuatController extends Controller
                 'pelanggan_id' => $request->pelanggan_id,
                 'telp' => $request->telp,
                 'alamat' => $request->alamat,
+                'nama_lokasi' => $request->nama_lokasi,
                 'latitude' => $request->latitude,
                 'longitude' => $request->longitude,
             ],
         ));
 
         return redirect('admin/alamat_muat')->with('success', 'Berhasil menambahkan tujuan muat');
+    }
+
+    public function ambil_lokasi()
+    {
+        $client = new Client();
+
+        try {
+            // Gunakan URL API yang benar
+            $response = $client->post('https://vtsapi.easygo-gps.co.id/api/geofence/masterdata', [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Token' => 'ADB4E5DFAAEA4BA1A6A8981FEF86FAA9',  // Ganti dengan token yang benar
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => [
+                    "tipe" => null,
+                    "code" => "",
+                    "nama" => "",
+                    "include_upline_downline" => 0
+                ],
+            ]);
+
+            // Cek status kode HTTP
+            if ($response->getStatusCode() === 200) {
+                $data = json_decode($response->getBody()->getContents(), true);
+                return response()->json($data);
+            } else {
+                return response()->json(['error' => 'Gagal mengambil data lokasi kendaraan.'], 500);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
+        }
     }
 
     public function kode()
@@ -93,11 +127,11 @@ class AlamatmuatController extends Controller
             $request->all(),
             [
                 'alamat' => 'required',
-                // 'latitude' => 'required',
+                'latitude' => 'required',
             ],
             [
                 'alamat.required' => 'Masukkan tujuan muat',
-                // 'latitude.required' => 'Pilih titik tujuan',
+                'latitude.required' => 'Pilih titik tujuan',
             ]
         );
 
@@ -111,6 +145,7 @@ class AlamatmuatController extends Controller
         $alamatmuats->pelanggan_id = $request->pelanggan_id;
         $alamatmuats->vendor_id = $request->vendor_id;
         $alamatmuats->alamat = $request->alamat;
+        $alamatmuats->nama_lokasi = $request->nama_lokasi;
         $alamatmuats->telp = $request->telp;
         $alamatmuats->latitude = $request->latitude;
         $alamatmuats->longitude = $request->longitude;

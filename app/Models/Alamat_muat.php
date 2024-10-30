@@ -21,6 +21,7 @@ class Alamat_muat extends Model
         'telp',
         'latitude',
         'longitude',
+        'nama_lokasi',
         'alamat',
         'tanggal_awal',
         'tanggal_akhir',

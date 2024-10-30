@@ -32,11 +32,11 @@ class AlamatbongkarController extends Controller
             $request->all(),
             [
                 'alamat' => 'required',
-                // 'latitude' => 'required',
+                'latitude' => 'required',
             ],
             [
                 'alamat.required' => 'Masukkan tujuan bongkar',
-                // 'latitude.required' => 'Pilih titik tujuan',
+                'latitude.required' => 'Pilih titik tujuan',
             ]
         );
 
@@ -53,6 +53,7 @@ class AlamatbongkarController extends Controller
                 'kode_alamat' => $this->kode(),
                 'tanggal_awal' => Carbon::now('Asia/Jakarta'),
                 'alamat' => $request->alamat,
+                'nama_lokasi' => $request->nama_lokasi,
                 'telp' => $request->telp,
                 'latitude' => $request->latitude,
                 'longitude' => $request->longitude,
@@ -91,11 +92,11 @@ class AlamatbongkarController extends Controller
             $request->all(),
             [
                 'alamat' => 'required',
-                // 'latitude' => 'required',
+                'latitude' => 'required',
             ],
             [
                 'alamat.required' => 'Masukkan tujuan bongkar',
-                // 'latitude.required' => 'Pilih titik tujuan',
+                'latitude.required' => 'Pilih titik tujuan',
             ]
         );
 
@@ -108,6 +109,7 @@ class AlamatbongkarController extends Controller
 
         $alamatbongkars->pelanggan_id = $request->pelanggan_id;
         $alamatbongkars->alamat = $request->alamat;
+        $alamatbongkars->nama_lokasi = $request->nama_lokasi;
         $alamatbongkars->telp = $request->telp;
         $alamatbongkars->latitude = $request->latitude;
         $alamatbongkars->longitude = $request->longitude;
