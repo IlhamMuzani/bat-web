@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use GuzzleHttp\Client;
 
 class AuthController extends Controller
 {
@@ -29,7 +30,7 @@ class AuthController extends Controller
 
         $user = User::where('kode_user', $kode_user)
             ->whereHas('karyawan', function ($query) {
-            $query->whereIn('departemen_id', [2, 5]); // Mengizinkan departemen 2 dan 5
+                $query->whereIn('departemen_id', [2, 5]); // Mengizinkan departemen 2 dan 5
             })
             ->first();
         if ($user) {
@@ -46,8 +47,8 @@ class AuthController extends Controller
     // public function detail($id)
     // {
     //     $user = User::where('id', $id)
-    //         ->with(['karyawan', 'kendaraan', 'pengambilan_do' => function ($query) {
-    //             $query->latest()->first(); // Mengambil yang terbaru
+    //         ->with(['karyawan', 'kendaraan', 'pengambilan_do', 'latestpengambilan_do' => function ($query) {
+    //             $query->with('kendaraan');
     //         }])
     //         ->first();
 
@@ -60,12 +61,82 @@ class AuthController extends Controller
 
     public function detail($id)
     {
+        // Ambil data user beserta relasi yang dibutuhkan
         $user = User::where('id', $id)
-            ->with(['karyawan', 'kendaraan', 'pengambilan_do', 'latestpengambilan_do' => function ($query) {
-                $query->with('kendaraan');
-            }])
+            ->with(['karyawan', 'kendaraan', 'pengambilan_do', 'latestpengambilan_do.kendaraan'])
             ->first();
-        
+
+        // Pastikan user dan latestpengambilan_do ada
+        if ($user && $user->latestpengambilan_do && $user->latestpengambilan_do->kendaraan) {
+            $kendaraan = $user->latestpengambilan_do->kendaraan;
+
+            if ($kendaraan) {
+                try {
+                    $client = new Client();
+                    $response = $client->post('https://vtsapi.easygo-gps.co.id/api/Report/lastposition', [
+                        'headers' => [
+                            'accept' => 'application/json',
+                            'token' => 'ADB4E5DFAAEA4BA1A6A8981FEF86FAA9',
+                            'Content-Type' => 'application/json',
+                        ],
+                        'json' => [
+                            'list_vehicle_id' => [$kendaraan->list_vehicle_id],
+                            'list_nopol' => [],
+                            'list_no_aset' => [],
+                            'geo_code' => [],
+                            'min_lastupdate_hour' => null,
+                            'page' => 0,
+                            'encrypted' => 0,
+                        ],
+                    ]);
+
+                    $data = json_decode($response->getBody()->getContents(), true);
+
+                    if (isset($data['Data'][0]['vehicle_id'])) {
+                        $vehicleId = $data['Data'][0]['vehicle_id'];
+
+                        if ($vehicleId === $kendaraan->list_vehicle_id) {
+                            // Ambil odometer
+                            $odometer = intval($data['Data'][0]['odometer'] ?? 0);
+
+                            // Ambil latitude dan longitude
+                            $latitude = $data['Data'][0]['lat'] ?? null;
+                            $longitude = $data['Data'][0]['lon'] ?? null;
+                            $lokasi = $data['Data'][0]['addr'] ?? null;
+                            $status_kendaraan = $data['Data'][0]['currentStatusVehicle']['status'] ?? null;
+
+                            // Update data kendaraan dengan odometer, latitude, dan longitude
+                            if ($odometer > 0) {
+                                $kendaraan->km = $odometer;
+                            }
+                            if ($latitude !== null && $longitude !== null) {
+                                $kendaraan->latitude = $latitude;
+                                $kendaraan->longitude = $longitude;
+                            }
+
+                            if (
+                                $lokasi !== null
+                            ) {
+                                $kendaraan->lokasi = $lokasi;
+                            }
+
+                            if (
+                                $status_kendaraan !== null
+                            ) {
+                                $kendaraan->status_kendaraan = $status_kendaraan;
+                            }
+
+                            // Simpan perubahan ke database
+                            $kendaraan->save();
+                        }
+                    }
+                } catch (\Exception $e) {
+                    // Tangani error jika diperlukan
+                }
+            }
+        }
+
+        // Return response ke frontend
         if ($user) {
             return $this->response(TRUE, ['Berhasil menampilkan data'], [$user]);
         } else {

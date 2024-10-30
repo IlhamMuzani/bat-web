@@ -784,6 +784,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::resource('status_pemberiando', \App\Http\Controllers\Admin\StatusPemberiandoController::class);
   Route::resource('jarak_km', \App\Http\Controllers\Admin\JarakkmController::class);
   Route::get('inqueryklaim_ban/cetak-pdf/{id}', [\App\Http\Controllers\Admin\InqueryKlaimbanController::class, 'cetakpdf']);
+  Route::get('driver/cetak-pdf/{id}', [\App\Http\Controllers\Admin\DriverController::class, 'cetakpdf']);
 
   Route::post('ambil_km/{id}', [\App\Http\Controllers\Admin\SpkController::class, 'ambil_km'])->name('ambil_km');
   Route::get('postingfilterpengambilandeposit', [\App\Http\Controllers\Admin\InqueryDepositdriverController::class, 'postingfilterpengambilandeposit']);
@@ -846,5 +847,4 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::get('search-alamatbongkar', [\App\Http\Controllers\Admin\SpkController::class, 'searchAlamatBongkar'])->name('search.alamatbongkar');
   Route::get('search-alamatbongkar3', [\App\Http\Controllers\Admin\SpkController::class, 'searchAlamatBongkar3'])->name('search.alamatbongkar3');
   Route::get('ambil_lokasi', [\App\Http\Controllers\Admin\AlamatmuatController::class, 'ambil_lokasi'])->name('ambil_lokasi');
-
 });

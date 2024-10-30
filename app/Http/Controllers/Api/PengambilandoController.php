@@ -528,70 +528,70 @@ class PengambilandoController extends Controller
         if ($kendaraan->akses_lokasi == 1) {
             if ($pengambilan_do->akses_spk == 1) {
 
-                if ($kendaraan) {
-                    try {
-                        $client = new Client();
-                        $response = $client->post('https://vtsapi.easygo-gps.co.id/api/Report/lastposition', [
-                            'headers' => [
-                                'accept' => 'application/json',
-                                'token' => 'ADB4E5DFAAEA4BA1A6A8981FEF86FAA9',
-                                'Content-Type' => 'application/json',
-                            ],
-                            'json' => [
-                                'list_vehicle_id' => [$kendaraan->list_vehicle_id],
-                                'list_nopol' => [],
-                                'list_no_aset' => [],
-                                'geo_code' => [],
-                                'min_lastupdate_hour' => null,
-                                'page' => 0,
-                                'encrypted' => 0,
-                            ],
-                        ]);
+                // if ($kendaraan) {
+                //     try {
+                //         $client = new Client();
+                //         $response = $client->post('https://vtsapi.easygo-gps.co.id/api/Report/lastposition', [
+                //             'headers' => [
+                //                 'accept' => 'application/json',
+                //                 'token' => 'ADB4E5DFAAEA4BA1A6A8981FEF86FAA9',
+                //                 'Content-Type' => 'application/json',
+                //             ],
+                //             'json' => [
+                //                 'list_vehicle_id' => [$kendaraan->list_vehicle_id],
+                //                 'list_nopol' => [],
+                //                 'list_no_aset' => [],
+                //                 'geo_code' => [],
+                //                 'min_lastupdate_hour' => null,
+                //                 'page' => 0,
+                //                 'encrypted' => 0,
+                //             ],
+                //         ]);
 
-                        $data = json_decode($response->getBody()->getContents(), true);
+                //         $data = json_decode($response->getBody()->getContents(), true);
 
-                        if (isset($data['Data'][0]['vehicle_id'])) {
-                            $vehicleId = $data['Data'][0]['vehicle_id'];
+                //         if (isset($data['Data'][0]['vehicle_id'])) {
+                //             $vehicleId = $data['Data'][0]['vehicle_id'];
 
-                            if ($vehicleId === $kendaraan->list_vehicle_id) {
-                                // Ambil odometer
-                                $odometer = intval($data['Data'][0]['odometer'] ?? 0);
+                //             if ($vehicleId === $kendaraan->list_vehicle_id) {
+                //                 // Ambil odometer
+                //                 $odometer = intval($data['Data'][0]['odometer'] ?? 0);
 
-                                // Ambil latitude dan longitude
-                                $latitude = $data['Data'][0]['lat'] ?? null;
-                                $longitude = $data['Data'][0]['lon'] ?? null;
-                                $lokasi = $data['Data'][0]['addr'] ?? null;
-                                $status_kendaraan = $data['Data'][0]['currentStatusVehicle']['status'] ?? null;
+                //                 // Ambil latitude dan longitude
+                //                 $latitude = $data['Data'][0]['lat'] ?? null;
+                //                 $longitude = $data['Data'][0]['lon'] ?? null;
+                //                 $lokasi = $data['Data'][0]['addr'] ?? null;
+                //                 $status_kendaraan = $data['Data'][0]['currentStatusVehicle']['status'] ?? null;
 
-                                // Update data kendaraan dengan odometer, latitude, dan longitude
-                                if ($odometer > 0) {
-                                    $kendaraan->km = $odometer;
-                                }
-                                if ($latitude !== null && $longitude !== null) {
-                                    $kendaraan->latitude = $latitude;
-                                    $kendaraan->longitude = $longitude;
-                                }
+                //                 // Update data kendaraan dengan odometer, latitude, dan longitude
+                //                 if ($odometer > 0) {
+                //                     $kendaraan->km = $odometer;
+                //                 }
+                //                 if ($latitude !== null && $longitude !== null) {
+                //                     $kendaraan->latitude = $latitude;
+                //                     $kendaraan->longitude = $longitude;
+                //                 }
 
-                                if (
-                                    $lokasi !== null
-                                ) {
-                                    $kendaraan->lokasi = $lokasi;
-                                }
+                //                 if (
+                //                     $lokasi !== null
+                //                 ) {
+                //                     $kendaraan->lokasi = $lokasi;
+                //                 }
 
-                                if (
-                                    $status_kendaraan !== null
-                                ) {
-                                    $kendaraan->status_kendaraan = $status_kendaraan;
-                                }
+                //                 if (
+                //                     $status_kendaraan !== null
+                //                 ) {
+                //                     $kendaraan->status_kendaraan = $status_kendaraan;
+                //                 }
 
-                                // Simpan perubahan ke database
-                                $kendaraan->save();
-                            }
-                        }
-                    } catch (\Exception $e) {
-                        // Tangani error jika diperlukan
-                    }
-                }
+                //                 // Simpan perubahan ke database
+                //                 $kendaraan->save();
+                //             }
+                //         }
+                //     } catch (\Exception $e) {
+                //         // Tangani error jika diperlukan
+                //     }
+                // }
 
                 $alamat_muat = Alamat_muat::where(
                     'id',
@@ -811,70 +811,70 @@ class PengambilandoController extends Controller
         ) {
             if ($pengambilan_do->akses_spk == 1) {
 
-                if ($kendaraan) {
-                    try {
-                        $client = new Client();
-                        $response = $client->post('https://vtsapi.easygo-gps.co.id/api/Report/lastposition', [
-                            'headers' => [
-                                'accept' => 'application/json',
-                                'token' => 'ADB4E5DFAAEA4BA1A6A8981FEF86FAA9',
-                                'Content-Type' => 'application/json',
-                            ],
-                            'json' => [
-                                'list_vehicle_id' => [$kendaraan->list_vehicle_id],
-                                'list_nopol' => [],
-                                'list_no_aset' => [],
-                                'geo_code' => [],
-                                'min_lastupdate_hour' => null,
-                                'page' => 0,
-                                'encrypted' => 0,
-                            ],
-                        ]);
+                // if ($kendaraan) {
+                //     try {
+                //         $client = new Client();
+                //         $response = $client->post('https://vtsapi.easygo-gps.co.id/api/Report/lastposition', [
+                //             'headers' => [
+                //                 'accept' => 'application/json',
+                //                 'token' => 'ADB4E5DFAAEA4BA1A6A8981FEF86FAA9',
+                //                 'Content-Type' => 'application/json',
+                //             ],
+                //             'json' => [
+                //                 'list_vehicle_id' => [$kendaraan->list_vehicle_id],
+                //                 'list_nopol' => [],
+                //                 'list_no_aset' => [],
+                //                 'geo_code' => [],
+                //                 'min_lastupdate_hour' => null,
+                //                 'page' => 0,
+                //                 'encrypted' => 0,
+                //             ],
+                //         ]);
 
-                        $data = json_decode($response->getBody()->getContents(), true);
+                //         $data = json_decode($response->getBody()->getContents(), true);
 
-                        if (isset($data['Data'][0]['vehicle_id'])) {
-                            $vehicleId = $data['Data'][0]['vehicle_id'];
+                //         if (isset($data['Data'][0]['vehicle_id'])) {
+                //             $vehicleId = $data['Data'][0]['vehicle_id'];
 
-                            if ($vehicleId === $kendaraan->list_vehicle_id) {
-                                // Ambil odometer
-                                $odometer = intval($data['Data'][0]['odometer'] ?? 0);
+                //             if ($vehicleId === $kendaraan->list_vehicle_id) {
+                //                 // Ambil odometer
+                //                 $odometer = intval($data['Data'][0]['odometer'] ?? 0);
 
-                                // Ambil latitude dan longitude
-                                $latitude = $data['Data'][0]['lat'] ?? null;
-                                $longitude = $data['Data'][0]['lon'] ?? null;
-                                $lokasi = $data['Data'][0]['addr'] ?? null;
-                                $status_kendaraan = $data['Data'][0]['currentStatusVehicle']['status'] ?? null;
+                //                 // Ambil latitude dan longitude
+                //                 $latitude = $data['Data'][0]['lat'] ?? null;
+                //                 $longitude = $data['Data'][0]['lon'] ?? null;
+                //                 $lokasi = $data['Data'][0]['addr'] ?? null;
+                //                 $status_kendaraan = $data['Data'][0]['currentStatusVehicle']['status'] ?? null;
 
-                                // Update data kendaraan dengan odometer, latitude, dan longitude
-                                if ($odometer > 0) {
-                                    $kendaraan->km = $odometer;
-                                }
-                                if ($latitude !== null && $longitude !== null) {
-                                    $kendaraan->latitude = $latitude;
-                                    $kendaraan->longitude = $longitude;
-                                }
+                //                 // Update data kendaraan dengan odometer, latitude, dan longitude
+                //                 if ($odometer > 0) {
+                //                     $kendaraan->km = $odometer;
+                //                 }
+                //                 if ($latitude !== null && $longitude !== null) {
+                //                     $kendaraan->latitude = $latitude;
+                //                     $kendaraan->longitude = $longitude;
+                //                 }
 
-                                if (
-                                    $lokasi !== null
-                                ) {
-                                    $kendaraan->lokasi = $lokasi;
-                                }
+                //                 if (
+                //                     $lokasi !== null
+                //                 ) {
+                //                     $kendaraan->lokasi = $lokasi;
+                //                 }
 
-                                if (
-                                    $status_kendaraan !== null
-                                ) {
-                                    $kendaraan->status_kendaraan = $status_kendaraan;
-                                }
+                //                 if (
+                //                     $status_kendaraan !== null
+                //                 ) {
+                //                     $kendaraan->status_kendaraan = $status_kendaraan;
+                //                 }
 
-                                // Simpan perubahan ke database
-                                $kendaraan->save();
-                            }
-                        }
-                    } catch (\Exception $e) {
-                        // Tangani error jika diperlukan
-                    }
-                }
+                //                 // Simpan perubahan ke database
+                //                 $kendaraan->save();
+                //             }
+                //         }
+                //     } catch (\Exception $e) {
+                //         // Tangani error jika diperlukan
+                //     }
+                // }
 
                 $alamat_muat = Alamat_bongkar::where(
                     'id',
