@@ -268,10 +268,10 @@
                                                 <i class="fas fa-check"></i>
                                             </button>
                                         @endif
-                                        @if ($memoekspedisi->status == 'selesai')
+                                        {{-- @if ($memoekspedisi->status == 'selesai')
                                             <img src="{{ asset('storage/uploads/indikator/faktur.png') }}" height="40"
                                                 width="40" alt="faktur">
-                                        @endif
+                                        @endif --}}
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             @if ($memoekspedisi->status == 'rilis')
                                                 @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan update'])
