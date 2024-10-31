@@ -117,9 +117,10 @@ class PengambilandoController extends Controller
                             $pelangganQuery->where('nama_pell', 'like', '%' . $keyword . '%');
                         });
                 })
-                    ->orWhereHas('kendaraan', function ($kendaraanQuery) use ($keyword) {
-                        $kendaraanQuery->where('no_kabin', 'like', '%' . $keyword . '%');
-                    })
+                ->orWhereHas('kendaraan', function ($kendaraanQuery) use ($keyword) {
+                    $kendaraanQuery->where('no_kabin', 'like', '%' . $keyword . '%')
+                        ->orWhere('no_pol', 'like', '%' . $keyword . '%'); // Menambahkan pencarian no_pol
+                })
                     ->orWhereHas('rute_perjalanan', function ($ruteQuery) use ($keyword) {
                         $ruteQuery->where('nama_rute', 'like', '%' . $keyword . '%');
                     });
