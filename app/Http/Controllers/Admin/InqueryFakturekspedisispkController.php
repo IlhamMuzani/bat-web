@@ -634,7 +634,6 @@ class InqueryFakturekspedisispkController extends Controller
             ]);
         }
 
-
         $faktur->update([
             'status' => 'posting'
         ]);
