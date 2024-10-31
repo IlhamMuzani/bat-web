@@ -308,7 +308,7 @@
                                                     00.00
                                                 @endif
                                             @else
-                                                -
+                                                {{ $kendaraan->timer }}
                                             @endif
                                         </td>
 
