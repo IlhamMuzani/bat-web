@@ -30,7 +30,6 @@ class Post extends Model
             ->logFillable('*');
     }
 
-
     public function karyawan()
     {
         return $this->hasMany(Karyawan::class);
