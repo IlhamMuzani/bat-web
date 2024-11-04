@@ -16,6 +16,7 @@ class Karyawan extends Model
     protected $fillable = [
         'kode_karyawan',
         'departemen_id',
+        'post_id',
         'qrcode_karyawan',
         'no_ktp',
         'no_sim',

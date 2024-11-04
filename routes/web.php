@@ -43,7 +43,10 @@ Route::get('stnk/{kode}', [\App\Http\Controllers\StnkController::class, 'detail'
 Route::middleware('pelanggan')->prefix('pelanggan')->group(function () {
   Route::get('/', [\App\Http\Controllers\Pelanggan\DashboardController::class, 'index']);
   Route::post('monitoring/update_latlong/{id}', [\App\Http\Controllers\Pelanggan\DashboardController::class, 'update_latlong'])->name('update_latlong');
-  Route::resource('status_kendaraan', \App\Http\Controllers\Pelanggan\DashboardController::class);
+  Route::resource('monitoring-kendaraan', \App\Http\Controllers\Pelanggan\MonitoringkendaraanController::class);
+  Route::resource('monitoring-suratjalan', \App\Http\Controllers\Pelanggan\MonitoringsuratjalanController::class);
+  Route::resource('history-suratjalan', \App\Http\Controllers\Pelanggan\HistorysuratjalanController::class);
+  Route::resource('faktur-ekspedisi', \App\Http\Controllers\Pelanggan\FakturekspedisiController::class);
 
   Route::get('profile', [\App\Http\Controllers\Pelanggan\ProfileController::class, 'index']);
   Route::post('profile/update', [\App\Http\Controllers\Pelanggan\ProfileController::class, 'update']);
@@ -847,4 +850,8 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::get('search-alamatbongkar', [\App\Http\Controllers\Admin\SpkController::class, 'searchAlamatBongkar'])->name('search.alamatbongkar');
   Route::get('search-alamatbongkar3', [\App\Http\Controllers\Admin\SpkController::class, 'searchAlamatBongkar3'])->name('search.alamatbongkar3');
   Route::get('ambil_lokasi', [\App\Http\Controllers\Admin\AlamatmuatController::class, 'ambil_lokasi'])->name('ambil_lokasi');
+
+  Route::resource('post-pengurus', \App\Http\Controllers\Admin\PostController::class);
+  Route::resource('pengurus', \App\Http\Controllers\Admin\PengurusController::class);
+  Route::post('no_resi/{id}', [\App\Http\Controllers\Admin\InqueryTagihanekspedisiController::class, 'no_resi'])->name('no_resi');
 });

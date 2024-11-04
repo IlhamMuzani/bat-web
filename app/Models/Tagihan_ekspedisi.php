@@ -19,6 +19,7 @@ class Tagihan_ekspedisi extends Model
         'user_id',
         'kode_tagihan',
         'kategori',
+        'no_resi',
         'qrcode_tagihan',
         'pelanggan_id',
         'kode_pelanggan',

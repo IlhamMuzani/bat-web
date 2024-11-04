@@ -21,6 +21,7 @@ class Pengambilan_do extends Model
         'user_id',
         'spk_id',
         'kendaraan_id',
+        'no_resi',
         'km_awal',
         'km_akhir',
         'waktu_awal',
