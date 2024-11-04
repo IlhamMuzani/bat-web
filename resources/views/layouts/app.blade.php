@@ -105,23 +105,17 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="" class="brand-link">
-                <img src="{{ asset('storage/uploads/karyawan/user.png') }}" alt="BAT" class="brand-image">
-                @if (auth()->user()->karyawan)
-                <span style="font-size: 18px" class="brand-text font-weight-bold">
+            @if (auth()->user()->karyawan)
+                <a href="" class="brand-link">
+                    <img src="{{ asset('storage/uploads/karyawan/user.png') }}" alt="BAT" class="brand-image">
+                    <span style="font-size: 18px" class="brand-text font-weight-bold">
                         {{-- Jika relasi ke karyawan ada, tampilkan nama karyawan --}}
                         {{ implode(' ', array_slice(str_word_count(auth()->user()->karyawan->nama_lengkap, 1), 0, 2)) }}
-                    @elseif(auth()->user()->pelanggan)
-                        {{-- Jika relasi ke karyawan tidak ada, tampilkan nama pelanggan --}}
-                        {{ implode(' ', array_slice(str_word_count(auth()->user()->pelanggan->nama_pell, 1), 0, 2)) }}
-                    @else
-                        {{-- Jika kedua relasi tidak ada, tampilkan nama default atau pesan --}}
-                        Nama Tidak Ditemukan
-                    @endif
-                </span>
-            </a>
-
-
+                    </span>
+                </a>
+            @else
+                {{-- {{ implode(' ', array_slice(str_word_count(auth()->user()->pelanggan->nama_pell, 1), 0, 2)) }} --}}
+            @endif
             <!-- Sidebar -->
             <div class="sidebar">
 
