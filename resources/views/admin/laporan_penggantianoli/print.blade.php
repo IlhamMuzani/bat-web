@@ -164,6 +164,28 @@
                     </table>
                 </td>
             </tr>
+            <tr>
+                <td colspan="5">
+                    <table>
+                        <tr>
+                            <th style="text-align: left" class="thdetail">Kode Part</th>
+                            <th style="text-align: left" class="thdetail">Nama Part</th>
+                            <th style="text-align: left" class="thdetail">Qty</th>
+                            <th style="text-align: left" class="thdetail">Satuan</th>
+                        </tr>
+                        @foreach ($penggantianoli->detail_part as $detail_part)
+                            <tr>
+                                <td style="text-align: left" class="detail">
+                                    {{ $detail_part->spareparts->kode_partdetail }}</td>
+                                <td style="text-align: left" class="detail">{{ $detail_part->spareparts->nama_barang }}
+                                </td>
+                                <td style="text-align: left" class="detail">{{ $detail_part->jumlah2 }}</td>
+                                <td style="text-align: left" class="detail">{{ $detail_part->spareparts->satuan }}</td>
+                            </tr>
+                        @endforeach
+                    </table>
+                </td>
+            </tr>
         @endforeach
     </table>
 </body>
