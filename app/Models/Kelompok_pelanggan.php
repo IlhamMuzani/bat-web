@@ -4,26 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Pelepasan_ban extends Model
+class Kelompok_pelanggan extends Model
 {
     use HasFactory;
     use LogsActivity;
 
     protected $fillable = [
-        'kendaraan_id',
-        'user_id',
-        'status',
+        'kode_kelompok',
+        'nama',
         'tanggal',
         'tanggal_awal',
         'tanggal_akhir',
-        'kode_pelepasan',
-        'status_notif',
     ];
+
 
     use SoftDeletes;
     protected $dates = ['deleted_at'];
@@ -34,28 +33,14 @@ class Pelepasan_ban extends Model
             ->logFillable('*');
     }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
-    public function kendaraan()
+    public function pelanggan()
     {
-        return $this->belongsTo(Kendaraan::class);
-    }
-
-    public function ban()
-    {
-        return $this->belongsTo(Ban::class);
-    }
-
-    public function detail_ban()
-    {
-        return $this->hasMany(Ban::class);
+        return $this->hasMany(Pelanggan::class);
     }
 
     public static function getId()
     {
-        return $getId = DB::table('pelepasan_bans')->orderBy('id', 'DESC')->take(1)->get();
+        return $getId = DB::table('kelompok_pelanggans')->orderBy('id', 'DESC')->take(1)->get();
     }
 }

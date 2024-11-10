@@ -56,6 +56,15 @@
                     {{ session('error') }}
                 </div>
             @endif
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Surat Pemesanan Kendaraan</h3>
@@ -79,7 +88,9 @@
                                 <th>Bag.input</th>
                                 <th>Sopir</th>
                                 <th>No Kabin</th>
+                                <th>No Pol</th>
                                 <th>Pelanggan</th>
+                                <th>Divisi</th>
                                 <th>Rute</th>
                                 <th>Opsi</th>
                             </tr>
@@ -111,16 +122,40 @@
                                         {{ $buktipotongpajak->no_kabin }}
                                     </td>
                                     <td>
+                                        {{ $buktipotongpajak->no_pol }}
+                                    </td>
+                                    <td>
                                         {{ $buktipotongpajak->nama_pelanggan }}
+                                    </td>
+                                    <td>
+                                        {{ $buktipotongpajak->userpelanggan->detail_pelanggan->nama_divisi ?? null }}
                                     </td>
                                     <td>
                                         {{ $buktipotongpajak->nama_rute }}
                                     </td>
                                     <td class="text-center">
+                                        @if ($buktipotongpajak->status == 'posting')
+                                            <button type="button" class="btn btn-success btn-sm">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        @endif
+                                        @if ($buktipotongpajak->status == 'selesai')
+                                            {{-- <img src="{{ asset('storage/uploads/indikator/faktur.png') }}" height="40"
+                                                width="40" alt="Selesai"> --}}
+                                            <button type="button" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        @endif
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             @if ($buktipotongpajak->status == 'unpost')
+                                                {{-- @if (auth()->user()->id == 1 || auth()->user()->id == 6 || auth()->user()->id == 31) --}}
+                                                <a class="dropdown-item posting-btn"
+                                                    data-memo-id="{{ $buktipotongpajak->id }}">Posting</a>
+                                                {{-- @endif --}}
                                                 <a class="dropdown-item"
                                                     href="{{ url('admin/inquery_spk/' . $buktipotongpajak->id . '/edit') }}">Update</a>
+                                                {{-- <a class="dropdown-item"
+                                                    href="{{ url('admin/inquery_spk/' . $buktipotongpajak->id) }}">Show</a> --}}
                                                 <form style="margin-top:5px" method="GET"
                                                     action="{{ route('hapusspk', ['id' => $buktipotongpajak->id]) }}">
                                                     <button type="submit"
@@ -130,10 +165,50 @@
                                                 </form>
                                             @endif
                                             @if ($buktipotongpajak->status == 'posting')
+                                                {{-- @if (auth()->user()->id == 1 || auth()->user()->id == 6 || auth()->user()->id == 31) --}}
+                                                <a class="dropdown-item unpost-btn"
+                                                    data-memo-id="{{ $buktipotongpajak->id }}">Unpost</a>
+                                                {{-- @endif --}}
+                                                {{-- @if (auth()->user()->id == 1 || auth()->user()->id == 7 || auth()->user()->id == 28) --}}
                                                 <a class="dropdown-item"
                                                     href="{{ url('admin/inquery_spk/' . $buktipotongpajak->id . '/edit') }}">Update</a>
+                                                {{-- @endif --}}
+                                                {{-- <form style="margin-top:5px" method="GET"
+                                                    action="{{ route('hapusspk', ['id' => $buktipotongpajak->id]) }}">
+                                                    <button type="submit"
+                                                        class="dropdown-item btn btn-outline-danger btn-block mt-2">
+                                                        </i> Delete
+                                                    </button>
+                                                </form> --}}
+                                                {{-- @endif
+                                                @if (auth()->check() && auth()->user()->fitur['shows buktipotongpajak ekspedisi']) --}}
+                                                {{-- <a class="dropdown-item"
+                                                    href="{{ url('admin/inquery_spk/' . $buktipotongpajak->id) }}">Show</a> --}}
+                                                {{-- @endif --}}
                                             @endif
                                             @if ($buktipotongpajak->status == 'selesai')
+                                                {{-- @if (auth()->user()->id == 1 || auth()->user()->id == 6 || auth()->user()->id == 31) --}}
+                                                {{-- <a class="dropdown-item unpost-btn"
+                                                        data-memo-id="{{ $buktipotongpajak->id }}">Unpost</a> --}}
+                                                {{-- @endif --}}
+                                                {{-- @if (auth()->user()->id == 1 || auth()->user()->id == 7 || auth()->user()->id == 28) --}}
+                                                <a class="dropdown-item"
+                                                    href="{{ url('admin/inquery_spk/' . $buktipotongpajak->id . '/edit') }}">Update</a>
+                                                {{-- @endif --}}
+                                                {{-- <a class="dropdown-item"
+                                                    href="{{ url('admin/inquery_spk/' . $buktipotongpajak->id . '/edit') }}">Update</a>
+
+                                                <form style="margin-top:5px" method="GET"
+                                                    action="{{ route('hapusspk', ['id' => $buktipotongpajak->id]) }}">
+                                                    <button type="submit"
+                                                        class="dropdown-item btn btn-outline-danger btn-block mt-2">
+                                                        </i> Delete
+                                                    </button>
+                                                </form> --}}
+                                                {{-- @if (auth()->check() && auth()->user()->fitur['shows buktipotongpajak ekspedisi']) --}}
+                                                {{-- <a class="dropdown-item"
+                                                    href="{{ url('admin/inquery_spk/' . $buktipotongpajak->id) }}">Show</a> --}}
+                                                {{-- @endif --}}
                                             @endif
                                             @if ($buktipotongpajak->memo_ekspedisi->first())
                                                 <p style="margin-left:15px; margin-right:15px">Digunakan Oleh Memo
@@ -156,6 +231,27 @@
                                 <div class="modal-body text-center">
                                     <i class="fas fa-spinner fa-spin fa-3x text-primary"></i>
                                     <h4 class="mt-2">Sedang Menyimpan...</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="validationModal" tabindex="-1" role="dialog"
+                        aria-labelledby="validationModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="validationModalLabel">Validasi Gagal</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+                                    </button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <i class="fas fa-times-circle fa-3x text-danger"></i>
+                                    <h4 class="mt-2">Validasi Gagal!</h4>
+                                    <p id="validationMessage"></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                                 </div>
                             </div>
                         </div>
@@ -242,9 +338,6 @@
             $('.posting-btn').click(function() {
                 var memoId = $(this).data('memo-id');
 
-                // Tampilkan modal loading saat permintaan AJAX diproses
-                $('#modal-loading').modal('show');
-
                 // Kirim permintaan AJAX untuk melakukan posting
                 $.ajax({
                     url: "{{ url('admin/inquery_spk/postingspk/') }}/" + memoId,
@@ -253,24 +346,35 @@
                         id: memoId
                     },
                     success: function(response) {
-                        // Sembunyikan modal loading setelah permintaan selesai
-                        $('#modal-loading').modal('hide');
+                        if (response.success) {
+                            // Tampilkan modal loading saat permintaan sukses dan data lengkap
+                            $('#modal-loading').modal('show');
 
-                        // Tampilkan pesan sukses atau lakukan tindakan lain sesuai kebutuhan
-                        console.log(response);
+                            // Tampilkan pesan sukses atau lakukan tindakan lain sesuai kebutuhan
+                            console.log(response);
 
-                        // Tutup modal setelah berhasil posting
-                        $('#modal-posting-' + memoId).modal('hide');
+                            // Tutup modal setelah berhasil posting
+                            $('#modal-posting-' + memoId).modal('hide');
 
-                        // Reload the page to refresh the table
-                        location.reload();
+                            // Reload the page to refresh the table
+                            location.reload();
+                        } else {
+                            // Jika response.error ada, tampilkan pesan kesalahan di modal peringatan
+                            $('#validationMessage').text(response.error);
+                            $('#validationModal').modal('show');
+                        }
                     },
                     error: function(error) {
-                        // Sembunyikan modal loading setelah permintaan selesai
-                        $('#modal-loading').modal('hide');
+                        // Tampilkan pesan error jika terjadi kesalahan pada server
+                        if (error.responseJSON && error.responseJSON.error) {
+                            $('#validationMessage').text(error.responseJSON.error);
+                        } else {
+                            $('#validationMessage').text(
+                                'Terjadi kesalahan, silakan coba lagi.');
+                        }
 
-                        // Tampilkan pesan error atau lakukan tindakan lain sesuai kebutuhan
-                        console.log(error);
+                        // Tampilkan modal peringatan
+                        $('#validationModal').modal('show');
                     }
                 });
             });

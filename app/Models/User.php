@@ -27,6 +27,7 @@ class User extends Authenticatable
     protected $fillable = [
         'karyawan_id',
         'pelanggan_id',
+        'detail_pelanggan_id',
         'kode_user',
         'qrcode_user',
         'password',
@@ -121,6 +122,11 @@ class User extends Authenticatable
     public function pelanggan()
     {
         return $this->belongsTo(Pelanggan::class);
+    }
+
+    public function detail_pelanggan()
+    {
+        return $this->belongsTo(Detail_pelanggan::class);
     }
 
     public function kendaraan(): HasOne

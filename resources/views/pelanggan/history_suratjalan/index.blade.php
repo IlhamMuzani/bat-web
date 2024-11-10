@@ -75,7 +75,7 @@
     <!-- Content Header (Page header) -->
     <div class="content-header" style="display: none;" id="mainContent">
         <div class="container-fluid">
-            <div class="row mb-2">
+            {{-- <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0">History Surat Jalan</h1>
                 </div><!-- /.col -->
@@ -84,7 +84,7 @@
                         <li class="breadcrumb-item active">History Surat Jalan</li>
                     </ol>
                 </div><!-- /.col -->
-            </div><!-- /.row -->
+            </div><!-- /.row --> --}}
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->

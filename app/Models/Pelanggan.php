@@ -16,8 +16,9 @@ class Pelanggan extends Model
 
     protected $fillable = [
         'kode_pelanggan',
-        'nama_pell',
+        'kelompok_pelanggan_id',
         'karyawan_id',
+        'nama_pell',
         'nama_alias',
         'qrcode_pelanggan',
         'alamat',
@@ -28,6 +29,7 @@ class Pelanggan extends Model
         'fax',
         'hp',
         'email',
+        'gambar',
         'tanggal_awal',
         'tanggal_akhir',
     ];
@@ -42,6 +44,10 @@ class Pelanggan extends Model
             ->logFillable('*');
     }
 
+    public function detail_pelanggan()
+    {
+        return $this->hasMany(Detail_pelanggan::class);
+    }
 
     public function kendaraan()
     {
@@ -83,10 +89,16 @@ class Pelanggan extends Model
         return $this->belongsTo(Karyawan::class);
     }
 
+    public function kelompok_pelanggans()
+    {
+        return $this->belongsTo(Kelompok_pelanggan::class);
+    }
+
     public function user()
     {
         return $this->hasMany(User::class);
     }
+
     public static function getId()
     {
         return $getId = DB::table('pelanggans')->orderBy('id', 'DESC')->take(1)->get();

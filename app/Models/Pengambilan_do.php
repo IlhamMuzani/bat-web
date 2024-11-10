@@ -21,6 +21,8 @@ class Pengambilan_do extends Model
         'user_id',
         'spk_id',
         'kendaraan_id',
+        'pelanggan_id',
+        'userpelanggan_id',
         'no_resi',
         'km_awal',
         'km_akhir',
@@ -134,6 +136,11 @@ class Pengambilan_do extends Model
     public function timer_suratjalan()
     {
         return $this->hasMany(Timer_suratjalan::class);
+    }
+
+    public function userpelanggan()
+    {
+        return $this->belongsTo(User::class, 'userpelanggan_id'); // foreign key untuk alamat kedua
     }
 
     public static function getId()
