@@ -469,7 +469,7 @@
     ?>
     <div>
         Terbilang : <span style="font-weight: bold; font-style: italic;">
-            ({{ terbilang($cetakpdf->grand_total) }}
+            ({{ terbilang(round($cetakpdf->grand_total)) }}
             Rupiah)
         </span>
     </div>
