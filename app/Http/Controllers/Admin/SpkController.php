@@ -179,6 +179,19 @@ class SpkController extends Controller
             return back()->withInput()->with('error', $errors);
         }
 
+
+        $kendaraan_id = $request->input('kendaraan_id');
+
+        // Menghitung jumlah DO yang memiliki status selain 'selesai'
+        $pendingCount = Pengambilan_do::where('kendaraan_id', $kendaraan_id)
+            ->where('status', '!=', 'selesai')
+            ->count();
+
+        // Validasi: Jika ada 2 atau lebih DO yang belum selesai
+        if ($pendingCount >= 2) {
+            return back()->with('erorrss', 'Terdapat 2 atau lebih DO yang belum di selesaikan. Harap selesaikan sebelum membuat SPK baru.');
+        }
+
         $user_id = $request->input('user_id');
         $name_driver = $request->input('nama_driver');
         // Cek pengambilan DO terakhir untuk driver
@@ -342,7 +355,7 @@ class SpkController extends Controller
             $curl,
             CURLOPT_HTTPHEADER,
             array(
-                "Authorization: iCXuvUtQ4wQ_E3P#JSGK",
+                "Authorization: AMbtAHnH3g6o1CCrke4T",
             )
         );
 

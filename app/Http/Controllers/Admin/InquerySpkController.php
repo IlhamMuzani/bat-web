@@ -215,6 +215,7 @@ class InquerySpkController extends Controller
 
 
         $pengambilan_do = Pengambilan_do::where('spk_id', $id)->first();
+        $request_userId = $request->user_id;
         if ($pengambilan_do) {
             if ($pengambilan_do->status == 'unpost' || $pengambilan_do->status == 'posting') {
                 $pengambilan_do->update([
@@ -233,20 +234,38 @@ class InquerySpkController extends Controller
                     'status' => $status_pengambilan_do,
                 ]);
             } else {
-                $pengambilan_do->update([
-                    'spk_id' => $id,
-                    'kendaraan_id' => $request->kendaraan_id,
-                    'pelanggan_id' => $request->pelanggan_id,
-                    'userpelanggan_id' => $request->userpelanggan_id,
-                    'rute_perjalanan_id' => $request->rute_perjalanan_id,
-                    'user_id' => $request->user_id,
-                    'alamat_muat_id' => $request->alamat_muat_id,
-                    'alamat_muat2_id' => $request->alamat_muat2_id,
-                    'alamat_muat3_id' => $request->alamat_muat3_id,
-                    'alamat_bongkar_id' => $request->alamat_bongkar_id,
-                    'alamat_bongkar2_id' => $request->alamat_bongkar2_id,
-                    'alamat_bongkar3_id' => $request->alamat_bongkar3_id,
-                ]);
+                if ($pengambilan_do->user_id == $request_userId) {
+                    $pengambilan_do->update([
+                        'spk_id' => $id,
+                        'kendaraan_id' => $request->kendaraan_id,
+                        'pelanggan_id' => $request->pelanggan_id,
+                        'userpelanggan_id' => $request->userpelanggan_id,
+                        'rute_perjalanan_id' => $request->rute_perjalanan_id,
+                        'user_id' => $request->user_id,
+                        'alamat_muat_id' => $request->alamat_muat_id,
+                        'alamat_muat2_id' => $request->alamat_muat2_id,
+                        'alamat_muat3_id' => $request->alamat_muat3_id,
+                        'alamat_bongkar_id' => $request->alamat_bongkar_id,
+                        'alamat_bongkar2_id' => $request->alamat_bongkar2_id,
+                        'alamat_bongkar3_id' => $request->alamat_bongkar3_id,
+                    ]);
+                } else {
+                    $pengambilan_do->update([
+                        'spk_id' => $id,
+                        'kendaraan_id' => $request->kendaraan_id,
+                        'rute_perjalanan_id' => $request->rute_perjalanan_id,
+                        'pelanggan_id' => $request->pelanggan_id,
+                        'userpelanggan_id' => $request->userpelanggan_id,
+                        'user_id' => $request->user_id,
+                        'alamat_muat_id' => $request->alamat_muat_id,
+                        'alamat_muat2_id' => $request->alamat_muat2_id,
+                        'alamat_muat3_id' => $request->alamat_muat3_id,
+                        'alamat_bongkar_id' => $request->alamat_bongkar_id,
+                        'alamat_bongkar2_id' => $request->alamat_bongkar2_id,
+                        'alamat_bongkar3_id' => $request->alamat_bongkar3_id,
+                        'status' => $status_pengambilan_do,
+                    ]);
+                }
             }
         }
         $spk->save();
@@ -458,7 +477,7 @@ class InquerySpkController extends Controller
             $curl,
             CURLOPT_HTTPHEADER,
             array(
-                "Authorization: iCXuvUtQ4wQ_E3P#JSGK",
+                "Authorization: AMbtAHnH3g6o1CCrke4T",
             )
         );
 
