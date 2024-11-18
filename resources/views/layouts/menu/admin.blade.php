@@ -1803,6 +1803,17 @@
                 </a>
             </li>
         @endif
+        @if (auth()->check() && auth()->user()->menu['laporan pemasangan part'])
+            <li class="nav-item">
+                <a href="{{ url('admin/laporan-monitoringsj') }}"
+                    class="nav-link {{ request()->is('admin/laporan-monitoringsj*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 14px;">Laporan Monitoring -<br>
+                        <span style="margin-left: 32px">Surat Jalan</span>
+                    </p>
+                </a>
+            </li>
+        @endif
     </ul>
 </li>
 <li class="nav-header">Profile</li>
