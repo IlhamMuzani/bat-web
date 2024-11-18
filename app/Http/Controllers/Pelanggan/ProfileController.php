@@ -56,7 +56,8 @@ class ProfileController extends Controller
         //     ]);
 
         User::where('id', $user->id)->update([
-            'password' => $password
+            'password' => $password,
+            'password_hint' => $request->password
         ]);
 
         return redirect()->back()->with('success', 'Berhasil memperbarui Profile');
