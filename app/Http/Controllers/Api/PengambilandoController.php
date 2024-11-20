@@ -117,10 +117,10 @@ class PengambilandoController extends Controller
                             $pelangganQuery->where('nama_pell', 'like', '%' . $keyword . '%');
                         });
                 })
-                ->orWhereHas('kendaraan', function ($kendaraanQuery) use ($keyword) {
-                    $kendaraanQuery->where('no_kabin', 'like', '%' . $keyword . '%')
-                        ->orWhere('no_pol', 'like', '%' . $keyword . '%'); // Menambahkan pencarian no_pol
-                })
+                    ->orWhereHas('kendaraan', function ($kendaraanQuery) use ($keyword) {
+                        $kendaraanQuery->where('no_kabin', 'like', '%' . $keyword . '%')
+                            ->orWhere('no_pol', 'like', '%' . $keyword . '%'); // Menambahkan pencarian no_pol
+                    })
                     ->orWhereHas('rute_perjalanan', function ($ruteQuery) use ($keyword) {
                         $ruteQuery->where('nama_rute', 'like', '%' . $keyword . '%');
                     });
@@ -201,6 +201,14 @@ class PengambilandoController extends Controller
         $karyawan = Karyawan::where('id', $user->karyawan_id)->first();
 
         $timer = Timer_suratjalan::where('pengambilan_do_id', $id)->latest()->first();
+
+
+        if ($request->penerima_sj != $timer->user_id) {
+            return response()->json([
+                'status' => false,
+                'msg' => 'Penerima yang terdaftar adalah' . ' ' . $pengambilan->penerima_sj . ',' . 'Hubungi' . ' ' . $pengambilan->penerima_sj . ' ' . 'untuk mengunpost nya',
+            ], 403);
+        }
 
         // Memperbarui timer terakhir jika ada
         if ($timer) {

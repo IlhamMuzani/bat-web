@@ -111,8 +111,9 @@
                         </thead>
                         <tbody>
                             @foreach ($nokirs as $nokir)
-                                <tr>
-                                    <td class="text-center">{{ $loop->iteration }}</td>
+                                <tr class="{{ $loop->iteration % 2 == 0 ? 'bg-light' : '' }}">
+                                    <td class="text-center">
+                                        {{ ($nokirs->currentPage() - 1) * $nokirs->perPage() + $loop->iteration }}</td>
                                     <td>{{ $nokir->kode_kir }}</td>
                                     <td>
                                         @if ($nokir->kendaraan)
@@ -141,7 +142,6 @@
                                                 class="qrcode-logo" alt="Logo">
                                         </div>
                                     </td>
-
                                     <td class="text-center">
                                         @if (auth()->check() && auth()->user()->fitur['nokir print'])
                                             <a href="{{ url('admin/nokir/cetak-pdfnokir/' . $nokir->id) }}"
@@ -193,7 +193,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="modal fade" id="modal-qrcode-{{ $nokir->id }}">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -232,14 +231,11 @@
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-                @if ($nokirs->total() > 10)
-                    <div class="card-footer">
-                        <div class="pagination float-right">
-                            {{ $nokirs->appends(Request::all())->links('pagination::simple-bootstrap-4') }}
-                        </div>
+                    <div class="d-flex justify-content-end">
+                        {{ $nokirs->links('pagination::bootstrap-4') }}
                     </div>
-                @endif
+                </div>
+
             </div>
         </div>
     </section>

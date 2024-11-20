@@ -3,7 +3,7 @@
 @section('title', 'Rute Perjalan')
 
 @section('content')
-    <!-- Content Header (Page header) -->
+
     <div id="loadingSpinner" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
         <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
     </div>
@@ -18,7 +18,7 @@
         });
     </script>
 
-    <!-- Content Header (Page header) -->
+
     <div class="content-header" style="display: none;" id="mainContent">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -126,8 +126,10 @@
                                 </tr>
                             @else
                                 @foreach ($rute_perjalanans as $rute_perjalanan)
-                                    <tr>
-                                        <td class="text-center">{{ $loop->iteration }}</td>
+                                    <tr class="{{ $loop->iteration % 2 == 0 ? 'bg-light' : '' }}">
+                                        <td class="text-center">
+                                            {{ ($rute_perjalanans->currentPage() - 1) * $rute_perjalanans->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>{{ $rute_perjalanan->kode_rute }}
                                         </td>
                                         <td>{{ $rute_perjalanan->nama_rute }}
@@ -230,14 +232,10 @@
                             @endif
                         </tbody>
                     </table>
-                </div>
-                @if ($rute_perjalanans->total() > 10)
-                    <div class="card-footer">
-                        <div class="pagination float-right">
-                            {{ $rute_perjalanans->appends(Request::all())->links('pagination::simple-bootstrap-4') }}
-                        </div>
+                    <div class="d-flex justify-content-end">
+                        {{ $rute_perjalanans->links('pagination::bootstrap-4') }}
                     </div>
-                @endif
+                </div>
             </div>
         </div>
     </section>

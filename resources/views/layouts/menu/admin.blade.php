@@ -323,7 +323,7 @@
                 <a href="{{ url('admin/tarif') }}"
                     class="nav-link {{ request()->is('admin/tarif*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
-                    <p style="font-size: 14px;">Data Tarif</p>
+                    <p style="font-size: 14px;">Data Tujuan</p>
                 </a>
             </li>
         @endif
