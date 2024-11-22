@@ -83,119 +83,121 @@
                             </div>
                         </div>
                     </form>
-                    <table id="datatables66" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th class="text-center">No</th>
-                                <th>Faktur Deposit Sopir</th>
-                                <th>Tanggal</th>
-                                <th>Nama Sopir</th>
-                                <th>Nominal</th>
-                                <th>Total</th>
-                                <th class="text-center" width="20">Opsi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($inquery as $deposit)
-                                <tr id="editMemoekspedisi" data-toggle="modal"
-                                    data-target="#modal-posting-{{ $deposit->id }}" style="cursor: pointer;">
-                                    <td class="text-center">{{ $loop->iteration }}</td>
-                                    <td>
-                                        {{ $deposit->kode_deposit }}
-                                    </td>
-                                    <td>
-                                        {{ $deposit->tanggal_awal }}
-                                    </td>
-                                    <td>
-                                        {{ $deposit->nama_sopir }}
-                                    </td>
-
-                                    <td>
-                                        Rp. {{ number_format($deposit->nominal, 0, ',', '.') }}</td>
-                                    <td> Rp. {{ number_format($deposit->sub_total, 0, ',', '.') }}</td>
-                                    <td class="text-center">
-                                        @if ($deposit->status == 'posting')
-                                            <button type="button" class="btn btn-success btn-sm">
-                                                <i class="fas fa-check"></i>
-                                            </button>
-                                            {{-- <button type="button" class="btn btn-primary btn-sm">
-                                                <i class="fas fa-truck-moving"></i>
-                                            </button> --}}
-                                        @endif
-                                        @if ($deposit->status == 'posting memo')
-                                            <button type="button" class="btn btn-success btn-sm">
-                                                <i class="fas fa-check"></i>
-                                            </button>
-                                            {{-- <button type="button" class="btn btn-primary btn-sm">
-                                                <i class="fas fa-truck-moving"></i>
-                                            </button> --}}
-                                        @endif
-                                    </td>
+                    <div class="table-responsive" style="overflow-x: auto;">
+                        <table id="datatables66" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">No</th>
+                                    <th>Faktur Deposit Sopir</th>
+                                    <th>Tanggal</th>
+                                    <th>Nama Sopir</th>
+                                    <th>Nominal</th>
+                                    <th>Total</th>
+                                    <th class="text-center" width="20">Opsi</th>
                                 </tr>
-                                <div class="modal fade" id="modal-posting-{{ $deposit->id }}">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Opsi menu</h4>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
+                            </thead>
+                            <tbody>
+                                @foreach ($inquery as $deposit)
+                                    <tr id="editMemoekspedisi" data-toggle="modal"
+                                        data-target="#modal-posting-{{ $deposit->id }}" style="cursor: pointer;">
+                                        <td class="text-center">{{ $loop->iteration }}</td>
+                                        <td>
+                                            {{ $deposit->kode_deposit }}
+                                        </td>
+                                        <td>
+                                            {{ $deposit->tanggal_awal }}
+                                        </td>
+                                        <td>
+                                            {{ $deposit->nama_sopir }}
+                                        </td>
+
+                                        <td>
+                                            Rp. {{ number_format($deposit->nominal, 0, ',', '.') }}</td>
+                                        <td> Rp. {{ number_format($deposit->sub_total, 0, ',', '.') }}</td>
+                                        <td class="text-center">
+                                            @if ($deposit->status == 'posting')
+                                                <button type="button" class="btn btn-success btn-sm">
+                                                    <i class="fas fa-check"></i>
                                                 </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Faktur Pemasukan Deposit Driver
-                                                    <strong>{{ $deposit->kode_deposit }}</strong>
-                                                </p>
-                                                @if ($deposit->status == 'unpost')
-                                                    <form method="GET"
-                                                        action="{{ route('hapusdepositpemasukan', ['id' => $deposit->id]) }}">
-                                                        <button type="submit"
-                                                            class="btn btn-outline-danger btn-block mt-2">
-                                                            <i class="fas fa-trash-alt"></i> Delete
-                                                        </button>
-                                                    </form>
-                                                    <a href="{{ url('admin/inquery_pemasukandeposit/' . $deposit->id) }}"
-                                                        type="button" class="btn btn-outline-info btn-block">
-                                                        <i class="fas fa-eye"></i> Show
-                                                    </a>
-                                                    <a href="{{ url('admin/inquery_pemasukandeposit/' . $deposit->id . '/edit') }}"
-                                                        type="button" class="btn btn-outline-warning btn-block">
-                                                        <i class="fas fa-edit"></i> Update
-                                                    </a>
-                                                    <form method="GET"
-                                                        action="{{ route('postingdepositpemasukan', ['id' => $deposit->id]) }}">
-                                                        <button type="submit"
-                                                            class="btn btn-outline-success btn-block mt-2">
-                                                            <i class="fas fa-check"></i> Posting
-                                                        </button>
-                                                    </form>
-                                                @endif
-                                                @if ($deposit->status == 'posting')
-                                                    <a href="{{ url('admin/inquery_pemasukandeposit/' . $deposit->id) }}"
-                                                        type="button" class="btn btn-outline-info btn-block">
-                                                        <i class="fas fa-eye"></i> Show
-                                                    </a>
-                                                    <form method="GET"
-                                                        action="{{ route('unpostdepositpemasukan', ['id' => $deposit->id]) }}">
-                                                        <button type="submit"
-                                                            class="btn btn-outline-primary btn-block mt-2">
-                                                            <i class="fas fa-check"></i> Unpost
-                                                        </button>
-                                                    </form>
-                                                @endif
-                                                @if ($deposit->status == 'posting memo')
-                                                    <a href="{{ url('admin/inquery_pemasukandeposit/' . $deposit->id) }}"
-                                                        type="button" class="btn btn-outline-info btn-block">
-                                                        <i class="fas fa-eye"></i> Show
-                                                    </a>
-                                                @endif
+                                                {{-- <button type="button" class="btn btn-primary btn-sm">
+                                                <i class="fas fa-truck-moving"></i>
+                                            </button> --}}
+                                            @endif
+                                            @if ($deposit->status == 'posting memo')
+                                                <button type="button" class="btn btn-success btn-sm">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                                {{-- <button type="button" class="btn btn-primary btn-sm">
+                                                <i class="fas fa-truck-moving"></i>
+                                            </button> --}}
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <div class="modal fade" id="modal-posting-{{ $deposit->id }}">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Opsi menu</h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Faktur Pemasukan Deposit Driver
+                                                        <strong>{{ $deposit->kode_deposit }}</strong>
+                                                    </p>
+                                                    @if ($deposit->status == 'unpost')
+                                                        <form method="GET"
+                                                            action="{{ route('hapusdepositpemasukan', ['id' => $deposit->id]) }}">
+                                                            <button type="submit"
+                                                                class="btn btn-outline-danger btn-block mt-2">
+                                                                <i class="fas fa-trash-alt"></i> Delete
+                                                            </button>
+                                                        </form>
+                                                        <a href="{{ url('admin/inquery_pemasukandeposit/' . $deposit->id) }}"
+                                                            type="button" class="btn btn-outline-info btn-block">
+                                                            <i class="fas fa-eye"></i> Show
+                                                        </a>
+                                                        <a href="{{ url('admin/inquery_pemasukandeposit/' . $deposit->id . '/edit') }}"
+                                                            type="button" class="btn btn-outline-warning btn-block">
+                                                            <i class="fas fa-edit"></i> Update
+                                                        </a>
+                                                        <form method="GET"
+                                                            action="{{ route('postingdepositpemasukan', ['id' => $deposit->id]) }}">
+                                                            <button type="submit"
+                                                                class="btn btn-outline-success btn-block mt-2">
+                                                                <i class="fas fa-check"></i> Posting
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                    @if ($deposit->status == 'posting')
+                                                        <a href="{{ url('admin/inquery_pemasukandeposit/' . $deposit->id) }}"
+                                                            type="button" class="btn btn-outline-info btn-block">
+                                                            <i class="fas fa-eye"></i> Show
+                                                        </a>
+                                                        <form method="GET"
+                                                            action="{{ route('unpostdepositpemasukan', ['id' => $deposit->id]) }}">
+                                                            <button type="submit"
+                                                                class="btn btn-outline-primary btn-block mt-2">
+                                                                <i class="fas fa-check"></i> Unpost
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                    @if ($deposit->status == 'posting memo')
+                                                        <a href="{{ url('admin/inquery_pemasukandeposit/' . $deposit->id) }}"
+                                                            type="button" class="btn btn-outline-info btn-block">
+                                                            <i class="fas fa-eye"></i> Show
+                                                        </a>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <!-- /.card-body -->
             </div>

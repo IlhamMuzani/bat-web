@@ -76,19 +76,20 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered table-striped table-hover">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th class="text-center">No</th>
-                                <th>Kode Supplier</th>
-                                <th>Nama</th>
-                                <th>Telepon</th>
-                                <th class="text-center" width="150">Opsi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <tbody>
-                    </table>
+                    <div class="table-responsive" style="overflow-x: auto;">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th class="text-center">No</th>
+                                    <th>Kode Supplier</th>
+                                    <th>Nama</th>
+                                    <th>Telepon</th>
+                                    <th class="text-center" width="150">Opsi</th>
+                                </tr>
+                            </thead>
+
+                        </table>
+                    </div>
                     <div class="d-flex justify-content-end">
                         {{-- {{ $pelanggans->links('pagination::bootstrap-4') }} --}}
                     </div>

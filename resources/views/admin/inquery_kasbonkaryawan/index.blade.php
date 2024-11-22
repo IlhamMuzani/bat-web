@@ -82,112 +82,114 @@
                             </div>
                         </div>
                     </form>
-                    <table id="example1" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th class="text-center">No</th>
-                                <th>Faktur Kasbon</th>
-                                <th>Tanggal</th>
-                                <th>Nama Karyawan</th>
-                                <th>Nominal</th>
-                                <th>Total</th>
-                                <th class="text-center" width="20">Opsi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($inquery as $kasbon)
-                                <tr id="editMemoekspedisi" data-toggle="modal"
-                                    data-target="#modal-posting-{{ $kasbon->id }}" style="cursor: pointer;">
-                                    <td class="text-center">{{ $loop->iteration }}</td>
-                                    <td>
-                                        @if ($kasbon->karyawan)
-                                            {{ $kasbon->kode_kasbon }}
-                                        @else
-                                            tidak ada
-                                        @endif
-                                    </td>
-                                    <td>
-                                        {{ $kasbon->tanggal_awal }}
-                                    </td>
-                                    <td>
-                                        @if ($kasbon->karyawan)
-                                            {{ $kasbon->karyawan->nama_lengkap }}
-                                        @else
-                                            tidak ada
-                                        @endif
-                                    </td>
-                                    <td>
-                                        Rp. {{ number_format($kasbon->nominal, 0, ',', '.') }}</td>
-                                    <td> Rp. {{ number_format($kasbon->sub_total, 0, ',', '.') }}</td>
-                                    <td class="text-center">
-                                        @if ($kasbon->status == 'posting')
-                                            <button type="button" class="btn btn-success btn-sm">
-                                                <i class="fas fa-check"></i>
-                                            </button>
-                                            {{-- <button type="button" class="btn btn-primary btn-sm">
+                    <div class="table-responsive" style="overflow-x: auto;">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">No</th>
+                                    <th>Faktur Kasbon</th>
+                                    <th>Tanggal</th>
+                                    <th>Nama Karyawan</th>
+                                    <th>Nominal</th>
+                                    <th>Total</th>
+                                    <th class="text-center" width="20">Opsi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($inquery as $kasbon)
+                                    <tr id="editMemoekspedisi" data-toggle="modal"
+                                        data-target="#modal-posting-{{ $kasbon->id }}" style="cursor: pointer;">
+                                        <td class="text-center">{{ $loop->iteration }}</td>
+                                        <td>
+                                            @if ($kasbon->karyawan)
+                                                {{ $kasbon->kode_kasbon }}
+                                            @else
+                                                tidak ada
+                                            @endif
+                                        </td>
+                                        <td>
+                                            {{ $kasbon->tanggal_awal }}
+                                        </td>
+                                        <td>
+                                            @if ($kasbon->karyawan)
+                                                {{ $kasbon->karyawan->nama_lengkap }}
+                                            @else
+                                                tidak ada
+                                            @endif
+                                        </td>
+                                        <td>
+                                            Rp. {{ number_format($kasbon->nominal, 0, ',', '.') }}</td>
+                                        <td> Rp. {{ number_format($kasbon->sub_total, 0, ',', '.') }}</td>
+                                        <td class="text-center">
+                                            @if ($kasbon->status == 'posting')
+                                                <button type="button" class="btn btn-success btn-sm">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                                {{-- <button type="button" class="btn btn-primary btn-sm">
                                                 <i class="fas fa-truck-moving"></i>
                                             </button> --}}
-                                        @endif
-                                    </td>
-                                </tr>
-                                <div class="modal fade" id="modal-posting-{{ $kasbon->id }}">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Opsi menu</h4>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Faktur Kasbon Karyawan
-                                                    <strong>{{ $kasbon->kode_deposit }}</strong>
-                                                </p>
-                                                @if ($kasbon->status == 'unpost')
-                                                    <form method="GET"
-                                                        action="{{ route('hapuskasbon', ['id' => $kasbon->id]) }}">
-                                                        <button type="submit"
-                                                            class="btn btn-outline-danger btn-block mt-2">
-                                                            <i class="fas fa-trash-alt"></i> Delete
-                                                        </button>
-                                                    </form>
-                                                    <a href="{{ url('admin/inquery_kasbonkaryawan/' . $kasbon->id) }}"
-                                                        type="button" class="btn btn-outline-info btn-block">
-                                                        <i class="fas fa-eye"></i> Show
-                                                    </a>
-                                                    <a href="{{ url('admin/inquery_kasbonkaryawan/' . $kasbon->id . '/edit') }}"
-                                                        type="button" class="btn btn-outline-warning btn-block">
-                                                        <i class="fas fa-edit"></i> Update
-                                                    </a>
-                                                    <form method="GET"
-                                                        action="{{ route('postingkasbon', ['id' => $kasbon->id]) }}">
-                                                        <button type="submit"
-                                                            class="btn btn-outline-success btn-block mt-2">
-                                                            <i class="fas fa-check"></i> Posting
-                                                        </button>
-                                                    </form>
-                                                @endif
-                                                @if ($kasbon->status == 'posting')
-                                                    <a href="{{ url('admin/inquery_kasbonkaryawan/' . $kasbon->id) }}"
-                                                        type="button" class="btn btn-outline-info btn-block">
-                                                        <i class="fas fa-eye"></i> Show
-                                                    </a>
-                                                    <form method="GET"
-                                                        action="{{ route('unpostkasbon', ['id' => $kasbon->id]) }}">
-                                                        <button type="submit"
-                                                            class="btn btn-outline-primary btn-block mt-2">
-                                                            <i class="fas fa-check"></i> Unpost
-                                                        </button>
-                                                    </form>
-                                                @endif
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <div class="modal fade" id="modal-posting-{{ $kasbon->id }}">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Opsi menu</h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Faktur Kasbon Karyawan
+                                                        <strong>{{ $kasbon->kode_deposit }}</strong>
+                                                    </p>
+                                                    @if ($kasbon->status == 'unpost')
+                                                        <form method="GET"
+                                                            action="{{ route('hapuskasbon', ['id' => $kasbon->id]) }}">
+                                                            <button type="submit"
+                                                                class="btn btn-outline-danger btn-block mt-2">
+                                                                <i class="fas fa-trash-alt"></i> Delete
+                                                            </button>
+                                                        </form>
+                                                        <a href="{{ url('admin/inquery_kasbonkaryawan/' . $kasbon->id) }}"
+                                                            type="button" class="btn btn-outline-info btn-block">
+                                                            <i class="fas fa-eye"></i> Show
+                                                        </a>
+                                                        <a href="{{ url('admin/inquery_kasbonkaryawan/' . $kasbon->id . '/edit') }}"
+                                                            type="button" class="btn btn-outline-warning btn-block">
+                                                            <i class="fas fa-edit"></i> Update
+                                                        </a>
+                                                        <form method="GET"
+                                                            action="{{ route('postingkasbon', ['id' => $kasbon->id]) }}">
+                                                            <button type="submit"
+                                                                class="btn btn-outline-success btn-block mt-2">
+                                                                <i class="fas fa-check"></i> Posting
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                    @if ($kasbon->status == 'posting')
+                                                        <a href="{{ url('admin/inquery_kasbonkaryawan/' . $kasbon->id) }}"
+                                                            type="button" class="btn btn-outline-info btn-block">
+                                                            <i class="fas fa-eye"></i> Show
+                                                        </a>
+                                                        <form method="GET"
+                                                            action="{{ route('unpostkasbon', ['id' => $kasbon->id]) }}">
+                                                            <button type="submit"
+                                                                class="btn btn-outline-primary btn-block mt-2">
+                                                                <i class="fas fa-check"></i> Unpost
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <!-- /.card-body -->
             </div>

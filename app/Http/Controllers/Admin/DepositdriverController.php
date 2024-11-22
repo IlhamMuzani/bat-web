@@ -80,6 +80,12 @@ class DepositdriverController extends Controller
             return view('admin.deposit_driver.show', compact('cetakpdf'));
         } else {
             // Sisanya tetap sama
+
+            // Validasi: Jika ada 2 atau lebih DO yang belum selesai
+            if ($request->nominals == null) {
+                return back()->with('erorrss', 'masukan nominal.');
+            }
+
             $kode = $this->kode();
 
             $subTotalInput = $request->input('sisa_saldos');
