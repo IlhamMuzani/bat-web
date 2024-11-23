@@ -215,11 +215,7 @@
                 <td class="td" style="text-align: center; padding: 2px;">{{ $item->no_seri }}</td>
                 <td class="td" style="text-align: center; padding: 2px;">{{ $item->ukuran->ukuran }}</td>
                 <td class="td" style="text-align: center; padding: 2px;">{{ $item->merek->nama_merek }}</td>
-                {{-- @if ({{ $item->typeban }}) --}}
                 <td class="td" style="text-align: center; padding: 2px;">{{ $item->typeban->nama_type }}</td>
-                {{-- @else
-                    tidak ada
-                @endif --}}
                 <td class="td" style="text-align: center; padding: 2px;">{{ $item->kondisi_ban }}</td>
                 <td class="td" style="text-align: center; padding: 2px;">Rp.
                     {{ number_format($item->harga, 0, ',', '.') }}</td>
@@ -277,7 +273,11 @@
 </body>
 
 <div class="container">
-    <a href="{{ url('admin/inquery_pembelianban') }}" class="blue-button">Kembali</a>
+    {{-- <a href="{{ url('admin/inquery_pembelianban') }}" class="blue-button">Kembali</a> --}}
+    <a href="{{ url('admin/inquery_pembelianban') . '?status=&tanggal_awal=' . $pembelians->tanggal_awal . '&tanggal_akhir=' . $pembelians->tanggal_awal . '&ids=' }}"
+        class="blue-button">
+        Kembali
+    </a>
     <a href="{{ url('admin/pembelian_ban/cetak-pdf/' . $pembelians->id) }}" class="blue-button">Cetak</a>
 </div>
 

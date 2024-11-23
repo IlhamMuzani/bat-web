@@ -233,7 +233,8 @@
             <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">
                 {{ $cetakpdf->stnk->kendaraan->no_pol }}
             </td>
-            <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">{{ $cetakpdf->stnk->expired_stnk }}
+            <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">
+                {{ $cetakpdf->stnk->expired_stnk }}
             </td>
             <td class="td" style="text-align: center; padding: 0px; font-size: 13px;">
                 Rp.{{ number_format($cetakpdf->stnk->jumlah, 0, ',', '.') }}
@@ -296,7 +297,11 @@
 
 
 <div class="container">
-    <a href="{{ url('admin/inquery_perpanjanganstnk') }}" class="blue-button">Kembali</a>
+    {{-- <a href="{{ url('admin/inquery_perpanjanganstnk') }}" class="blue-button">Kembali</a> --}}
+    <a href="{{ url('admin/inquery_perpanjanganstnk') . '?status=&tanggal_awal=' . $cetakpdf->tanggal_awal . '&tanggal_akhir=' . $cetakpdf->tanggal_awal . '&ids=' }}"
+        class="blue-button">
+        Kembali
+    </a>
     <a href="{{ url('admin/inquery_perpanjanganstnk/cetak-pdf/' . $cetakpdf->id) }}" class="blue-button">Cetak</a>
 </div>
 
