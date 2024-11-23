@@ -230,21 +230,24 @@
                                                     <!-- Kode yang ingin Anda jalankan jika kondisi tidak terpenuhi -->
                                                 @endif --}}
 
-                                                <p style="margin-left:15px; margin-right:15px">
-                                                    Digunakan Oleh Memo
-                                                    Ekspedisi
-                                                    <strong>
-                                                        @if ($buktipotongpajak->memo_ekspedisi && $buktipotongpajak->memo_ekspedisi->isNotEmpty())
+                                                @if ($buktipotongpajak->memo_ekspedisi->first())
+                                                    {{-- <p style="margin-left:15px; margin-right:15px">Digunakan Oleh Memo
+                                                        Ekspedisi
+                                                        <strong>{{ $buktipotongpajak->memo_ekspedisi->first()->kode_memo }}</strong>
+                                                    </p> --}}
+                                                    <p style="margin-left:15px; margin-right:15px">
+                                                        Digunakan Oleh Memo
+                                                        Ekspedisi
+                                                        <strong>
                                                             <a href="{{ route('memo_ekspedisi.show', $buktipotongpajak->memo_ekspedisi->first()->id) }}"
                                                                 target="_blank" rel="noopener noreferrer">
                                                                 {{ $buktipotongpajak->memo_ekspedisi->first()->kode_memo }}
                                                             </a>
-                                                        @else
-                                                            <span>Memo tidak tersedia</span>
-                                                        @endif
-                                                    </strong>
-
-                                                </p>
+                                                        </strong>
+                                                    </p>
+                                                @else
+                                                    <!-- Kode yang ingin Anda jalankan jika kondisi tidak terpenuhi -->
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
