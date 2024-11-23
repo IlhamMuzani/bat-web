@@ -288,6 +288,14 @@
             })
         });
     </script>
+
+    <script>
+        // Deteksi jika layar kecil
+        if (window.innerWidth < 768) {
+            document.body.classList.remove("sidebar-collapse");
+            document.body.classList.remove("sidebar-open");
+        }
+    </script>
 </body>
 
 </html>
