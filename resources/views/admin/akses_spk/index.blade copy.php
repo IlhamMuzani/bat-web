@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Pemakaian Peralatan')
+@section('title', 'Akses SPK')
 
 @section('content')
+    <!-- Content Header (Page header) -->
     <div id="loadingSpinner" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
         <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
     </div>
@@ -22,11 +23,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Pemakaian Peralatan</h1>
+                    <h1 class="m-0">Akses SPK</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item active">Pemakaian Peralatan</li>
+                        <li class="breadcrumb-item active">Akses SPK</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -50,102 +51,134 @@
                 <div class="alert alert-danger alert-dismissible">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <h5>
-                        <i class="icon fas fa-ban"></i> Gagal!
+                        <i class="icon fas fa-ban"></i> Error!
                     </h5>
                     {{ session('error') }}
                 </div>
             @endif
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Pemakaian Peralatan</h3>
-                    <div class="float-right">
-                        <a href="{{ url('admin/pemakaian_peralatan/create') }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus"></i> Tambah
-                        </a>
-                    </div>
+                    <h3 class="card-title">Surat Pemesanan Kendaraan</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
+                    <form method="GET" id="form-action">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <select class="custom-select form-control" id="akses_spk" name="akses_spk">
+                                    <option value="">- Semua Status -</option>
+                                    <option value="1" {{ Request::get('akses_spk') == '1' ? 'selected' : '' }}>
+                                        Posting
+                                    </option>
+                                    <option value="0" {{ Request::get('akses_spk') == '0' ? 'selected' : '' }}>
+                                        Unpost</option>
+                                </select>
+                                <label for="akses_spk">(Pilih Status)</label>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <input class="form-control" id="tanggal_awal" name="tanggal_awal" type="date"
+                                    value="{{ Request::get('tanggal_awal') }}" max="{{ date('Y-m-d') }}" />
+                                <label for="tanggal_awal">(Tanggal Awal)</label>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <input class="form-control" id="tanggal_akhir" name="tanggal_akhir" type="date"
+                                    value="{{ Request::get('tanggal_akhir') }}" max="{{ date('Y-m-d') }}" />
+                                <label for="tanggal_awal">(Tanggal Akhir)</label>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <button type="button" class="btn btn-outline-primary btn-block" onclick="cari()">
+                                    <i class="fas fa-search"></i> Cari
+                                </button>
+                                @if (auth()->user()->id == 1 || auth()->user()->id == 6 || auth()->user()->id == 31)
+                                    <button type="button" class="btn btn-success btn-block mt-1" id="postingfilter"
+                                        onclick="postingSelectedData()">
+                                        <i class="fas fa-check-square"></i> Posting Filter
+                                    </button>
+                                    <button type="button" class="btn btn-warning btn-block mt-1" id="unpostfilter"
+                                        onclick="unpostSelectedData()">
+                                        <i class="fas fa-times-circle"></i> Unpost Filter
+                                    </button>
+                                @endif
+                                <input type="hidden" name="ids" id="selectedIds" value="">
+                            </div>
+                        </div>
+                    </form>
                     <div class="table-responsive" style="overflow-x: auto;">
                         <table id="datatables66" class="table table-bordered table-striped table-hover"
                             style="font-size: 13px">
                             <thead class="thead-dark">
                                 <tr>
                                     <th> <input type="checkbox" name="" id="select_all_ids"></th>
-                                    <th class="text-center">No</th>
-                                    <th>Kode Pemakaian</th>
+                                    <th>No</th>
+                                    <th>Kode Spk</th>
                                     <th>Tanggal</th>
+                                    <th>Bag.input</th>
+                                    <th>Sopir</th>
                                     <th>No Kabin</th>
-                                    <th>No Registrasi</th>
-                                    <th>Jenis Kendaraan</th>
-                                    <th class="text-center" width="40">Opsi</th>
+                                    <th>No Pol</th>
+                                    <th>Pelanggan</th>
+                                    <th>Rute</th>
+                                    <th>Akses</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($inquery as $klaims)
-                                    <tr class="dropdown"{{ $klaims->id }}>
+                                @foreach ($spks as $buktipotongpajak)
+                                    <tr class="dropdown"{{ $buktipotongpajak->id }}>
                                         <td><input type="checkbox" name="selectedIds[]" class="checkbox_ids"
-                                                value="{{ $klaims->id }}">
+                                                value="{{ $buktipotongpajak->id }}">
                                         </td>
                                         <td class="text-center">{{ $loop->iteration }}</td>
-                                        <td>{{ $klaims->kode_pemakaian }}</td>
-                                        <td>{{ $klaims->tanggal_awal }}</td>
                                         <td>
-                                            @if ($klaims->kendaraan)
-                                                {{ $klaims->kendaraan->no_kabin }}
+                                            {{ $buktipotongpajak->spk->kode_spk }}
+                                        </td>
+                                        <td>
+                                            {{ $buktipotongpajak->spk->tanggal_awal }}
+                                        </td>
+                                        <td>
+                                            {{ $buktipotongpajak->spk->admin }}
+                                        </td>
+                                        <td>
+                                            @if ($buktipotongpajak->spk->user)
+                                                {{ $buktipotongpajak->spk->user->karyawan->nama_lengkap }}
                                             @else
-                                                Kabin tidak ada
+                                                tidak ada
                                             @endif
                                         </td>
                                         <td>
-                                            @if ($klaims->kendaraan)
-                                                {{ $klaims->kendaraan->no_pol }}
-                                            @else
-                                                No pol tidak ada
-                                            @endif
+                                            {{ $buktipotongpajak->spk->no_kabin }}
                                         </td>
                                         <td>
-                                            @if ($klaims->kendaraan)
-                                                {{ $klaims->kendaraan->jenis_kendaraan->nama_jenis_kendaraan }}
-                                            @else
-                                                nama tidak ada
-                                            @endif
+                                            {{ $buktipotongpajak->spk->no_pol }}
+                                        </td>
+                                        <td>
+                                            {{ $buktipotongpajak->spk->nama_pelanggan }}
+                                        </td>
+                                        <td>
+                                            {{ $buktipotongpajak->spk->nama_rute }}
                                         </td>
                                         <td class="text-center">
-                                            @if ($klaims->status == 'posting')
+                                            @if ($buktipotongpajak->akses_spk == 1)
                                                 <button type="button" class="btn btn-success btn-sm">
                                                     <i class="fas fa-check"></i>
                                                 </button>
                                             @endif
-                                            @if ($klaims->status == 'selesai')
-                                                <img src="{{ asset('storage/uploads/indikator/faktur.png') }}"
-                                                    height="40" width="40" alt="Roda Mobil">
-                                            @endif
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                @if ($klaims->status == 'unpost')
+                                                @if ($buktipotongpajak->akses_spk == 0)
                                                     <a class="dropdown-item posting-btn"
-                                                        data-memo-id="{{ $klaims->id }}">Posting</a>
-                                                    <a class="dropdown-item"
-                                                        href="{{ url('admin/inquery_pemakaianperalatan/' . $klaims->id . '/edit') }}">Update</a>
-                                                    <a class="dropdown-item"
-                                                        href="{{ url('admin/pemakaian_peralatan/' . $klaims->id) }}">Show</a>
-                                                    <form style="margin-top:5px" method="GET"
-                                                        action="{{ route('hapuspemakaian', ['id' => $klaims->id]) }}">
-                                                        <button type="submit"
-                                                            class="dropdown-item btn btn-outline-danger btn-block mt-2">
-                                                            </i> Delete
-                                                        </button>
-                                                    </form>
+                                                        data-memo-id="{{ $buktipotongpajak->id }}">Posting</a>
                                                 @endif
-                                                @if ($klaims->status == 'posting')
+                                                @if ($buktipotongpajak->akses_spk == 1)
                                                     <a class="dropdown-item unpost-btn"
-                                                        data-memo-id="{{ $klaims->id }}">Unpost</a>
-                                                    <a class="dropdown-item"
-                                                        href="{{ url('admin/pemakaian_peralatan/' . $klaims->id) }}">Show</a>
-                                                @endif
-                                                @if ($klaims->status == 'selesai')
-                                                    <a class="dropdown-item"
-                                                        href="{{ url('admin/pemakaian_peralatan/' . $klaims->id) }}">Show</a>
+                                                        data-memo-id="{{ $buktipotongpajak->id }}">Unpost</a>
                                                 @endif
                                             </div>
                                         </td>
@@ -154,7 +187,6 @@
                             </tbody>
                         </table>
                     </div>
-                    <!-- Modal Loading -->
                     <div class="modal fade" id="modal-loading" tabindex="-1" role="dialog"
                         aria-labelledby="modal-loading-label" aria-hidden="true" data-backdrop="static">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -166,35 +198,32 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Modal Konfirmasi Hapus -->
-                <div class="modal fade" id="modal-confirm-delete" tabindex="-1" role="dialog"
-                    aria-labelledby="modal-confirm-delete-label" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="modal-confirm-delete-label">Konfirmasi Hapus</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                Apakah Anda yakin ingin menghapus klaims yang dipilih?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                <button type="button" class="btn btn-danger" id="btn-confirm-delete">Hapus</button>
+                    <div class="modal fade" id="validationModal" tabindex="-1" role="dialog"
+                        aria-labelledby="validationModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="validationModalLabel">Validasi Gagal</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+                                    </button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <i class="fas fa-times-circle fa-3x text-danger"></i>
+                                    <h4 class="mt-2">Validasi Gagal!</h4>
+                                    <p id="validationMessage"></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <!-- /.card-body -->
             </div>
         </div>
     </section>
-
 
     <!-- /.card -->
     <script>
@@ -221,71 +250,10 @@
         var form = document.getElementById('form-action');
 
         function cari() {
-            form.action = "{{ url('admin/inquery_pemakaianperalatan') }}";
+            form.action = "{{ url('admin/akses_spk') }}";
             form.submit();
         }
     </script>
-
-    <script>
-        $(function(e) {
-            $("#select_all_ids").click(function() {
-                $('.checkbox_ids').prop('checked', $(this).prop('checked'))
-            })
-        });
-
-        function deleteSelectedData() {
-            var selectedIds = document.querySelectorAll(".checkbox_ids:checked");
-            if (selectedIds.length === 0) {
-                alert("Harap centang setidaknya satu item sebelum menghapus.");
-            } else {
-                // Tampilkan modal konfirmasi
-                $('#modal-confirm-delete').modal('show');
-
-                // Ketika tombol Hapus di modal konfirmasi diklik
-                $('#btn-confirm-delete').click(function() {
-                    var selectedCheckboxes = document.querySelectorAll('.checkbox_ids:checked');
-                    var selectedIds = [];
-                    selectedCheckboxes.forEach(function(checkbox) {
-                        selectedIds.push(checkbox.value);
-                    });
-                    document.getElementById('selectedIds').value = selectedIds.join(',');
-                    var selectedIdsString = selectedIds.join(',');
-                    window.location.href = "{{ url('admin/deletefakturfilter') }}?ids=" + selectedIdsString;
-
-                    // Sembunyikan modal konfirmasi setelah penghapusan dilakukan
-                    $('#modal-confirm-delete').modal('hide');
-                });
-            }
-        }
-    </script>
-
-    <script>
-        function confirmDelete() {
-            var selectedIds = document.querySelectorAll(".checkbox_ids:checked");
-            if (selectedIds.length === 0) {
-                alert("Harap centang setidaknya satu item sebelum menghapus.");
-            } else {
-                // Tampilkan modal konfirmasi
-                $('#modal-confirm-delete').modal('show');
-
-                // Ketika tombol Hapus di modal konfirmasi diklik
-                $('#btn-confirm-delete').click(function() {
-                    var selectedCheckboxes = document.querySelectorAll('.checkbox_ids:checked');
-                    var selectedIds = [];
-                    selectedCheckboxes.forEach(function(checkbox) {
-                        selectedIds.push(checkbox.value);
-                    });
-                    document.getElementById('selectedIds').value = selectedIds.join(',');
-                    var selectedIdsString = selectedIds.join(',');
-                    window.location.href = "{{ url('admin/deletefakturfilter') }}?ids=" + selectedIdsString;
-
-                    // Sembunyikan modal konfirmasi setelah penghapusan dilakukan
-                    $('#modal-confirm-delete').modal('hide');
-                });
-            }
-        }
-    </script>
-
 
     {{-- unpost memo  --}}
     <script>
@@ -298,8 +266,7 @@
 
                 // Kirim permintaan AJAX untuk melakukan unpost
                 $.ajax({
-                    url: "{{ url('admin/inquery_pemakaianperalatan/unpostpemakaian/') }}/" +
-                        memoId,
+                    url: "{{ url('admin/akses_spk/unpostaksesspk/') }}/" + memoId,
                     type: 'GET',
                     data: {
                         id: memoId
@@ -337,10 +304,9 @@
                 // Tampilkan modal loading saat permintaan AJAX diproses
                 $('#modal-loading').modal('show');
 
-                // Kirim permintaan AJAX untuk melakukan posting
+                // Kirim permintaan AJAX untuk melakukan unpost
                 $.ajax({
-                    url: "{{ url('admin/inquery_pemakaianperalatan/postingpemakaian/') }}/" +
-                        memoId,
+                    url: "{{ url('admin/akses_spk/postingaksesspk/') }}/" + memoId,
                     type: 'GET',
                     data: {
                         id: memoId
@@ -352,7 +318,7 @@
                         // Tampilkan pesan sukses atau lakukan tindakan lain sesuai kebutuhan
                         console.log(response);
 
-                        // Tutup modal setelah berhasil posting
+                        // Tutup modal setelah berhasil unpost
                         $('#modal-posting-' + memoId).modal('hide');
 
                         // Reload the page to refresh the table
@@ -426,4 +392,94 @@
         });
     </script>
 
+
+    <script>
+        $(function(e) {
+            $("#select_all_ids").click(function() {
+                $('.checkbox_ids').prop('checked', $(this).prop('checked'))
+            })
+        });
+
+        function postingSelectedData() {
+            var selectedCheckboxes = document.querySelectorAll(".checkbox_ids:checked");
+            if (selectedCheckboxes.length === 0) {
+                // Tampilkan modal peringatan jika tidak ada item yang dipilih
+                $('#validationMessage').text('Harap centang setidaknya satu item sebelum posting.');
+                $('#validationModal').modal('show');
+            } else {
+                var selectedIds = [];
+                selectedCheckboxes.forEach(function(checkbox) {
+                    selectedIds.push(checkbox.value);
+                });
+                var selectedIdsString = selectedIds.join(',');
+                document.getElementById('postingfilter').value = selectedIdsString;
+
+                // Tampilkan modal loading sebelum mengirim permintaan AJAX
+                $('#modal-loading').modal('show');
+
+                $.ajax({
+                    url: "{{ url('admin/postingfilterspkakses') }}?ids=" + selectedIdsString,
+                    type: 'GET',
+                    success: function(response) {
+                        // Sembunyikan modal loading setelah permintaan selesai
+                        $('#modal-loading').modal('hide');
+
+                        // Tampilkan pesan sukses atau lakukan tindakan lain sesuai kebutuhan
+                        console.log(response);
+
+                        // Reload the page to refresh the table
+                        location.reload();
+                    },
+                    error: function(error) {
+                        // Sembunyikan modal loading setelah permintaan selesai
+                        $('#modal-loading').modal('hide');
+
+                        // Tampilkan pesan error atau lakukan tindakan lain sesuai kebutuhan
+                        console.log(error);
+                    }
+                });
+            }
+        }
+
+        function unpostSelectedData() {
+            var selectedCheckboxes = document.querySelectorAll(".checkbox_ids:checked");
+            if (selectedCheckboxes.length === 0) {
+                // Tampilkan modal peringatan jika tidak ada item yang dipilih
+                $('#validationMessage').text('Harap centang setidaknya satu item sebelum mengunpost.');
+                $('#validationModal').modal('show');
+            } else {
+                var selectedIds = [];
+                selectedCheckboxes.forEach(function(checkbox) {
+                    selectedIds.push(checkbox.value);
+                });
+                var selectedIdsString = selectedIds.join(',');
+                document.getElementById('unpostfilter').value = selectedIdsString;
+
+                // Tampilkan modal loading sebelum mengirim permintaan AJAX
+                $('#modal-loading').modal('show');
+
+                $.ajax({
+                    url: "{{ url('admin/unpostfilterspkakses') }}?ids=" + selectedIdsString,
+                    type: 'GET',
+                    success: function(response) {
+                        // Sembunyikan modal loading setelah permintaan selesai
+                        $('#modal-loading').modal('hide');
+
+                        // Tampilkan pesan sukses atau lakukan tindakan lain sesuai kebutuhan
+                        console.log(response);
+
+                        // Reload the page to refresh the table
+                        location.reload();
+                    },
+                    error: function(error) {
+                        // Sembunyikan modal loading setelah permintaan selesai
+                        $('#modal-loading').modal('hide');
+
+                        // Tampilkan pesan error atau lakukan tindakan lain sesuai kebutuhan
+                        console.log(error);
+                    }
+                });
+            }
+        }
+    </script>
 @endsection

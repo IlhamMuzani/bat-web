@@ -29,6 +29,7 @@ class Pengambilan_do extends Model
         'km_akhir',
         'waktu_awal',
         'waktu_akhir',
+        'keterangan_akses',
         'rute_perjalanan_id',
         'alamat_muat_id',
         'alamat_muat2_id',
