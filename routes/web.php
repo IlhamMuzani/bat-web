@@ -485,8 +485,9 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::get('unpostpotongan/{id}', [\App\Http\Controllers\Admin\InqueryPotonganpenjualanController::class, 'unpostpotongan'])->name('unpostpotongan');
   Route::get('postingpotongan/{id}', [\App\Http\Controllers\Admin\InqueryPotonganpenjualanController::class, 'postingpotongan'])->name('postingpotongan');
 
-  Route::get('unpostpelunasanban/{id}', [\App\Http\Controllers\Admin\InqueryFakturpelunasanbanController::class, 'unpostpelunasanban'])->name('unpostpelunasanban');
-  Route::get('postingpelunasanban/{id}', [\App\Http\Controllers\Admin\InqueryFakturpelunasanbanController::class, 'postingpelunasanban'])->name('postingpelunasanban');
+  Route::get('inquery_banpembelianlunas/unpostpelunasanban/{id}', [\App\Http\Controllers\Admin\InqueryFakturpelunasanbanController::class, 'unpostpelunasanban']);
+  Route::get('inquery_banpembelianlunas/postingpelunasanban/{id}', [\App\Http\Controllers\Admin\InqueryFakturpelunasanbanController::class, 'postingpelunasanban']);
+
   Route::get('hapuspelunasanban/{id}', [\App\Http\Controllers\Admin\InqueryFakturpelunasanbanController::class, 'hapuspelunasanban'])->name('hapuspelunasanban');
   Route::get('faktur_pelunasanban/cetak-pdf/{id}', [\App\Http\Controllers\Admin\FakturpelunasanbanController::class, 'cetakpdf']);
   Route::get('potongan_penjualan/cetak-pdf/{id}', [\App\Http\Controllers\Admin\PotonganpenjualanController::class, 'cetakpdf']);
@@ -865,5 +866,4 @@ Route::middleware('admin')->prefix('admin')->group(function () {
 
   Route::get('laporan-monitoringsj', [\App\Http\Controllers\Admin\LaporanmonitoringsjController::class, 'index']);
   Route::get('print-monitoringsj', [\App\Http\Controllers\Admin\LaporanmonitoringsjController::class, 'print_monitoringsj']);
-
 });

@@ -907,7 +907,7 @@
                 </a>
             </li>
         @endif
-        @if (auth()->user()->id == 1)
+        @if (auth()->user()->id == 1 || auth()->user()->id == 3 || auth()->user()->id == 50)
             @if (auth()->check() && auth()->user()->menu['faktur ekspedisi'])
                 <li class="nav-item">
                     <a href="{{ url('admin/penerimaan_sj') }}"
