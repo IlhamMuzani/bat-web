@@ -3,7 +3,6 @@
 @section('title', 'Inquery Perhitungan Gaji Bulan')
 
 @section('content')
-    <!-- Content Header (Page header) -->
     <div id="loadingSpinner" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
         <i class="fas fa-spinner fa-spin" style="font-size: 3rem;"></i>
     </div>
@@ -17,7 +16,6 @@
             }, 100); // Adjust the delay time as needed
         });
     </script>
-
     <!-- Content Header (Page header) -->
     <div class="content-header" style="display: none;" id="mainContent">
         <div class="container-fluid">
@@ -151,7 +149,7 @@
                                         <td>
                                             {{ $perhitungan->periode_akhir }}
                                         </td>
-                                        <td class="text-right">{{ number_format($perhitungan->total_gaji, 2, ',', '.') }}
+                                        <td class="text-right">{{ number_format($perhitungan->grand_total, 2, ',', '.') }}
                                         </td>
                                         <td class="text-center">
                                             @if ($perhitungan->status == 'posting')
@@ -165,44 +163,46 @@
                                             @endif
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 @if ($perhitungan->status == 'unpost')
-                                                    {{-- @if (auth()->check() && auth()->user()->fitur['inquery perhitungan ekspedisi posting']) --}}
-                                                    <a class="dropdown-item posting-btn"
-                                                        data-memo-id="{{ $perhitungan->id }}">Posting</a>
-                                                    {{-- @endif --}}
-                                                    {{-- @if (auth()->check() && auth()->user()->fitur['inquery perhitungan ekspedisi update']) --}}
-                                                    <a class="dropdown-item"
-                                                        href="{{ url('admin/inquery_perhitungangajibulanan/' . $perhitungan->id . '/edit') }}">Update</a>
-                                                    {{-- @endif --}}
-                                                    {{-- @if (auth()->check() && auth()->user()->fitur['inquery perhitungan ekspedisi show']) --}}
-                                                    <a class="dropdown-item"
-                                                        href="{{ url('admin/inquery_perhitungangajibulanan/' . $perhitungan->id) }}">Show</a>
-                                                    {{-- @endif --}}
-                                                    {{-- @if (auth()->check() && auth()->user()->fitur['inquery perhitungan ekspedisi delete']) --}}
-                                                    <form style="margin-top:5px" method="GET"
-                                                        action="{{ route('hapusperhitungan', ['id' => $perhitungan->id]) }}">
-                                                        <button type="submit"
-                                                            class="dropdown-item btn btn-outline-danger btn-block mt-2">
-                                                            </i> Delete
-                                                        </button>
-                                                    </form>
-                                                    {{-- @endif --}}
+                                                    @if (auth()->check() && auth()->user()->fitur['inquery perhitungan gaji bulanan posting'])
+                                                        <a class="dropdown-item posting-btn"
+                                                            data-memo-id="{{ $perhitungan->id }}">Posting</a>
+                                                    @endif
+                                                    @if (auth()->check() && auth()->user()->fitur['inquery perhitungan gaji bulanan update'])
+                                                        <a class="dropdown-item"
+                                                            href="{{ url('admin/inquery_perhitungangajibulanan/' . $perhitungan->id . '/edit') }}">Update</a>
+                                                    @endif
+                                                    @if (auth()->check() && auth()->user()->fitur['inquery perhitungan gaji bulanan show'])
+                                                        <a class="dropdown-item"
+                                                            href="{{ url('admin/inquery_perhitungangajibulanan/' . $perhitungan->id) }}">Show</a>
+                                                    @endif
+                                                    @if (auth()->check() && auth()->user()->fitur['inquery perhitungan gaji bulanan delete'])
+                                                        <form style="margin-top:5px" method="GET"
+                                                            action="{{ route('hapusperhitunganbulanan', ['id' => $perhitungan->id]) }}">
+                                                            <button type="submit"
+                                                                class="dropdown-item btn btn-outline-danger btn-block mt-2">
+                                                                </i> Delete
+                                                            </button>
+                                                        </form>
+                                                    @endif
                                                 @endif
                                                 @if ($perhitungan->status == 'posting')
-                                                    {{-- @if (auth()->check() && auth()->user()->fitur['inquery perhitungan ekspedisi unpost']) --}}
-                                                    <a class="dropdown-item unpost-btn"
-                                                        data-memo-id="{{ $perhitungan->id }}">Unpost</a>
-                                                    {{-- @endif --}}
-                                                    {{-- @if (auth()->check() && auth()->user()->fitur['inquery perhitungan ekspedisi show']) --}}
-                                                    <a class="dropdown-item"
-                                                        href="{{ url('admin/inquery_perhitungangajibulanan/' . $perhitungan->id) }}">Show</a>
-                                                    {{-- @endif --}}
+                                                    @if (auth()->check() && auth()->user()->fitur['inquery perhitungan gaji bulanan unpost'])
+                                                        <a class="dropdown-item unpost-btn"
+                                                            data-memo-id="{{ $perhitungan->id }}">Unpost</a>
+                                                    @endif
+                                                    @if (auth()->check() && auth()->user()->fitur['inquery perhitungan gaji bulanan show'])
+                                                        <a class="dropdown-item"
+                                                            href="{{ url('admin/inquery_perhitungangajibulanan/' . $perhitungan->id) }}">Show</a>
+                                                    @endif
                                                 @endif
                                                 @if ($perhitungan->status == 'selesai')
-                                                    {{-- @if (auth()->check() && auth()->user()->fitur['inquery perhitungan ekspedisi show']) --}}
-                                                    <a class="dropdown-item"
-                                                        href="{{ url('admin/inquery_perhitungangajibulanan/' . $perhitungan->id) }}">Show</a>
-                                                    {{-- @endif --}}
+                                                    @if (auth()->check() && auth()->user()->fitur['inquery perhitungan gaji bulanan show'])
+                                                        <a class="dropdown-item"
+                                                            href="{{ url('admin/inquery_perhitungangajibulanan/' . $perhitungan->id) }}">Show</a>
+                                                    @endif
                                                 @endif
+                                                <a class="dropdown-item"
+                                                    href="{{ url('admin/inquery_perhitungangaji/export-gm/' . $perhitungan->id) }}">Export</a>
                                             </div>
                                         </td>
                                     </tr>
