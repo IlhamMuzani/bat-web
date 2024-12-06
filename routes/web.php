@@ -866,4 +866,9 @@ Route::middleware('admin')->prefix('admin')->group(function () {
 
   Route::get('laporan-monitoringsj', [\App\Http\Controllers\Admin\LaporanmonitoringsjController::class, 'index']);
   Route::get('print-monitoringsj', [\App\Http\Controllers\Admin\LaporanmonitoringsjController::class, 'print_monitoringsj']);
+
+
+  Route::get('excel_memoekspedisifilter', [\App\Http\Controllers\Admin\InqueryMemoekspedisiController::class, 'excel_memoekspedisifilter']);
+  Route::get('excel_memotambahanfilter', [\App\Http\Controllers\Admin\InqueryMemotambahanController::class, 'excel_memotambahanfilter']);
+
 });

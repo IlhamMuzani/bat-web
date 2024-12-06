@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Exports\RekapujtambahanExport;
 use Carbon\Carbon;
 use App\Models\Ban;
 use App\Models\Merek;
@@ -30,9 +31,9 @@ use App\Models\Rute_perjalanan;
 use App\Models\Saldo;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
-use Egulias\EmailValidator\Result\Reason\DetailedReason;
 use Illuminate\Support\Facades\DB;
-
+use Egulias\EmailValidator\Result\Reason\DetailedReason;
+use Maatwebsite\Excel\Facades\Excel;
 class InqueryMemotambahanController extends Controller
 {
     public function index(Request $request)
@@ -1020,5 +1021,19 @@ class InqueryMemotambahanController extends Controller
         }
 
         return back()->with('success', 'Berhasil menghapus Memo tambahan');
+    }
+
+    public function excel_memotambahanfilter(Request $request)
+    {
+        $selectedIds = explode(',', $request->input('ids'));
+
+        $memotambahan = Memotambahan::whereIn('id', $selectedIds)->orderBy('id', 'DESC')->get();
+
+        if (!$memotambahan) {
+            return redirect()->back()->withErrors(['error' => 'Data Memo tidak ditemukan']);
+        }
+
+        // Ekspor sebagai CSV
+        return Excel::download(new RekapujtambahanExport($memotambahan), 'rekap_ujtambahan.csv', \Maatwebsite\Excel\Excel::CSV);
     }
 }

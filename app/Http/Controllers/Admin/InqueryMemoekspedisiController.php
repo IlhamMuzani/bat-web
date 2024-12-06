@@ -4,6 +4,8 @@ namespace App\Http\Controllers\admin;
 
 use Illuminate\Support\Facades\DB;
 use App\Exports\MemoperjalananExport;
+use App\Exports\RekapExport;
+use App\Exports\RekapujExport;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -1059,4 +1061,34 @@ class InqueryMemoekspedisiController extends Controller
 
         return Excel::download(new MemoperjalananExport($tanggal_awal, $tanggal_akhir, $status, $kategori), 'memo_ekspedisi.xlsx');
     }
+
+
+    public function excel_memoekspedisifilter(Request $request)
+    {
+        $selectedIds = explode(',', $request->input('ids'));
+        
+        $memo_ekspedisi = Memo_ekspedisi::whereIn('id', $selectedIds)->orderBy('id', 'DESC')->get();
+
+        if (!$memo_ekspedisi) {
+            return redirect()->back()->withErrors(['error' => 'Data Memo tidak ditemukan']);
+        }
+
+        // Ekspor sebagai CSV
+        return Excel::download(new RekapujExport($memo_ekspedisi), 'rekap_uj.csv', \Maatwebsite\Excel\Excel::CSV);
+    }
+
+
+    // public function excel_memoekspedisifilter(Request $request)
+    // {
+
+    //     // Now you can use $selectedIds to retrieve the selected IDs and generate the PDF as needed.
+
+    //     $memos = Memo_ekspedisi::whereIn('id', $selectedIds)->orderBy('id', 'DESC')->get();
+
+    //     $pdf = app('dompdf.wrapper');
+    //     $pdf->loadView('admin.inquery_memoekspedisi.cetak_pdffilter', compact('memos'));
+    //     $pdf->setPaper('folio');
+
+    //     return $pdf->stream('SelectedMemo.pdf');
+    // }
 }
