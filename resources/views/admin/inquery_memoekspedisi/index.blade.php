@@ -153,13 +153,17 @@
                                     onclick="printSelectedData()" target="_blank">
                                     <i class="fas fa-print"></i> Cetak Filter
                                 </button>
-                                <button type="button" class="btn btn-success btn-block mt-1" id="checkfilter"
-                                    onclick="excelSelectedData()" target="_blank">
-                                    <i class="fas fa-file-excel"></i> Export Excel
-                                </button>
-                                {{-- <button type="button" class="btn btn-success btn-block" onclick="printExportexcel()">
-                                    <i class="fas fa-file-excel"></i> Export Excel
-                                </button> --}}
+                                @if (auth()->user()->id != 54)
+                                    <button type="button" class="btn btn-success btn-block mt-1" id="checkfilter"
+                                        onclick="excelSelectedData()" target="_blank">
+                                        <i class="fas fa-file-excel"></i> Export Excel
+                                    </button>
+                                @endif
+                                @if (auth()->user()->id == 1 || auth()->user()->id == 399)
+                                    <button type="button" class="btn btn-success btn-block" onclick="printExportexcel()">
+                                        <i class="fas fa-file-excel"></i> Export Excel
+                                    </button>
+                                @endif
                             </div>
                         </div>
                     </form>

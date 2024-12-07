@@ -277,7 +277,7 @@ class InqueryFakturpelunasanController extends Controller
             $newFakturEkspedisiIds[] = $data_pesanan['faktur_ekspedisi_id'];
         }
 
-        Faktur_ekspedisi::whereIn('id', $updatedFakturEkspedisiIds)->update(['status_pelunasan' => 'aktif']);
+        Faktur_ekspedisi::whereIn('id', $updatedFakturEkspedisiIds)->update(['status_pelunasan' => 'aktif', 'status' => 'selesai']);
         foreach ($updatedFakturEkspedisiIds as $fakturId) {
             $faktur = Faktur_ekspedisi::find($fakturId);
             if ($faktur) {
@@ -449,7 +449,7 @@ class InqueryFakturpelunasanController extends Controller
             if ($detail->faktur_ekspedisi_id) {
                 $fakturEkspedisi = Faktur_ekspedisi::find($detail->faktur_ekspedisi_id);
                 if ($fakturEkspedisi && $fakturEkspedisi->status_pelunasan == null) {
-                    $fakturEkspedisi->update(['status_pelunasan' => 'aktif']);
+                    $fakturEkspedisi->update(['status_pelunasan' => 'aktif', 'status' => 'selesai']);
                     $spk = Spk::find($fakturEkspedisi->spk_id);
                     if ($spk) {
                         $spk->update(['status_spk' => 'pelunasan']);
@@ -491,7 +491,7 @@ class InqueryFakturpelunasanController extends Controller
                     if ($detail->faktur_ekspedisi_id) {
                         $fakturEkspedisi = Faktur_ekspedisi::find($detail->faktur_ekspedisi_id);
                         if ($fakturEkspedisi && $fakturEkspedisi->status_pelunasan == null) {
-                            $fakturEkspedisi->update(['status_pelunasan' => 'aktif']);
+                            $fakturEkspedisi->update(['status_pelunasan' => 'aktif', 'status' => 'selesai']);
                             $spk = Spk::find($fakturEkspedisi->spk_id);
                             if ($spk) {
                                 $spk->update(['status_spk' => 'pelunasan']);

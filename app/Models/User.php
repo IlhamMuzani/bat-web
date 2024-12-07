@@ -154,6 +154,11 @@ class User extends Authenticatable
         return $this->hasMany(Timer_suratjalan::class);
     }
 
+    public function absen()
+    {
+        return $this->hasMany(Absen::class);
+    }
+
     // public function latestpengambilan_do()
     // {
     //     return $this->hasOne(Pengambilan_do::class)

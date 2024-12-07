@@ -227,7 +227,7 @@ class FakturpelunasanController extends Controller
                 'status' => 'posting',
             ]);
 
-            Faktur_ekspedisi::where('id', $detailPelunasan->faktur_ekspedisi_id)->update(['status_pelunasan' => 'aktif']);
+            Faktur_ekspedisi::where('id', $detailPelunasan->faktur_ekspedisi_id)->update(['status_pelunasan' => 'aktif', 'status' => 'selesai']);
         }
 
         foreach ($data_pembelians2 as $data_pesanan) {
@@ -326,6 +326,4 @@ class FakturpelunasanController extends Controller
 
         return response()->json($fakturs);
     }
-
-
 }

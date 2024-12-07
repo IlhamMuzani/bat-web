@@ -65,4 +65,5 @@ Route::post('search-spk', [\App\Http\Controllers\Api\PengambilandoController::cl
 Route::post('pengambilan_do-terima/{id}', [\App\Http\Controllers\Api\PengambilandoController::class, 'terima']);
 Route::post('pengambilan_do-batal_terima/{id}', [\App\Http\Controllers\Api\PengambilandoController::class, 'batal_terima']);
 
+Route::post('add-absen', [\App\Http\Controllers\Api\AbsenController::class, 'add_absen']);
 // Route::apiResource('kendaraan', [KendaraanController::class, 'kendaraan_search'])->except('index');
