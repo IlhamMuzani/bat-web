@@ -871,4 +871,8 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::get('excel_memoekspedisifilter', [\App\Http\Controllers\Admin\InqueryMemoekspedisiController::class, 'excel_memoekspedisifilter']);
   Route::get('excel_memotambahanfilter', [\App\Http\Controllers\Admin\InqueryMemotambahanController::class, 'excel_memotambahanfilter']);
 
+  Route::get('laporan-absen', [\App\Http\Controllers\Admin\LaporanabsenController::class, 'index']);
+  Route::get('print-absen', [\App\Http\Controllers\Admin\LaporanabsenController::class, 'print_absen']);
+
+  Route::resource('jarak-absen', \App\Http\Controllers\Admin\JarakabsenController::class);
 });
