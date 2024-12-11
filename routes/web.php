@@ -875,4 +875,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::get('print-absen', [\App\Http\Controllers\Admin\LaporanabsenController::class, 'print_absen']);
 
   Route::resource('jarak-absen', \App\Http\Controllers\Admin\JarakabsenController::class);
+
+  Route::get('penggantian_oli', [\App\Http\Controllers\Admin\PenggantianOliController::class, 'index']);
+
 });

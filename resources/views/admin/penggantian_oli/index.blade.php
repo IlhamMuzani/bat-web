@@ -58,6 +58,30 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
+                    <form method="GET" id="form-action">
+                        <div class="row">
+                            <div class="col-md-2 mb-3">
+                                <select class="custom-select form-control" id="kategori" name="kategori">
+                                    <option value="">- Pilih Kategori -</option>
+                                    <option value="Oli Mesin"
+                                        {{ Request::get('kategori') == 'Oli Mesin' ? 'selected' : '' }}>
+                                        Oli Mesin
+                                    </option>
+                                    <option value="Oli Gardan" {{ Request::get('') == 'Oli Gardan' ? 'selected' : '' }}>
+                                        Oli Gardan</option>
+                                    <option value="Oli Transmisi"
+                                        {{ Request::get('kategori') == 'Oli Transmisi' ? 'selected' : '' }}>
+                                        Oli Transmisi</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <button type="button" class="btn btn-outline-primary btn-block" onclick="cari()">
+                                    <i class="fas fa-search"></i> Cari
+                                </button>
+                                <input type="hidden" name="ids" id="selectedIds" value="">
+                            </div>
+                        </div>
+                    </form>
                     <div class="table-responsive" style="overflow-x: auto;">
                         <table id="datatables66" class="table table-bordered table-striped">
                             <thead>
@@ -150,5 +174,14 @@
             </div>
         </div>
     </section>
+
+    <script>
+        var form = document.getElementById('form-action');
+
+        function cari() {
+            form.action = "{{ url('admin/penggantian_oli') }}";
+            form.submit();
+        }
+    </script>
     <!-- /.card -->
 @endsection
