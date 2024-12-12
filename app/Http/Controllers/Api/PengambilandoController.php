@@ -345,44 +345,6 @@ class PengambilandoController extends Controller
         // Jika semua pengecekan lulus, lanjutkan dengan proses pembaruan
         $odometer = null; // Inisialisasi variabel odometer
 
-        // if ($kendaraan) {
-        //     $client = new Client();
-        //     $response = $client->post('https://vtsapi.easygo-gps.co.id/api/Report/lastposition', [
-        //         'headers' => [
-        //             'accept' => 'application/json',
-        //             'token' => 'ADB4E5DFAAEA4BA1A6A8981FEF86FAA9',
-        //             'Content-Type' => 'application/json',
-        //         ],
-        //         'json' => [
-        //             'list_vehicle_id' => [$kendaraan->list_vehicle_id],
-        //             'list_nopol' => [],
-        //             'list_no_aset' => [],
-        //             'geo_code' => [],
-        //             'min_lastupdate_hour' => null,
-        //             'page' => 0,
-        //             'encrypted' => 0,
-        //         ],
-        //     ]);
-
-        //     $data = json_decode($response->getBody()->getContents(), true);
-
-        //     if (isset($data['Data'][0]['vehicle_id'])) {
-        //         $vehicleId = $data['Data'][0]['vehicle_id'];
-
-        //         // Periksa apakah vehicle_id sama dengan list_vehicle_id
-        //         if ($vehicleId === $kendaraan->list_vehicle_id) {
-        //             // Ambil nilai 'odometer' dari data API dan hilangkan bagian desimalnya
-        //             $odometer = intval($data['Data'][0]['odometer'] ?? 0);
-
-        //             if ($odometer > 0) {
-        //                 $kendaraan->km = $odometer;
-        //                 $kendaraan->save();
-        //             }
-        //         }
-        //     }
-        // }
-
-
         if ($kendaraan) {
             try {
                 $client = new Client();
