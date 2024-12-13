@@ -33,9 +33,17 @@ class LaporanPengeluarankaskecilakunController extends Controller
         if ($created_at && $tanggal_akhir) {
             $inquery->whereDate('created_at', '>=', $created_at)
                 ->whereDate('created_at', '<=', $tanggal_akhir);
+
+            // Exclude records with memotambahan_id outside the date filter
+            $inquery->where(function ($query) use ($created_at, $tanggal_akhir) {
+                $query->whereNull('memotambahan_id')
+                    ->orWhereHas('memotambahan', function ($q) use ($created_at, $tanggal_akhir) {
+                        $q->whereDate('created_at', '>=', $created_at)
+                            ->whereDate('created_at', '<=', $tanggal_akhir);
+                    });
+            });
         }
 
-        // Tambahkan kondisi untuk memfilter berdasarkan barangakun_id jika ada
         if ($barangakun_id) {
             $inquery->where('barangakun_id', $barangakun_id);
         }
@@ -47,18 +55,9 @@ class LaporanPengeluarankaskecilakunController extends Controller
         return view('admin.laporan_pengeluarankaskecilakun.index', compact('inquery', 'barangakuns'));
     }
 
-
     public function print_pengeluarankaskecilakun(Request $request)
     {
-        $detail_pengeluaran = Detail_pengeluaran::with('barangAkun')->get();
-
-        $barangakuns = [];
-        foreach ($detail_pengeluaran as $detail) {
-            if (!in_array($detail->barangAkun, $barangakuns)) {
-                $barangakuns[] = $detail->barangAkun;
-            }
-        }
-        $barangakuns = collect($barangakuns)->sortBy('nama_barangakun')->values()->all();
+        $barangakuns = Barang_akun::all();
 
         $status = $request->status;
         $created_at = $request->created_at;
@@ -76,14 +75,22 @@ class LaporanPengeluarankaskecilakunController extends Controller
         if ($created_at && $tanggal_akhir) {
             $query->whereDate('created_at', '>=', $created_at)
                 ->whereDate('created_at', '<=', $tanggal_akhir);
+
+            // Exclude records with memotambahan_id outside the date filter
+            $query->where(function ($query) use ($created_at, $tanggal_akhir) {
+                $query->whereNull('memotambahan_id')
+                    ->orWhereHas('memotambahan', function ($q) use ($created_at, $tanggal_akhir) {
+                        $q->whereDate('created_at', '>=', $created_at)
+                            ->whereDate('created_at', '<=', $tanggal_akhir);
+                    });
+            });
         }
 
-        // Tambahkan kondisi untuk memfilter berdasarkan barangakun_id jika ada
         if ($barangakun_id) {
             $query->where('barangakun_id', $barangakun_id);
         }
 
-        $inquery = $query->orderBy('id', 'DESC')->get();
+        $inquery = $query->get();
 
         $pdf = PDF::loadView('admin.laporan_pengeluarankaskecilakun.print', compact('inquery', 'barangakuns'));
         return $pdf->stream('Laporan_Pengeluaran_Kas_Kecil.pdf');

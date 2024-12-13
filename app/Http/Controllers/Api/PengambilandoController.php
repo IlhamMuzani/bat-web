@@ -145,6 +145,11 @@ class PengambilandoController extends Controller
         $karyawan = Karyawan::where('id', $user->karyawan_id)->first();
         $timer = Timer_suratjalan::where('pengambilan_do_id', $id)->latest()->first();
 
+
+        $spk->update([
+            'status_spk' => 'sj'
+        ]);
+
         // Memperbarui timer terakhir jika ada
         if ($timer) {
             $timer->update([
@@ -157,10 +162,6 @@ class PengambilandoController extends Controller
             'user_id' => $user->id,
             'kategori' => 'posting',
             'timer_awal' => now()->format('Y-m-d H:i:s'),
-        ]);
-
-        $spk->update([
-            'status_spk' => 'sj'
         ]);
 
         // Mengupdate semua memo yang berelasi dengan spk
