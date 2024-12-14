@@ -878,4 +878,40 @@ Route::middleware('admin')->prefix('admin')->group(function () {
 
   Route::get('penggantian_oli', [\App\Http\Controllers\Admin\PenggantianOliController::class, 'index']);
 
+  Route::resource('tarif-asuransi', \App\Http\Controllers\Admin\TarifasuransiController::class);
+
+  Route::resource('nota-bon', \App\Http\Controllers\Admin\NotabonController::class);
+  Route::resource('inquery-notabon', \App\Http\Controllers\Admin\InqueryNotabonController::class);
+  Route::get('inquery-notabon/unpostnotabon/{id}', [\App\Http\Controllers\Admin\InqueryNotabonController::class, 'unpostnotabon']);
+  Route::get('inquery-notabon/postingnotabon/{id}', [\App\Http\Controllers\Admin\InqueryNotabonController::class, 'postingnotabon']);
+
+  Route::get('laporan-notabon', [\App\Http\Controllers\Admin\LaporannotabonController::class, 'index']);
+  Route::get('print-notabon', [\App\Http\Controllers\Admin\LaporannotabonController::class, 'print_notabon']);
+
+  Route::get('postingfilternota', [\App\Http\Controllers\Admin\InqueryNotabonController::class, 'postingfilternota']);
+  Route::get('unpostfilternota', [\App\Http\Controllers\Admin\InqueryNotabonController::class, 'unpostfilternota']);
+
+  Route::get('cetak_notafilter', [\App\Http\Controllers\Admin\InqueryNotabonController::class, 'cetak_notafilter']);
+  Route::get('hapusnotabon/{id}', [\App\Http\Controllers\Admin\InqueryNotabonController::class, 'hapusnotabon'])->name('hapusnotabon');
+
+  Route::get('laporan-memoasuransi', [\App\Http\Controllers\Admin\LaporanMemoasuransiController::class, 'index']);
+  Route::get('print-memoasuransi', [\App\Http\Controllers\Admin\LaporanMemoasuransiController::class, 'print_notabon']);
+  Route::get('hapusmemoasuransi/{id}', [\App\Http\Controllers\Admin\InquerymemoasuransiController::class, 'hapusmemoasuransi'])->name('hapusmemoasuransi');
+  Route::resource('memo-asuransi', \App\Http\Controllers\Admin\MemoasuransiController::class);
+  Route::resource('inquery_memoasuransi', \App\Http\Controllers\Admin\InquerymemoasuransiController::class);
+  Route::get('inquery_memoasuransi/unpostmemoasuransi/{id}', [\App\Http\Controllers\Admin\InquerymemoasuransiController::class, 'unpostmemoasuransi']);
+  Route::get('inquery_memoasuransi/postingmemoasuransi/{id}', [\App\Http\Controllers\Admin\InquerymemoasuransiController::class, 'postingmemoasuransi']);
+  Route::resource('saldo-asuransi', \App\Http\Controllers\Admin\LaporanSaldoasuransiController::class);
+  Route::get('print_saldoasuransi', [\App\Http\Controllers\Admin\LaporanSaldoasuransiController::class, 'print_saldoasuransi']);
+  Route::resource('pengambilanasuransi', \App\Http\Controllers\Admin\PengambilanasuransiController::class);
+  Route::get('pengambilan_asuransi/cetak-pdf/{id}', [\App\Http\Controllers\Admin\PengambilanasuransiController::class, 'cetakpdf']);
+  Route::get('laporan_pengeluaranasuransi', [\App\Http\Controllers\Admin\LaporanPengambilanasuransiController::class, 'index']);
+  Route::get('print_pengeluaranasuransi', [\App\Http\Controllers\Admin\LaporanPengambilanasuransiController::class, 'print_pengeluaranasuransi']);
+
+  Route::resource('inquery_pengeluaranasuransi', \App\Http\Controllers\Admin\InqueryPengeluaranasuransiController::class);
+
+  Route::get('inquery_pengeluaranasuransi/unpostpengeluaranasuransi/{id}', [\App\Http\Controllers\Admin\InqueryPengeluaranasuransiController::class, 'unpostpengeluaranasuransi']);
+  Route::get('inquery_pengeluaranasuransi/postingpengeluaranasuransi/{id}', [\App\Http\Controllers\Admin\InqueryPengeluaranasuransiController::class, 'postingpengeluaranasuransi']);
+  Route::get('hapuspengeluaranasuransi/{id}', [\App\Http\Controllers\Admin\InqueryPengeluaranasuransiController::class, 'hapuspengeluaranasuransi'])->name('hapuspengeluaranasuransi');
+  Route::get('excel_notabonfilter', [\App\Http\Controllers\Admin\InqueryNotabonController::class, 'excel_notabonfilter']);
 });

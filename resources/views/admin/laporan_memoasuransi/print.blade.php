@@ -2,14 +2,14 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-12px">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Laporan Nota Return Ekspedisi</title>
+    <title>Laporan Memo Asuransi</title>
     <style>
         html,
         body {
-            font-family: 'DOSVGA', monospace;
+            font-family: 'DOSVGA', Arial, Helvetica, sans-serif;
             color: black;
         }
 
@@ -21,7 +21,7 @@
         .td {
             text-align: center;
             padding: 5px;
-            font-size: 12px;
+            font-size: 13px;
             /* border: 1px solid black; */
         }
 
@@ -58,7 +58,7 @@
         }
 
         .separator {
-            padding-top: 12px;
+            padding-top: 13px;
             text-align: center;
         }
 
@@ -82,13 +82,16 @@
         <img src="{{ public_path('storage/uploads/gambar_logo/Logo.jpg') }}" alt="BAT" width="70" height="35">
     </div>
     <div style="font-weight: bold; text-align: center">
-        <span style="font-weight: bold; font-size: 20px;">LAPORAN NOTA RETURN BARANG EKSPEDISI - RANGKUMAN</span>
+        @php
+            $startDate = request()->query('tanggal_awal');
+            $endDate = request()->query('tanggal_akhir');
+            $kategori = request()->query('kategori');
+        @endphp
+        <span style="font-weight: bold; font-size: 18px;">LAPORAN MEMO ASURANSI - RANGKUMAN</span>
+
         <br>
         <div class="text">
-            @php
-                $startDate = request()->query('tanggal_awal');
-                $endDate = request()->query('tanggal_akhir');
-            @endphp
+
             @if ($startDate && $endDate)
                 <p>Periode:{{ $startDate }} s/d {{ $endDate }}</p>
             @else
@@ -103,67 +106,66 @@
     <table style="width: 100%; border-top: 1px solid black;" cellpadding="2" cellspacing="0">
         <!-- Header row -->
         <tr>
-            <td class="td" style="text-align: left; padding: 5px; font-weight:bold; font-size: 12px;">No</td>
-            <td class="td" style="text-align: left; padding: 5px; font-weight:bold; font-size: 12px;">No. Faktur
-                Return
+            <td class="td" style="text-align: left; padding: 5px; font-weight:bold; font-size: 13px;">Kode Memo
             </td>
-            <td class="td" style="text-align: left; padding: 5px; font-weight:bold; font-size: 12px;width: 12%;">
-                Tanggal
+            <td class="td" style="text-align: left; padding: 5px; font-weight:bold; font-size: 13px;">Kode SPK
             </td>
-            <td class="td" style="text-align: left; padding: 5px; font-weight:bold; font-size: 12px;">Admin</td>
-            {{-- <td class="td" style="text-align: left; padding: 5px; font-weight:bold; font-size: 12px;">Type Memo</td> --}}
-            <td class="td" style="text-align: left; padding: 5px; font-weight:bold; font-size: 12px;">Pelanggan</td>
-            <td class="td" style="text-align: right; padding: 5px; font-weight:bold; font-size: 12px;">Total</td>
+            <td class="td" style="text-align: left; padding: 5px; font-weight:bold; font-size: 13px;">Tanggal</td>
+            <td class="td" style="text-align: left; padding: 5px; font-weight:bold; font-size: 13px;">Nama Tarif
+            </td>
+            <td class="td" style="text-align: right; padding: 5px; font-weight:bold; font-size: 13px;">Nominal
+            </td>
+            <td class="td" style="text-align: right; padding: 5px; font-weight:bold; font-size: 13px;">%
+            </td>
+            <td class="td" style="text-align: right; padding: 5px; font-weight:bold; font-size: 13px;">Total</td>
         </tr>
         <!-- Separator row -->
         <tr style="border-bottom: 1px solid black;">
             <td colspan="5" style="padding: 0px;"></td>
         </tr>
         <!-- Data rows -->
-        @foreach ($inquery as $faktur)
+        @php
+            $total = 0;
+        @endphp
+        @foreach ($inquery as $item)
             <tr>
-                <td class="td" style="text-align: left; padding: 5px; font-size: 12px;">{{ $loop->iteration }}</td>
-                <td class="td" style="text-align: left; padding: 5px; font-size: 12px;">{{ $faktur->kode_return }}
+                <td class="td" style="text-align: left; padding: 5px; font-size: 13px;">{{ $item->kode_memo }}
                 </td>
-                <td class="td" style="text-align: left; padding: 5px; font-size: 12px;">{{ $faktur->tanggal_awal }}
+                <td class="td" style="text-align: left; padding: 5px; font-size: 13px;">
+                    {{ $item->spk->kode_spk ?? null }}
                 </td>
-                <td class="td" style="text-align: left; padding: 5px; font-size: 12px;">
-                    {{ $faktur->user->karyawan->nama_lengkap }}
+                <td class="td" style="text-align: left; padding: 5px; font-size: 13px;">{{ $item->tanggal_awal }}
                 </td>
-                <td class="td" style="text-align: left; padding: 5px; font-size: 12px;">
-                    {{ $faktur->nama_pelanggan }}
+                <td class="td" style="text-align: left; padding: 5px; font-size: 13px;">
+                    {{ $item->nama_tarif }}</td>
+                <td class="td" style="text-align: right; padding: 5px; font-size: 13px;">
+                    {{ number_format($item->nominal_tarif ?? 0, 2, ',', '.') }}
                 </td>
-                <td class="td" style="text-align: right; padding: 5px; font-size: 12px;">
-                    {{ number_format($faktur->grand_total, 0, ',', '.') }}
+                <td class="td" style="text-align: right; padding: 5px; font-size: 13px;">
+                    {{ $item->persen }}
                 </td>
-
+                <td class="td" style="text-align: right; padding: 5px; font-size: 13px;">
+                    {{ number_format($item->hasil_tarif, 2, ',', '.') }}
+                </td>
             </tr>
+            @php
+                $total += $item->hasil_tarif;
+            @endphp
         @endforeach
         <!-- Separator row -->
         <tr style="border-bottom: 1px solid black;">
             <td colspan="" style="padding: 0px;"></td>
         </tr>
-        <!-- Subtotal row -->
-        @php
-            $total = 0;
-        @endphp
-        @foreach ($inquery as $item)
-            @php
-                $total += $item->grand_total;
-            @endphp
-        @endforeach
+
         <tr>
-            <td colspan="5" style="text-align: right; font-weight: bold; padding: 5px; font-size: 12px;">Sub Total
+            <td colspan="6" style="text-align: right; font-weight: bold; padding: 5px; font-size: 13px;">Sub Total
             </td>
-            <td style="text-align: right; font-weight: bold; padding: 5px; font-size: 12px;">
-                {{ number_format($total, 0, ',', '.') }}
+            <td style="text-align: right; font-weight: bold; padding: 5px; font-size: 13px;">Rp.
+                {{ number_format($total, 2, ',', '.') }}
             </td>
+
         </tr>
     </table>
-
-
-
-
     <br>
 
     <!-- Tampilkan sub-total di bawah tabel -->

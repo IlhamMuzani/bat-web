@@ -90,7 +90,7 @@
             display: inline;
         }
     </style>
-    
+
 </head>
 
 <body style="margin: 0; padding: 0;">
@@ -200,7 +200,7 @@
     <br>
     <br>
 
-     <div class="footer">
+    <div class="footer">
         Page <span class="page-number"></span>
     </div>
 
