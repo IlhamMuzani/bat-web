@@ -189,7 +189,8 @@
                                         <div class="form-group" hidden>
                                             <label for="rute_perjalanan_id">rute Id</label>
                                             <input type="text" class="form-control" id="rute_perjalanan_id" readonly
-                                                name="rute_perjalanan_id" placeholder="" value="{{ old('rute_perjalanan_id') }}">
+                                                name="rute_perjalanan_id" placeholder=""
+                                                value="{{ old('rute_perjalanan_id') }}">
                                         </div>
                                         <label style="font-size:14px" class="form-label" for="kode_rute">Kode
                                             Rute</label>
@@ -373,7 +374,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">Data Tarif</h4>
+                            <h4 class="modal-title">Data Asuransi</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -387,9 +388,9 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">No</th>
-                                        <th>Kode Tarif</th>
-                                        <th>Nama Tarif</th>
-                                        <th>Nominal</th>
+                                        <th>Kode Asuransi</th>
+                                        <th>Nama Asuransi</th>
+                                        <th>Rate</th>
                                         <th>Opsi</th>
                                     </tr>
                                 </thead>

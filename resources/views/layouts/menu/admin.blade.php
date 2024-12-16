@@ -771,6 +771,8 @@
     request()->is('admin/tabletagihan*') ||
     request()->is('admin/tablepengeluaran*') ||
     request()->is('admin/tablepelunasan*') ||
+    request()->is('admin/pengambilanujs*') ||
+    request()->is('admin/pengambilanasuransi*') ||
     request()->is('admin/tablepembelianban*') ||
     request()->is('admin/tablepembelianpart*') ||
     request()->is('admin/faktur_ekspedisi*') ||
@@ -806,6 +808,8 @@
         request()->is('admin/tablepembelianban*') ||
         request()->is('admin/tablepembelianpart*') ||
         request()->is('admin/faktur_ekspedisi*') ||
+        request()->is('admin/pengambilanujs*') ||
+        request()->is('admin/pengambilanasuransi*') ||
         request()->is('admin/faktur_pelunasan*') ||
         request()->is('admin/return_ekspedisi*') ||
         request()->is('admin/tagihan_ekspedisi*') ||
@@ -894,6 +898,27 @@
                     class="nav-link {{ request()->is('admin/pilih_deposit*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
                     <p style="font-size: 14px;">Deposit Sopir
+                    </p>
+                </a>
+            </li>
+        @endif
+        @if (auth()->check() && auth()->user()->menu['inquery deposit sopir'])
+            <li class="nav-item">
+                <a href="{{ url('admin/pengambilanujs') }}"
+                    class="nav-link {{ request()->is('admin/pengambilanujs*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 14px;">Pengambilan UJS
+                    </p>
+                </a>
+            </li>
+        @endif
+        @if (auth()->check() && auth()->user()->menu['inquery deposit sopir'])
+            <li class="nav-item">
+                <a href="{{ url('admin/pengambilanasuransi') }}"
+                    class="nav-link {{ request()->is('admin/pengambilanasuransi*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 14px;">Pengambilan Uang -<br>
+                        <span style="margin-left: 32px">Asuransi Barang</span>
                     </p>
                 </a>
             </li>
@@ -1058,7 +1083,6 @@
     request()->is('admin/inquery_perhitungangaji*') ||
     request()->is('admin/inquery_kasbonkaryawan*') ||
     request()->is('admin/listadministrasi*') ||
-    request()->is('admin/saldo_ujs*') ||
     request()->is('admin/saldo-asuransi*') ||
     request()->is('admin/inquery_banpembelianlunas*') ||
     request()->is('admin/inquery_partpembelianlunas*') ||
@@ -1070,6 +1094,7 @@
     request()->is('admin/inquery_pelepasanban*') ||
     request()->is('admin/inquery_pemasanganpart*') ||
     request()->is('admin/inquery_penggantianoli*') ||
+    request()->is('admin/inquery_pemasukanujs*') ||
     request()->is('admin/inquery_penggantianbearing*') ||
     request()->is('admin/inquery_updatekm*') ||
     request()->is('admin/inquery_perhitungangaji*') ||
@@ -1101,10 +1126,10 @@
         request()->is('admin/inquery_perhitungangaji*') ||
         request()->is('admin/inquery_kasbonkaryawan*') ||
         request()->is('admin/listadministrasi*') ||
-        request()->is('admin/saldo_ujs*') ||
         request()->is('admin/saldo-asuransi*') ||
         request()->is('admin/inquery_banpembelianlunas*') ||
         request()->is('admin/inquery_partpembelianlunas*') ||
+        request()->is('admin/inquery_pemasukanujs*') ||
         request()->is('admin/inquery_returnekspedisi*') ||
         request()->is('admin/inquery_tagihanekspedisi*') ||
         request()->is('admin/inquery_perhitungangaji*') ||
@@ -1189,20 +1214,10 @@
         @endif
         @if (auth()->check() && auth()->user()->menu['inquery deposit sopir'])
             <li class="nav-item">
-                <a href="{{ url('admin/listadministrasi') }}"
-                    class="nav-link {{ request()->is('admin/listadministrasi*') || request()->is('admin/saldo_ujs*') || request()->is('admin/pengambilanujs*') ? 'active' : '' }}">
+                <a href="{{ url('admin/inquery_pemasukanujs') }}"
+                    class="nav-link {{ request()->is('admin/inquery_pemasukanujs*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
-                    <p style="font-size: 14px;">UJS(Uang Jaminan Sopir)
-                    </p>
-                </a>
-            </li>
-        @endif
-        @if (auth()->check() && auth()->user()->menu['inquery deposit sopir'])
-            <li class="nav-item">
-                <a href="{{ url('admin/saldo-asuransi') }}"
-                    class="nav-link {{ request()->is('admin/saldo-asuransi*') ? 'active' : '' }}">
-                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
-                    <p style="font-size: 14px;">Saldo Asuransi Barang
+                    <p style="font-size: 14px;">Inquery Pemasukan UJS
                     </p>
                 </a>
             </li>
@@ -1577,6 +1592,7 @@
     request()->is('admin/laporan_perhitungangaji*') ||
     request()->is('admin/laporan_kasbonkaryawan*') ||
     request()->is('admin/laporan_pelunasan*') ||
+    request()->is('admin/saldo_ujs*') ||
     request()->is('admin/laporan_fakturpelunasanban*') ||
     request()->is('admin/laporan_fakturpelunasanpart*') ||
     request()->is('admin/pilih_laporanreturn*') ||
@@ -1609,6 +1625,7 @@
         request()->is('admin/laporan_perhitungangaji*') ||
         request()->is('admin/laporan_kasbonkaryawan*') ||
         request()->is('admin/laporan_pelunasan*') ||
+        request()->is('admin/saldo_ujs*') ||
         request()->is('admin/laporan_fakturpelunasanban*') ||
         request()->is('admin/laporan_fakturpelunasanpart*') ||
         request()->is('admin/pilih_laporanreturn*') ||
@@ -1741,6 +1758,16 @@
                     class="nav-link {{ request()->is('admin/pilih_laporankaskecil*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
                     <p style="font-size: 14px;">Laporan Kas Kecil</p>
+                </a>
+            </li>
+        @endif
+        @if (auth()->check() && auth()->user()->menu['laporan deposit sopir'])
+            <li class="nav-item">
+                <a href="{{ url('admin/saldo_ujs') }}"
+                    class="nav-link {{ request()->is('admin/saldo_ujs*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon" style="font-size: 12px;"></i>
+                    <p style="font-size: 14px;">Laporan UJS
+                    </p>
                 </a>
             </li>
         @endif

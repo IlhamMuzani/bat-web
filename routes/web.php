@@ -914,4 +914,9 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::get('inquery_pengeluaranasuransi/postingpengeluaranasuransi/{id}', [\App\Http\Controllers\Admin\InqueryPengeluaranasuransiController::class, 'postingpengeluaranasuransi']);
   Route::get('hapuspengeluaranasuransi/{id}', [\App\Http\Controllers\Admin\InqueryPengeluaranasuransiController::class, 'hapuspengeluaranasuransi'])->name('hapuspengeluaranasuransi');
   Route::get('excel_notabonfilter', [\App\Http\Controllers\Admin\InqueryNotabonController::class, 'excel_notabonfilter']);
+  Route::get('excel_memoasuransifilter', [\App\Http\Controllers\Admin\InquerymemoasuransiController::class, 'excel_memoasuransifilter']);
+
+  Route::resource('inquery_pemasukanujs', \App\Http\Controllers\Admin\InqueryPemasukanujsController::class);
+  Route::get('laporan_pemasukanujs', [\App\Http\Controllers\Admin\LaporanPemasukanujsController::class, 'index']);
+  Route::get('print_pemasukanujs', [\App\Http\Controllers\Admin\LaporanPemasukanujsController::class, 'print_pemasukanujs']);
 });

@@ -77,7 +77,7 @@
                                 <th>Kode Memo Asuransi</th>
                                 <th>Kode Spk</th>
                                 <th>Tanggal</th>
-                                <th>Nama Tarif</th>
+                                <th>Nama Asuransi</th>
                                 <th>Nominal</th>
                                 <th>%</th>
                                 <th>Total</th>
@@ -134,9 +134,6 @@
                                                 @endif
                                                 @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan update'])
                                                     @if ($memos->spk_id == null)
-                                                        <a class="dropdown-item"
-                                                            href="{{ url('admin/inquery_memoasuransi/' . $memos->id . '/edit') }}">Update</a>
-                                                    @else
                                                         <a class="dropdown-item"
                                                             href="{{ url('admin/inquery_memoasuransi/' . $memos->id . '/edit') }}">Update</a>
                                                     @endif
