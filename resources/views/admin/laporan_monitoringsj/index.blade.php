@@ -46,7 +46,15 @@
                 <div class="card-body">
                     <form method="GET" id="form-action">
                         <div class="row">
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-2 mb-3">
+                                <label for="tanggal_awal">Kategori</label>
+                                <select class="custom-select form-control" id="statusx" name="statusx">
+                                    <option value="">- Pilih Laporan -</option>
+                                    <option value="detail"selected>Detail</option>
+                                    <option value="global">Global</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
                                 <label for="status">Cari Pengurus</label>
                                 <select class="select2bs4 select2-hidden-accessible" name="karyawan_id"
                                     data-placeholder="Cari Pengurus.." style="width: 100%;" id="karyawan_id">
@@ -59,17 +67,29 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-2 mb-3">
+                                <label for="created_at">Status</label>
+                                <select class="custom-select form-control" id="kategori" name="kategori">
+                                    <option value="">- Semua Status -</option>
+                                    <option value="belum_selesai"
+                                        {{ Request::get('kategori') == 'belum_selesai' ? 'selected' : '' }}>
+                                        Belum Selesai
+                                    </option>
+                                    <option value="selesai" {{ Request::get('kategori') == 'selesai' ? 'selected' : '' }}>
+                                        Selesai</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
                                 <label for="tanggal_awal">Tanggal Awal</label>
                                 <input class="form-control" id="tanggal_awal" name="tanggal_awal" type="date"
                                     value="{{ Request::get('tanggal_awal') }}" max="{{ date('Y-m-d') }}" />
                             </div>
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-2 mb-3">
                                 <label for="tanggal_akhir">Tanggal Akhir</label>
                                 <input class="form-control" id="tanggal_akhir" name="tanggal_akhir" type="date"
                                     value="{{ Request::get('tanggal_akhir') }}" max="{{ date('Y-m-d') }}" />
                             </div>
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-2 mb-3">
                                 @if (auth()->check() && auth()->user()->fitur['laporan pemasangan part cari'])
                                     <button type="button" class="btn btn-outline-primary btn-block" onclick="cari()">
                                         <i class="fas fa-search"></i> Cari
@@ -237,5 +257,28 @@
                 alert("Silakan isi kedua tanggal sebelum mencetak.");
             }
         }
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Detect the change event on the 'status' dropdown
+            $('#statusx').on('change', function() {
+                // Get the selected value
+                var selectedValue = $(this).val();
+
+                // Check the selected value and redirect accordingly
+                switch (selectedValue) {
+                    case 'detail':
+                        window.location.href = "{{ url('admin/laporan-monitoringsj') }}";
+                        break;
+                    case 'global':
+                        window.location.href = "{{ url('admin/laporan-monitoringsjglobal') }}";
+                        break;
+                    default:
+                        // Handle other cases or do nothing
+                        break;
+                }
+            });
+        });
     </script>
 @endsection

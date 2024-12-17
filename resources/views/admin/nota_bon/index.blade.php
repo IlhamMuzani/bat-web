@@ -121,20 +121,20 @@
                                                     @if ($saldoTerakhir->sisa_saldo < $nota->nominal)
                                                         <a class="dropdown-item">Saldo tidak cukup</a>
                                                     @else
-                                                        @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan posting'])
+                                                        @if (auth()->check() && auth()->user()->fitur['posting memo ekspedisi'])
                                                             <a class="dropdown-item posting-btn"
                                                                 data-memo-id="{{ $nota->id }}">Posting</a>
                                                         @endif
                                                     @endif
-                                                    @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan update'])
+                                                    @if (auth()->check() && auth()->user()->fitur['update memo ekspedisi'])
                                                         <a class="dropdown-item"
                                                             href="{{ url('admin/inquery-notabon/' . $nota->id . '/edit') }}">Update</a>
                                                     @endif
-                                                    @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan show'])
+                                                    @if (auth()->check() && auth()->user()->fitur['show memo ekspedisi'])
                                                         <a class="dropdown-item"
                                                             href="{{ url('admin/nota-bon/' . $nota->id) }}">Show</a>
                                                     @endif
-                                                    @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan delete'])
+                                                    @if (auth()->check() && auth()->user()->fitur['delete memo ekspedisi'])
                                                         <form style="margin-top:5px" method="GET"
                                                             action="{{ route('hapusnotabon', ['id' => $nota->id]) }}">
                                                             <button type="submit"
@@ -145,17 +145,17 @@
                                                     @endif
                                                 @endif
                                                 @if ($nota->status == 'posting')
-                                                    @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan unpost'])
+                                                    @if (auth()->check() && auth()->user()->fitur['unpost memo ekspedisi'])
                                                         <a class="dropdown-item unpost-btn"
                                                             data-memo-id="{{ $nota->id }}">Unpost</a>
                                                     @endif
-                                                    @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan show'])
+                                                    @if (auth()->check() && auth()->user()->fitur['show memo ekspedisi'])
                                                         <a class="dropdown-item"
                                                             href="{{ url('admin/nota-bon/' . $nota->id) }}">Show</a>
                                                     @endif
                                                 @endif
                                                 @if ($nota->status == 'selesai')
-                                                    @if (auth()->check() && auth()->user()->fitur['inquery memo perjalanan show'])
+                                                    @if (auth()->check() && auth()->user()->fitur['show memo ekspedisi'])
                                                         <a class="dropdown-item"
                                                             href="{{ url('admin/nota-bon/' . $nota->id) }}">Show</a>
                                                     @endif
@@ -175,6 +175,27 @@
                                 <div class="modal-body text-center">
                                     <i class="fas fa-spinner fa-spin fa-3x text-primary"></i>
                                     <h4 class="mt-2">Sedang Menyimpan...</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="validationModal" tabindex="-1" role="dialog"
+                        aria-labelledby="validationModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="validationModalLabel">Validasi Gagal</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true"><i class="fas fa-times"></i></span>
+                                    </button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <i class="fas fa-times-circle fa-3x text-danger"></i>
+                                    <h4 class="mt-2">Validasi Gagal!</h4>
+                                    <p id="validationMessage"></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                                 </div>
                             </div>
                         </div>
@@ -346,39 +367,39 @@
     <script>
         $(document).ready(function() {
             $('.posting-btn').click(function() {
-                var memoId = $(this).data('memo-id');
-                $(this).addClass('disabled');
 
-                // Tampilkan modal loading saat permintaan AJAX diproses
-                $('#modal-loading').modal('show');
+                var memoId = $(this).data('memo-id');
+
+                $(this).addClass('disabled');
 
                 // Kirim permintaan AJAX untuk melakukan posting
                 $.ajax({
-                    url: "{{ url('admin/inquery-notabon/postingnotabon/') }}/" +
-                        memoId,
+                    url: "{{ url('admin/inquery-notabon/postingnotabon/') }}/" + memoId,
                     type: 'GET',
-                    data: {
-                        id: memoId
-                    },
                     success: function(response) {
-                        // Sembunyikan modal loading setelah permintaan selesai
-                        $('#modal-loading').modal('hide');
+                        // Periksa apakah ada pesan success dalam respons
+                        if (response.success) {
+                            // Tampilkan modal loading saat permintaan AJAX berhasil
+                            $('#modal-loading').modal('show');
 
-                        // Tampilkan pesan sukses atau lakukan tindakan lain sesuai kebutuhan
-                        console.log(response);
+                            // Tutup modal setelah berhasil posting
+                            $('#modal-posting-' + memoId).modal('hide');
 
-                        // Tutup modal setelah berhasil posting
-                        $('#modal-posting-' + memoId).modal('hide');
-
-                        // Reload the page to refresh the table
-                        location.reload();
+                            // Muat ulang halaman untuk menyegarkan tabel
+                            location.reload();
+                        } else if (response.error) {
+                            // Tampilkan modal validasi gagal dengan pesan error
+                            $('#validationMessage').text(response.error);
+                            $('#validationModal').modal('show');
+                        }
                     },
-                    error: function(error) {
-                        // Sembunyikan modal loading setelah permintaan selesai
+                    error: function(xhr, status, error) {
+                        // Tampilkan pesan error yang dihasilkan oleh AJAX
+                        alert("Terjadi kesalahan: " + xhr.responseText);
+                    },
+                    complete: function() {
+                        // Sembunyikan modal loading setelah permintaan AJAX selesai
                         $('#modal-loading').modal('hide');
-
-                        // Tampilkan pesan error atau lakukan tindakan lain sesuai kebutuhan
-                        console.log(error);
                     }
                 });
             });

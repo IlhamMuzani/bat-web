@@ -84,7 +84,7 @@
         <img src="{{ public_path('storage/uploads/gambar_logo/Logo.jpg') }}" alt="BAT" width="70" height="35">
     </div>
     <div style="font-weight: bold; text-align: center">
-        <span style="font-weight: bold; font-size: 17px;">LAPORAN MONITORING SURAT JALAN - RANGKUMAN</span>
+        <span style="font-weight: bold; font-size: 17px;">LAPORAN PENERIMAAN SURAT JALAN - RANGKUMAN</span>
         <br>
         <div class="text">
             @php

@@ -919,4 +919,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::resource('inquery_pemasukanujs', \App\Http\Controllers\Admin\InqueryPemasukanujsController::class);
   Route::get('laporan_pemasukanujs', [\App\Http\Controllers\Admin\LaporanPemasukanujsController::class, 'index']);
   Route::get('print_pemasukanujs', [\App\Http\Controllers\Admin\LaporanPemasukanujsController::class, 'print_pemasukanujs']);
+
+  Route::get('laporan-monitoringsjglobal', [\App\Http\Controllers\Admin\LaporanmonitoringsjController::class, 'indexglobal']);
+  Route::get('print-monitoringsjglobal', [\App\Http\Controllers\Admin\LaporanmonitoringsjController::class, 'print_monitoringsjglobal']);
 });
