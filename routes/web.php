@@ -922,4 +922,12 @@ Route::middleware('admin')->prefix('admin')->group(function () {
 
   Route::get('laporan-monitoringsjglobal', [\App\Http\Controllers\Admin\LaporanmonitoringsjController::class, 'indexglobal']);
   Route::get('print-monitoringsjglobal', [\App\Http\Controllers\Admin\LaporanmonitoringsjController::class, 'print_monitoringsjglobal']);
+
+  Route::get('postingfilterpenerimaanpusat', [\App\Http\Controllers\Admin\PenerimaansuratjalanpusatController::class, 'postingfilterpenerimaanpusat']);
+  Route::get('unpostfilterpenerimaanpusat', [\App\Http\Controllers\Admin\PenerimaansuratjalanpusatController::class, 'unpostfilterpenerimaanpusat']);
+
+  Route::resource('penerimaansuratjalanpusat', \App\Http\Controllers\Admin\PenerimaansuratjalanpusatController::class);
+  Route::get('penerimaansuratjalanpusat/unpostpenerimaansuratpusat/{id}', [\App\Http\Controllers\Admin\PenerimaansuratjalanpusatController::class, 'unpostpenerimaansuratpusat']);
+  Route::get('penerimaansuratjalanpusat/postingpenerimaansuratpusat/{id}', [\App\Http\Controllers\Admin\PenerimaansuratjalanpusatController::class, 'postingpenerimaansuratpusat']);
+
 });

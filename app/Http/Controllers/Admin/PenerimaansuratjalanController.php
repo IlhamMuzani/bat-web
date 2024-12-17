@@ -83,17 +83,17 @@ class PenerimaansuratjalanController extends Controller
             'timer_awal' => now()->format('Y-m-d H:i:s'),
         ]);
 
-        // $spk->update([
-        //     'status_spk' => 'sj'
-        // ]);
+        $spk->update([
+            'status_spk' => 'sj'
+        ]);
 
-        // // Mengupdate semua memo yang berelasi dengan spk
-        // $memos = Memo_ekspedisi::where('spk_id', $spk->id)->get();
-        // foreach ($memos as $memo) {
-        //     $memo->update([
-        //         'status_spk' => 'sj'
-        //     ]);
-        // }
+        // Mengupdate semua memo yang berelasi dengan spk
+        $memos = Memo_ekspedisi::where('spk_id', $spk->id)->get();
+        foreach ($memos as $memo) {
+            $memo->update([
+                'status_spk' => 'sj'
+            ]);
+        }
 
         $pengambilan_do->update([
             'status_penerimaansj' => 'posting',
@@ -125,17 +125,17 @@ class PenerimaansuratjalanController extends Controller
             'timer_awal' => now()->format('Y-m-d H:i:s'),
         ]);
 
-        // $spk->update([
-        //     'status_spk' => 'memo'
-        // ]);
+        $spk->update([
+            'status_spk' => 'memo'
+        ]);
 
-        // // Mengupdate semua memo yang berelasi dengan spk
-        // $memos = Memo_ekspedisi::where('spk_id', $spk->id)->get();
-        // foreach ($memos as $memo) {
-        //     $memo->update([
-        //         'status_spk' => null
-        //     ]);
-        // }
+        // Mengupdate semua memo yang berelasi dengan spk
+        $memos = Memo_ekspedisi::where('spk_id', $spk->id)->get();
+        foreach ($memos as $memo) {
+            $memo->update([
+                'status_spk' => null
+            ]);
+        }
 
         $pengambilan_do->update([
             'status_penerimaansj' => 'unpost',
