@@ -641,7 +641,7 @@
                 </a>
             </li>
         @endif
-        @if (auth()->user()->id == 1 || auth()->user()->id == 4)
+        @if (auth()->user()->id == 1)
             @if (auth()->check() && auth()->user()->menu['update km'])
                 <li class="nav-item">
                     <a href="{{ url('admin/penerimaansuratjalanpusat') }}"
