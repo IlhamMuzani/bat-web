@@ -133,6 +133,7 @@
                                     <th> <input type="checkbox" name="" id="select_all_ids"></th>
                                     <th>No</th>
                                     <th>Kode Spk</th>
+                                    <th>Penerima</th>
                                     <th>Pelanggan</th>
                                     <th>Rute</th>
                                     {{-- <th>Kode Memo</th> --}}
@@ -149,6 +150,7 @@
                                                 value="{{ $pengambilan_do->id }}"></td>
                                         <td class="text-center">{{ $loop->iteration }}</td>
                                         <td>{{ $pengambilan_do->spk->kode_spk ?? '-' }}</td>
+                                        <td>{{ $pengambilan_do->penerima_sj ?? null }}</td>
                                         <td>{{ $pengambilan_do->spk->nama_pelanggan ?? '-' }}</td>
                                         <td>{{ $pengambilan_do->spk->nama_rute ?? '-' }}</td>
                                         <td>{{ $pengambilan_do->tanggal_awal }}</td>

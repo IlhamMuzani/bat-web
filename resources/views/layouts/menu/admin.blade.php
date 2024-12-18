@@ -652,6 +652,7 @@
                 </li>
             @endif
         @endif
+        
         @if (auth()->check() && auth()->user()->menu['memo ekspedisi'])
             <li class="nav-item">
                 <a href="{{ url('admin/status_pemberiando') }}"
