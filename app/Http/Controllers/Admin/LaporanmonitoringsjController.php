@@ -184,12 +184,73 @@ class LaporanmonitoringsjController extends Controller
                     ->whereDate('tanggal_awal', '>=', $tanggal_awal)
                     ->whereDate('tanggal_awal', '<=', $tanggal_akhir)
                     ->count();
+
+                // Hitung jumlah surat jalan diterima yang terkait dengan kendaraan no_kabin diawali K1
+                $pengurus->jumlah_surat_jalan_k1 = Pengambilan_do::where('penerima_sj', $pengurus->nama_lengkap)
+                    ->whereDate('tanggal_awal', '>=', $tanggal_awal)
+                    ->whereDate('tanggal_awal', '<=', $tanggal_akhir)
+                    ->whereHas('kendaraan', function ($query) {
+                        $query->where('no_kabin', 'like', 'K1%');
+                    })
+                    ->count();
+                // Hitung jumlah surat jalan diterima yang terkait dengan kendaraan no_kabin diawali K1
+                $pengurus->jumlah_surat_jalan_k2 = Pengambilan_do::where('penerima_sj', $pengurus->nama_lengkap)
+                    ->whereDate('tanggal_awal', '>=', $tanggal_awal)
+                    ->whereDate('tanggal_awal', '<=', $tanggal_akhir)
+                    ->whereHas('kendaraan', function ($query) {
+                        $query->where('no_kabin', 'like', 'K2%');
+                    })
+                    ->count();
+                $pengurus->jumlah_surat_jalan_k3 = Pengambilan_do::where('penerima_sj', $pengurus->nama_lengkap)
+                    ->whereDate('tanggal_awal', '>=', $tanggal_awal)
+                    ->whereDate('tanggal_awal', '<=', $tanggal_akhir)
+                    ->whereHas('kendaraan', function ($query) {
+                        $query->where('no_kabin', 'like', 'K3%');
+                    })
+                    ->count();
+                $pengurus->jumlah_surat_jalan_k4 = Pengambilan_do::where('penerima_sj', $pengurus->nama_lengkap)
+                    ->whereDate('tanggal_awal', '>=', $tanggal_awal)
+                    ->whereDate('tanggal_awal', '<=', $tanggal_akhir)
+                    ->whereHas('kendaraan', function ($query) {
+                        $query->where('no_kabin', 'like', 'K4%');
+                    })
+                    ->count();
+                $pengurus->jumlah_surat_jalan_k5 = Pengambilan_do::where('penerima_sj', $pengurus->nama_lengkap)
+                    ->whereDate('tanggal_awal', '>=', $tanggal_awal)
+                    ->whereDate('tanggal_awal', '<=', $tanggal_akhir)
+                    ->whereHas('kendaraan', function ($query) {
+                        $query->where('no_kabin', 'like', 'K5%');
+                    })
+                    ->count();
+                $pengurus->jumlah_surat_jalan_k6 = Pengambilan_do::where('penerima_sj', $pengurus->nama_lengkap)
+                    ->whereDate('tanggal_awal', '>=', $tanggal_awal)
+                    ->whereDate('tanggal_awal', '<=', $tanggal_akhir)
+                    ->whereHas('kendaraan', function ($query) {
+                        $query->where('no_kabin', 'like', 'K6%');
+                    })
+                    ->count();
+                $pengurus->jumlah_surat_jalan_k7 = Pengambilan_do::where('penerima_sj', $pengurus->nama_lengkap)
+                    ->whereDate('tanggal_awal', '>=', $tanggal_awal)
+                    ->whereDate('tanggal_awal', '<=', $tanggal_akhir)
+                    ->whereHas('kendaraan', function ($query) {
+                        $query->where('no_kabin', 'like', 'K7%');
+                    })
+                    ->count();
             } else {
                 // Default ke 0 jika tidak ada filter tanggal
                 $pengurus->jumlah_surat_jalan_diterima = 0;
+                $pengurus->jumlah_surat_jalan_k1 = 0;
+                $pengurus->jumlah_surat_jalan_k2 = 0;
+                $pengurus->jumlah_surat_jalan_k3 = 0;
+                $pengurus->jumlah_surat_jalan_k4 = 0;
+                $pengurus->jumlah_surat_jalan_k5 = 0;
+                $pengurus->jumlah_surat_jalan_k6 = 0;
+                $pengurus->jumlah_surat_jalan_k7 = 0;
             }
+
             return $pengurus;
         });
+
 
         return view('admin.laporan_monitoringsjglobal.index', compact('inquery', 'pengurus'));
     }
@@ -251,10 +312,70 @@ class LaporanmonitoringsjController extends Controller
                     ->whereDate('tanggal_awal', '>=', $tanggal_awal)
                     ->whereDate('tanggal_awal', '<=', $tanggal_akhir)
                     ->count();
+
+                // Hitung jumlah surat jalan diterima yang terkait dengan kendaraan no_kabin diawali K1
+                $pengurus->jumlah_surat_jalan_k1 = Pengambilan_do::where('penerima_sj', $pengurus->nama_lengkap)
+                    ->whereDate('tanggal_awal', '>=', $tanggal_awal)
+                    ->whereDate('tanggal_awal', '<=', $tanggal_akhir)
+                    ->whereHas('kendaraan', function ($query) {
+                        $query->where('no_kabin', 'like', 'K1%');
+                    })
+                    ->count();
+                // Hitung jumlah surat jalan diterima yang terkait dengan kendaraan no_kabin diawali K1
+                $pengurus->jumlah_surat_jalan_k2 = Pengambilan_do::where('penerima_sj', $pengurus->nama_lengkap)
+                    ->whereDate('tanggal_awal', '>=', $tanggal_awal)
+                    ->whereDate('tanggal_awal', '<=', $tanggal_akhir)
+                    ->whereHas('kendaraan', function ($query) {
+                        $query->where('no_kabin', 'like', 'K2%');
+                    })
+                    ->count();
+                $pengurus->jumlah_surat_jalan_k3 = Pengambilan_do::where('penerima_sj', $pengurus->nama_lengkap)
+                    ->whereDate('tanggal_awal', '>=', $tanggal_awal)
+                    ->whereDate('tanggal_awal', '<=', $tanggal_akhir)
+                    ->whereHas('kendaraan', function ($query) {
+                        $query->where('no_kabin', 'like', 'K3%');
+                    })
+                    ->count();
+                $pengurus->jumlah_surat_jalan_k4 = Pengambilan_do::where('penerima_sj', $pengurus->nama_lengkap)
+                    ->whereDate('tanggal_awal', '>=', $tanggal_awal)
+                    ->whereDate('tanggal_awal', '<=', $tanggal_akhir)
+                    ->whereHas('kendaraan', function ($query) {
+                        $query->where('no_kabin', 'like', 'K4%');
+                    })
+                    ->count();
+                $pengurus->jumlah_surat_jalan_k5 = Pengambilan_do::where('penerima_sj', $pengurus->nama_lengkap)
+                    ->whereDate('tanggal_awal', '>=', $tanggal_awal)
+                    ->whereDate('tanggal_awal', '<=', $tanggal_akhir)
+                    ->whereHas('kendaraan', function ($query) {
+                        $query->where('no_kabin', 'like', 'K5%');
+                    })
+                    ->count();
+                $pengurus->jumlah_surat_jalan_k6 = Pengambilan_do::where('penerima_sj', $pengurus->nama_lengkap)
+                    ->whereDate('tanggal_awal', '>=', $tanggal_awal)
+                    ->whereDate('tanggal_awal', '<=', $tanggal_akhir)
+                    ->whereHas('kendaraan', function ($query) {
+                        $query->where('no_kabin', 'like', 'K6%');
+                    })
+                    ->count();
+                $pengurus->jumlah_surat_jalan_k7 = Pengambilan_do::where('penerima_sj', $pengurus->nama_lengkap)
+                    ->whereDate('tanggal_awal', '>=', $tanggal_awal)
+                    ->whereDate('tanggal_awal', '<=', $tanggal_akhir)
+                    ->whereHas('kendaraan', function ($query) {
+                        $query->where('no_kabin', 'like', 'K7%');
+                    })
+                    ->count();
             } else {
                 // Default ke 0 jika tidak ada filter tanggal
                 $pengurus->jumlah_surat_jalan_diterima = 0;
+                $pengurus->jumlah_surat_jalan_k1 = 0;
+                $pengurus->jumlah_surat_jalan_k2 = 0;
+                $pengurus->jumlah_surat_jalan_k3 = 0;
+                $pengurus->jumlah_surat_jalan_k4 = 0;
+                $pengurus->jumlah_surat_jalan_k5 = 0;
+                $pengurus->jumlah_surat_jalan_k6 = 0;
+                $pengurus->jumlah_surat_jalan_k7 = 0;
             }
+
             return $pengurus;
         });
 
@@ -264,5 +385,59 @@ class LaporanmonitoringsjController extends Controller
         // Tampilkan PDF
         return $pdf->stream('Laporan_Monitoring_SJ.pdf');
     }
+
+
+
+
+    // public function index(Request $request)
+    // {
+    //     $status = $request->status;
+    //     $tanggal_awal = $request->tanggal_awal;
+    //     $tanggal_akhir = $request->tanggal_akhir;
+    //     $karyawan_id = $request->karyawan_id; // Ambil karyawan_id dari input
+
+    //     // Data untuk dropdown pengurus
+    //     $pengurus = Karyawan::select('id', 'kode_karyawan', 'nama_lengkap')
+    //         ->where('departemen_id', '5')
+    //         ->orderBy('nama_lengkap')
+    //         ->get();
+
+    //     // Inisialisasi query
+    //     $inquery = Pengambilan_do::orderBy('id', 'DESC');
+
+    //     // Filter status
+    //     if ($status) {
+    //         $inquery->where('status', $status);
+    //     } else {
+    //         $inquery->where('status', '!=', 'unpost'); // Mengambil data dengan status selain 'unpost'
+    //     }
+
+    //     // Filter kolom penerima_sj tidak null
+    //     $inquery->whereNotNull('penerima_sj');
+    //     $inquery->where('status_penerimaansj', '!=', 'unpost');
+
+    //     // Filter tanggal
+    //     if ($tanggal_awal && $tanggal_akhir) {
+    //         $inquery->whereDate('tanggal_awal', '>=', $tanggal_awal)
+    //             ->whereDate('tanggal_awal', '<=', $tanggal_akhir);
+    //     }
+
+    //     // Filter berdasarkan karyawan_id
+    //     if ($karyawan_id) {
+    //         $inquery->whereHas('timer_suratjalan', function ($query) use ($karyawan_id) {
+    //             $query->whereHas('user', function ($query) use ($karyawan_id) {
+    //                 $query->where('karyawan_id', $karyawan_id);
+    //             });
+    //         });
+    //     }
+
+    //     // Periksa apakah pencarian dilakukan
+    //     $hasSearch = $status || $karyawan_id || ($tanggal_awal && $tanggal_akhir);
+    //     $inquery = $hasSearch ? $inquery->get() : collect();
+
+    //     // Return ke view
+    //     return view('admin.laporan_monitoringsj.index', compact('inquery', 'pengurus'));
+    // }
+
 
 }
