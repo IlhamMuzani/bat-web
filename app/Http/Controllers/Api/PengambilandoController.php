@@ -138,60 +138,131 @@ class PengambilandoController extends Controller
 
     public function terima(Request $request, $id)
     {
-        $pengambilan = Pengambilan_do::findOrFail($id);
-        $spk = Spk::where('id', $pengambilan->spk_id)->first();
-        $penerimasj = $request->penerima_sj;
-        $user = User::where('id', $penerimasj)->first();
-        $karyawan = Karyawan::where('id', $user->karyawan_id)->first();
-        $timer = Timer_suratjalan::where('pengambilan_do_id', $id)->latest()->first();
-
-
-        $spk->update([
-            'status_spk' => 'sj'
-        ]);
-
-        // Memperbarui timer terakhir jika ada
-        if ($timer) {
-            $timer->update([
-                'timer_akhir' => now()->format('Y-m-d H:i:s'),
+        try {
+            // Validasi data yang diterima dari request
+            $request->validate([
+                'penerima_sj' => 'required|exists:users,id'
             ]);
-        }
 
-        Timer_suratjalan::create([
-            'pengambilan_do_id' => $id,
-            'user_id' => $user->id,
-            'kategori' => 'posting',
-            'timer_awal' => now()->format('Y-m-d H:i:s'),
-        ]);
+            // Cari Pengambilan DO
+            $pengambilan = Pengambilan_do::findOrFail($id);
 
-        // Mengupdate semua memo yang berelasi dengan spk
-        $memos = Memo_ekspedisi::where('spk_id', $spk->id)->get();
-        foreach ($memos as $memo) {
-            $memo->update([
-                'status_spk' => 'sj'
+            // Cari SPK terkait
+            $spk = Spk::findOrFail($pengambilan->spk_id);
+
+            // Cari User dan Karyawan penerima SJ
+            $penerimasj = $request->penerima_sj;
+            $user = User::findOrFail($penerimasj);
+            $karyawan = Karyawan::findOrFail($user->karyawan_id);
+
+            // Cari Timer Surat Jalan terakhir
+            $timer = Timer_suratjalan::where('pengambilan_do_id', $id)->latest()->first();
+
+            // Update status SPK
+            $spk->update(['status_spk' => 'sj']);
+
+            // Update timer terakhir jika ada
+            if ($timer) {
+                $timer->update([
+                    'timer_akhir' => now()->format('Y-m-d H:i:s'),
+                ]);
+            }
+
+            // Buat Timer Surat Jalan baru
+            Timer_suratjalan::create([
+                'pengambilan_do_id' => $id,
+                'user_id' => $user->id,
+                'kategori' => 'posting',
+                'timer_awal' => now()->format('Y-m-d H:i:s'),
             ]);
-        }
 
-        $pengambilan->update([
-            'status_penerimaansj' => 'posting',
-            'userpenerima_id' => $penerimasj,
-            'penerima_sj' => $karyawan->nama_lengkap,
-            // 'start_waktuditerima' => now()->format('Y-m-d H:i:s')
-        ]);
+            // Update semua Memo Ekspedisi terkait SPK
+            Memo_ekspedisi::where('spk_id', $spk->id)->update(['status_spk' => 'sj']);
 
-        if ($pengambilan) {
+            // Update Pengambilan DO
+            $pengambilan->update([
+                'status_penerimaansj' => 'posting',
+                'userpenerima_id' => $penerimasj,
+                'penerima_sj' => $karyawan->nama_lengkap,
+            ]);
+
+            // Response sukses
             return response()->json([
                 'status' => true,
-                'msg' => 'Status Berhasil',
+                'msg' => 'Status berhasil diperbarui.',
             ]);
-        } else {
-            // Lakukan penanganan error yang sesuai jika update gagal
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Tangani validasi error
             return response()->json([
                 'status' => false,
-                'msg' => 'Gagal memperbarui status',
+                'msg' => 'Validasi gagal.',
+            ], 422);
+        } catch (\Exception $e) {
+            // Tangani error lainnya
+            return response()->json([
+                'status' => false,
+                'msg' => 'Terjadi kesalahan saat memperbarui status.',
             ], 500);
         }
     }
+
+
+    // public function terima(Request $request, $id)
+    // {
+    //     $pengambilan = Pengambilan_do::findOrFail($id);
+    //     $spk = Spk::findOrFail($pengambilan->spk_id);
+    //     $penerimasj = $request->penerima_sj;
+    //     $user = User::where('id', $penerimasj)->first();
+    //     $karyawan = Karyawan::where('id', $user->karyawan_id)->first();
+    //     $timer = Timer_suratjalan::where('pengambilan_do_id', $id)->latest()->first();
+
+
+    //     $spk->update([
+    //         'status_spk' => 'sj'
+    //     ]);
+
+    //     // Memperbarui timer terakhir jika ada
+    //     if ($timer) {
+    //         $timer->update([
+    //             'timer_akhir' => now()->format('Y-m-d H:i:s'),
+    //         ]);
+    //     }
+
+    //     Timer_suratjalan::create([
+    //         'pengambilan_do_id' => $id,
+    //         'user_id' => $user->id,
+    //         'kategori' => 'posting',
+    //         'timer_awal' => now()->format('Y-m-d H:i:s'),
+    //     ]);
+
+    //     // Mengupdate semua memo yang berelasi dengan spk
+    //     $memos = Memo_ekspedisi::where('spk_id', $spk->id)->get();
+    //     foreach ($memos as $memo) {
+    //         $memo->update([
+    //             'status_spk' => 'sj'
+    //         ]);
+    //     }
+
+    //     $pengambilan->update([
+    //         'status_penerimaansj' => 'posting',
+    //         'userpenerima_id' => $penerimasj,
+    //         'penerima_sj' => $karyawan->nama_lengkap,
+    //         // 'start_waktuditerima' => now()->format('Y-m-d H:i:s')
+    //     ]);
+
+    //     if ($pengambilan) {
+    //         return response()->json([
+    //             'status' => true,
+    //             'msg' => 'Status Berhasil',
+    //         ]);
+    //     } else {
+    //         // Lakukan penanganan error yang sesuai jika update gagal
+    //         return response()->json([
+    //             'status' => false,
+    //             'msg' => 'Gagal memperbarui status',
+    //         ], 500);
+    //     }
+    // }
 
     public function batal_terima(Request $request, $id)
     {
