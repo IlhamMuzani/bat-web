@@ -84,7 +84,14 @@ class InqueryFakturekspedisispkController extends Controller
         $details = Detail_faktur::where('faktur_ekspedisi_id', $id)->get();
         $detailtarifs = Detail_tariftambahan::where('faktur_ekspedisi_id', $id)->get();
         $kendaraans = Kendaraan::get();
-        $spks = Spk::where('status_spk', 'sj')->get();
+        $spks = Spk::whereIn('status_spk', ['sj', 'memo'])
+            ->whereHas('memo_ekspedisi', function ($query) {
+                $query->where('status_spk', 'sj');
+            })
+            ->orderBy('created_at', 'desc')
+            ->with('memo_ekspedisi')
+            ->get();
+
         $karyawans = Karyawan::select('id', 'kode_karyawan', 'nama_lengkap', 'alamat', 'telp')
             ->where('departemen_id', '4')
             ->orderBy('nama_lengkap')
