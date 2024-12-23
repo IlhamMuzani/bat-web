@@ -929,5 +929,6 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::resource('penerimaansuratjalanpusat', \App\Http\Controllers\Admin\PenerimaansuratjalanpusatController::class);
   Route::get('penerimaansuratjalanpusat/unpostpenerimaansuratpusat/{id}', [\App\Http\Controllers\Admin\PenerimaansuratjalanpusatController::class, 'unpostpenerimaansuratpusat']);
   Route::get('penerimaansuratjalanpusat/postingpenerimaansuratpusat/{id}', [\App\Http\Controllers\Admin\PenerimaansuratjalanpusatController::class, 'postingpenerimaansuratpusat']);
+  Route::get('postingstatussj', [\App\Http\Controllers\Admin\InqueryPengambilandoController::class, 'postingstatussj']);
 
 });
