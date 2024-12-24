@@ -97,6 +97,10 @@
                                     <i class="fas fa-times-circle"></i> Unpost Filter
                                 </button>
                                 <button type="button" class="btn btn-success btn-block mt-1" id="postingfilter"
+                                    onclick="postingSelectedDataishak()">
+                                    <i class="fas fa-check-square"></i> Posting ishak
+                                </button>
+                                <button type="button" class="btn btn-success btn-block mt-1" id="postingfilter"
                                     onclick="postingSelectedDatasj()">
                                     <i class="fas fa-check-square"></i> Posting Ubah SJ
                                 </button>
@@ -404,6 +408,47 @@
 
                 $.ajax({
                     url: "{{ url('admin/postingstatussj') }}?ids=" + selectedIdsString,
+                    type: 'GET',
+                    success: function(response) {
+                        // Sembunyikan modal loading setelah permintaan selesai
+                        $('#modal-loading').modal('hide');
+
+                        // Tampilkan pesan sukses atau lakukan tindakan lain sesuai kebutuhan
+                        console.log(response);
+
+                        // Reload the page to refresh the table
+                        location.reload();
+                    },
+                    error: function(error) {
+                        // Sembunyikan modal loading setelah permintaan selesai
+                        $('#modal-loading').modal('hide');
+
+                        // Tampilkan pesan error atau lakukan tindakan lain sesuai kebutuhan
+                        console.log(error);
+                    }
+                });
+            }
+        }
+
+        function postingSelectedDataishak() {
+            var selectedCheckboxes = document.querySelectorAll(".checkbox_ids:checked");
+            if (selectedCheckboxes.length === 0) {
+                // Tampilkan modal peringatan jika tidak ada item yang dipilih
+                $('#validationMessage').text('Harap centang setidaknya satu item sebelum posting.');
+                $('#validationModal').modal('show');
+            } else {
+                var selectedIds = [];
+                selectedCheckboxes.forEach(function(checkbox) {
+                    selectedIds.push(checkbox.value);
+                });
+                var selectedIdsString = selectedIds.join(',');
+                document.getElementById('postingfilter').value = selectedIdsString;
+
+                // Tampilkan modal loading sebelum mengirim permintaan AJAX
+                $('#modal-loading').modal('show');
+
+                $.ajax({
+                    url: "{{ url('admin/postingfilterpenerimaanishak') }}?ids=" + selectedIdsString,
                     type: 'GET',
                     success: function(response) {
                         // Sembunyikan modal loading setelah permintaan selesai

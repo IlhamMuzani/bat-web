@@ -930,5 +930,5 @@ Route::middleware('admin')->prefix('admin')->group(function () {
   Route::get('penerimaansuratjalanpusat/unpostpenerimaansuratpusat/{id}', [\App\Http\Controllers\Admin\PenerimaansuratjalanpusatController::class, 'unpostpenerimaansuratpusat']);
   Route::get('penerimaansuratjalanpusat/postingpenerimaansuratpusat/{id}', [\App\Http\Controllers\Admin\PenerimaansuratjalanpusatController::class, 'postingpenerimaansuratpusat']);
   Route::get('postingstatussj', [\App\Http\Controllers\Admin\InqueryPengambilandoController::class, 'postingstatussj']);
-
+  Route::get('postingfilterpenerimaanishak', [\App\Http\Controllers\Admin\PenerimaansuratjalanpusatController::class, 'postingfilterpenerimaanishak']);
 });
