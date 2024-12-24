@@ -647,7 +647,7 @@ class InqueryMemoekspedisiController extends Controller
                     ->count();
 
                 // If the driver has three or more posted memos, skip this memo
-                if ($postedCount >= 3) {
+                if ($postedCount >= 10) {
                     continue;
                 }
 
@@ -697,7 +697,7 @@ class InqueryMemoekspedisiController extends Controller
 
                 // Jika jumlahnya sudah mencapai atau melebihi 3 dan memo ekspedisi ini belum diposting, lewati memo ekspedisi ini
 
-                if ($postedCount >= 3 && $item->status !== 'posting') {
+                if ($postedCount >= 10 && $item->status !== 'posting') {
                     continue;
                 }
 
