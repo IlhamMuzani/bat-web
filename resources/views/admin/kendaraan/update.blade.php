@@ -223,66 +223,65 @@
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label for="target_olimesin">Target Oli Mesin</label>
-                                <input type="text" class="form-control" id="target_olimesin" name="target_olimesin"
-                                    placeholder="Masukan target oli mesin"
-                                    value="{{ old('target_olimesin', $kendaraan->target_olimesin) }}">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label for="target_oligardan">Target Oli Gardan</label>
-                                <input type="text" class="form-control" id="target_oligardan" name="target_oligardan"
-                                    placeholder="Masukan target oli gardan"
-                                    value="{{ old('target_oligardan', $kendaraan->target_oligardan) }}">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label for="target_olitransmisi">Target Oli Transmisi</label>
-                                <input type="text" class="form-control" id="target_olitransmisi"
-                                    name="target_olitransmisi" placeholder="Masukan target oli transmisi"
-                                    value="{{ old('target_olitransmisi', $kendaraan->target_olitransmisi) }}">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="gambar_barcodesolar">
-                                    Gambar Barcode Solar
-                                    <small>(kosongkan saja jika tidak ingin diubah)</small>
-                                </label>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="gambar_barcodesolar"
-                                        name="gambar_barcodesolar" accept="image/*">
-                                    <label class="custom-file-label" for="gambar_barcodesolar">Pilih Gambar</label>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="target_olimesin">Target Oli Mesin</label>
+                                    <input type="text" class="form-control" id="target_olimesin"
+                                        name="target_olimesin" placeholder="Masukan target oli mesin"
+                                        value="{{ old('target_olimesin', $kendaraan->target_olimesin) }}">
+                                    </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="gambar_stnk">
-                                    Gambar Stnk
-                                    <small>(kosongkan saja jika tidak ingin diubah)</small>
-                                </label>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="gambar_stnk" name="gambar_stnk"
-                                        accept="image/*">
-                                    <label class="custom-file-label" for="gambar_stnk">Pilih Gambar</label>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="target_oligardan">Target Oli Gardan</label>
+                                    <input type="text" class="form-control" id="target_oligardan"
+                                        name="target_oligardan" placeholder="Masukan target oli gardan"
+                                        value="{{ old('target_oligardan', $kendaraan->target_oligardan) }}">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="target_olitransmisi">Target Oli Transmisi</label>
+                                    <input type="text" class="form-control" id="target_olitransmisi"
+                                        name="target_olitransmisi" placeholder="Masukan target oli transmisi"
+                                        value="{{ old('target_olitransmisi', $kendaraan->target_olitransmisi) }}">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="gambar_barcodesolar">
+                                        Gambar Barcode Solar
+                                        <small>(kosongkan saja jika tidak ingin diubah)</small>
+                                    </label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="gambar_barcodesolar"
+                                            name="gambar_barcodesolar" accept="image/*">
+                                        <label class="custom-file-label" for="gambar_barcodesolar">Pilih Gambar</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="gambar_stnk">
+                                        Gambar Stnk
+                                        <small>(kosongkan saja jika tidak ingin diubah)</small>
+                                    </label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="gambar_stnk"
+                                            name="gambar_stnk" accept="image/*">
+                                        <label class="custom-file-label" for="gambar_stnk">Pilih Gambar</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="card-footer text-right">
-                    <button type="reset" class="btn btn-secondary">Reset</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
+                    <div class="card-footer text-right">
+                        <button type="reset" class="btn btn-secondary">Reset</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
             </form>
             {{-- </div> --}}
         </div>
