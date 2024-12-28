@@ -731,6 +731,7 @@ class PengambilandoController extends Controller
             'gambar3' => $namagambar3,
             'status' => 'tunggu bongkar',
             'waktu_suratawal' => now()->format('Y-m-d H:i:s'),
+            'waktu_upload_mt' => now()->format('Y-m-d H:i:s'),
             'status_suratjalan' => 'belum pulang'
         ]);
 
@@ -1099,6 +1100,7 @@ class PengambilandoController extends Controller
             'bukti3' => $namabukti3,
             'status' => 'selesai',
             'km_akhir' => $kendaraan ? $kendaraan->km : null,
+            'waktu_upload_bk' => now()->format('Y-m-d H:i:s'),
             'waktu_akhir' => now()->format('Y-m-d H:i:s')
         ]);
 
