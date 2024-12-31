@@ -32,14 +32,19 @@ class FakturekspedisispkController extends Controller
             ->orderBy('nama_lengkap')
             ->get();
 
+        // $spks = Spk::whereIn('status_spk', ['sj', 'memo'])
+        //     ->whereHas('memo_ekspedisi', function ($query) {
+        //         $query->where('status_spk', 'sj');
+        //     })
+        //     ->orderBy('created_at', 'desc')
+        //     ->with('memo_ekspedisi')
+        //     ->get();
+
         $spks = Spk::whereIn('status_spk', ['sj', 'memo'])
-            ->whereHas('memo_ekspedisi', function ($query) {
-                $query->where('status_spk', 'sj');
-            })
             ->orderBy('created_at', 'desc')
             ->with('memo_ekspedisi')
             ->get();
-            
+
         $memoEkspedisi = Memo_ekspedisi::whereHas('spk', function ($query) {
             $query->where('status_spk', 'sj');
         })->where(['status_memo' => null, 'status' => 'posting'])->get();
