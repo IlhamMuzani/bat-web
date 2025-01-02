@@ -200,7 +200,7 @@
     <br>
     <table cellpadding="2" cellspacing="0">
         <tr>
-            <td class="info-catatan2" style="font-size: 13px;">PT. JAVA LINE LOGISTICS</td>
+            <td class="info-catatan2" style="font-size: 13px;">PT. BINA ANUGERAH TRANSINDO</td>
             <td class="info-catatan2" style="font-size: 13px; margin-left: 40px; display: block;">Nama Supplier</td>
             <td style="text-align: left; font-size: 13px;">
                 <span class="content2">
