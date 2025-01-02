@@ -191,15 +191,15 @@
                         <div class="col-lg-4">
                             <div style="margin-right: 20px; margin-left:20px" class="form-group">
                                 <input style="font-size:14px" type="text" class="form-control" id="qty_akibekas"
-                                    onkeypress="return /[0-9.]/.test(event.key)" name="qty_akibekas"
-                                    placeholder="qty aki bekas" value="{{ old('qty_akibekas') }}">
+                                    name="qty_akibekas" placeholder="qty aki bekas" value="{{ old('qty_akibekas') }}"
+                                    oninput="calculateTotal()">
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div style="margin-right: 20px; margin-left:20px" class="form-group">
                                 <input style="font-size:14px" type="text" class="form-control" id="harga_akibekas"
-                                    onkeypress="return /[0-9.]/.test(event.key)" name="harga_akibekas"
-                                    placeholder="harga aki bekas" value="{{ old('harga_akibekas') }}">
+                                    name="harga_akibekas" placeholder="harga aki bekas"
+                                    value="{{ old('harga_akibekas') }}" oninput="calculateTotal()">
                             </div>
                         </div>
                         <div class="col-lg-4">
@@ -210,6 +210,9 @@
                             </div>
                         </div>
                     </div>
+
+
+
                     <div style="margin-right: 20px; margin-left:20px" class="form-group">
                         <label style="font-size:14px" class="mt-3" for="nopol">Grand Total</label>
                         <input style="font-size:14px" type="text" class="form-control text-right" id="total_harga"
@@ -394,26 +397,34 @@
     </script>
 
     <script>
+        function calculateTotal() {
+            var qty2 = parseFloat(document.getElementById('qty_akibekas').value) || 0;
+            var harga2 = parseFloat(document.getElementById('harga_akibekas').value) || 0;
+            var total = qty2 * harga2;
+            document.getElementById('total_akibekas').value = total.toFixed(0);
+        }
+    </script>
+
+    <script>
         function updateGrandTotal() {
             var grandTotal = 0;
 
-            // Loop through all elements with name "harga"
+            // Loop through all elements with name "nominal_tambahan[]"
             $('input[name^="harga"]').each(function() {
                 var nominalValue = parseFloat($(this).val().replace(/\./g, '').replace(',', '.')) || 0;
                 grandTotal += nominalValue;
             });
-            var qtyAkibekas = parseFloat($('#qty_akibekas').val().replace('.', ',').replace(/\./g, '').replace(',', '.')) ||
-                0;
-            var priceAkibekas = parseFloat($('#harga_akibekas').val().replace(/\./g, '').replace(',', '.')) || 0;
-            var totalAkibekas = qtyAkibekas * priceAkibekas;
+            // $('#sub_total').val(grandTotal.toLocaleString('id-ID'));
+            // $('#pph2').val(pph2Value.toLocaleString('id-ID'));
             $('#grand_total').val(formatRupiah(grandTotal));
-            $('#total_akibekas').val(formatRupiah(totalAkibekas));
-            var totalHarga = grandTotal - totalAkibekas;
-            $('#total_harga').val(formatRupiah(totalHarga));
+            console.log(grandTotal);
         }
-        $('body').on('input', 'input[name^="harga"], #qty_akibekas, #harga_akibekas', function() {
+
+        $('body').on('input', 'input[name^="harga"]', function() {
             updateGrandTotal();
         });
+
+        // Panggil fungsi saat halaman dimuat untuk menginisialisasi grand total
         $(document).ready(function() {
             updateGrandTotal();
         });
@@ -422,6 +433,5 @@
             return value.toLocaleString('id-ID');
         }
     </script>
-
 
 @endsection
