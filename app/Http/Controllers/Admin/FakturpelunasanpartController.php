@@ -191,39 +191,40 @@ class FakturpelunasanpartController extends Controller
 
     public function kode()
     {
-        // Mengambil kode terbaru dari database dengan awalan 'MP'
-        $lastBarang = Faktur_pelunasanpart::where('kode_pelunasanpart', 'like', 'LS%')->latest()->first();
+        // Ambil kode memo terakhir yang sesuai format 'FJ%' dan kategori 'Memo Perjalanan'
+        $lastBarang = Faktur_pelunasanpart::where('kode_pelunasanpart', 'like', 'FJ%')
+            ->orderBy('id', 'desc')
+            ->first();
 
-        // Mendapatkan bulan dari tanggal kode terakhir
-        $lastMonth = $lastBarang ? date('m', strtotime($lastBarang->created_at)) : null;
-        $currentMonth = date('m');
+        // Inisialisasi nomor urut
+        $num = 1;
 
-        // Jika tidak ada kode sebelumnya atau bulan saat ini berbeda dari bulan kode terakhir
-        if (!$lastBarang || $currentMonth != $lastMonth) {
-            $num = 1; // Mulai dari 1 jika bulan berbeda
-        } else {
-            // Jika ada kode sebelumnya, ambil nomor terakhir
+        // Jika ada kode terakhir, proses untuk mendapatkan nomor urut
+        if ($lastBarang) {
             $lastCode = $lastBarang->kode_pelunasanpart;
 
-            // Pisahkan kode menjadi bagian-bagian terpisah
-            $parts = explode('/', $lastCode);
-            $lastNum = end($parts); // Ambil bagian terakhir sebagai nomor terakhir
-            $num = (int) $lastNum + 1; // Tambahkan 1 ke nomor terakhir
+            // Pastikan kode terakhir sesuai dengan format FJ[YYYYMMDD][NNNN]C
+            if (preg_match('/^FJ(\d{6})(\d{4})C$/', $lastCode, $matches)) {
+                $lastDate = $matches[1]; // Bagian tanggal: ymd (contoh: 241125)
+                $lastMonth = substr($lastDate, 2, 2); // Ambil bulan dari tanggal (contoh: 11)
+                $currentMonth = date('m'); // Bulan saat ini
+
+                if ($lastMonth === $currentMonth) {
+                    // Jika bulan sama, tambahkan nomor urut
+                    $lastNum = (int)$matches[2]; // Bagian nomor urut (contoh: 0001)
+                    $num = $lastNum + 1;
+                }
+            }
         }
 
-        // Format nomor dengan leading zeros sebanyak 6 digit
-        $formattedNum = sprintf("%06s", $num);
+        // Formatkan nomor urut menjadi 4 digit
+        $formattedNum = sprintf("%04s", $num);
 
-        // Awalan untuk kode baru
-        $prefix = 'LS';
-        $tahun = date('y');
-        $tanggal = date('dm');
+        // Buat kode baru dengan tambahan huruf C di belakang
+        $prefix = 'FJ';
+        $kodeMemo = $prefix . date('ymd') . $formattedNum . 'C'; // Format akhir kode memo
 
-        // Buat kode baru dengan menggabungkan awalan, tanggal, tahun, dan nomor yang diformat
-        $newCode = $prefix . "/" . $tanggal . $tahun . "/" . $formattedNum;
-
-        // Kembalikan kode
-        return $newCode;
+        return $kodeMemo;
     }
 
 

@@ -21,9 +21,9 @@ class FakturpenjualanreturnController extends Controller
     {
         $barangs = Barang::all();
         $notas = Nota_return::all();
-        
 
-        return view('admin.faktur_penjualanreturn.index', compact('barangs','notas'));
+
+        return view('admin.faktur_penjualanreturn.index', compact('barangs', 'notas'));
     }
 
     public function store(Request $request)
@@ -47,7 +47,7 @@ class FakturpenjualanreturnController extends Controller
         $error_pesanans = array();
         $data_pembelians = collect();
 
-        
+
         if ($request->has('barang_id')) {
             for ($i = 0; $i < count($request->barang_id); $i++) {
                 $validasi_produk = Validator::make($request->all(), [
@@ -97,7 +97,7 @@ class FakturpenjualanreturnController extends Controller
                 ->with('error_pesanans', $error_pesanans)
                 ->with('data_pembelians', $data_pembelians);
         }
-        
+
         $kode = $this->kode();
         // format tanggal indo
         $tanggal1 = Carbon::now('Asia/Jakarta');
@@ -143,16 +143,16 @@ class FakturpenjualanreturnController extends Controller
                     // Memperbarui jumlah sparepart
                     $sparepart->update(['jumlah' => $jumlah_sparepart]);
                     Detail_penjualan::create([
-                    'faktur_penjualanreturn_id' => $cetakpdf->id,
-                    'barang_id' => $data_pesanan['barang_id'],
-                    'kode_barang' => $data_pesanan['kode_barang'],
-                    'nama_barang' => $data_pesanan['nama_barang'],
-                    'jumlah' => $data_pesanan['jumlah'],
-                    'satuan' => $data_pesanan['satuan'],
-                    'harga_beli' => str_replace('.', '', $data_pesanan['harga_beli']),
-                    'harga_jual' => str_replace('.', '', $data_pesanan['harga_jual']),
-                    'diskon' => str_replace('.', '', $data_pesanan['diskon']),
-                    'total' => str_replace('.', '', $data_pesanan['total']),
+                        'faktur_penjualanreturn_id' => $cetakpdf->id,
+                        'barang_id' => $data_pesanan['barang_id'],
+                        'kode_barang' => $data_pesanan['kode_barang'],
+                        'nama_barang' => $data_pesanan['nama_barang'],
+                        'jumlah' => $data_pesanan['jumlah'],
+                        'satuan' => $data_pesanan['satuan'],
+                        'harga_beli' => str_replace('.', '', $data_pesanan['harga_beli']),
+                        'harga_jual' => str_replace('.', '', $data_pesanan['harga_jual']),
+                        'diskon' => str_replace('.', '', $data_pesanan['diskon']),
+                        'total' => str_replace('.', '', $data_pesanan['total']),
                     ]);
                 }
             }
@@ -199,39 +199,44 @@ class FakturpenjualanreturnController extends Controller
 
     public function kode()
     {
-        // Mengambil kode terbaru dari database dengan awalan 'MP'
-        $lastBarang = Faktur_penjualanreturn::where('kode_penjualan', 'like', 'PR%')->latest()->first();
+        // Ambil kode memo terakhir yang sesuai format 'FL%' dan kategori 'Memo Perjalanan'
+        $lastBarang = Faktur_penjualanreturn::where('kode_penjualan', 'like', 'FL%')
+            ->orderBy('id', 'desc')
+            ->first();
 
-        // Mendapatkan bulan dari tanggal kode terakhir
-        $lastMonth = $lastBarang ? date('m', strtotime($lastBarang->created_at)) : null;
-        $currentMonth = date('m');
+        // Inisialisasi nomor urut
+        $num = 1;
 
-        // Jika tidak ada kode sebelumnya atau bulan saat ini berbeda dari bulan kode terakhir
-        if (!$lastBarang || $currentMonth != $lastMonth) {
-            $num = 1; // Mulai dari 1 jika bulan berbeda
-        } else {
-            // Jika ada kode sebelumnya, ambil nomor terakhir
+        // Jika ada kode terakhir, proses untuk mendapatkan nomor urut
+        if ($lastBarang) {
             $lastCode = $lastBarang->kode_penjualan;
 
-            // Pisahkan kode menjadi bagian-bagian terpisah
-            $parts = explode('/', $lastCode);
-            $lastNum = end($parts); // Ambil bagian terakhir sebagai nomor terakhir
-            $num = (int) $lastNum + 1; // Tambahkan 1 ke nomor terakhir
+            // Pastikan kode terakhir sesuai dengan format FL[YYYYMMDD][NNNN]D
+            if (preg_match('/^FL(\d{6})(\d{4})D$/', $lastCode, $matches)) {
+                $lastDate = $matches[1]; // Bagian tanggal: ymd (contoh: 241125)
+                $lastMonth = substr(
+                    $lastDate,
+                    2,
+                    2
+                ); // Ambil bulan dari tanggal (contoh: 11)
+                $currentMonth = date('m'); // Bulan saat ini
+
+                if ($lastMonth === $currentMonth) {
+                    // Jika bulan sama, tambahkan nomor urut
+                    $lastNum = (int)$matches[2]; // Bagian nomor urut (contoh: 0001)
+                    $num = $lastNum + 1;
+                }
+            }
         }
 
-        // Format nomor dengan leading zeros sebanyak 6 digit
-        $formattedNum = sprintf("%06s", $num);
+        // Formatkan nomor urut menjadi 4 digit
+        $formattedNum = sprintf("%04s", $num);
 
-        // Awalan untuk kode baru
-        $prefix = 'PR';
-        $tahun = date('y');
-        $tanggal = date('dm');
+        // Buat kode baru dengan tambahan huruf D di belakang
+        $prefix = 'FL';
+        $kodeMemo = $prefix . date('ymd') . $formattedNum . 'D'; // Format akhir kode memo
 
-        // Buat kode baru dengan menggabungkan awalan, tanggal, tahun, dan nomor yang diformat
-        $newCode = $prefix . "/" . $tanggal . $tahun . "/" . $formattedNum;
-
-        // Kembalikan kode
-        return $newCode;
+        return $kodeMemo;
     }
 
     public function show($id)
