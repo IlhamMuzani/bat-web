@@ -954,4 +954,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
 
   Route::get('laporan-pemasanganaki', [\App\Http\Controllers\Admin\LaporanpemasanganakiController::class, 'index']);
   Route::get('print-pemasanganaki', [\App\Http\Controllers\Admin\LaporanpemasanganakiController::class, 'print_pemasanganaki']);
+
+  Route::get('inquery_perhitungangaji/export-gm/{id}', [\App\Http\Controllers\Admin\InqueryPerhitungangajiController::class, 'export_gm']);
+  Route::get('inquery_perhitungangajibulanan/export-gm/{id}', [\App\Http\Controllers\Admin\InqueryPerhitungangajibulananController::class, 'export_gm']);
 });

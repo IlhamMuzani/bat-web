@@ -231,6 +231,11 @@ class InqueryPerpanjanganstnkController extends Controller
     public function hapusstnk($id)
     {
         $item = Laporanstnk::where('id', $id)->first();
+        $pengeluaran = $item->pengeluaran_kaskecil;
+
+        if ($pengeluaran) {
+            $pengeluaran->delete();
+        }
 
         $item->delete();
         return back()->with('success', 'Berhasil');
