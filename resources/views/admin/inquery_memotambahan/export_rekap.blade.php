@@ -3,7 +3,7 @@
         <tr>
             <th>P</th>
 
-            <th>{{ str_replace('-', '', $memotambahan->first()->tanggal_awal) }}</th>
+            <th>{{ now()->format('Ymd') }}</th>
 
             <th>1390019683493</th>
 
